@@ -1,0 +1,322 @@
+<template>
+	<div class="searchBox">
+		<a-row class="rowStyle">
+			<a-col :span="3" class="labelText">
+				{{ 'Title' }}
+			</a-col>
+			<a-col :span="6">
+				<a-input v-model:value="infoVO.title" allow-clear />
+			</a-col>
+			<a-col :span="3" class="labelText">
+				{{ 'Shop' }}
+			</a-col>
+			<a-col :span="6" class="selectSearch">
+				<a-select show-search v-model:value="infoVO.shopId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allow-clear @search="shopSearch">
+					<a-select-option v-for="d in shopList" :key="d.id">
+						<div :title="d.name">{{ d.name }}</div>
+					</a-select-option>
+				</a-select>
+			</a-col>
+		</a-row>
+		<a-row class="rowStyle">
+			<a-col :span="3" class="labelText">
+				{{ 'Creation time' }}
+			</a-col>
+			<a-col :span="3" class="datePicker">
+				<a-date-picker v-model:value="infoVO.stratTime" :disabled-date="disabledStartDate" allow-clear />
+			</a-col>
+			<a-col :span="3" class="datePicker">
+				<a-date-picker v-model:value="infoVO.endTime" :disabled-date="disabledEndDate" allow-clear />
+			</a-col>
+			<a-col :span="3" class="labelText">
+				{{ 'Url' }}
+			</a-col>
+			<a-col :span="6">
+				<a-input v-model:value="infoVO.url" allow-clear />
+			</a-col>
+			<a-col :span="3" class="labelText">
+				<a-button type="primary" size="small" @click="search">{{ '搜索' }}</a-button>
+			</a-col>
+		</a-row>
+	</div>
+	<a-row class="rowStyle">
+		<a-col :span="1">
+			<a-button type="danger" size="small" @click="handleDelete">{{ '删除' }}</a-button>
+		</a-col>
+		<a-col :span="1">
+			<a-button type="primary" size="small" @click="handleCreate">{{ '创建' }}</a-button>
+		</a-col>
+		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
+			<template #aaa="{ record }">
+				<a-button type="link" @click="handleTitleClick(record.id)">{{ record.title }}</a-button>
+			</template>
+			<template #shop="{ record }">
+				<div class="tableShop">
+					<a-button type="link" @click="handleShopClick(record.id)">{{ record.shopName }}</a-button>
+					<div class="tableRightBox">
+						<div>
+							<a-button type="danger" size="small" @click="shopDelete(record.id)">{{ '删除' }}</a-button>
+						</div>
+						<div class="link">
+							<span v-if="record.flag" @click="record.flag = !record.flag"><DownOutlined /></span>
+							<span v-else @click="record.flag = !record.flag"><UpOutlined /></span>
+						</div>
+					</div>
+				</div>
+				<transition enter-active-class="animate__animated animate__fadeInUp">
+					<div v-show="record.flag" class="shopItem">
+						<div class="moreShopBox">
+							<a-button type="link" @click="handleShopClick(record.id)">{{ record.shopName }}</a-button>
+							<div>
+								<a-button type="danger" size="small" @click="shopDelete(record.id)">{{ '删除' }}</a-button>
+							</div>
+						</div>
+					</div>
+				</transition>
+			</template>
+			<template #url="{ record }">
+				<a-button type="link" @click="handleUrlClick(record.url)">{{ record.url }}</a-button>
+			</template>
+			<template #handle="{ record }">
+				<div class="tableBtn">
+					<a-button size="small" type="primary" @click="AdvertEdit(record.id)">{{ 'edit' }}</a-button>
+					<a-button size="small" type="danger" @click="AdvertDelete(record.id)">{{ 'delete' }}</a-button>
+				</div>
+			</template>
+		</a-table>
+	</a-row>
+	<template>
+		<a-modal v-model:visible="urlBox" :footer="null" width="50%">
+			<div class="modalBox">
+				<div v-if="isVideo">
+					<video :src="src" controls></video>
+				</div>
+				<div v-else>
+					<img :src="src" alt="" />
+				</div>
+			</div>
+		</a-modal>
+	</template>
+	<MyDialog :visible="visible" @afterClose="afterClose" @handleOk="handleOk" />
+	<div class="paginationStyle">
+		<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="pageTotal" @change="pageChange" />
+	</div>
+</template>
+
+<script lang="ts">
+import { defineComponent, onMounted, reactive, toRefs } from 'vue';
+// import labelTitle from '@/components/labelTitle.vue';
+import { useRouter } from 'vue-router';
+import { handleSelectEvent } from '@/components/common/tools';
+import { message } from 'ant-design-vue';
+import { DownOutlined, UpOutlined } from '@ant-design/icons-vue';
+import { AdvertTableListHttp, AdvertTableDeleteHttp, shopListHttp } from '@/api/api';
+import MyDialog from '@/components/common/dialog.vue';
+export default defineComponent({
+	name: 'Advert',
+	components: {
+		// labelTitle,
+		DownOutlined,
+		UpOutlined,
+		MyDialog
+	},
+	setup() {
+		const ROUTER = useRouter();
+		let selectList: number[] = [];
+		const data = reactive({
+			urlBox: false,
+			isVideo: true,
+			visible: false,
+			src: '',
+			infoVO: {
+				id: '',
+				shop: '',
+				title: '',
+				url: '',
+				stratTime: '',
+				endTime: '',
+				pageIndex: 1,
+				pageSize: 10
+			},
+			pageTotal: 1,
+			columns: [
+				{
+					title: 'Title',
+					dataIndex: 'title',
+					slots: { customRender: 'aaa' }
+				},
+				{
+					title: 'Shop',
+					dataIndex: 'shopName',
+					slots: { customRender: 'shop' }
+				},
+				{
+					title: 'Url',
+					dataIndex: 'url',
+					slots: { customRender: 'url' }
+				},
+				{
+					title: 'Shop Number',
+					dataIndex: 'Number'
+				},
+				{
+					title: 'Creation time',
+					dataIndex: 'age'
+				},
+				{
+					slots: { customRender: 'handle' }
+				}
+			],
+			shopList: [],
+			tableList: [],
+			createrList: [],
+			rowSelection: {
+				columnWidth: 50,
+				// columnTitle: '全选',
+				onChange: (selectedRowKeys: number[], selectedRows: any) => {
+					selectList = selectedRows.map((i: any) => i.id);
+				}
+			},
+			disabledStartDate: (startValue: any) => {
+				if (!startValue || !data.infoVO.endTime) {
+					return false;
+				}
+				return startValue.valueOf() > data.infoVO.endTime.valueOf();
+			},
+			disabledEndDate: (endValue: any) => {
+				if (!endValue || !data.infoVO.stratTime) {
+					return false;
+				}
+				return data.infoVO.stratTime.valueOf() >= endValue.valueOf();
+			},
+			shopSearch: (value: string) => {
+				shopListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
+					data.shopList = res.data.data.list;
+				});
+			},
+			shopDelete: (id: number) => {
+				console.log(id);
+				data.search();
+			},
+			search: () => {
+				AdvertTableListHttp(data.infoVO).then((res: any) => {
+					res.data.data.list.forEach((i: any) => (i.flag = false));
+					data.tableList = res.data.data.list;
+					data.pageTotal = res.data.data.totalCount;
+				});
+			},
+			handleUrlClick: (url: string) => {
+				data.urlBox = true;
+				if (url.includes('.mp4')) {
+					data.isVideo = true;
+				} else {
+					data.isVideo = false;
+				}
+				data.src = url;
+			},
+			handleOk: (value: boolean) => {
+				console.log(value);
+			},
+			afterClose: (value: boolean) => {
+				data.visible = value;
+			},
+			handleDelete: () => {
+				if (handleSelectEvent(selectList, 'id').length) {
+					data.visible = true;
+					// AdvertTableDeleteHttp(selectList).then((res: any) => {
+					// 	message.success(res.data.msg);
+					// 	data.search();
+					// });
+				}
+			},
+			AdvertEdit: (id: number) => {
+				ROUTER.push({
+					path: 'ShopEditor',
+					query: { id }
+				});
+			},
+			AdvertDelete: (id: number) => {
+				AdvertTableDeleteHttp([id]).then((res: any) => {
+					message.success(res.data.msg);
+					data.search();
+				});
+			},
+			handleTitleClick: (id: number) => {
+				ROUTER.push({
+					path: 'ShopEditor',
+					query: { id }
+				});
+			},
+			handleShopClick: (id: number) => {
+				ROUTER.push({
+					path: 'entryShopPage',
+					query: { id }
+				});
+			},
+			handleChange: () => {
+				console.log('handleChange');
+			},
+			handleCreate: () => {
+				ROUTER.push('ShopEditor');
+			},
+			handleExport: () => {
+				console.log(1);
+			},
+			pageChange: () => {
+				AdvertTableListHttp(data.infoVO).then((res: any) => {
+					data.tableList = res.data.data.list;
+				});
+			}
+		});
+		const getShopList = () => {
+			shopListHttp({ name: '', pageSize: 999 }).then((res: any) => {
+				data.shopList = res.data.data.list;
+			});
+		};
+		const init = () => {
+			data.search();
+			getShopList();
+		};
+		onMounted(() => {
+			init();
+		});
+		return {
+			...toRefs(data)
+		};
+	}
+});
+</script>
+
+<style scoped>
+.tableShop {
+	display: flex;
+	justify-content: space-between;
+}
+.tableRightBox {
+	display: flex;
+	justify-content: space-between;
+	width: 80px;
+	line-height: 32px;
+}
+.moreShopBox {
+	width: 100%;
+	line-height: 32px;
+	display: flex;
+	justify-content: space-between;
+}
+.shopItem {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	max-height: 150px;
+	overflow-y: auto;
+}
+.tableBtn {
+	display: flex;
+	justify-content: space-between;
+}
+.modalBox img,
+video {
+	width: 100%;
+}
+</style>

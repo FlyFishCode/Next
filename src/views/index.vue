@@ -1,0 +1,112 @@
+<template>
+	<hearder />
+	<a-row class="div">
+		<a-col :span="4">
+			<a-menu mode="inline" theme="dark" :openKeys="openKeys" v-model:selectedKeys="selectedKeys" style="width:100%;height:100%" @click="handleClick" @openChange="onOpenChange">
+				<a-sub-menu key="sub1">
+					<template #title>
+						<span><MailOutlined /><span>Bulletin</span></span>
+					</template>
+					<!-- <a-menu-item key="Bulletin">Bulletin</a-menu-item> -->
+					<a-menu-item key="Advert">Advert</a-menu-item>
+				</a-sub-menu>
+				<a-sub-menu key="sub2">
+					<template #title>
+						<span><AppstoreOutlined /><span>Machine</span></span>
+					</template>
+					<a-menu-item key="Agent">Agent</a-menu-item>
+					<a-menu-item key="Shop">Shop</a-menu-item>
+					<a-menu-item key="Machine">Machine</a-menu-item>
+				</a-sub-menu>
+				<a-sub-menu key="sub3">
+					<template #title>
+						<span><SettingOutlined /><span>Credit</span></span>
+					</template>
+					<a-menu-item key="Order">Order</a-menu-item>
+					<a-menu-item key="CreditCard">Credit Card</a-menu-item>
+					<a-menu-item key="MachineOrder">Machine Order</a-menu-item>
+				</a-sub-menu>
+			</a-menu>
+		</a-col>
+		<a-col :span="20" class="centent">
+			<!-- <div class="breadcrumbBox">
+				<div v-for="(route, index) in routes" :key="index">{{ route.name }}</div>
+			</div> -->
+			<router-view />
+		</a-col>
+	</a-row>
+</template>
+
+<script lang="ts">
+import { defineComponent, reactive, toRefs } from 'vue';
+import { MailOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons-vue';
+import hearder from '@/components/hearder.vue';
+import { useRouter } from 'vue-router';
+
+interface DataProps {
+	rootSubmenuKeys: any;
+	openKeys: Array<any>;
+	routes: any;
+}
+
+export default defineComponent({
+	name: 'index',
+	components: {
+		MailOutlined,
+		AppstoreOutlined,
+		SettingOutlined,
+		hearder
+	},
+	setup() {
+		const ROUTER = useRouter();
+		// const ROUTE = useRoute();
+		const data: DataProps = reactive({
+			routes: [],
+			logoImg: require('@/assets/logo.png'),
+			rootSubmenuKeys: ['sub1', 'sub2', 'sub3'],
+			openKeys: [],
+			selectedKeys: [],
+			handleClick: (event: any) => {
+				ROUTER.push(event.key);
+			},
+			onOpenChange(openKeys: any) {
+				const latestOpenKey = openKeys.find((key: any) => !data.openKeys.includes(key));
+				if (!data.rootSubmenuKeys.includes(latestOpenKey)) {
+					data.openKeys = openKeys;
+				} else {
+					data.openKeys = latestOpenKey ? [latestOpenKey] : [];
+				}
+			}
+		});
+		// onMounted(() => {
+		// 	data.routes = Object.values(ROUTE.meta);
+		// });
+		return {
+			...toRefs(data)
+		};
+	}
+});
+</script>
+<style scoped>
+.div {
+	height: 100%;
+}
+.hearderClass {
+	height: 50px;
+	border-bottom: 1px solid #fff;
+	background: #001529;
+}
+.longinBox {
+	height: 50px;
+	border-right: 1px solid #fff;
+}
+.centent {
+	padding: 5px;
+}
+.breadcrumbBox {
+	display: flex;
+}
+.breadcrumbBox div {
+	margin-right: 5px;
+}
+</style>

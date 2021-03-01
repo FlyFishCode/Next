@@ -1,0 +1,69 @@
+<template>
+	<router-view />
+</template>
+
+<style>
+#app {
+	height: 100%;
+}
+.rowStyle {
+	margin: 5px 0;
+}
+.selectBox {
+	width: 100%;
+}
+.tableStyle {
+	width: 100%;
+}
+/* 日期选择器 */
+.datePicker .ant-calendar-picker {
+	width: 100%;
+}
+/* 分页 */
+.paginationStyle {
+	display: flex;
+	justify-content: flex-end;
+}
+.searchBox {
+	background: #eee;
+	padding: 10px;
+}
+/* label */
+.labelText {
+	text-align: center;
+	line-height: 32px;
+	font-size: 16px;
+}
+/* 搜索条件内btn */
+.searchButton {
+	text-align: center;
+	line-height: 32px;
+}
+/* 带搜索得下拉框 */
+.selectSearch div {
+	width: 100%;
+}
+/* 时间组件 */
+.datePicker:first-child(span) {
+	width: 100%;
+}
+/* 单选框 */
+.radioStyle {
+	background: #fff;
+}
+.radioStyle div {
+	width: 100%;
+	height: 32px;
+	display: flex;
+	justify-content: space-around;
+}
+.radioStyle .ant-radio-wrapper {
+	line-height: 32px;
+}
+.link {
+	cursor: pointer;
+	color: #1890ff;
+	height: 32px;
+	line-height: 32px;
+}
+</style>
