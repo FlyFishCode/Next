@@ -66,4 +66,16 @@
 	height: 32px;
 	line-height: 32px;
 }
+/* 广告模块链接弹框样式 */
+.modalBox {
+	min-height: 500px;
+}
+.modalBox img,
+video {
+	width: 100%;
+}
+#deleteBtnBox {
+	display: flex;
+	justify-content: space-around;
+}
 </style>

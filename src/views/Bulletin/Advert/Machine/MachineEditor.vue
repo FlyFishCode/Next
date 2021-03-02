@@ -102,7 +102,7 @@ interface DataProps {
 }
 
 export default defineComponent({
-	name: 'AdvertEditor',
+	name: 'MachineEditor',
 	components: {
 		labelTitle
 	},
@@ -110,7 +110,8 @@ export default defineComponent({
 		const ROUTE = useRoute();
 		let selectList: number[] = [];
 		let shopSelectList: any = [];
-		const defaultSelectList: any[] = ['6451', '10086', '15047', '19402', '19421', '19430'];
+		// const defaultSelectList: any[] = ['6451', '10086', '15047', '19402', '19421', '19430'];
+		const defaultSelectList: any[] = [];
 		const data = reactive({
 			showUrlDialog: false,
 			showShopDialog: false,
@@ -276,13 +277,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.modalBox {
-	min-height: 500px;
-}
-.modalBox img,
-video {
-	width: 100%;
-}
 .shopBodyBox {
 	height: 650px;
 	overflow-y: auto;

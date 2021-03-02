@@ -8,11 +8,11 @@
 				<a-input v-model:value="infoVO.title" allow-clear />
 			</a-col>
 			<a-col :span="3" class="labelText">
-				{{ 'Shop' }}
+				{{ 'Shop Name' }}
 			</a-col>
 			<a-col :span="6" class="selectSearch">
-				<a-select show-search v-model:value="infoVO.shopId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allow-clear @search="shopSearch">
-					<a-select-option v-for="d in shopList" :key="d.id">
+				<a-select show-search v-model:value="infoVO.name" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allow-clear @search="shopSearch">
+					<a-select-option v-for="d in shopList" :key="d.name">
 						<div :title="d.name">{{ d.name }}</div>
 					</a-select-option>
 				</a-select>
@@ -23,10 +23,10 @@
 				{{ 'Creation time' }}
 			</a-col>
 			<a-col :span="3" class="datePicker">
-				<a-date-picker v-model:value="infoVO.stratTime" :disabled-date="disabledStartDate" allow-clear />
+				<a-date-picker v-model:value="infoVO.minCreateTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
 			</a-col>
 			<a-col :span="3" class="datePicker">
-				<a-date-picker v-model:value="infoVO.endTime" :disabled-date="disabledEndDate" allow-clear />
+				<a-date-picker v-model:value="infoVO.maxCreateTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 			</a-col>
 			<a-col :span="3" class="labelText">
 				{{ 'Url' }}
@@ -40,8 +40,9 @@
 		</a-row>
 	</div>
 	<a-row class="rowStyle">
-		<a-col :span="1">
+		<a-col :span="2" id="deleteBtnBox">
 			<a-button type="danger" size="small" @click="handleDelete">{{ '删除' }}</a-button>
+			<a-button type="danger" size="small" @click="handleDeleteAll">{{ '删除所有' }}</a-button>
 		</a-col>
 		<a-col :span="1">
 			<a-button type="primary" size="small" @click="handleCreate">{{ '创建' }}</a-button>
@@ -51,13 +52,13 @@
 				<a-button type="link" @click="handleTitleClick(record.id)">{{ record.title }}</a-button>
 			</template>
 			<template #shop="{ record }">
-				<div class="tableShop">
-					<a-button type="link" @click="handleShopClick(record.id)">{{ record.shopName }}</a-button>
+				<div v-if="record.shopList.length" class="tableShop">
+					<a-button type="link" @click="handleShopClick(record.shopList[0].shopId)">{{ record.shopList[0].shopName }}</a-button>
 					<div class="tableRightBox">
 						<div>
 							<a-button type="danger" size="small" @click="shopDelete(record.id)">{{ '删除' }}</a-button>
 						</div>
-						<div class="link">
+						<div v-show="record.shopList.length > 1" class="link">
 							<span v-if="record.flag" @click="record.flag = !record.flag"><DownOutlined /></span>
 							<span v-else @click="record.flag = !record.flag"><UpOutlined /></span>
 						</div>
@@ -65,10 +66,12 @@
 				</div>
 				<transition enter-active-class="animate__animated animate__fadeInUp">
 					<div v-show="record.flag" class="shopItem">
-						<div class="moreShopBox">
-							<a-button type="link" @click="handleShopClick(record.id)">{{ record.shopName }}</a-button>
-							<div>
-								<a-button type="danger" size="small" @click="shopDelete(record.id)">{{ '删除' }}</a-button>
+						<div v-for="(item, index) in record.shopList" :key="item.id" class="moreShopBox">
+							<div v-if="index" class="moreShopBox">
+								<a-button type="link" @click="handleShopClick(item.shopId)">{{ item.shopName }}</a-button>
+								<div>
+									<a-button type="danger" size="small" @click="shopDelete(item.shopId)">{{ '删除' }}</a-button>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -77,10 +80,13 @@
 			<template #url="{ record }">
 				<a-button type="link" @click="handleUrlClick(record.url)">{{ record.url }}</a-button>
 			</template>
+			<template #ShopNumber="{ record }">
+				<div>{{ record.shopList.length }}</div>
+			</template>
 			<template #handle="{ record }">
 				<div class="tableBtn">
 					<a-button size="small" type="primary" @click="AdvertEdit(record.id)">{{ 'edit' }}</a-button>
-					<a-button size="small" type="danger" @click="AdvertDelete(record.id)">{{ 'delete' }}</a-button>
+					<!-- <a-button size="small" type="danger" @click="AdvertDelete(record.id)">{{ 'delete' }}</a-button> -->
 				</div>
 			</template>
 		</a-table>
@@ -92,12 +98,13 @@
 					<video :src="src" controls></video>
 				</div>
 				<div v-else>
-					<img :src="src" alt="" />
+					<img :src="src" alt="图片地址不正确" />
 				</div>
 			</div>
 		</a-modal>
 	</template>
-	<MyDialog :visible="visible" @afterClose="afterClose" @handleOk="handleOk" />
+	<DeleteDialog :visible="visible" @afterClose="afterClose" @handleOk="handleOk" />
+	<DeleteAllDialog :visible="allVisible" @afterAllClose="afterAllClose" @handleAllOk="handleAllOk" />
 	<div class="paginationStyle">
 		<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="pageTotal" @change="pageChange" />
 	</div>
@@ -105,20 +112,21 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-// import labelTitle from '@/components/labelTitle.vue';
 import { useRouter } from 'vue-router';
 import { handleSelectEvent } from '@/components/common/tools';
+import DeleteDialog from '@/components/common/DeleteDialog.vue';
+import DeleteAllDialog from '@/components/common/DeleteAllDialog.vue';
 import { message } from 'ant-design-vue';
 import { DownOutlined, UpOutlined } from '@ant-design/icons-vue';
 import { AdvertTableListHttp, AdvertTableDeleteHttp, shopListHttp } from '@/api/api';
-import MyDialog from '@/components/common/dialog.vue';
 export default defineComponent({
 	name: 'Advert',
 	components: {
 		// labelTitle,
 		DownOutlined,
 		UpOutlined,
-		MyDialog
+		DeleteDialog,
+		DeleteAllDialog
 	},
 	setup() {
 		const ROUTER = useRouter();
@@ -127,14 +135,15 @@ export default defineComponent({
 			urlBox: false,
 			isVideo: true,
 			visible: false,
+			allVisible: false,
 			src: '',
 			infoVO: {
-				id: '',
-				shop: '',
 				title: '',
+				name: '',
 				url: '',
-				stratTime: '',
-				endTime: '',
+				type: 1,
+				minCreateTime: '',
+				maxCreateTime: '',
 				pageIndex: 1,
 				pageSize: 10
 			},
@@ -147,21 +156,19 @@ export default defineComponent({
 				},
 				{
 					title: 'Shop',
-					dataIndex: 'shopName',
 					slots: { customRender: 'shop' }
 				},
 				{
 					title: 'Url',
-					dataIndex: 'url',
 					slots: { customRender: 'url' }
 				},
 				{
 					title: 'Shop Number',
-					dataIndex: 'Number'
+					slots: { customRender: 'ShopNumber' }
 				},
 				{
 					title: 'Creation time',
-					dataIndex: 'age'
+					dataIndex: 'createTime'
 				},
 				{
 					slots: { customRender: 'handle' }
@@ -178,16 +185,16 @@ export default defineComponent({
 				}
 			},
 			disabledStartDate: (startValue: any) => {
-				if (!startValue || !data.infoVO.endTime) {
+				if (!startValue || !data.infoVO.maxCreateTime) {
 					return false;
 				}
-				return startValue.valueOf() > data.infoVO.endTime.valueOf();
+				return startValue.valueOf() > new Date(data.infoVO.maxCreateTime).valueOf();
 			},
 			disabledEndDate: (endValue: any) => {
-				if (!endValue || !data.infoVO.stratTime) {
+				if (!endValue || !data.infoVO.minCreateTime) {
 					return false;
 				}
-				return data.infoVO.stratTime.valueOf() >= endValue.valueOf();
+				return new Date(data.infoVO.minCreateTime).valueOf() >= endValue.valueOf();
 			},
 			shopSearch: (value: string) => {
 				shopListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
@@ -220,6 +227,12 @@ export default defineComponent({
 			afterClose: (value: boolean) => {
 				data.visible = value;
 			},
+			handleAllOk: (value: boolean) => {
+				console.log(value);
+			},
+			afterAllClose: (value: boolean) => {
+				data.allVisible = value;
+			},
 			handleDelete: () => {
 				if (handleSelectEvent(selectList, 'id').length) {
 					data.visible = true;
@@ -228,6 +241,9 @@ export default defineComponent({
 					// 	data.search();
 					// });
 				}
+			},
+			handleDeleteAll: () => {
+				data.allVisible = true;
 			},
 			AdvertEdit: (id: number) => {
 				ROUTER.push({
@@ -249,7 +265,7 @@ export default defineComponent({
 			},
 			handleShopClick: (id: number) => {
 				ROUTER.push({
-					path: 'entryShopPage',
+					path: 'ShopInfo',
 					query: { id }
 				});
 			},
@@ -314,9 +330,5 @@ export default defineComponent({
 .tableBtn {
 	display: flex;
 	justify-content: space-between;
-}
-.modalBox img,
-video {
-	width: 100%;
 }
 </style>

@@ -1,43 +1,33 @@
 <template>
 	<div class="searchBox">
 		<a-row class="rowStyle">
-			<a-col :span="2" class="labelText">
+			<a-col :span="3" class="labelText">
 				{{ 'Title' }}
 			</a-col>
 			<a-col :span="6">
 				<a-input v-model:value="infoVO.title" allow-clear />
 			</a-col>
 			<a-col :span="3" class="labelText">
-				{{ 'Shop' }}
-			</a-col>
-			<a-col :span="5" class="selectSearch">
-				<a-select show-search v-model:value="infoVO.shopId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allow-clear @search="shopSearch">
-					<a-select-option v-for="d in shopList" :key="d.id">
-						<div :title="d.name">{{ d.name }}</div>
-					</a-select-option>
-				</a-select>
-			</a-col>
-			<a-col :span="3" class="labelText">
 				{{ 'Machine Name' }}
 			</a-col>
-			<a-col :span="5" class="selectSearch">
+			<a-col :span="6" class="selectSearch">
 				<a-input v-model:value="infoVO.title" allow-clear />
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
-			<a-col :span="2" class="labelText">
+			<a-col :span="3" class="labelText">
 				{{ 'Creation time' }}
 			</a-col>
 			<a-col :span="3" class="datePicker">
-				<a-date-picker v-model:value="infoVO.stratTime" :disabled-date="disabledStartDate" allow-clear />
+				<a-date-picker v-model:value="infoVO.stratTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
 			</a-col>
 			<a-col :span="3" class="datePicker">
-				<a-date-picker v-model:value="infoVO.endTime" :disabled-date="disabledEndDate" allow-clear />
+				<a-date-picker v-model:value="infoVO.endTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 			</a-col>
 			<a-col :span="3" class="labelText">
 				{{ 'Url' }}
 			</a-col>
-			<a-col :span="5">
+			<a-col :span="6">
 				<a-input v-model:value="infoVO.url" allow-clear />
 			</a-col>
 			<a-col :span="3" class="labelText">
@@ -46,8 +36,9 @@
 		</a-row>
 	</div>
 	<a-row class="rowStyle">
-		<a-col :span="1">
+		<a-col :span="2" id="deleteBtnBox">
 			<a-button type="danger" size="small" @click="handleDelete">{{ '删除' }}</a-button>
+			<a-button type="danger" size="small" @click="handleDeleteAll">{{ '删除所有' }}</a-button>
 		</a-col>
 		<a-col :span="1">
 			<a-button type="primary" size="small" @click="handleCreate">{{ '创建' }}</a-button>
@@ -57,13 +48,13 @@
 				<a-button type="link" @click="handleTitleClick(record.id)">{{ record.title }}</a-button>
 			</template>
 			<template #Machine="{ record }">
-				<div class="tableShop">
-					<a-button type="link" @click="handleShopClick(record.id)">{{ record.shopName }}</a-button>
+				<div v-if="record.machineList.length" class="tableShop">
+					<a-button type="link" @click="handleShopClick(record.machineList[0].machineId)">{{ record.machineList[0].machineName }}</a-button>
 					<div class="tableRightBox">
 						<div>
 							<a-button type="danger" size="small" @click="shopDelete(record.id)">{{ '删除' }}</a-button>
 						</div>
-						<div class="link">
+						<div v-show="record.machineList.length > 1" class="link">
 							<span v-if="record.flag" @click="record.flag = !record.flag"><DownOutlined /></span>
 							<span v-else @click="record.flag = !record.flag"><UpOutlined /></span>
 						</div>
@@ -71,14 +62,19 @@
 				</div>
 				<transition enter-active-class="animate__animated animate__fadeInUp">
 					<div v-show="record.flag" class="shopItem">
-						<div class="moreShopBox">
-							<a-button type="link" @click="handleShopClick(record.id)">{{ record.shopName }}</a-button>
-							<div>
-								<a-button type="danger" size="small" @click="shopDelete(record.id)">{{ '删除' }}</a-button>
+						<div v-for="(item, index) in record.machineList" :key="item.id" class="moreShopBox">
+							<div v-if="index" class="moreShopBox">
+								<a-button type="link" @click="handleShopClick(item.machineId)">{{ item.machineName }}</a-button>
+								<div>
+									<a-button type="danger" size="small" @click="shopDelete(item.machineId)">{{ '删除' }}</a-button>
+								</div>
 							</div>
 						</div>
 					</div>
 				</transition>
+			</template>
+			<template #MachineNumber="{ record }">
+				<div>{{ record.machineList.length }}</div>
 			</template>
 			<template #url="{ record }">
 				<a-button type="link" @click="handleUrlClick(record.url)">{{ record.url }}</a-button>
@@ -86,7 +82,7 @@
 			<template #handle="{ record }">
 				<div class="tableBtn">
 					<a-button size="small" type="primary" @click="AdvertEdit(record.id)">{{ 'edit' }}</a-button>
-					<a-button size="small" type="danger" @click="AdvertDelete(record.id)">{{ 'delete' }}</a-button>
+					<!-- <a-button size="small" type="danger" @click="AdvertDelete(record.id)">{{ 'delete' }}</a-button> -->
 				</div>
 			</template>
 		</a-table>
@@ -98,7 +94,7 @@
 					<video :src="src" controls></video>
 				</div>
 				<div v-else>
-					<img :src="src" alt="" />
+					<img :src="src" alt="图片地址不正确" />
 				</div>
 			</div>
 		</a-modal>
@@ -132,13 +128,12 @@ export default defineComponent({
 			isVideo: true,
 			src: '',
 			infoVO: {
-				id: '',
-				shop: '',
 				title: '',
+				name: '',
 				url: '',
-				stratTime: '',
-				endTime: '',
-				createUserId: '',
+				type: 2,
+				minCreateTime: '',
+				maxCreateTime: '',
 				pageIndex: 1,
 				pageSize: 10
 			},
@@ -148,11 +143,6 @@ export default defineComponent({
 					title: 'Title',
 					dataIndex: 'title',
 					slots: { customRender: 'aaa' }
-				},
-				{
-					title: 'Shop',
-					dataIndex: 'shopName',
-					slots: { customRender: 'shop' }
 				},
 				{
 					title: 'Machine',
@@ -165,12 +155,12 @@ export default defineComponent({
 					slots: { customRender: 'url' }
 				},
 				{
-					title: 'Shop Number',
-					dataIndex: 'Number'
+					title: 'Machine Number',
+					slots: { customRender: 'MachineNumber' }
 				},
 				{
 					title: 'Creation time',
-					dataIndex: 'age'
+					dataIndex: 'createTime'
 				},
 				{
 					slots: { customRender: 'handle' }
@@ -187,16 +177,16 @@ export default defineComponent({
 				}
 			},
 			disabledStartDate: (startValue: any) => {
-				if (!startValue || !data.infoVO.endTime) {
+				if (!startValue || !data.infoVO.maxCreateTime) {
 					return false;
 				}
-				return startValue.valueOf() > data.infoVO.endTime.valueOf();
+				return startValue.valueOf() > new Date(data.infoVO.maxCreateTime).valueOf();
 			},
 			disabledEndDate: (endValue: any) => {
-				if (!endValue || !data.infoVO.stratTime) {
+				if (!endValue || !data.infoVO.minCreateTime) {
 					return false;
 				}
-				return data.infoVO.stratTime.valueOf() >= endValue.valueOf();
+				return new Date(data.infoVO.minCreateTime).valueOf() >= endValue.valueOf();
 			},
 			// shopSearch: (input: string, option: any) => {
 			shopSearch: (value: string) => {
@@ -217,6 +207,12 @@ export default defineComponent({
 					data.pageTotal = res.data.data.totalCount;
 				});
 			},
+			handleShopClick: (id: number) => {
+				ROUTER.push({
+					path: 'MachineInfo',
+					query: { id }
+				});
+			},
 			handleUrlClick: (url: string) => {
 				data.urlBox = true;
 				if (url.includes('.mp4')) {
@@ -233,6 +229,9 @@ export default defineComponent({
 						data.search();
 					});
 				}
+			},
+			handleDeleteAll: () => {
+				console.log('all');
 			},
 			AdvertEdit: (id: number) => {
 				ROUTER.push({
@@ -252,9 +251,9 @@ export default defineComponent({
 					query: { id }
 				});
 			},
-			handleShopClick: (id: number) => {
+			handleMachineClick: (id: number) => {
 				ROUTER.push({
-					path: 'entryShopPage',
+					path: 'MachineInfo',
 					query: { id }
 				});
 			},
@@ -319,9 +318,5 @@ export default defineComponent({
 .tableBtn {
 	display: flex;
 	justify-content: space-between;
-}
-.modalBox img,
-video {
-	width: 100%;
 }
 </style>
