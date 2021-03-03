@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { loginUrl, changePassword, userList, countryList, areaList } from '@/api/index';
 // Advert
-import { AdvertTableList, AdvertTableDelete, AdvertTableAdd, AdvertSearch, AdvertChange, AdvertList, MachineInfo } from '@/api/Advert/index';
+import { AdvertTableList, AdvertTableAdd, AdvertSearch, AdvertChange, AdvertList, MachineInfo, deleteAdvertShop, deleteMachineShop, deleteAdvert } from '@/api/Advert/index';
 
 // Machine
 import { shopList, shopSingleInfo, editShopinfo, createShop, shopMachineList, machineList, deleteShop } from '@/api/Machine/index';
@@ -77,9 +77,17 @@ const areaListHttp = (data: any) => {
 const AdvertTableListHttp = (data: any) => {
 	return Axios.post(AdvertTableList, data);
 };
+// 删除广告下的店铺
+const deleteAdvertShopHttp = (data: any) => {
+	return Axios.post(deleteAdvertShop, data);
+};
+// 删除广告下的机器
+const deleteMachineShopHttp = (data: any) => {
+	return Axios.post(deleteMachineShop, data);
+};
 // 广告删除
-const AdvertTableDeleteHttp = (data: any) => {
-	return Axios.post(AdvertTableDelete, data);
+const deleteAdvertHttp = (data: any) => {
+	return Axios.post(deleteAdvert, data);
 };
 // 广告添加
 const AdvertTableAddHttp = (data: any) => {
@@ -138,7 +146,7 @@ export {
 	loginHttp,
 	changePasswordHttp,
 	AdvertTableListHttp,
-	AdvertTableDeleteHttp,
+	deleteAdvertHttp,
 	AdvertTableAddHttp,
 	AdvertSearchHttp,
 	AdvertChangeHttp,
@@ -154,5 +162,7 @@ export {
 	shopMachineListHttp,
 	machineListHttp,
 	deleteShopHttp,
-	MachineInfoHttp
+	MachineInfoHttp,
+	deleteAdvertShopHttp,
+	deleteMachineShopHttp
 };

@@ -108,6 +108,7 @@ export default defineComponent({
 	},
 	setup() {
 		const ROUTE = useRoute();
+		const id: any = ROUTE.query.id || null;
 		let selectList: number[] = [];
 		let shopSelectList: any = [];
 		// const defaultSelectList: any[] = ['6451', '10086', '15047', '19402', '19421', '19430'];
@@ -262,9 +263,11 @@ export default defineComponent({
 		};
 		onMounted(() => {
 			init();
-			if (ROUTE.query.id) {
-				AdvertSearchHttp(ROUTE.query.id).then((res: any) => {
-					data.infoVO = res.data.data;
+			if (id) {
+				AdvertSearchHttp(id).then((res: any) => {
+					if (res.data.data) {
+						data.infoVO = res.data.data;
+					}
 				});
 			}
 		});

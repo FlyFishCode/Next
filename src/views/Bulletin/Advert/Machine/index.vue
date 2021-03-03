@@ -36,9 +36,9 @@
 		</a-row>
 	</div>
 	<a-row class="rowStyle">
-		<a-col :span="2" id="deleteBtnBox">
-			<a-button type="danger" size="small" @click="handleDelete">{{ '删除' }}</a-button>
-			<a-button type="danger" size="small" @click="handleDeleteAll">{{ '删除所有' }}</a-button>
+		<a-col :span="4" id="deleteBtnBox">
+			<a-button type="danger" size="small" @click="handleDelete">{{ '删除勾选数据' }}</a-button>
+			<a-button type="danger" size="small" @click="handleDeleteAll">{{ '删除所有数据' }}</a-button>
 		</a-col>
 		<a-col :span="1">
 			<a-button type="primary" size="small" @click="handleCreate">{{ '创建' }}</a-button>
@@ -52,7 +52,7 @@
 					<a-button type="link" @click="handleShopClick(record.machineList[0].machineId)">{{ record.machineList[0].machineName }}</a-button>
 					<div class="tableRightBox">
 						<div>
-							<a-button type="danger" size="small" @click="shopDelete(record.id)">{{ '删除' }}</a-button>
+							<a-button type="danger" size="small" @click="machineDelete(record.id, record.machineList[0].machineId)">{{ '删除' }}</a-button>
 						</div>
 						<div v-show="record.machineList.length > 1" class="link">
 							<span v-if="record.flag" @click="record.flag = !record.flag"><DownOutlined /></span>
@@ -66,7 +66,7 @@
 							<div v-if="index" class="moreShopBox">
 								<a-button type="link" @click="handleShopClick(item.machineId)">{{ item.machineName }}</a-button>
 								<div>
-									<a-button type="danger" size="small" @click="shopDelete(item.machineId)">{{ '删除' }}</a-button>
+									<a-button type="danger" size="small" @click="machineDelete(record.id, item.machineId)">{{ '删除' }}</a-button>
 								</div>
 							</div>
 						</div>
@@ -82,7 +82,6 @@
 			<template #handle="{ record }">
 				<div class="tableBtn">
 					<a-button size="small" type="primary" @click="AdvertEdit(record.id)">{{ 'edit' }}</a-button>
-					<!-- <a-button size="small" type="danger" @click="AdvertDelete(record.id)">{{ 'delete' }}</a-button> -->
 				</div>
 			</template>
 		</a-table>
@@ -99,6 +98,8 @@
 			</div>
 		</a-modal>
 	</template>
+	<DeleteDialog :visible="visible" @afterClose="afterClose" @handleOk="handleOk" />
+	<DeleteAllDialog :visible="allVisible" @afterAllClose="afterAllClose" @handleAllOk="handleAllOk" />
 	<div class="paginationStyle">
 		<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="pageTotal" @change="pageChange" />
 	</div>
@@ -110,14 +111,18 @@ import { defineComponent, onMounted, reactive, toRefs } from 'vue';
 import { useRouter } from 'vue-router';
 import { handleSelectEvent } from '@/components/common/tools';
 import { message } from 'ant-design-vue';
+import DeleteDialog from '@/components/common/DeleteDialog.vue';
+import DeleteAllDialog from '@/components/common/DeleteAllDialog.vue';
 import { DownOutlined, UpOutlined } from '@ant-design/icons-vue';
-import { AdvertTableListHttp, AdvertTableDeleteHttp, shopListHttp } from '@/api/api';
+import { AdvertTableListHttp, deleteAdvertHttp, shopListHttp, deleteMachineShopHttp } from '@/api/api';
 export default defineComponent({
 	name: 'Advert',
 	components: {
 		// labelTitle,
 		DownOutlined,
-		UpOutlined
+		UpOutlined,
+		DeleteDialog,
+		DeleteAllDialog
 	},
 	setup() {
 		const ROUTER = useRouter();
@@ -126,6 +131,8 @@ export default defineComponent({
 			activeKey: '1',
 			urlBox: false,
 			isVideo: true,
+			visible: false,
+			allVisible: false,
 			src: '',
 			infoVO: {
 				title: '',
@@ -188,17 +195,16 @@ export default defineComponent({
 				}
 				return new Date(data.infoVO.minCreateTime).valueOf() >= endValue.valueOf();
 			},
-			// shopSearch: (input: string, option: any) => {
-			shopSearch: (value: string) => {
-				// return option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-				// }
-				shopListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
-					data.shopList = res.data.data.list;
+			machineDelete: (id: number, machineId: number) => {
+				const obj = {
+					advertIds: [id],
+					machineId,
+					deleteAll: false
+				};
+				deleteMachineShopHttp(obj).then((res: any) => {
+					message.success(res.data.msg);
+					data.search();
 				});
-			},
-			shopDelete: (id: number) => {
-				console.log(id);
-				data.search();
 			},
 			search: () => {
 				AdvertTableListHttp(data.infoVO).then((res: any) => {
@@ -222,27 +228,46 @@ export default defineComponent({
 				}
 				data.src = url;
 			},
+			handleOk: () => {
+				const obj = {
+					advertIds: selectList,
+					deleteAll: false
+				};
+				deleteAdvertHttp(obj).then((res: any) => {
+					message.success(res.data.msg);
+					data.visible = false;
+					data.search();
+				});
+			},
+			handleAllOk: () => {
+				const obj = {
+					advertIds: [],
+					deleteAll: true
+				};
+				deleteAdvertHttp(obj).then((res: any) => {
+					message.success(res.data.msg);
+					data.allVisible = false;
+					data.search();
+				});
+			},
+			afterClose: (value: boolean) => {
+				data.visible = value;
+			},
+			afterAllClose: (value: boolean) => {
+				data.allVisible = value;
+			},
 			handleDelete: () => {
 				if (handleSelectEvent(selectList, 'id').length) {
-					AdvertTableDeleteHttp(selectList).then((res: any) => {
-						message.success(res.data.msg);
-						data.search();
-					});
+					data.visible = true;
 				}
 			},
 			handleDeleteAll: () => {
-				console.log('all');
+				data.allVisible = true;
 			},
 			AdvertEdit: (id: number) => {
 				ROUTER.push({
 					path: 'MachineEditor',
 					query: { id }
-				});
-			},
-			AdvertDelete: (id: number) => {
-				AdvertTableDeleteHttp([id]).then((res: any) => {
-					message.success(res.data.msg);
-					data.search();
 				});
 			},
 			handleTitleClick: (id: number) => {
@@ -257,14 +282,8 @@ export default defineComponent({
 					query: { id }
 				});
 			},
-			handleChange: () => {
-				console.log('handleChange');
-			},
 			handleCreate: () => {
 				ROUTER.push('MachineEditor');
-			},
-			handleExport: () => {
-				console.log(1);
 			},
 			pageChange: () => {
 				AdvertTableListHttp(data.infoVO).then((res: any) => {

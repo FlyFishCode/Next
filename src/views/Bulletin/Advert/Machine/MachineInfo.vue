@@ -37,7 +37,7 @@
 				{{ 'Title' }}
 			</a-col>
 			<a-col :span="4">
-				<a-input v-model:value="machineVO.title" />
+				<a-input v-model:value="machineVO.title" allow-clear />
 			</a-col>
 			<a-col :span="2" class="labelText">
 				{{ 'Time' }}
@@ -81,7 +81,8 @@ import labelTitle from '@/components/labelTitle.vue';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import DeleteAllDialog from '@/components/common/DeleteAllDialog.vue';
 import { useRoute } from 'vue-router';
-import { AdvertListHttp, MachineInfoHttp } from '@/api/api';
+import { message } from 'ant-design-vue';
+import { AdvertListHttp, MachineInfoHttp, deleteMachineShopHttp } from '@/api/api';
 export default defineComponent({
 	name: 'MachineInfo',
 	components: {
@@ -91,6 +92,7 @@ export default defineComponent({
 	},
 	setup() {
 		const ROUTE = useRoute();
+		const id: any = ROUTE.query.id;
 		let selectList: number[] = [];
 		const data = reactive({
 			visible: false,
@@ -105,7 +107,7 @@ export default defineComponent({
 				title: '',
 				url: '',
 				type: 2,
-				machineId: ROUTE.query.id,
+				machineId: id,
 				minCreateTime: '',
 				maxCreateTime: '',
 				pageIndex: 1,
@@ -133,7 +135,6 @@ export default defineComponent({
 				// columnTitle: '全选',
 				onChange: (selectedRowKeys: number[], selectedRows: any) => {
 					selectList = selectedRows.map((i: any) => i.id);
-					console.log(selectList);
 				}
 			},
 			disabledStartDate: (startValue: any) => {
@@ -148,9 +149,17 @@ export default defineComponent({
 				}
 				return new Date(data.machineVO.minCreateTime).valueOf() >= endValue.valueOf();
 			},
-			handleOk: (value: boolean) => {
-				console.log(value);
-				data.visible = false;
+			handleOk: () => {
+				const obj = {
+					advertIds: selectList,
+					machineId: id,
+					deleteAll: false
+				};
+				deleteMachineShopHttp(obj).then((res: any) => {
+					message.success(res.data.msg);
+					data.visible = false;
+					data.search();
+				});
 			},
 			afterClose: (value: boolean) => {
 				data.visible = value;
@@ -164,10 +173,6 @@ export default defineComponent({
 			handleDelete: () => {
 				if (handleSelectEvent(selectList, 'id').length) {
 					data.visible = true;
-					// AdvertTableDeleteHttp(selectList).then((res: any) => {
-					// 	message.success(res.data.msg);
-					// 	data.search();
-					// });
 				}
 			},
 			handleDeleteAll: () => {
@@ -182,17 +187,19 @@ export default defineComponent({
 				});
 			}
 		});
-		const getShopInfo = (id: any) => {
+		const getMachineInfo = (id: any) => {
 			MachineInfoHttp({ machineId: id }).then((res: any) => {
-				data.infoVO = res.data.data;
+				if (res.data.data) {
+					data.infoVO = res.data.data;
+				}
 			});
 		};
-		const init = (id: number) => {
-			getShopInfo(id);
+		const init = () => {
+			getMachineInfo(id);
+			data.search();
 		};
 		onMounted(() => {
-			const id: any = ROUTE.query.id;
-			init(id);
+			init();
 		});
 		return {
 			...toRefs(data)

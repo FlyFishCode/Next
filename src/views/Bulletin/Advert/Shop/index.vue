@@ -40,9 +40,9 @@
 		</a-row>
 	</div>
 	<a-row class="rowStyle">
-		<a-col :span="2" id="deleteBtnBox">
-			<a-button type="danger" size="small" @click="handleDelete">{{ '删除' }}</a-button>
-			<a-button type="danger" size="small" @click="handleDeleteAll">{{ '删除所有' }}</a-button>
+		<a-col :span="4" id="deleteBtnBox">
+			<a-button type="danger" size="small" @click="handleDelete">{{ '删除勾选数据' }}</a-button>
+			<a-button type="danger" size="small" @click="handleDeleteAll">{{ '删除所有数据' }}</a-button>
 		</a-col>
 		<a-col :span="1">
 			<a-button type="primary" size="small" @click="handleCreate">{{ '创建' }}</a-button>
@@ -56,7 +56,7 @@
 					<a-button type="link" @click="handleShopClick(record.shopList[0].shopId)">{{ record.shopList[0].shopName }}</a-button>
 					<div class="tableRightBox">
 						<div>
-							<a-button type="danger" size="small" @click="shopDelete(record.id)">{{ '删除' }}</a-button>
+							<a-button type="danger" size="small" @click="shopDelete(record.id, record.shopList[0].shopId)">{{ '删除' }}</a-button>
 						</div>
 						<div v-show="record.shopList.length > 1" class="link">
 							<span v-if="record.flag" @click="record.flag = !record.flag"><DownOutlined /></span>
@@ -70,7 +70,7 @@
 							<div v-if="index" class="moreShopBox">
 								<a-button type="link" @click="handleShopClick(item.shopId)">{{ item.shopName }}</a-button>
 								<div>
-									<a-button type="danger" size="small" @click="shopDelete(item.shopId)">{{ '删除' }}</a-button>
+									<a-button type="danger" size="small" @click="shopDelete(record.id, item.shopId)">{{ '删除' }}</a-button>
 								</div>
 							</div>
 						</div>
@@ -86,7 +86,6 @@
 			<template #handle="{ record }">
 				<div class="tableBtn">
 					<a-button size="small" type="primary" @click="AdvertEdit(record.id)">{{ 'edit' }}</a-button>
-					<!-- <a-button size="small" type="danger" @click="AdvertDelete(record.id)">{{ 'delete' }}</a-button> -->
 				</div>
 			</template>
 		</a-table>
@@ -118,7 +117,7 @@ import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import DeleteAllDialog from '@/components/common/DeleteAllDialog.vue';
 import { message } from 'ant-design-vue';
 import { DownOutlined, UpOutlined } from '@ant-design/icons-vue';
-import { AdvertTableListHttp, AdvertTableDeleteHttp, shopListHttp } from '@/api/api';
+import { AdvertTableListHttp, deleteAdvertHttp, shopListHttp, deleteAdvertShopHttp } from '@/api/api';
 export default defineComponent({
 	name: 'Advert',
 	components: {
@@ -201,9 +200,16 @@ export default defineComponent({
 					data.shopList = res.data.data.list;
 				});
 			},
-			shopDelete: (id: number) => {
-				console.log(id);
-				data.search();
+			shopDelete: (id: number, shopId: number) => {
+				const obj = {
+					advertIds: [id],
+					shopId,
+					deleteAll: false
+				};
+				deleteAdvertShopHttp(obj).then((res: any) => {
+					message.success(res.data.msg);
+					data.search();
+				});
 			},
 			search: () => {
 				AdvertTableListHttp(data.infoVO).then((res: any) => {
@@ -221,25 +227,37 @@ export default defineComponent({
 				}
 				data.src = url;
 			},
-			handleOk: (value: boolean) => {
-				console.log(value);
+			handleOk: () => {
+				const obj = {
+					advertIds: selectList,
+					deleteAll: false
+				};
+				deleteAdvertHttp(obj).then((res: any) => {
+					message.success(res.data.msg);
+					data.visible = false;
+					data.search();
+				});
 			},
-			afterClose: (value: boolean) => {
-				data.visible = value;
-			},
-			handleAllOk: (value: boolean) => {
-				console.log(value);
+			handleAllOk: () => {
+				const obj = {
+					advertIds: [],
+					deleteAll: true
+				};
+				deleteAdvertHttp(obj).then((res: any) => {
+					message.success(res.data.msg);
+					data.allVisible = false;
+					data.search();
+				});
 			},
 			afterAllClose: (value: boolean) => {
 				data.allVisible = value;
 			},
+			afterClose: (value: boolean) => {
+				data.visible = value;
+			},
 			handleDelete: () => {
 				if (handleSelectEvent(selectList, 'id').length) {
 					data.visible = true;
-					// AdvertTableDeleteHttp(selectList).then((res: any) => {
-					// 	message.success(res.data.msg);
-					// 	data.search();
-					// });
 				}
 			},
 			handleDeleteAll: () => {
@@ -249,12 +267,6 @@ export default defineComponent({
 				ROUTER.push({
 					path: 'ShopEditor',
 					query: { id }
-				});
-			},
-			AdvertDelete: (id: number) => {
-				AdvertTableDeleteHttp([id]).then((res: any) => {
-					message.success(res.data.msg);
-					data.search();
 				});
 			},
 			handleTitleClick: (id: number) => {
