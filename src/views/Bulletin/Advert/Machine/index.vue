@@ -36,9 +36,9 @@
 		</a-row>
 	</div>
 	<a-row class="rowStyle">
-		<a-col :span="4" id="deleteBtnBox">
+		<a-col :span="2" id="deleteBtnBox">
 			<a-button type="danger" size="small" @click="handleDelete">{{ '删除勾选数据' }}</a-button>
-			<a-button type="danger" size="small" @click="handleDeleteAll">{{ '删除所有数据' }}</a-button>
+			<!-- <a-button type="danger" size="small" @click="handleDeleteAll">{{ '删除所有数据' }}</a-button> -->
 		</a-col>
 		<a-col :span="1">
 			<a-button type="primary" size="small" @click="handleCreate">{{ '创建' }}</a-button>
@@ -52,7 +52,7 @@
 					<a-button type="link" @click="handleShopClick(record.machineList[0].machineId)">{{ record.machineList[0].machineName }}</a-button>
 					<div class="tableRightBox">
 						<div>
-							<a-button type="danger" size="small" @click="machineDelete(record.id, record.machineList[0].machineId)">{{ '删除' }}</a-button>
+							<a-button type="danger" size="small" :loading="loading" @click="machineDelete(record.id, record.machineList[0].machineId)">{{ '删除' }}</a-button>
 						</div>
 						<div v-show="record.machineList.length > 1" class="link">
 							<span v-if="record.flag" @click="record.flag = !record.flag"><DownOutlined /></span>
@@ -66,7 +66,7 @@
 							<div v-if="index" class="moreShopBox">
 								<a-button type="link" @click="handleShopClick(item.machineId)">{{ item.machineName }}</a-button>
 								<div>
-									<a-button type="danger" size="small" @click="machineDelete(record.id, item.machineId)">{{ '删除' }}</a-button>
+									<a-button type="danger" size="small" :loading="loading" @click="machineDelete(record.id, item.machineId)">{{ '删除' }}</a-button>
 								</div>
 							</div>
 						</div>
@@ -86,18 +86,7 @@
 			</template>
 		</a-table>
 	</a-row>
-	<template>
-		<a-modal v-model:visible="urlBox" :footer="null" width="50%">
-			<div class="modalBox">
-				<div v-if="isVideo">
-					<video :src="src" controls></video>
-				</div>
-				<div v-else>
-					<img :src="src" alt="图片地址不正确" />
-				</div>
-			</div>
-		</a-modal>
-	</template>
+	<showUrlDialog :visible="urlBox" :src="src" @showBoxCancel="showBoxCancel" />
 	<DeleteDialog :visible="visible" @afterClose="afterClose" @handleOk="handleOk" />
 	<DeleteAllDialog :visible="allVisible" @afterAllClose="afterAllClose" @handleAllOk="handleAllOk" />
 	<div class="paginationStyle">
@@ -113,8 +102,9 @@ import { handleSelectEvent } from '@/components/common/tools';
 import { message } from 'ant-design-vue';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import DeleteAllDialog from '@/components/common/DeleteAllDialog.vue';
+import showUrlDialog from '@/components/common/showUrlDialog.vue';
 import { DownOutlined, UpOutlined } from '@ant-design/icons-vue';
-import { AdvertTableListHttp, deleteAdvertHttp, shopListHttp, deleteMachineShopHttp } from '@/api/api';
+import { AdvertTableListHttp, deleteAdvertHttp, shopListHttp, deleteAdvertShopHttp } from '@/api/api';
 export default defineComponent({
 	name: 'Advert',
 	components: {
@@ -122,15 +112,19 @@ export default defineComponent({
 		DownOutlined,
 		UpOutlined,
 		DeleteDialog,
-		DeleteAllDialog
+		DeleteAllDialog,
+		showUrlDialog
 	},
 	setup() {
 		const ROUTER = useRouter();
 		let selectList: number[] = [];
+		let showTips = true;
+		let deleteId: string | number = '';
+		let deleteMachineId: string | number = '';
 		const data = reactive({
+			loading: false,
 			activeKey: '1',
 			urlBox: false,
-			isVideo: true,
 			visible: false,
 			allVisible: false,
 			src: '',
@@ -183,6 +177,9 @@ export default defineComponent({
 					selectList = selectedRows.map((i: any) => i.id);
 				}
 			},
+			showBoxCancel: (value: boolean) => {
+				data.urlBox = value;
+			},
 			disabledStartDate: (startValue: any) => {
 				if (!startValue || !data.infoVO.maxCreateTime) {
 					return false;
@@ -196,15 +193,10 @@ export default defineComponent({
 				return new Date(data.infoVO.minCreateTime).valueOf() >= endValue.valueOf();
 			},
 			machineDelete: (id: number, machineId: number) => {
-				const obj = {
-					advertIds: [id],
-					machineId,
-					deleteAll: false
-				};
-				deleteMachineShopHttp(obj).then((res: any) => {
-					message.success(res.data.msg);
-					data.search();
-				});
+				data.visible = true;
+				showTips = false;
+				deleteId = id;
+				deleteMachineId = machineId;
 			},
 			search: () => {
 				AdvertTableListHttp(data.infoVO).then((res: any) => {
@@ -221,23 +213,31 @@ export default defineComponent({
 			},
 			handleUrlClick: (url: string) => {
 				data.urlBox = true;
-				if (url.includes('.mp4')) {
-					data.isVideo = true;
-				} else {
-					data.isVideo = false;
-				}
 				data.src = url;
 			},
 			handleOk: () => {
-				const obj = {
-					advertIds: selectList,
-					deleteAll: false
-				};
-				deleteAdvertHttp(obj).then((res: any) => {
-					message.success(res.data.msg);
-					data.visible = false;
-					data.search();
-				});
+				if (showTips) {
+					const obj = {
+						advertIds: selectList,
+						deleteAll: false
+					};
+					deleteAdvertHttp(obj).then((res: any) => {
+						message.success(res.data.msg);
+						data.search();
+					});
+				} else {
+					const obj = {
+						type: 2,
+						advertIds: [deleteId],
+						machineId: deleteMachineId,
+						deleteAll: false
+					};
+					deleteAdvertShopHttp(obj).then((res: any) => {
+						message.success(res.data.msg);
+						data.search();
+					});
+				}
+				data.visible = false;
 			},
 			handleAllOk: () => {
 				const obj = {

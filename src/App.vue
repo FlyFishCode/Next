@@ -67,9 +67,9 @@
 	line-height: 32px;
 }
 /* 广告模块链接弹框样式 */
-.modalBox {
+/* .modalBox {
 	min-height: 500px;
-}
+} */
 .modalBox img,
 video {
 	width: 100%;

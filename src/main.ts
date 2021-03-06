@@ -3,6 +3,9 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import { createI18n } from 'vue-i18n';
+// 引入el table组件
+// import { ElTable, ElTableColumn, ElPagination } from 'element-plus';
+// import 'element-plus/lib/theme-chalk/index.css';
 
 const i18n = createI18n({
 	legacy: true,
@@ -25,6 +28,10 @@ const app = createApp(App);
 app.config.globalProperties.$i18n = i18n;
 
 app.use(Antd);
+// app.use(ElTable);
+// app.component('el-table', ElTable);
+// app.component('el-table-column', ElTableColumn);
+// app.component('el-pagination', ElPagination);
 app.use(store);
 app.use(router);
 app.mount('#app');

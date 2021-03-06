@@ -70,11 +70,11 @@ const routes: Array<RouteRecordRaw> = [
 				name: 'Agent',
 				component: () => import(/* webpackChunkName: "Agent" */ '../views/Machine/Agent/index.vue')
 			},
-			// {
-			// 	path: '/ShopEditor',
-			// 	name: 'ShopEditor',
-			// 	component: () => import(/* webpackChunkName: "ShopEditor" */ '../views/Machine/Shop/ShopEditor.vue')
-			// },
+			{
+				path: '/EditorShop',
+				name: 'EditorShop',
+				component: () => import(/* webpackChunkName: "EditorShop" */ '../views/Machine/Shop/ShopEditor.vue')
+			},
 			{
 				path: '/Shop',
 				name: 'Shop',

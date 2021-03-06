@@ -3,10 +3,10 @@ import axios from 'axios';
 
 import { loginUrl, changePassword, userList, countryList, areaList } from '@/api/index';
 // Advert
-import { AdvertTableList, AdvertTableAdd, AdvertSearch, AdvertChange, AdvertList, MachineInfo, deleteAdvertShop, deleteMachineShop, deleteAdvert } from '@/api/Advert/index';
+import { AdvertTableList, AdvertTableAdd, AdvertSearch, AdvertChange, AdvertList, MachineInfo, deleteAdvertShop, deleteAdvert, MachineList } from '@/api/Advert/index';
 
 // Machine
-import { shopList, shopSingleInfo, editShopinfo, createShop, shopMachineList, machineList, deleteShop } from '@/api/Machine/index';
+import { shopList, shopSingleInfo, editShopinfo, createShop, shopMachineList, deleteShop } from '@/api/Machine/index';
 
 // Agent
 import { agentList } from '@/api/Agent/index';
@@ -77,13 +77,9 @@ const areaListHttp = (data: any) => {
 const AdvertTableListHttp = (data: any) => {
 	return Axios.post(AdvertTableList, data);
 };
-// 删除广告下的店铺
+// 删除广告下的店铺/机器
 const deleteAdvertShopHttp = (data: any) => {
 	return Axios.post(deleteAdvertShop, data);
-};
-// 删除广告下的机器
-const deleteMachineShopHttp = (data: any) => {
-	return Axios.post(deleteMachineShop, data);
 };
 // 广告删除
 const deleteAdvertHttp = (data: any) => {
@@ -95,9 +91,9 @@ const AdvertTableAddHttp = (data: any) => {
 };
 // 查询广告
 const AdvertSearchHttp = (data: any) => {
-	return Axios.get(`${AdvertSearch}?advertId=${data}`);
+	return Axios.post(AdvertSearch, data);
 };
-// 查询广告
+// 修改广告
 const AdvertChangeHttp = (data: any) => {
 	return Axios.post(AdvertChange, data);
 };
@@ -112,6 +108,10 @@ const shopSingleInfoHttp = (data: any) => {
 // 通过id查询机器信息
 const MachineInfoHttp = (data: any) => {
 	return Axios.get(getNewUrl(MachineInfo, data));
+};
+// 查询机器列表
+const MachineListHttp = (data: any) => {
+	return Axios.post(MachineList, data);
 };
 // Machine
 // 店铺列表
@@ -133,10 +133,6 @@ const agentListHttp = (data: any) => {
 // 查询店铺下机器列表
 const shopMachineListHttp = (data: any) => {
 	return Axios.post(shopMachineList, data);
-};
-// 店铺列表
-const machineListHttp = (data: any) => {
-	return Axios.post(machineList, data);
 };
 // 删除店铺
 const deleteShopHttp = (data: any) => {
@@ -160,9 +156,8 @@ export {
 	areaListHttp,
 	agentListHttp,
 	shopMachineListHttp,
-	machineListHttp,
 	deleteShopHttp,
 	MachineInfoHttp,
 	deleteAdvertShopHttp,
-	deleteMachineShopHttp
+	MachineListHttp
 };

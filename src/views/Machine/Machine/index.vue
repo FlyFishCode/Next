@@ -110,7 +110,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-import { machineListHttp, shopListHttp, deleteShopHttp } from '@/api/api';
+import { MachineListHttp, shopListHttp, deleteShopHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
@@ -218,7 +218,7 @@ export default defineComponent({
 				console.log(2);
 			},
 			search: () => {
-				machineListHttp(data.infoVO).then((res: any) => {
+				MachineListHttp(data.infoVO).then((res: any) => {
 					data.tableList = res.data.data.list;
 					data.totalSize = res.data.data.totalCount;
 				});

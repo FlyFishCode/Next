@@ -40,9 +40,9 @@
 		</a-row>
 	</div>
 	<a-row class="rowStyle">
-		<a-col :span="4" id="deleteBtnBox">
+		<a-col :span="2" id="deleteBtnBox">
 			<a-button type="danger" size="small" @click="handleDelete">{{ '删除勾选数据' }}</a-button>
-			<a-button type="danger" size="small" @click="handleDeleteAll">{{ '删除所有数据' }}</a-button>
+			<!-- <a-button type="danger" size="small" @click="handleDeleteAll">{{ '删除所有数据' }}</a-button> -->
 		</a-col>
 		<a-col :span="1">
 			<a-button type="primary" size="small" @click="handleCreate">{{ '创建' }}</a-button>
@@ -90,18 +90,7 @@
 			</template>
 		</a-table>
 	</a-row>
-	<template>
-		<a-modal v-model:visible="urlBox" :footer="null" width="50%">
-			<div class="modalBox">
-				<div v-if="isVideo">
-					<video :src="src" controls></video>
-				</div>
-				<div v-else>
-					<img :src="src" alt="图片地址不正确" />
-				</div>
-			</div>
-		</a-modal>
-	</template>
+	<showUrlDialog :visible="urlBox" :src="src" @showBoxCancel="showBoxCancel" />
 	<DeleteDialog :visible="visible" @afterClose="afterClose" @handleOk="handleOk" />
 	<DeleteAllDialog :visible="allVisible" @afterAllClose="afterAllClose" @handleAllOk="handleAllOk" />
 	<div class="paginationStyle">
@@ -115,6 +104,7 @@ import { useRouter } from 'vue-router';
 import { handleSelectEvent } from '@/components/common/tools';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import DeleteAllDialog from '@/components/common/DeleteAllDialog.vue';
+import showUrlDialog from '@/components/common/showUrlDialog.vue';
 import { message } from 'ant-design-vue';
 import { DownOutlined, UpOutlined } from '@ant-design/icons-vue';
 import { AdvertTableListHttp, deleteAdvertHttp, shopListHttp, deleteAdvertShopHttp } from '@/api/api';
@@ -125,14 +115,17 @@ export default defineComponent({
 		DownOutlined,
 		UpOutlined,
 		DeleteDialog,
-		DeleteAllDialog
+		DeleteAllDialog,
+		showUrlDialog
 	},
 	setup() {
 		const ROUTER = useRouter();
 		let selectList: number[] = [];
+		let showTips = true;
+		let deleteId: string | number = '';
+		let deleteShopId: string | number = '';
 		const data = reactive({
 			urlBox: false,
-			isVideo: true,
 			visible: false,
 			allVisible: false,
 			src: '',
@@ -183,6 +176,9 @@ export default defineComponent({
 					selectList = selectedRows.map((i: any) => i.id);
 				}
 			},
+			showBoxCancel: (value: boolean) => {
+				data.urlBox = value;
+			},
 			disabledStartDate: (startValue: any) => {
 				if (!startValue || !data.infoVO.maxCreateTime) {
 					return false;
@@ -201,15 +197,10 @@ export default defineComponent({
 				});
 			},
 			shopDelete: (id: number, shopId: number) => {
-				const obj = {
-					advertIds: [id],
-					shopId,
-					deleteAll: false
-				};
-				deleteAdvertShopHttp(obj).then((res: any) => {
-					message.success(res.data.msg);
-					data.search();
-				});
+				data.visible = true;
+				showTips = false;
+				deleteId = id;
+				deleteShopId = shopId;
 			},
 			search: () => {
 				AdvertTableListHttp(data.infoVO).then((res: any) => {
@@ -220,23 +211,31 @@ export default defineComponent({
 			},
 			handleUrlClick: (url: string) => {
 				data.urlBox = true;
-				if (url.includes('.mp4')) {
-					data.isVideo = true;
-				} else {
-					data.isVideo = false;
-				}
 				data.src = url;
 			},
 			handleOk: () => {
-				const obj = {
-					advertIds: selectList,
-					deleteAll: false
-				};
-				deleteAdvertHttp(obj).then((res: any) => {
-					message.success(res.data.msg);
-					data.visible = false;
-					data.search();
-				});
+				if (showTips) {
+					const obj = {
+						advertIds: selectList,
+						deleteAll: false
+					};
+					deleteAdvertHttp(obj).then((res: any) => {
+						message.success(res.data.msg);
+						data.search();
+					});
+				} else {
+					const obj = {
+						type: 1,
+						advertIds: [deleteId],
+						shopId: deleteShopId,
+						deleteAll: false
+					};
+					deleteAdvertShopHttp(obj).then((res: any) => {
+						message.success(res.data.msg);
+						data.search();
+					});
+				}
+				data.visible = false;
 			},
 			handleAllOk: () => {
 				const obj = {

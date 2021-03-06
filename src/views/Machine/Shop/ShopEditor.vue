@@ -1,5 +1,5 @@
 <template>
-	<labelTitle :value="'ShopEditor'" :btn="flag ? update : create" />
+	<labelTitle :value="'ShopEditor'" :btn="id ? update : create" />
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
@@ -37,7 +37,7 @@
 				</a-select>
 			</a-col>
 		</a-row>
-		<a-row class="rowStyle">
+		<a-row v-if="isAdmin" class="rowStyle">
 			<a-col :span="3" class="labelText">
 				{{ 'Country' }}
 			</a-col>
@@ -93,8 +93,11 @@
 			<a-col :span="3" class="labelText">
 				{{ 'Picture' }}
 			</a-col>
-			<a-col :span="9">
-				<a-input v-model:value="infoVO.img" />
+			<a-col :span="7">
+				<a-input v-model:value="infoVO.img" allow-clear />
+			</a-col>
+			<a-col :span="2" class="searchButton">
+				<a-button size="small" type="primary" @click="preview">{{ '预览' }}</a-button>
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
@@ -308,7 +311,144 @@
 			</a-row>
 		</div> -->
 	</div>
-	<div v-if="flag">
+	<div class="gameBox">
+		<a-row class="rowStyle">
+			<a-tabs v-model:activeKey="optionValue" tab-position="left" class="tabBox">
+				<a-tab-pane key="1" tab="游戏设置">
+					<a-row class="rowStyle">
+						<a-col :span="2" class="labelText">301 游戏</a-col>
+						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="check301"/></a-col>
+						<a-col v-show="check301" :span="1" class="labelText">点数</a-col>
+						<a-col v-show="check301" :span="3" class="selectSearch">
+							<a-select v-model:value="number301">
+								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+						<a-col v-show="check301" :span="1" class="labelText">回合</a-col>
+						<a-col v-show="check301" :span="3" class="selectSearch">
+							<a-select v-model:value="number301">
+								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+
+						<a-col :span="2" class="labelText">501 游戏</a-col>
+						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="check501"/></a-col>
+						<a-col v-show="check501" :span="1" class="labelText">点数</a-col>
+						<a-col v-show="check501" :span="3" class="selectSearch">
+							<a-select v-model:value="number301">
+								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+						<a-col v-show="check501" :span="1" class="labelText">回合</a-col>
+						<a-col v-show="check501" :span="3" class="selectSearch">
+							<a-select v-model:value="number301">
+								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+					</a-row>
+
+					<a-row class="rowStyle">
+						<a-col :span="2" class="labelText">701 游戏</a-col>
+						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="check701"/></a-col>
+						<a-col v-show="check701" :span="1" class="labelText">点数</a-col>
+						<a-col v-show="check701" :span="3" class="selectSearch">
+							<a-select v-model:value="number301">
+								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+						<a-col v-show="check701" :span="1" class="labelText">回合</a-col>
+						<a-col v-show="check701" :span="3" class="selectSearch">
+							<a-select v-model:value="number301">
+								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+
+						<a-col :span="2" class="labelText">901 游戏</a-col>
+						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="check901"/></a-col>
+						<a-col v-show="check901" :span="1" class="labelText">点数</a-col>
+						<a-col v-show="check901" :span="3" class="selectSearch">
+							<a-select v-model:value="number301">
+								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+						<a-col v-show="check901" :span="1" class="labelText">回合</a-col>
+						<a-col v-show="check901" :span="3" class="selectSearch">
+							<a-select v-model:value="number301">
+								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+					</a-row>
+
+					<a-row class="rowStyle">
+						<a-col :span="2" class="labelText">标准米老鼠</a-col>
+						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="mickey"/></a-col>
+						<a-col v-show="mickey" :span="1" class="labelText">点数</a-col>
+						<a-col v-show="mickey" :span="3" class="selectSearch">
+							<a-select v-model:value="number301">
+								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+						<a-col v-show="mickey" :span="1" class="labelText">回合</a-col>
+						<a-col v-show="mickey" :span="3" class="selectSearch">
+							<a-select v-model:value="number301">
+								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+
+						<a-col :span="2" class="labelText">加分米老鼠</a-col>
+						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="addMickey"/></a-col>
+						<a-col v-show="addMickey" :span="1" class="labelText">点数</a-col>
+						<a-col v-show="addMickey" :span="3" class="selectSearch">
+							<a-select v-model:value="number301">
+								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+						<a-col v-show="addMickey" :span="1" class="labelText">回合</a-col>
+						<a-col v-show="addMickey" :span="3" class="selectSearch">
+							<a-select v-model:value="number301">
+								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+					</a-row>
+
+					<a-row class="rowStyle">
+						<a-col :span="2" class="labelText">标准高分赛</a-col>
+						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="heightMatch"/></a-col>
+						<a-col v-show="heightMatch" :span="1" class="labelText">点数</a-col>
+						<a-col v-show="heightMatch" :span="3" class="selectSearch">
+							<a-select v-model:value="number301">
+								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+						<a-col v-show="heightMatch" :span="1" class="labelText">回合</a-col>
+						<a-col v-show="heightMatch" :span="3" class="selectSearch">
+							<a-select v-model:value="number301">
+								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+
+						<a-col :span="2" class="labelText">计时高分赛</a-col>
+						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="timeHeightMatch"/></a-col>
+						<a-col v-show="timeHeightMatch" :span="1" class="labelText">点数</a-col>
+						<a-col v-show="timeHeightMatch" :span="3" class="selectSearch">
+							<a-select v-model:value="number301">
+								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+						<a-col v-show="timeHeightMatch" :span="1" class="labelText">回合</a-col>
+						<a-col v-show="timeHeightMatch" :span="3" class="selectSearch">
+							<a-select v-model:value="number301">
+								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+					</a-row>
+				</a-tab-pane>
+				<a-tab-pane key="2" tab="通用设置"> </a-tab-pane>
+				<a-tab-pane key="3" tab="投币设置"> </a-tab-pane>
+			</a-tabs>
+		</a-row>
+	</div>
+	<div v-if="id">
 		<labelTitle :value="'Machines'" />
 		<div class="searchBox">
 			<a-row class="rowStyle">
@@ -379,24 +519,46 @@
 			<a-pagination show-quick-jumper v-model:current="currentPage" :total="total" @change="pageChange" />
 		</div>
 	</div>
+	<showUrlDialog :visible="urlBox" :src="infoVO.img" @showBoxCancel="showBoxCancel" />
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
 // import { SettingFilled} from '@ant-design/icons-vue';
 import labelTitle from '@/components/labelTitle.vue';
+import showUrlDialog from '@/components/common/showUrlDialog.vue';
 import { useRoute } from 'vue-router';
 import { shopSingleInfoHttp, agentListHttp, userListHttp, countryListHttp, areaListHttp, editShopHttp, createShopHttp, shopMachineListHttp } from '@/api/api';
+import { message } from 'ant-design-vue';
 export default defineComponent({
 	name: 'ShopEditor',
 	components: {
-		labelTitle
+		labelTitle,
+		showUrlDialog
 	},
 	setup() {
 		const ROUTE = useRoute();
+		const isAdmin = false;
+		const id = ROUTE.query.id;
 		const data = reactive({
-			flag: ROUTE.query.id,
+			optionValue: '1',
+			urlBox: false,
 			showTable: false,
+			check301: true,
+			check501: true,
+			check701: true,
+			check901: true,
+			mickey: true,
+			addMickey: true,
+			heightMatch: true,
+			timeHeightMatch: true,
+			number301: 1,
+			options: [
+				{ id: 1, label: 1 },
+				{ id: 2, label: 2 },
+				{ id: 3, label: 3 },
+				{ id: 4, label: 4 }
+			],
 			infoVO: {
 				name: '',
 				type: '',
@@ -420,7 +582,7 @@ export default defineComponent({
 				supplier: 1,
 				isValid: 1,
 				averageCost: '',
-				memo: '',
+				memo: ''
 			},
 			machineVO: {
 				id: '',
@@ -476,6 +638,19 @@ export default defineComponent({
 				}
 			],
 			tableList: [{ id: 1 }],
+			preview: () => {
+				if (data.infoVO.img) {
+					data.urlBox = true;
+				} else {
+					message.warning('请添加广告链接');
+				}
+			},
+			showBoxCancel: (value: boolean) => {
+				data.urlBox = value;
+			},
+			optionChange: (value: string) => {
+				console.log(value);
+			},
 			pageChange: (index: number) => {
 				data.machineVO.pageIndex = index;
 				data.search();
@@ -500,7 +675,7 @@ export default defineComponent({
 			create: () => createShopHttp(data.infoVO),
 			update: () => editShopHttp(data.infoVO),
 			agentSearch: (value: any) => {
-				agentListHttp({ name: value.split("'").join('') }).then((res: any) => {
+				agentListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
 					data.agentList = res.data.data.list;
 				});
 			},
@@ -525,24 +700,38 @@ export default defineComponent({
 				data.areaList = res.data.data.list;
 			});
 		};
-		const init = () => {
+		const init = (id: any) => {
 			getCountryList();
 			getAreaList();
-			data.search();
+			data.agentSearch('');
+			data.ownerSearch('');
+			if (id) {
+				data.search();
+				getShopInfo(id);
+			}
 		};
 		onMounted(() => {
-			const id = ROUTE.query.id;
-			if (id) {
-				getShopInfo(id);
-				data.showTable = true;
-			}
-			init();
+			init(id);
 		});
 		return {
-			...toRefs(data)
+			...toRefs(data),
+			id,
+			isAdmin
 		};
 	}
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.gameBox {
+	margin: 15px 0;
+	padding: 10px;
+}
+.tabBox {
+	width: 100%;
+}
+.switchBox {
+	line-height: 28px;
+	text-align: center;
+}
+</style>

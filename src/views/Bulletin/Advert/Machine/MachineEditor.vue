@@ -30,10 +30,10 @@
 		</a-row>
 	</div>
 	<a-row>
-		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
+		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" :rowKey="rowKey" class="tableStyle">
 			<template #handle="{ record }">
 				<div class="tableBtn">
-					<a-button size="small" type="danger" @click="shopDelete(record.id)">{{ 'delete' }}</a-button>
+					<a-button size="small" type="danger" @click="shopDelete(record)">{{ 'delete' }}</a-button>
 				</div>
 			</template>
 		</a-table>
@@ -42,19 +42,8 @@
 		<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="pageTotal" @change="pageChange" />
 	</div>
 	<!-- 广告链接的预览 -->
-	<div>
-		<a-modal v-model:visible="showUrlDialog" :footer="null" width="50%">
-			<div class="modalBox">
-				<div v-if="isVideo">
-					<video :src="infoVO.url" controls></video>
-				</div>
-				<div v-else>
-					<img :src="infoVO.url" alt="图片地址不正确" />
-				</div>
-			</div>
-		</a-modal>
-	</div>
-	<!-- 添加店铺 -->
+	<showUrlDialog :visible="showUrlDialog" :src="infoVO.url" @showBoxCancel="showBoxCancel" />
+	<!-- 添加机器 -->
 	<div>
 		<a-modal v-model:visible="showShopDialog" centered title="Machine" width="60%">
 			<div class="searchBox">
@@ -66,15 +55,15 @@
 						<a-input v-model:value="shopVO.name" />
 					</a-col>
 					<a-col :span="2" class="searchButton">
-						<a-button size="small" type="primary" @click="getShopList">{{ '搜索' }}</a-button>
+						<a-button size="small" type="primary" @click="getMachineList">{{ '搜索' }}</a-button>
 					</a-col>
 				</a-row>
 			</div>
 			<a-row class="shopBodyBox">
-				<a-table bordered :row-selection="shopRowSelection" :columns="shopDialogColumns" :data-source="shopList" :pagination="false" rowKey="id" class="tableStyle"> </a-table>
+				<a-table bordered :row-selection="shopRowSelection" :columns="shopDialogColumns" :data-source="machineList" :pagination="false" :rowKey="rowKey" class="tableStyle"> </a-table>
 			</a-row>
 			<div class="paginationStyle">
-				<a-pagination show-quick-jumper v-model:current="shopVO.pageIndex" :total="shopPageTotal" @change="shopChange" />
+				<a-pagination show-quick-jumper v-model:current="shopVO.pageIndex" :total="machinePageTotal" @change="shopChange" />
 			</div>
 			<template #footer>
 				<div class="footerBtnClass">
@@ -90,92 +79,117 @@
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
 // import { SettingFilled} from '@ant-design/icons-vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { AdvertTableAddHttp, AdvertSearchHttp, AdvertChangeHttp, shopListHttp, AdvertTableListHttp } from '@/api/api';
+import showUrlDialog from '@/components/common/showUrlDialog.vue';
+import { AdvertTableAddHttp, AdvertSearchHttp, AdvertChangeHttp, MachineListHttp } from '@/api/api';
 import { useRoute } from 'vue-router';
 import { message } from 'ant-design-vue';
 
 interface DataProps {
+	getMachineList: () => void;
+	machinePageTotal: any;
+	machineList: any;
 	tableList: any[];
-	allShopList: any[];
+	allMachineList: any[];
 	showUrlDialog: boolean;
 	showShopDialog: boolean;
+	infoVO: { [x: string]: any };
+	shopVO: { [x: string]: any };
 }
-
+interface ObjProps {
+	title: string;
+	url: string;
+	type: number;
+	advertId: string | number;
+	addMachineIds: any;
+	delMachineIds: any;
+}
 export default defineComponent({
 	name: 'MachineEditor',
 	components: {
-		labelTitle
+		labelTitle,
+		showUrlDialog
 	},
 	setup() {
 		const ROUTE = useRoute();
 		const id: any = ROUTE.query.id || null;
 		let selectList: number[] = [];
 		let shopSelectList: any = [];
-		// const defaultSelectList: any[] = ['6451', '10086', '15047', '19402', '19421', '19430'];
 		const defaultSelectList: any[] = [];
-		const data = reactive({
+		const obj: ObjProps = {
+			title: '',
+			url: '',
+			type: 2,
+			advertId: id,
+			addMachineIds: [],
+			delMachineIds: []
+		};
+		const objVO = {
+			type: 2,
+			advertId: id,
+			pageIndex: 1,
+			pageSize: 10
+		};
+		const data: DataProps = reactive({
 			showUrlDialog: false,
 			showShopDialog: false,
-			isVideo: true,
+			rowKey: (row: any) => {
+				return row.id || row.machineId;
+			},
 			infoVO: {
-				title: '',
-				shopId: '',
+				type: 2,
 				url: '',
-				pageIndex: 1,
-				pageSize: 10
+				title: '',
+				machineIds: []
 			},
 			shopVO: {
 				name: '',
 				pageIndex: 1,
 				pageSize: 10
 			},
-			shopPageTotal: 1,
+			machinePageTotal: 1,
 			columns: [
 				{
-					title: 'Name',
-					dataIndex: 'name'
+					title: 'Shop Name',
+					dataIndex: 'shopName'
 				},
 				{
-					title: 'Address',
-					dataIndex: 'address'
+					title: 'Mchine Name',
+					dataIndex: 'machineName'
+				},
+				{
+					title: 'Mchine No',
+					dataIndex: 'machineSerial'
 				},
 				{
 					title: 'Type',
-					dataIndex: 'type'
+					dataIndex: 'machineType'
 				},
 				{
-					title: 'Shop Number',
-					dataIndex: 'Number'
-				},
-				{
-					title: 'Creation time',
-					dataIndex: 'age'
-				},
-				{
+					width: 100,
 					slots: { customRender: 'handle' }
 				}
 			],
 			shopDialogColumns: [
 				{
-					title: 'Name',
+					title: 'Shop Name',
+					dataIndex: 'shopName'
+				},
+				{
+					title: 'Mchine Name',
 					dataIndex: 'name'
 				},
 				{
-					title: 'Shop Name',
-					dataIndex: 'address'
+					title: 'Mchine No',
+					dataIndex: 'serial'
 				},
 				{
 					title: 'Type',
 					dataIndex: 'type'
-				},
-				{
-					title: 'Shop Number',
-					dataIndex: 'Number'
 				}
 			],
 			pageTotal: 1,
-			shopList: [],
-			allShopList: [],
+			machineList: [],
+			allMachineList: [],
 			tableList: [],
 			rowSelection: {
 				columnWidth: 50,
@@ -183,6 +197,9 @@ export default defineComponent({
 					selectList = selectedRows.map((i: any) => i.id);
 					console.log(selectList);
 				}
+			},
+			showBoxCancel: (value: boolean) => {
+				data.showUrlDialog = value;
 			},
 			shopRowSelection: {
 				columnWidth: 50,
@@ -192,84 +209,103 @@ export default defineComponent({
 				}),
 				onChange: (selectedRowKeys: number[]) => {
 					shopSelectList = selectedRowKeys.map((i: number) => {
-						return data.allShopList.find((j: any) => i === j.id);
+						return data.allMachineList.find((j: any) => i === j.id);
 					});
-					console.log(selectedRowKeys);
 				}
 			},
 			handleCancel: () => {
 				data.showShopDialog = false;
 			},
 			handleOk: () => {
-				console.log(defaultSelectList);
-				data.tableList = Object.assign([], shopSelectList);
+				const tableListIds = data.tableList.map((i: any) => i.machineId || i.id);
+				const list: any = [];
+				shopSelectList.forEach((i: any) => {
+					if (!tableListIds.includes(i.id)) {
+						list.push(i);
+					}
+				});
+				data.tableList.unshift(
+					...list.map((i: any) => {
+						return {
+							machineId: i.id,
+							shopName: i.shopName,
+							machineType: i.type,
+							machineName: i.name,
+							machineSerial: i.serial
+						};
+					})
+				);
+				if (id) {
+					obj.addMachineIds = list.map((i: any) => i.id);
+				} else {
+					data.infoVO.machineIds = list.map((i: any) => i.id);
+				}
 				data.showShopDialog = false;
 			},
 			preview: () => {
 				if (data.infoVO.url) {
 					data.showUrlDialog = true;
-					if (data.infoVO.url.includes('.mp4')) {
-						data.isVideo = true;
-					} else {
-						data.isVideo = false;
-					}
 				} else {
 					message.warning('请添加广告链接');
 				}
 			},
-			shopDelete: (id: number) => {
+			shopDelete: (row: any) => {
 				data.tableList.splice(
 					data.tableList.findIndex((i: any) => i.id === id),
 					1
 				);
+				if (id) {
+					obj.delMachineIds.push(row.id || row.machineId);
+				}
 			},
 			addShop: () => {
 				data.showShopDialog = true;
 			},
-			getShopList: () => {
-				shopListHttp(data.shopVO).then((res) => {
-					data.shopList = res.data.data.list;
-					data.shopPageTotal = res.data.data.totalCount;
+			getMachineList: () => {
+				MachineListHttp(data.shopVO).then((res) => {
+					data.machineList = res.data.data.list;
+					data.machinePageTotal = res.data.data.totalCount;
 				});
-				shopListHttp({ name: '', pageSize: 9999 }).then((res) => {
-					data.allShopList = res.data.data.list;
+				MachineListHttp({ name: '', pageSize: 9999 }).then((res) => {
+					data.allMachineList = res.data.data.list;
 				});
 			},
-			shopChange: (value: number) => {
-				data.shopVO.pageIndex = value;
-				data.getShopList();
+			shopChange: () => {
+				data.getMachineList();
 			},
 			handleChange(value: any) {
 				console.log(value);
 			},
 			create: () => {
+				data.infoVO.machineIds = data.tableList.map((i: any) => i.id);
 				return AdvertTableAddHttp(data.infoVO);
 			},
 			update: () => {
-				return AdvertChangeHttp(data.infoVO);
+				obj.title = data.infoVO.title;
+				obj.url = data.infoVO.url;
+				return AdvertChangeHttp(obj);
 			},
 			pageChange: () => {
-				AdvertTableListHttp(data.infoVO).then((res: any) => {
-					data.tableList = res.data.data.list;
-				});
+				// eslint-disable-next-line @typescript-eslint/no-use-before-define
+				getInfo();
 			}
 		});
-		const init = () => {
-			// AdvertTableListHttp(data.infoVO).then((res: any) => {
-			// 	data.tableList = res.data.data.list;
-			// 	data.pageTotal = res.data.data.totalCount;
-			// });
-			data.getShopList();
+		const getInfo = () => {
+			AdvertSearchHttp(objVO).then((res: any) => {
+				if (res.data.data) {
+					data.infoVO = res.data.data;
+					data.tableList = res.data.data.advertConfigListPage.list;
+				}
+			});
+		};
+		const init = (id: any) => {
+			data.getMachineList();
+			if (id) {
+				getInfo();
+			}
 		};
 		onMounted(() => {
-			init();
-			if (id) {
-				AdvertSearchHttp(id).then((res: any) => {
-					if (res.data.data) {
-						data.infoVO = res.data.data;
-					}
-				});
-			}
+			init(id);
 		});
 		return {
 			...toRefs(data),

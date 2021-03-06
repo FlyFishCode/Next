@@ -70,8 +70,8 @@
 		</a-row>
 	</div>
 	<a-row class="rowStyle">
-		<a-col :span="1">
-			<a-button type="danger" size="small" @click="handleDelete">{{ '删除' }}</a-button>
+		<a-col :span="2">
+			<a-button type="danger" size="small" @click="handleDelete">{{ '删除勾选数据' }}</a-button>
 		</a-col>
 		<!-- <a-col :span="1">
 			<a-button type="primary" size="small" @click="handleChange">{{ '修改' }}</a-button>
@@ -208,10 +208,7 @@ export default defineComponent({
 			},
 			handleCreate: () => {
 				ROUTER.push({
-					path: 'entryShopPage',
-					query: {
-						isCreatePage: 1
-					}
+					path: 'EditorShop'
 				});
 			},
 			pageChange: () => {
@@ -219,7 +216,7 @@ export default defineComponent({
 			},
 			handleShopClick: (id: number) => {
 				ROUTER.push({
-					path: 'ShopEditor',
+					path: 'EditorShop',
 					query: {
 						id
 					}

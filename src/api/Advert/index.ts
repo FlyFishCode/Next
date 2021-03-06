@@ -10,10 +10,11 @@ const AdvertChange = 'advert/update';
 const AdvertList = 'advert/listatshopormachine';
 // 通过id查询机器信息
 const MachineInfo = 'machine/select';
-// 删除广告下的店铺
-const deleteAdvertShop = 'advert/deleteatshop';
-// 删除广告下的机器
-const deleteMachineShop = 'advert/deleteatmachine';
+// 删除广告下的机器/店铺
+const deleteAdvertShop = 'advert/deletebyshopormachine';
 // 删除广告、删除所有广告
 const deleteAdvert = 'advert/delete';
-export { AdvertTableList, AdvertTableAdd, AdvertSearch, AdvertChange, AdvertList, MachineInfo, deleteAdvertShop, deleteMachineShop, deleteAdvert };
+// 查询机器列表
+const MachineList = 'machine/list';
+// 查询某个店铺或者机器的广告列表
+export { AdvertTableList, AdvertTableAdd, AdvertSearch, AdvertChange, AdvertList, MachineInfo, deleteAdvertShop, deleteAdvert, MachineList };

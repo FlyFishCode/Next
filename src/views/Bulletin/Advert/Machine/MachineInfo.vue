@@ -60,14 +60,19 @@
 		</a-row>
 	</div>
 	<a-row>
-		<a-col :span="2" id="deleteBtnBox">
+		<a-col :span="1" id="deleteBtnBox">
 			<a-button type="danger" size="small" @click="handleDelete">{{ '删除' }}</a-button>
-			<a-button type="danger" size="small" @click="handleDeleteAll">{{ '删除所有' }}</a-button>
+			<!-- <a-button type="danger" size="small" @click="handleDeleteAll">{{ '删除所有' }}</a-button> -->
 		</a-col>
 	</a-row>
+	<showUrlDialog :visible="urlBox" :src="src" @showBoxCancel="showBoxCancel" />
 	<DeleteDialog :visible="visible" @afterClose="afterClose" @handleOk="handleOk" />
 	<DeleteAllDialog :visible="allVisible" @afterAllClose="afterAllClose" @handleAllOk="handleAllOk" />
-	<a-table :row-selection="rowSelection" bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle"></a-table>
+	<a-table :row-selection="rowSelection" bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
+		<template #url="{ record }">
+			<a-button type="link" @click="handleUrlClick(record.url)">{{ record.url }}</a-button>
+		</template>
+	</a-table>
 	<div class="paginationStyle">
 		<a-pagination show-quick-jumper v-model:current="currentPage" :total="total" @change="sizeChange" />
 	</div>
@@ -80,23 +85,27 @@ import { handleSelectEvent } from '@/components/common/tools';
 import labelTitle from '@/components/labelTitle.vue';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import DeleteAllDialog from '@/components/common/DeleteAllDialog.vue';
+import showUrlDialog from '@/components/common/showUrlDialog.vue';
 import { useRoute } from 'vue-router';
 import { message } from 'ant-design-vue';
-import { AdvertListHttp, MachineInfoHttp, deleteMachineShopHttp } from '@/api/api';
+import { AdvertListHttp, MachineInfoHttp, deleteAdvertShopHttp } from '@/api/api';
 export default defineComponent({
 	name: 'MachineInfo',
 	components: {
 		labelTitle,
 		DeleteDialog,
-		DeleteAllDialog
+		DeleteAllDialog,
+		showUrlDialog
 	},
 	setup() {
 		const ROUTE = useRoute();
 		const id: any = ROUTE.query.id;
 		let selectList: number[] = [];
 		const data = reactive({
+			urlBox: false,
 			visible: false,
 			allVisible: false,
+			src: '',
 			infoVO: {
 				name: '',
 				type: '',
@@ -122,7 +131,8 @@ export default defineComponent({
 				},
 				{
 					title: 'Url',
-					dataIndex: 'url'
+					dataIndex: 'url',
+					slots: { customRender: 'url' }
 				},
 				{
 					title: 'Time',
@@ -136,6 +146,9 @@ export default defineComponent({
 				onChange: (selectedRowKeys: number[], selectedRows: any) => {
 					selectList = selectedRows.map((i: any) => i.id);
 				}
+			},
+			showBoxCancel: (value: boolean) => {
+				data.urlBox = value;
 			},
 			disabledStartDate: (startValue: any) => {
 				if (!startValue || !data.machineVO.maxCreateTime) {
@@ -155,11 +168,15 @@ export default defineComponent({
 					machineId: id,
 					deleteAll: false
 				};
-				deleteMachineShopHttp(obj).then((res: any) => {
+				deleteAdvertShopHttp(obj).then((res: any) => {
 					message.success(res.data.msg);
 					data.visible = false;
 					data.search();
 				});
+			},
+			handleUrlClick: (url: string) => {
+				data.urlBox = true;
+				data.src = url;
 			},
 			afterClose: (value: boolean) => {
 				data.visible = value;
