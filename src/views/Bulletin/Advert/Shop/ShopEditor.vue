@@ -73,7 +73,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, toRefs } from 'vue';
+import { computed, defineComponent, onMounted, reactive, toRefs, ref, unref } from 'vue';
 // import { SettingFilled} from '@ant-design/icons-vue';
 import labelTitle from '@/components/labelTitle.vue';
 import showUrlDialog from '@/components/common/showUrlDialog.vue';
@@ -109,8 +109,7 @@ export default defineComponent({
 		const ROUTE = useRoute();
 		const id: any = ROUTE.query.id || null;
 		let selectList: number[] = [];
-		let shopSelectList: any = [];
-		const defaultSelectList: any[] = [];
+		const defaultSelectList: any = ref([]);
 		const obj: ObjProps = {
 			title: '',
 			url: '',
@@ -125,6 +124,17 @@ export default defineComponent({
 			pageIndex: 1,
 			pageSize: 10
 		};
+		const shopRowSelection = computed(() => {
+			return {
+				columnWidth: 50,
+				selectedRowKeys: unref(defaultSelectList),
+				hideDefaultSelections: true,
+				onChange: (changableRowKeys: any) => {
+					defaultSelectList.value = changableRowKeys;
+					console.log(defaultSelectList.value);
+				}
+			};
+		});
 		const data: DataProps = reactive({
 			showUrlDialog: false,
 			showShopDialog: false,
@@ -191,35 +201,24 @@ export default defineComponent({
 			tableList: [],
 			rowSelection: {
 				columnWidth: 50,
-				onChange: (selectedRowKeys: number[], selectedRows: any) => {
-					selectList = selectedRows.map((i: any) => i.id);
+				onChange: (selectedRowKeys: number[]) => {
+					selectList = selectedRowKeys;
 					console.log(selectList);
 				}
 			},
 			showBoxCancel: (value: boolean) => {
 				data.showUrlDialog = value;
 			},
-			shopRowSelection: {
-				columnWidth: 50,
-				// selectedRowKeys: selectedRowKey,
-				getCheckboxProps: (record: any) => ({
-					defaultChecked: defaultSelectList.includes(`${record.id}`)
-				}),
-				onChange: (selectedRowKeys: number[]) => {
-					shopSelectList = selectedRowKeys.map((i: number) => {
-						return data.shopList.find((j: any) => i === j.id);
-					});
-				}
-			},
 			handleCancel: () => {
 				data.showShopDialog = false;
 			},
 			handleOk: () => {
-				const tableListIds = data.tableList.map((i: any) => i.shopId || i.id);
+				const tableListIds = defaultSelectList.value;
 				const list: any = [];
-				shopSelectList.forEach((i: any) => {
-					if (!tableListIds.includes(i.id)) {
-						list.push(i);
+				tableListIds.forEach((i: number) => {
+					const item = data.shopList.find((j: any) => i === j.id);
+					if (item && !data.tableList.find((k: any) => k.shopId === i)) {
+						list.push(item);
 					}
 				});
 				data.tableList.unshift(
@@ -248,9 +247,13 @@ export default defineComponent({
 			},
 			shopDelete: (row: any) => {
 				data.tableList.splice(
-					data.tableList.findIndex((i: any) => i.id === row.id || i.id === row.shopId),
+					data.tableList.findIndex((i: any) => i.shopId === row.shopId),
 					1
 				);
+				const selectId = defaultSelectList.value.findIndex((i: number) => i === row.shopId);
+				if (selectId >= 0) {
+					defaultSelectList.value.splice(selectId, 1);
+				}
 				if (id) {
 					obj.delShopIds.push(row.id || row.shopId);
 				}
@@ -262,13 +265,6 @@ export default defineComponent({
 				shopListHttp(data.shopVO).then((res) => {
 					data.shopList = res.data.data.list;
 				});
-			},
-			shopChange: (value: number) => {
-				data.shopVO.pageIndex = value;
-				data.getShopList();
-			},
-			handleChange(value: any) {
-				console.log(value);
 			},
 			create: () => {
 				return AdvertTableAddHttp(data.infoVO);
@@ -284,6 +280,7 @@ export default defineComponent({
 				if (res.data.data) {
 					data.infoVO = res.data.data;
 					data.tableList = res.data.data.advertConfigListPage.list;
+					defaultSelectList.value = data.tableList.map((i: any) => i.shopId);
 				}
 			});
 		};
@@ -298,6 +295,8 @@ export default defineComponent({
 		});
 		return {
 			...toRefs(data),
+			defaultSelectList,
+			shopRowSelection,
 			ROUTE
 		};
 	}

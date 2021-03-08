@@ -91,6 +91,14 @@
 				<a-input v-model:value="infoVO.website" allow-clear />
 			</a-col>
 			<a-col :span="3" class="labelText">
+				{{ 'On Time' }}
+			</a-col>
+			<a-col :span="9">
+				<a-input v-model:value="infoVO.businessHours" allow-clear />
+			</a-col>
+		</a-row>
+		<a-row class="rowStyle">
+			<a-col :span="3" class="labelText">
 				{{ 'Picture' }}
 			</a-col>
 			<a-col :span="7">
@@ -98,14 +106,6 @@
 			</a-col>
 			<a-col :span="2" class="searchButton">
 				<a-button size="small" type="primary" @click="preview">{{ '预览' }}</a-button>
-			</a-col>
-		</a-row>
-		<a-row class="rowStyle">
-			<a-col :span="3" class="labelText">
-				{{ 'On Time' }}
-			</a-col>
-			<a-col :span="9">
-				<a-input v-model:value="infoVO.businessHours" allow-clear />
 			</a-col>
 			<a-col :span="3" class="labelText">
 				{{ 'Attracts' }}
@@ -118,14 +118,26 @@
 			<a-col :span="3" class="labelText">
 				{{ 'Longtitude' }}
 			</a-col>
-			<a-col :span="9">
-				<a-input v-model:value="infoVO.longitude" allow-clear />
+			<a-col :span="2">
+				<a-input v-model:value="infoVO.longitude" disabled />
 			</a-col>
 			<a-col :span="3" class="labelText">
 				{{ 'Latitude' }}
 			</a-col>
-			<a-col :span="9">
-				<a-input v-model:value="infoVO.latitude" allow-clear />
+			<a-col :span="2">
+				<a-input v-model:value="infoVO.latitude" disabled />
+			</a-col>
+			<a-col :span="2" class="labelText">
+				<a-button size="small" type="primary" @click="getPositionMap">{{ '获取' }}</a-button>
+			</a-col>
+			<a-col :span="3" class="labelText">
+				{{ 'Valid' }}
+			</a-col>
+			<a-col :span="9" class="radioStyle">
+				<a-radio-group name="radioGroup" v-model:value="infoVO.isValid">
+					<a-radio :value="1">{{ 'Yes' }}</a-radio>
+					<a-radio :value="0">{{ 'No' }}</a-radio>
+				</a-radio-group>
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
@@ -172,17 +184,8 @@
 			<a-col :span="3" class="labelText">
 				{{ 'Average Cost' }}
 			</a-col>
-			<a-col :span="9">
+			<a-col :span="21">
 				<a-input v-model:value="infoVO.averageCost" />
-			</a-col>
-			<a-col :span="3" class="labelText">
-				{{ 'Valid' }}
-			</a-col>
-			<a-col :span="9" class="radioStyle">
-				<a-radio-group name="radioGroup" v-model:value="infoVO.isValid">
-					<a-radio :value="1">{{ 'Yes' }}</a-radio>
-					<a-radio :value="0">{{ 'No' }}</a-radio>
-				</a-radio-group>
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
@@ -313,7 +316,7 @@
 	</div>
 	<div class="gameBox">
 		<a-row class="rowStyle">
-			<a-tabs v-model:activeKey="optionValue" tab-position="left" class="tabBox">
+			<!-- <a-tabs v-model:activeKey="optionValue" tab-position="left" class="tabBox">
 				<a-tab-pane key="1" tab="游戏设置">
 					<a-row class="rowStyle">
 						<a-col :span="2" class="labelText">301 游戏</a-col>
@@ -445,7 +448,7 @@
 				</a-tab-pane>
 				<a-tab-pane key="2" tab="通用设置"> </a-tab-pane>
 				<a-tab-pane key="3" tab="投币设置"> </a-tab-pane>
-			</a-tabs>
+			</a-tabs> -->
 		</a-row>
 	</div>
 	<div v-if="id">
@@ -520,9 +523,22 @@
 		</div>
 	</div>
 	<showUrlDialog :visible="urlBox" :src="infoVO.img" @showBoxCancel="showBoxCancel" />
+	<a-modal v-model:visible="mapDialog" title="Choose" width="50%" :footer="null">
+		<a-row class="rowStyle">
+			<a-col :span="3" class="labelText">{{ 'Longtitude' }}</a-col>
+			<a-col :span="9">
+				<a-input v-model:value="infoVO.longitude" disabled />
+			</a-col>
+			<a-col :span="3" class="labelText">{{ 'Latitude' }}</a-col>
+			<a-col :span="9">
+				<a-input v-model:value="infoVO.latitude" disabled />
+			</a-col>
+		</a-row>
+		<div id="map"></div>
+	</a-modal>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
 // import { SettingFilled} from '@ant-design/icons-vue';
 import labelTitle from '@/components/labelTitle.vue';
@@ -541,7 +557,9 @@ export default defineComponent({
 		const isAdmin = false;
 		const id = ROUTE.query.id;
 		const data = reactive({
+			map: false,
 			optionValue: '1',
+			mapDialog: false,
 			urlBox: false,
 			showTable: false,
 			check301: true,
@@ -645,20 +663,25 @@ export default defineComponent({
 					message.warning('请添加广告链接');
 				}
 			},
-			showBoxCancel: (value: boolean) => {
+			showBoxCancel: (value) => {
 				data.urlBox = value;
 			},
-			optionChange: (value: string) => {
-				console.log(value);
+			getPositionMap: () => {
+				data.mapDialog = true;
+				if (!data.map) {
+					// eslint-disable-next-line @typescript-eslint/no-use-before-define
+					showMap();
+					data.map = true;
+				}
 			},
-			pageChange: (index: number) => {
+			pageChange: (index) => {
 				data.machineVO.pageIndex = index;
 				data.search();
 			},
-			handleSearch(value: any) {
+			handleSearch(value) {
 				console.log(value);
 			},
-			handleChange(value: any) {
+			handleChange(value) {
 				console.log(value);
 			},
 			countryChange: () => {
@@ -667,40 +690,59 @@ export default defineComponent({
 				getAreaList();
 			},
 			search: () => {
-				shopMachineListHttp(data.machineVO).then((res: any) => {
+				shopMachineListHttp(data.machineVO).then((res) => {
 					data.tableList = res.data.data.list;
 					data.total = res.data.data.totalCount;
 				});
 			},
 			create: () => createShopHttp(data.infoVO),
 			update: () => editShopHttp(data.infoVO),
-			agentSearch: (value: any) => {
-				agentListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
+			agentSearch: (value) => {
+				agentListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res) => {
 					data.agentList = res.data.data.list;
 				});
 			},
-			ownerSearch: (value: any) => {
-				userListHttp({ username: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
+			ownerSearch: (value) => {
+				userListHttp({ username: value.split("'").join(''), pageSize: 999 }).then((res) => {
 					data.ownerList = res.data.data.list;
 				});
 			}
 		});
-		const getShopInfo = (id: any) => {
-			shopSingleInfoHttp({ shopId: id }).then((res: any) => {
+		const showMap = () => {
+			const url = 'https://webapi.amap.com/maps?v=1.4.15&key=4288b5f8c829eba5d80f4664f7e40dcf&callback=load';
+			const jsapi = document.createElement('script');
+			jsapi.src = url;
+			document.head.appendChild(jsapi);
+			window.load = () => {
+				let map = null;
+				// eslint-disable-next-line no-undef
+				map = new AMap.Map('map', {
+					resizeEnable: true,
+					// center: [116.397428, 39.90923],
+					zoom: 13
+				});
+				map.on('click', function(e) {
+					data.infoVO.longitude = e.lnglat.getLng();
+					data.infoVO.latitude = e.lnglat.getLat();
+				});
+			};
+		};
+		const getShopInfo = (id) => {
+			shopSingleInfoHttp({ shopId: id }).then((res) => {
 				data.infoVO = res.data.data;
 			});
 		};
 		const getCountryList = () => {
-			countryListHttp({}).then((res: any) => {
+			countryListHttp({}).then((res) => {
 				data.countryList = res.data.data.list;
 			});
 		};
 		const getAreaList = () => {
-			areaListHttp({ countryId: data.infoVO.countryId }).then((res: any) => {
+			areaListHttp({ countryId: data.infoVO.countryId }).then((res) => {
 				data.areaList = res.data.data.list;
 			});
 		};
-		const init = (id: any) => {
+		const init = (id) => {
 			getCountryList();
 			getAreaList();
 			data.agentSearch('');
@@ -733,5 +775,8 @@ export default defineComponent({
 .switchBox {
 	line-height: 28px;
 	text-align: center;
+}
+#map {
+	height: 500px;
 }
 </style>

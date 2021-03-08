@@ -30,7 +30,7 @@
 		</a-row>
 	</div>
 	<a-row>
-		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" :rowKey="rowKey" class="tableStyle">
+		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" :scroll="{ y: 600 }" :rowKey="rowKey" class="tableStyle">
 			<template #handle="{ record }">
 				<div class="tableBtn">
 					<a-button size="small" type="danger" @click="shopDelete(record)">{{ 'delete' }}</a-button>
@@ -38,9 +38,6 @@
 			</template>
 		</a-table>
 	</a-row>
-	<div class="paginationStyle">
-		<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="pageTotal" @change="pageChange" />
-	</div>
 	<!-- 广告链接的预览 -->
 	<showUrlDialog :visible="showUrlDialog" :src="infoVO.url" @showBoxCancel="showBoxCancel" />
 	<!-- 添加机器 -->
@@ -62,9 +59,6 @@
 			<a-row class="shopBodyBox">
 				<a-table bordered :row-selection="shopRowSelection" :columns="shopDialogColumns" :data-source="machineList" :pagination="false" :rowKey="rowKey" class="tableStyle"> </a-table>
 			</a-row>
-			<div class="paginationStyle">
-				<a-pagination show-quick-jumper v-model:current="shopVO.pageIndex" :total="machinePageTotal" @change="shopChange" />
-			</div>
 			<template #footer>
 				<div class="footerBtnClass">
 					<a-button key="back" @click="handleCancel">Cancel</a-button>
@@ -76,7 +70,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, toRefs } from 'vue';
+import { defineComponent, onMounted, reactive, toRefs, ref, computed, unref } from 'vue';
 // import { SettingFilled} from '@ant-design/icons-vue';
 import labelTitle from '@/components/labelTitle.vue';
 import showUrlDialog from '@/components/common/showUrlDialog.vue';
@@ -86,7 +80,6 @@ import { message } from 'ant-design-vue';
 
 interface DataProps {
 	getMachineList: () => void;
-	machinePageTotal: any;
 	machineList: any;
 	tableList: any[];
 	allMachineList: any[];
@@ -113,8 +106,7 @@ export default defineComponent({
 		const ROUTE = useRoute();
 		const id: any = ROUTE.query.id || null;
 		let selectList: number[] = [];
-		let shopSelectList: any = [];
-		const defaultSelectList: any[] = [];
+		const defaultSelectList: any = ref([]);
 		const obj: ObjProps = {
 			title: '',
 			url: '',
@@ -129,6 +121,17 @@ export default defineComponent({
 			pageIndex: 1,
 			pageSize: 10
 		};
+		const shopRowSelection = computed(() => {
+			return {
+				columnWidth: 50,
+				selectedRowKeys: unref(defaultSelectList),
+				hideDefaultSelections: true,
+				onChange: (changableRowKeys: any) => {
+					defaultSelectList.value = changableRowKeys;
+					console.log(defaultSelectList.value);
+				}
+			};
+		});
 		const data: DataProps = reactive({
 			showUrlDialog: false,
 			showShopDialog: false,
@@ -144,9 +147,8 @@ export default defineComponent({
 			shopVO: {
 				name: '',
 				pageIndex: 1,
-				pageSize: 10
+				pageSize: 99999
 			},
-			machinePageTotal: 1,
 			columns: [
 				{
 					title: 'Shop Name',
@@ -187,7 +189,6 @@ export default defineComponent({
 					dataIndex: 'type'
 				}
 			],
-			pageTotal: 1,
 			machineList: [],
 			allMachineList: [],
 			tableList: [],
@@ -201,27 +202,16 @@ export default defineComponent({
 			showBoxCancel: (value: boolean) => {
 				data.showUrlDialog = value;
 			},
-			shopRowSelection: {
-				columnWidth: 50,
-				// selectedRowKeys: selectedRowKey,
-				getCheckboxProps: (record: any) => ({
-					defaultChecked: defaultSelectList.includes(`${record.id}`)
-				}),
-				onChange: (selectedRowKeys: number[]) => {
-					shopSelectList = selectedRowKeys.map((i: number) => {
-						return data.allMachineList.find((j: any) => i === j.id);
-					});
-				}
-			},
 			handleCancel: () => {
 				data.showShopDialog = false;
 			},
 			handleOk: () => {
-				const tableListIds = data.tableList.map((i: any) => i.machineId || i.id);
+				const tableListIds = defaultSelectList.value;
 				const list: any = [];
-				shopSelectList.forEach((i: any) => {
-					if (!tableListIds.includes(i.id)) {
-						list.push(i);
+				tableListIds.forEach((i: number) => {
+					const item = data.machineList.find((j: any) => i === j.id);
+					if (item && !data.tableList.find((k: any) => k.machineId === i)) {
+						list.push(item);
 					}
 				});
 				data.tableList.unshift(
@@ -251,9 +241,13 @@ export default defineComponent({
 			},
 			shopDelete: (row: any) => {
 				data.tableList.splice(
-					data.tableList.findIndex((i: any) => i.id === id),
+					data.tableList.findIndex((i: any) => i.machineId === row.machineId),
 					1
 				);
+				const selectId = defaultSelectList.value.findIndex((i: number) => i === row.machineId);
+				if (selectId >= 0) {
+					defaultSelectList.value.splice(selectId, 1);
+				}
 				if (id) {
 					obj.delMachineIds.push(row.id || row.machineId);
 				}
@@ -264,7 +258,6 @@ export default defineComponent({
 			getMachineList: () => {
 				MachineListHttp(data.shopVO).then((res) => {
 					data.machineList = res.data.data.list;
-					data.machinePageTotal = res.data.data.totalCount;
 				});
 				MachineListHttp({ name: '', pageSize: 9999 }).then((res) => {
 					data.allMachineList = res.data.data.list;
@@ -295,6 +288,7 @@ export default defineComponent({
 				if (res.data.data) {
 					data.infoVO = res.data.data;
 					data.tableList = res.data.data.advertConfigListPage.list;
+					defaultSelectList.value = data.tableList.map((i: any) => i.machineId);
 				}
 			});
 		};
@@ -309,6 +303,8 @@ export default defineComponent({
 		});
 		return {
 			...toRefs(data),
+			defaultSelectList,
+			shopRowSelection,
 			ROUTE
 		};
 	}

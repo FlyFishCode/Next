@@ -5,41 +5,19 @@
 			<a-col :span="2" class="labelText">
 				{{ 'ID' }}
 			</a-col>
-			<a-col :span="3">
+			<a-col :span="4">
 				<a-input v-model:value="infoVO.id" allowClear />
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Label' }}
+				{{ 'Name' }}
 			</a-col>
-			<a-col :span="3">
-				<a-input v-model:value="infoVO.label" allowClear />
+			<a-col :span="4">
+				<a-input v-model:value="infoVO.name" allowClear />
 			</a-col>
-			<a-col :span="2" class="labelText">
-				{{ 'Agent' }}
-			</a-col>
-			<a-col :span="3" class="selectSearch">
-				<a-select show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
-					<a-select-option v-for="d in agentList" :key="d.id">
-						<div :title="d.name">{{ d.name }}</div>
-					</a-select-option>
-				</a-select>
-			</a-col>
-			<a-col :span="2" class="labelText">
-				{{ 'Owner' }}
-			</a-col>
-			<a-col :span="3" class="selectSearch">
-				<a-select show-search v-model:value="infoVO.ownerId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="ownerSearch">
-					<a-select-option v-for="d in ownerList" :key="d.id">
-						<div :title="d.username">{{ d.username }}</div>
-					</a-select-option>
-				</a-select>
-			</a-col>
-		</a-row>
-		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
 				{{ 'Country' }}
 			</a-col>
-			<a-col :span="3">
+			<a-col :span="4">
 				<a-select v-model:value="infoVO.countryId" @change="countryChange" class="selectBox" allowClear>
 					<a-select-option v-for="item in countryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
 				</a-select>
@@ -47,22 +25,28 @@
 			<a-col :span="2" class="labelText">
 				{{ 'Area' }}
 			</a-col>
-			<a-col :span="3">
+			<a-col :span="4">
 				<a-select v-model:value="infoVO.areaId" class="selectBox" allowClear>
 					<a-select-option v-for="item in areaList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
 				</a-select>
 			</a-col>
+		</a-row>
+		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
 				{{ 'Type' }}
 			</a-col>
-			<a-col :span="3">
+			<a-col :span="4">
 				<a-input v-model:value="infoVO.type" allowClear />
 			</a-col>
-			<a-col :span="2" class="labelText">
-				{{ 'Attracts' }}
+			<a-col v-if="isAdmin" :span="2" class="labelText">
+				{{ 'Agent' }}
 			</a-col>
-			<a-col :span="3">
-				<a-input v-model:value="infoVO.url" allowClear />
+			<a-col v-if="isAdmin" :span="4" class="selectSearch">
+				<a-select show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
+					<a-select-option v-for="d in agentList" :key="d.id">
+						<div :title="d.name">{{ d.name }}</div>
+					</a-select-option>
+				</a-select>
 			</a-col>
 			<a-col :span="3" class="labelText">
 				<a-button type="primary" size="small" @click="search">{{ '搜索' }}</a-button>
@@ -70,8 +54,8 @@
 		</a-row>
 	</div>
 	<a-row class="rowStyle">
-		<a-col :span="2">
-			<a-button type="danger" size="small" @click="handleDelete">{{ '删除勾选数据' }}</a-button>
+		<a-col :span="1">
+			<a-button type="danger" size="small" @click="handleDelete">{{ '删除' }}</a-button>
 		</a-col>
 		<!-- <a-col :span="1">
 			<a-button type="primary" size="small" @click="handleChange">{{ '修改' }}</a-button>
@@ -105,15 +89,14 @@ export default defineComponent({
 		const ROUTER = useRouter();
 		let selectList: number[] = [];
 		const data = reactive({
+			isAdmin: false,
 			infoVO: {
 				id: '',
-				label: '',
-				agentId: '',
+				name: '',
 				countryId: '',
 				areaId: '',
-				ownerId: '',
 				type: '',
-				time: '',
+				agentId: '',
 				pageIndex: 1,
 				pageSize: 10
 			},
@@ -136,11 +119,6 @@ export default defineComponent({
 					key: 'Agent'
 				},
 				{
-					title: 'Owner',
-					dataIndex: 'ownerName',
-					key: 'Owner'
-				},
-				{
 					title: 'Country',
 					dataIndex: 'countryName',
 					key: 'Country'
@@ -154,11 +132,6 @@ export default defineComponent({
 					title: 'Type',
 					dataIndex: 'type',
 					key: 'Type'
-				},
-				{
-					title: 'Attracts',
-					dataIndex: 'attracts',
-					key: 'Attracts'
 				}
 			],
 			countryList: [],
