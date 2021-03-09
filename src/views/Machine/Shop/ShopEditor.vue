@@ -485,10 +485,10 @@
 					{{ 'Last Online' }}
 				</a-col>
 				<a-col :span="2">
-					<a-date-picker v-model:value="machineVO.minLastOnlineTime" />
+					<a-date-picker v-model:value="machineVO.minLastOnlineTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
 				</a-col>
 				<a-col :span="2">
-					<a-date-picker v-model:value="machineVO.maxLastOnlineTime" allow-clear />
+					<a-date-picker v-model:value="machineVO.maxLastOnlineTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 				</a-col>
 				<a-col :span="2" class="labelText">
 					{{ 'Life Credits' }}
@@ -523,7 +523,7 @@
 		</div>
 	</div>
 	<showUrlDialog :visible="urlBox" :src="infoVO.img" @showBoxCancel="showBoxCancel" />
-	<a-modal v-model:visible="mapDialog" title="Choose" width="50%" :footer="null">
+	<a-modal v-model:visible="mapDialog" title="Map" width="50%" :footer="null">
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">{{ 'Longtitude' }}</a-col>
 			<a-col :span="9">
@@ -605,7 +605,7 @@ export default defineComponent({
 			machineVO: {
 				id: '',
 				name: '',
-				shopId: ROUTE.query.id,
+				shopId: id,
 				serial: '',
 				minLastOnlineTime: '',
 				maxLastOnlineTime: '',
@@ -656,6 +656,18 @@ export default defineComponent({
 				}
 			],
 			tableList: [{ id: 1 }],
+			disabledStartDate: (startValue) => {
+				if (!startValue || !data.machineVO.maxLastOnlineTime) {
+					return false;
+				}
+				return startValue.valueOf() > new Date(data.machineVO.maxLastOnlineTime).valueOf();
+			},
+			disabledEndDate: (endValue) => {
+				if (!endValue || !data.machineVO.minLastOnlineTime) {
+					return false;
+				}
+				return new Date(data.machineVO.minLastOnlineTime).valueOf() >= endValue.valueOf();
+			},
 			preview: () => {
 				if (data.infoVO.img) {
 					data.urlBox = true;

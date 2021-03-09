@@ -14,7 +14,6 @@
 					<template #title>
 						<span><AppstoreOutlined /><span>Machine</span></span>
 					</template>
-					<a-menu-item key="Agent">Agent</a-menu-item>
 					<a-menu-item key="Shop">Shop</a-menu-item>
 					<a-menu-item key="Machine">Machine</a-menu-item>
 				</a-sub-menu>

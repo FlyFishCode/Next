@@ -28,7 +28,7 @@
 				{{ 'Type' }}
 			</a-col>
 			<a-col :span="4">
-				<a-input v-model:value="infoVO.url" allow-clear />
+				<a-input v-model:value="infoVO.type" allow-clear />
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
@@ -54,10 +54,10 @@
 				{{ 'Last Online' }}
 			</a-col>
 			<a-col :span="2">
-				<a-date-picker v-model:value="infoVO.time" @change="timeChange" />
+				<a-date-picker v-model:value="infoVO.minLastOnlineTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
 			</a-col>
 			<a-col :span="2">
-				<a-date-picker v-model:value="infoVO.time" />
+				<a-date-picker v-model:value="infoVO.maxLastOnlineTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
@@ -128,12 +128,12 @@ export default defineComponent({
 			infoVO: {
 				free: '',
 				id: '',
-				maxLastOnlineTime: '',
-				minLastOnlineTime: '',
 				name: '',
 				serial: '',
 				shopId: '',
 				type: '',
+				maxLastOnlineTime: '',
+				minLastOnlineTime: '',
 				pageIndex: 1,
 				pageSize: 10
 			},
@@ -206,6 +206,18 @@ export default defineComponent({
 					console.log(selectList);
 				}
 			},
+			disabledStartDate: (startValue: any) => {
+				if (!startValue || !data.infoVO.maxLastOnlineTime) {
+					return false;
+				}
+				return startValue.valueOf() > new Date(data.infoVO.maxLastOnlineTime).valueOf();
+			},
+			disabledEndDate: (endValue: any) => {
+				if (!endValue || !data.infoVO.minLastOnlineTime) {
+					return false;
+				}
+				return new Date(data.infoVO.minLastOnlineTime).valueOf() >= endValue.valueOf();
+			},
 			shopSearch(value: any) {
 				shopListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res) => {
 					data.shopList = res.data.data.list;
@@ -213,9 +225,6 @@ export default defineComponent({
 			},
 			shopChange: () => {
 				console.log(1);
-			},
-			timeChange: () => {
-				console.log(2);
 			},
 			search: () => {
 				MachineListHttp(data.infoVO).then((res: any) => {

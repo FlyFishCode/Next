@@ -9,7 +9,7 @@
 				<a-input v-model:value="infoVO.id" allowClear />
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Name' }}
+				{{ 'Label' }}
 			</a-col>
 			<a-col :span="4">
 				<a-input v-model:value="infoVO.name" allowClear />
@@ -48,7 +48,7 @@
 					</a-select-option>
 				</a-select>
 			</a-col>
-			<a-col :span="3" class="labelText">
+			<a-col :span="2" class="labelText">
 				<a-button type="primary" size="small" @click="search">{{ '搜索' }}</a-button>
 			</a-col>
 		</a-row>
@@ -110,7 +110,7 @@ export default defineComponent({
 				{
 					title: 'Label',
 					dataIndex: 'name',
-					key: 'Label',
+					key: 'Name',
 					slots: { customRender: 'name' }
 				},
 				{

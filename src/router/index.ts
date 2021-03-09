@@ -66,11 +66,6 @@ const routes: Array<RouteRecordRaw> = [
 				component: () => import(/* webpackChunkName: "entryShopPage" */ '../views/Machine/Machine/entryShopPage.vue')
 			},
 			{
-				path: '/Agent',
-				name: 'Agent',
-				component: () => import(/* webpackChunkName: "Agent" */ '../views/Machine/Agent/index.vue')
-			},
-			{
 				path: '/EditorShop',
 				name: 'EditorShop',
 				component: () => import(/* webpackChunkName: "EditorShop" */ '../views/Machine/Shop/ShopEditor.vue')
