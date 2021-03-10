@@ -26,7 +26,7 @@
 					</a-select-option>
 				</a-select>
 			</a-col>
-			<a-col :span="3" class="labelText">
+			<!-- <a-col :span="3" class="labelText">
 				{{ 'Owner' }}
 			</a-col>
 			<a-col :span="9" class="selectSearch">
@@ -35,6 +35,12 @@
 						<div :title="d.username">{{ d.username }}</div>
 					</a-select-option>
 				</a-select>
+			</a-col> -->
+			<a-col :span="3" class="labelText">
+				{{ 'Attracts' }}
+			</a-col>
+			<a-col :span="9">
+				<a-input v-model:value="infoVO.title" />
 			</a-col>
 		</a-row>
 		<a-row v-if="isAdmin" class="rowStyle">
@@ -108,10 +114,13 @@
 				<a-button size="small" type="primary" @click="preview">{{ '预览' }}</a-button>
 			</a-col>
 			<a-col :span="3" class="labelText">
-				{{ 'Attracts' }}
+				{{ 'Supplier' }}
 			</a-col>
-			<a-col :span="9">
-				<a-input v-model:value="infoVO.title" />
+			<a-col :span="9" class="radioStyle">
+				<a-radio-group name="radioGroup" v-model:value="infoVO.supplier">
+					<a-radio :value="1">{{ 'Yes' }}</a-radio>
+					<a-radio :value="0">{{ 'No' }}</a-radio>
+				</a-radio-group>
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
@@ -170,15 +179,6 @@
 					<a-radio :value="0">{{ 'No' }}</a-radio>
 				</a-radio-group>
 			</a-col>
-			<a-col :span="3" class="labelText">
-				{{ 'Supplier' }}
-			</a-col>
-			<a-col :span="9" class="radioStyle">
-				<a-radio-group name="radioGroup" v-model:value="infoVO.supplier">
-					<a-radio :value="1">{{ 'Yes' }}</a-radio>
-					<a-radio :value="0">{{ 'No' }}</a-radio>
-				</a-radio-group>
-			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
@@ -196,261 +196,8 @@
 				<a-textarea v-model:value="infoVO.memo" :rows="4" allow-clear />
 			</a-col>
 		</a-row>
-		<!-- <div v-if="showTable">
-			<a-row class="rowStyle">
-				<a-col :span="3" class="labelText">
-					{{ 'Life Games' }}
-				</a-col>
-				<a-col :span="9">
-					<a-input v-model:value="infoVO.title" :disabled="disabled" />
-				</a-col>
-				<a-col :span="3" class="labelText">
-					{{ 'Last IP' }}
-				</a-col>
-				<a-col :span="9">
-					<a-input v-model:value="infoVO.title" :disabled="disabled" />
-				</a-col>
-			</a-row>
-			<a-row class="rowStyle">
-				<a-col :span="3" class="labelText">
-					{{ 'Last Online' }}
-				</a-col>
-				<a-col :span="5">
-					<a-input v-model:value="infoVO.title" :disabled="disabled" />
-				</a-col>
-				<a-col :span="4">
-					<a-input v-model:value="infoVO.title" :disabled="disabled" />
-				</a-col>
-				<a-col :span="3" class="labelText">
-					{{ 'Attracts' }}
-				</a-col>
-				<a-col :span="9">
-					<a-input v-model:value="infoVO.title" :disabled="disabled" />
-				</a-col>
-			</a-row>
-			<a-row class="rowStyle">
-				<a-col :span="3" class="labelText">
-					{{ 'Current All Credits' }}
-				</a-col>
-				<a-col :span="9">
-					<a-input v-model:value="infoVO.title" :disabled="disabled" />
-				</a-col>
-				<a-col :span="3" class="labelText">
-					{{ 'Life All Credits' }}
-				</a-col>
-				<a-col :span="9">
-					<a-input v-model:value="infoVO.title" :disabled="disabled" />
-				</a-col>
-			</a-row>
-			<a-row class="rowStyle">
-				<a-col :span="3" class="labelText">
-					{{ 'Current Credits' }}
-				</a-col>
-				<a-col :span="9">
-					<a-input v-model:value="infoVO.title" :disabled="disabled" />
-				</a-col>
-				<a-col :span="3" class="labelText">
-					{{ 'Life Credits' }}
-				</a-col>
-				<a-col :span="9">
-					<a-input v-model:value="infoVO.title" :disabled="disabled" />
-				</a-col>
-			</a-row>
-			<a-row class="rowStyle">
-				<a-col :span="3" class="labelText">
-					{{ 'Current Free Credits' }}
-				</a-col>
-				<a-col :span="9">
-					<a-input v-model:value="infoVO.title" :disabled="disabled" />
-				</a-col>
-				<a-col :span="3" class="labelText">
-					{{ 'Life Free Credits' }}
-				</a-col>
-				<a-col :span="9">
-					<a-input v-model:value="infoVO.title" :disabled="disabled" />
-				</a-col>
-			</a-row>
-			<a-row class="rowStyle">
-				<a-col :span="3" class="labelText">
-					{{ 'Current Coins' }}
-				</a-col>
-				<a-col :span="9">
-					<a-input v-model:value="infoVO.title" :disabled="disabled" />
-				</a-col>
-				<a-col :span="3" class="labelText">
-					{{ 'Life Coins' }}
-				</a-col>
-				<a-col :span="9">
-					<a-input v-model:value="infoVO.title" :disabled="disabled" />
-				</a-col>
-			</a-row>
-			<a-row class="rowStyle">
-				<a-col :span="3" class="labelText">
-					{{ 'Current Amout(cent)' }}
-				</a-col>
-				<a-col :span="9">
-					<a-input v-model:value="infoVO.title" :disabled="disabled" />
-				</a-col>
-				<a-col :span="3" class="labelText">
-					{{ 'Life Amout(cent)' }}
-				</a-col>
-				<a-col :span="9">
-					<a-input v-model:value="infoVO.title" :disabled="disabled" />
-				</a-col>
-			</a-row>
-			<a-row class="rowStyle">
-				<a-col :span="3" class="labelText">
-					{{ 'Current Cash' }}
-				</a-col>
-				<a-col :span="9">
-					<a-input v-model:value="infoVO.title" :disabled="disabled" />
-				</a-col>
-				<a-col :span="3" class="labelText">
-					{{ 'Life Cash' }}
-				</a-col>
-				<a-col :span="9">
-					<a-input v-model:value="infoVO.title" :disabled="disabled" />
-				</a-col>
-			</a-row>
-		</div> -->
 	</div>
-	<div class="gameBox">
-		<a-row class="rowStyle">
-			<!-- <a-tabs v-model:activeKey="optionValue" tab-position="left" class="tabBox">
-				<a-tab-pane key="1" tab="游戏设置">
-					<a-row class="rowStyle">
-						<a-col :span="2" class="labelText">301 游戏</a-col>
-						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="check301"/></a-col>
-						<a-col v-show="check301" :span="1" class="labelText">点数</a-col>
-						<a-col v-show="check301" :span="3" class="selectSearch">
-							<a-select v-model:value="number301">
-								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
-							</a-select>
-						</a-col>
-						<a-col v-show="check301" :span="1" class="labelText">回合</a-col>
-						<a-col v-show="check301" :span="3" class="selectSearch">
-							<a-select v-model:value="number301">
-								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
-							</a-select>
-						</a-col>
-
-						<a-col :span="2" class="labelText">501 游戏</a-col>
-						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="check501"/></a-col>
-						<a-col v-show="check501" :span="1" class="labelText">点数</a-col>
-						<a-col v-show="check501" :span="3" class="selectSearch">
-							<a-select v-model:value="number301">
-								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
-							</a-select>
-						</a-col>
-						<a-col v-show="check501" :span="1" class="labelText">回合</a-col>
-						<a-col v-show="check501" :span="3" class="selectSearch">
-							<a-select v-model:value="number301">
-								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
-							</a-select>
-						</a-col>
-					</a-row>
-
-					<a-row class="rowStyle">
-						<a-col :span="2" class="labelText">701 游戏</a-col>
-						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="check701"/></a-col>
-						<a-col v-show="check701" :span="1" class="labelText">点数</a-col>
-						<a-col v-show="check701" :span="3" class="selectSearch">
-							<a-select v-model:value="number301">
-								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
-							</a-select>
-						</a-col>
-						<a-col v-show="check701" :span="1" class="labelText">回合</a-col>
-						<a-col v-show="check701" :span="3" class="selectSearch">
-							<a-select v-model:value="number301">
-								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
-							</a-select>
-						</a-col>
-
-						<a-col :span="2" class="labelText">901 游戏</a-col>
-						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="check901"/></a-col>
-						<a-col v-show="check901" :span="1" class="labelText">点数</a-col>
-						<a-col v-show="check901" :span="3" class="selectSearch">
-							<a-select v-model:value="number301">
-								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
-							</a-select>
-						</a-col>
-						<a-col v-show="check901" :span="1" class="labelText">回合</a-col>
-						<a-col v-show="check901" :span="3" class="selectSearch">
-							<a-select v-model:value="number301">
-								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
-							</a-select>
-						</a-col>
-					</a-row>
-
-					<a-row class="rowStyle">
-						<a-col :span="2" class="labelText">标准米老鼠</a-col>
-						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="mickey"/></a-col>
-						<a-col v-show="mickey" :span="1" class="labelText">点数</a-col>
-						<a-col v-show="mickey" :span="3" class="selectSearch">
-							<a-select v-model:value="number301">
-								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
-							</a-select>
-						</a-col>
-						<a-col v-show="mickey" :span="1" class="labelText">回合</a-col>
-						<a-col v-show="mickey" :span="3" class="selectSearch">
-							<a-select v-model:value="number301">
-								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
-							</a-select>
-						</a-col>
-
-						<a-col :span="2" class="labelText">加分米老鼠</a-col>
-						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="addMickey"/></a-col>
-						<a-col v-show="addMickey" :span="1" class="labelText">点数</a-col>
-						<a-col v-show="addMickey" :span="3" class="selectSearch">
-							<a-select v-model:value="number301">
-								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
-							</a-select>
-						</a-col>
-						<a-col v-show="addMickey" :span="1" class="labelText">回合</a-col>
-						<a-col v-show="addMickey" :span="3" class="selectSearch">
-							<a-select v-model:value="number301">
-								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
-							</a-select>
-						</a-col>
-					</a-row>
-
-					<a-row class="rowStyle">
-						<a-col :span="2" class="labelText">标准高分赛</a-col>
-						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="heightMatch"/></a-col>
-						<a-col v-show="heightMatch" :span="1" class="labelText">点数</a-col>
-						<a-col v-show="heightMatch" :span="3" class="selectSearch">
-							<a-select v-model:value="number301">
-								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
-							</a-select>
-						</a-col>
-						<a-col v-show="heightMatch" :span="1" class="labelText">回合</a-col>
-						<a-col v-show="heightMatch" :span="3" class="selectSearch">
-							<a-select v-model:value="number301">
-								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
-							</a-select>
-						</a-col>
-
-						<a-col :span="2" class="labelText">计时高分赛</a-col>
-						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="timeHeightMatch"/></a-col>
-						<a-col v-show="timeHeightMatch" :span="1" class="labelText">点数</a-col>
-						<a-col v-show="timeHeightMatch" :span="3" class="selectSearch">
-							<a-select v-model:value="number301">
-								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
-							</a-select>
-						</a-col>
-						<a-col v-show="timeHeightMatch" :span="1" class="labelText">回合</a-col>
-						<a-col v-show="timeHeightMatch" :span="3" class="selectSearch">
-							<a-select v-model:value="number301">
-								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
-							</a-select>
-						</a-col>
-					</a-row>
-				</a-tab-pane>
-				<a-tab-pane key="2" tab="通用设置"> </a-tab-pane>
-				<a-tab-pane key="3" tab="投币设置"> </a-tab-pane>
-			</a-tabs> -->
-		</a-row>
-	</div>
+	<MachineOptions ref="options" />
 	<div v-if="id">
 		<labelTitle :value="'Machines'" />
 		<div class="searchBox">
@@ -503,14 +250,6 @@
 					<a-input v-model:value="machineVO.title" allow-clear />
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ 'Life Coins' }}
-				</a-col>
-				<a-col :span="4">
-					<a-input v-model:value="machineVO.title" allow-clear />
-				</a-col>
-			</a-row>
-			<a-row class="rowStyle">
-				<a-col :span="2" class="labelText">
 					<a-button type="primary" size="small" @click="search">{{ '搜索' }}</a-button>
 				</a-col>
 			</a-row>
@@ -539,44 +278,29 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-// import { SettingFilled} from '@ant-design/icons-vue';
+import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
 import showUrlDialog from '@/components/common/showUrlDialog.vue';
 import { useRoute } from 'vue-router';
-import { shopSingleInfoHttp, agentListHttp, userListHttp, countryListHttp, areaListHttp, editShopHttp, createShopHttp, shopMachineListHttp } from '@/api/api';
+import { shopSingleInfoHttp, agentListHttp, countryListHttp, areaListHttp, editShopHttp, createShopHttp, shopMachineListHttp } from '@/api/api';
 import { message } from 'ant-design-vue';
+import MachineOptions from '@/components/common/MachineOptions.vue';
 export default defineComponent({
 	name: 'ShopEditor',
 	components: {
 		labelTitle,
-		showUrlDialog
+		showUrlDialog,
+		MachineOptions
 	},
 	setup() {
 		const ROUTE = useRoute();
 		const isAdmin = false;
 		const id = ROUTE.query.id;
+		const options = ref(null);
 		const data = reactive({
 			map: false,
-			optionValue: '1',
 			mapDialog: false,
 			urlBox: false,
-			showTable: false,
-			check301: true,
-			check501: true,
-			check701: true,
-			check901: true,
-			mickey: true,
-			addMickey: true,
-			heightMatch: true,
-			timeHeightMatch: true,
-			number301: 1,
-			options: [
-				{ id: 1, label: 1 },
-				{ id: 2, label: 2 },
-				{ id: 3, label: 3 },
-				{ id: 4, label: 4 }
-			],
 			infoVO: {
 				name: '',
 				type: '',
@@ -615,7 +339,6 @@ export default defineComponent({
 			countryList: [],
 			areaList: [],
 			agentList: [],
-			ownerList: [],
 			currentPage: 1,
 			total: 1,
 			columns: [
@@ -690,12 +413,6 @@ export default defineComponent({
 				data.machineVO.pageIndex = index;
 				data.search();
 			},
-			handleSearch(value) {
-				console.log(value);
-			},
-			handleChange(value) {
-				console.log(value);
-			},
 			countryChange: () => {
 				data.infoVO.areaId = '';
 				// eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -708,15 +425,13 @@ export default defineComponent({
 				});
 			},
 			create: () => createShopHttp(data.infoVO),
-			update: () => editShopHttp(data.infoVO),
+			update: () => {
+				console.log(options.value);
+				editShopHttp(data.infoVO);
+			},
 			agentSearch: (value) => {
 				agentListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res) => {
 					data.agentList = res.data.data.list;
-				});
-			},
-			ownerSearch: (value) => {
-				userListHttp({ username: value.split("'").join(''), pageSize: 999 }).then((res) => {
-					data.ownerList = res.data.data.list;
 				});
 			}
 		});
@@ -726,9 +441,8 @@ export default defineComponent({
 			jsapi.src = url;
 			document.head.appendChild(jsapi);
 			window.load = () => {
-				let map = null;
 				// eslint-disable-next-line no-undef
-				map = new AMap.Map('map', {
+				const map = new AMap.Map('map', {
 					resizeEnable: true,
 					// center: [116.397428, 39.90923],
 					zoom: 13
@@ -758,9 +472,8 @@ export default defineComponent({
 			getCountryList();
 			getAreaList();
 			data.agentSearch('');
-			data.ownerSearch('');
+			data.search();
 			if (id) {
-				data.search();
 				getShopInfo(id);
 			}
 		};
@@ -769,6 +482,7 @@ export default defineComponent({
 		});
 		return {
 			...toRefs(data),
+			options,
 			id,
 			isAdmin
 		};
@@ -777,17 +491,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.gameBox {
-	margin: 15px 0;
-	padding: 10px;
-}
-.tabBox {
-	width: 100%;
-}
-.switchBox {
-	line-height: 28px;
-	text-align: center;
-}
 #map {
 	height: 500px;
 }

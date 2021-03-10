@@ -170,7 +170,7 @@ export default defineComponent({
 				{
 					title: 'Shop Number',
 					width: 200,
-					dataIndex: 'Number'
+					dataIndex: 'machineCount'
 				},
 				{
 					width: 100,
@@ -194,7 +194,7 @@ export default defineComponent({
 				{
 					title: 'Machine Number',
 					width: 200,
-					dataIndex: 'Number'
+					dataIndex: 'machineCount'
 				}
 			],
 			shopList: [],
