@@ -152,9 +152,6 @@ export default defineComponent({
 				// eslint-disable-next-line @typescript-eslint/no-use-before-define
 				getAreaList();
 			},
-			timeChange: () => {
-				console.log(2);
-			},
 			agentSearch: (value: any) => {
 				agentListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
 					data.agentList = res.data.data.list;
@@ -179,13 +176,13 @@ export default defineComponent({
 			handleChange: () => {
 				console.log('handleChange');
 			},
+			pageChange: () => {
+				data.search();
+			},
 			handleCreate: () => {
 				ROUTER.push({
 					path: 'EditorShop'
 				});
-			},
-			pageChange: () => {
-				data.search();
 			},
 			handleShopClick: (id: number) => {
 				ROUTER.push({

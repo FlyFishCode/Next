@@ -78,4 +78,16 @@ video {
 	display: flex;
 	justify-content: space-around;
 }
+.title-g {
+	border-bottom: 1px solid #1890ff;
+	text-indent: 5px;
+}
+.title-g::before {
+	display: block;
+	content: '';
+	width: 2px;
+	height: 23px;
+	position: absolute;
+	background: red;
+}
 </style>

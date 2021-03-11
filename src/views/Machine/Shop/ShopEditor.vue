@@ -114,13 +114,14 @@
 				<a-button size="small" type="primary" @click="preview">{{ '预览' }}</a-button>
 			</a-col>
 			<a-col :span="3" class="labelText">
-				{{ 'Supplier' }}
+				{{ 'Placing Type' }}
 			</a-col>
-			<a-col :span="9" class="radioStyle">
-				<a-radio-group name="radioGroup" v-model:value="infoVO.supplier">
-					<a-radio :value="1">{{ 'Yes' }}</a-radio>
-					<a-radio :value="0">{{ 'No' }}</a-radio>
-				</a-radio-group>
+			<a-col :span="9" class="selectSearch">
+				<a-select v-model:value="infoVO.longitude">
+					<a-select-option value="1">Free</a-select-option>
+					<a-select-option value="2">Rent</a-select-option>
+					<a-select-option value="3">Sell</a-select-option>
+				</a-select>
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
@@ -175,6 +176,15 @@
 			</a-col>
 			<a-col :span="9" class="radioStyle">
 				<a-radio-group name="radioGroup" v-model:value="infoVO.credit">
+					<a-radio :value="1">{{ 'Yes' }}</a-radio>
+					<a-radio :value="0">{{ 'No' }}</a-radio>
+				</a-radio-group>
+			</a-col>
+			<a-col :span="3" class="labelText">
+				{{ 'Supplier' }}
+			</a-col>
+			<a-col :span="9" class="radioStyle">
+				<a-radio-group name="radioGroup" v-model:value="infoVO.supplier">
 					<a-radio :value="1">{{ 'Yes' }}</a-radio>
 					<a-radio :value="0">{{ 'No' }}</a-radio>
 				</a-radio-group>
@@ -420,14 +430,19 @@ export default defineComponent({
 			},
 			search: () => {
 				shopMachineListHttp(data.machineVO).then((res) => {
-					data.tableList = res.data.data.list;
-					data.total = res.data.data.totalCount;
+					if (res.data.data) {
+						data.tableList = res.data.data.list;
+						data.total = res.data.data.totalCount;
+					}
 				});
 			},
-			create: () => createShopHttp(data.infoVO),
+			create: () => {
+				console.log(options.value.details);
+				return createShopHttp(data.infoVO);
+			},
 			update: () => {
-				console.log(options.value);
-				editShopHttp(data.infoVO);
+				console.log(options.value.details);
+				return editShopHttp(data.infoVO);
 			},
 			agentSearch: (value) => {
 				agentListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res) => {

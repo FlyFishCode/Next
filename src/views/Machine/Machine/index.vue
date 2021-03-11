@@ -12,14 +12,14 @@
 				{{ 'Label' }}
 			</a-col>
 			<a-col :span="3" class="selectSearch">
-				<a-input v-model:value="infoVO.url" allow-clear />
+				<a-input v-model:value="infoVO.name" allow-clear />
 			</a-col>
-			<a-col :span="3" class="labelText">
+			<a-col :span="2" class="labelText">
 				{{ 'Shop' }}
 			</a-col>
-			<a-col :span="3" class="selectSearch">
-				<a-select show-search v-model:value="infoVO.shopId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="shopSearch">
-					<a-select-option v-for="shop in shopList" :key="shop.id">
+			<a-col :span="4" class="selectSearch">
+				<a-select show-search v-model:value="infoVO.shopName" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="shopSearch">
+					<a-select-option v-for="shop in shopList" :key="shop.name">
 						<div :title="shop.name">{{ shop.name }}</div>
 					</a-select-option>
 				</a-select>
@@ -36,19 +36,17 @@
 				{{ 'Serial' }}
 			</a-col>
 			<a-col :span="3">
-				<a-input v-model:value="infoVO.url" allow-clear />
+				<a-input v-model:value="infoVO.serial" allow-clear />
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Life All Credits' }}
+				{{ 'Placing Type' }}
 			</a-col>
-			<a-col :span="3">
-				<a-input v-model:value="infoVO.url" allow-clear />
-			</a-col>
-			<a-col :span="3" class="labelText">
-				{{ 'Attracts' }}
-			</a-col>
-			<a-col :span="3">
-				<a-input v-model:value="infoVO.url" allow-clear />
+			<a-col :span="3" class="selectSearch">
+				<a-select v-model:value="infoVO.placingType" allow-clear>
+					<a-select-option value="1">Free</a-select-option>
+					<a-select-option value="2">Rent</a-select-option>
+					<a-select-option value="3">Sell</a-select-option>
+				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
 				{{ 'Last Online' }}
@@ -58,26 +56,6 @@
 			</a-col>
 			<a-col :span="2">
 				<a-date-picker v-model:value="infoVO.maxLastOnlineTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
-			</a-col>
-		</a-row>
-		<a-row class="rowStyle">
-			<a-col :span="2" class="labelText">
-				{{ 'Placing Type' }}
-			</a-col>
-			<a-col :span="3">
-				<a-input v-model:value="infoVO.url" allow-clear />
-			</a-col>
-			<a-col :span="2" class="labelText">
-				{{ 'Locked Dates' }}
-			</a-col>
-			<a-col :span="3">
-				<a-input v-model:value="infoVO.url" allow-clear />
-			</a-col>
-			<a-col :span="3" class="labelText">
-				{{ 'Current All Credits' }}
-			</a-col>
-			<a-col :span="3">
-				<a-input v-model:value="infoVO.url" allow-clear />
 			</a-col>
 			<a-col :span="2" class="labelText">
 				<a-button type="primary" size="small" @click="search">{{ '搜索' }}</a-button>
@@ -96,10 +74,10 @@
 		</a-col>
 		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
 			<template #label="{ record }">
-				<a-button type="link" @click="handleLabel(record.id)">{{ record.name }}</a-button>
+				<a-button type="link" @click="handleMachineClick(record.id)">{{ record.name }}</a-button>
 			</template>
 			<template #shop="{ record }">
-				<a-button type="link" @click="handleShop(record.id)">{{ record.shopName }}</a-button>
+				<a-button type="link" @click="handleShopClick(record.id)">{{ record.shopName }}</a-button>
 			</template>
 		</a-table>
 	</a-row>
@@ -126,12 +104,12 @@ export default defineComponent({
 		let selectList: number[] = [];
 		const data = reactive({
 			infoVO: {
-				free: '',
 				id: '',
 				name: '',
 				serial: '',
-				shopId: '',
+				shopName: '',
 				type: '',
+				placingType: '',
 				maxLastOnlineTime: '',
 				minLastOnlineTime: '',
 				pageIndex: 1,
@@ -167,14 +145,9 @@ export default defineComponent({
 					key: 'Serial'
 				},
 				{
-					title: 'Attracts',
-					dataIndex: 'age',
-					key: 'Attracts'
-				},
-				{
 					title: 'Placing Type',
-					dataIndex: 'age',
-					key: 'Placing Type'
+					dataIndex: 'placingType',
+					key: 'placingType'
 				},
 				{
 					title: 'Last Online',
@@ -183,18 +156,8 @@ export default defineComponent({
 				},
 				{
 					title: 'Locked Dates',
-					dataIndex: 'age',
+					dataIndex: 'lockedDates',
 					key: 'Locked Dates'
-				},
-				{
-					title: 'Life All Credits',
-					dataIndex: 'age',
-					key: 'Life All Credits'
-				},
-				{
-					title: 'Current All Credits',
-					dataIndex: 'age',
-					key: 'Current All Credits'
 				}
 			],
 			tableList: [],
@@ -223,25 +186,10 @@ export default defineComponent({
 					data.shopList = res.data.data.list;
 				});
 			},
-			shopChange: () => {
-				console.log(1);
-			},
 			search: () => {
 				MachineListHttp(data.infoVO).then((res: any) => {
 					data.tableList = res.data.data.list;
 					data.totalSize = res.data.data.totalCount;
-				});
-			},
-			handleLabel: (id: number) => {
-				ROUTER.push({
-					path: 'entryLabelPage',
-					query: { id }
-				});
-			},
-			handleShop: (id: number) => {
-				ROUTER.push({
-					path: 'entryShopPage',
-					query: { id }
 				});
 			},
 			handleDelete: () => {
@@ -252,11 +200,24 @@ export default defineComponent({
 					});
 				}
 			},
+			handleCreate: () => {
+				ROUTER.push('MachineEditor');
+			},
+			handleMachineClick: (id: number) => {
+				ROUTER.push({
+					path: 'MachineEditor',
+					query: { id }
+				});
+			},
+			handleShopClick: (id: number) => {
+				console.log(id);
+				ROUTER.push({
+					path: 'EditorShop',
+					query: { id }
+				});
+			},
 			handleChange: () => {
 				console.log('handleChange');
-			},
-			handleCreate: () => {
-				ROUTER.push('MachineCreate');
 			},
 			pageChange: (index: number) => {
 				data.infoVO.pageIndex = index;

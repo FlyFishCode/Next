@@ -3,6 +3,7 @@
 		<a-row class="rowStyle">
 			<a-tabs v-model:activeKey="optionValue" tab-position="left" class="tabBox">
 				<a-tab-pane key="1" tab="游戏设置">
+					<div class="title-g">标准游戏</div>
 					<a-row class="rowStyle">
 						<a-col :span="2" class="labelText">301 游戏</a-col>
 						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="details.gameSettings.check301"/></a-col>
@@ -72,7 +73,7 @@
 							</a-col>
 						</a-col>
 					</a-row>
-
+					<div class="title-g">米老鼠</div>
 					<a-row class="rowStyle">
 						<a-col :span="2" class="labelText">标准米老鼠</a-col>
 						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="details.gameSettings.mickey"/></a-col>
@@ -107,7 +108,7 @@
 							</a-col>
 						</a-col>
 					</a-row>
-
+					<div class="title-g">高分</div>
 					<a-row class="rowStyle">
 						<a-col :span="2" class="labelText">标准高分赛</a-col>
 						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="details.gameSettings.heightMatch"/></a-col>
@@ -142,7 +143,7 @@
 							</a-col>
 						</a-col>
 					</a-row>
-
+					<div class="title-g">其他游戏</div>
 					<a-row class="rowStyle">
 						<a-col :span="2" class="labelText">减半</a-col>
 						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="details.gameSettings.halve"/></a-col>
@@ -231,6 +232,44 @@
 							</a-col>
 						</a-col>
 					</a-row>
+					<div class="title-g">网上对战</div>
+					<a-row class="rowStyle">
+						<a-col :span="1" class="labelText">501</a-col>
+						<a-col :span="1" class="labelText">点数</a-col>
+						<a-col :span="2" class="selectSearch">
+							<a-select v-model:value="details.gameSettings.number301">
+								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+						<a-col :span="1" class="labelText">701</a-col>
+						<a-col :span="1" class="labelText">点数</a-col>
+						<a-col :span="2" class="selectSearch">
+							<a-select v-model:value="details.gameSettings.number301">
+								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+						<a-col :span="1" class="labelText">501DO</a-col>
+						<a-col :span="1" class="labelText">点数</a-col>
+						<a-col :span="2" class="selectSearch">
+							<a-select v-model:value="details.gameSettings.number301">
+								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+						<a-col :span="1" class="labelText">701MO</a-col>
+						<a-col :span="1" class="labelText">点数</a-col>
+						<a-col :span="2" class="selectSearch">
+							<a-select v-model:value="details.gameSettings.number301">
+								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+						<a-col :span="2" class="labelText">标准米老鼠</a-col>
+						<a-col :span="1" class="labelText">点数</a-col>
+						<a-col :span="2" class="selectSearch">
+							<a-select v-model:value="details.gameSettings.number301">
+								<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+					</a-row>
 				</a-tab-pane>
 				<a-tab-pane key="2" tab="通用设置">
 					<a-row class="rowStyle">
@@ -272,7 +311,7 @@
 						<a-col v-show="details.gameSettings.drink" :span="8" class="showBox">
 							<a-col :span="5" class="labelText">设置密码</a-col>
 							<a-col :span="9" class="selectSearch">
-								<a-input v-model:value="details.gameSettings.number301" type='password' allow-clear />
+								<a-input v-model:value="details.gameSettings.number301" type="password" allow-clear />
 							</a-col>
 						</a-col>
 					</a-row>
@@ -290,7 +329,38 @@
 						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="details.gameSettings.drink"/></a-col>
 					</a-row>
 				</a-tab-pane>
-				<a-tab-pane key="3" tab="投币设置"> </a-tab-pane>
+				<a-tab-pane key="3" tab="投币设置">
+					<a-row class="rowStyle">
+						<a-col :span="2" class="labelText">二维码开关</a-col>
+						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="details.gameSettings.drink"/></a-col>
+						<a-col :span="2" class="labelText">硬币开关</a-col>
+						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="details.gameSettings.drink"/></a-col>
+						<a-col :span="2" class="labelText">纸币开关</a-col>
+						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="details.gameSettings.drink"/></a-col>
+						<a-col :span="2" class="labelText">是否免费</a-col>
+						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="details.gameSettings.drink"/></a-col>
+						<a-col v-show="details.gameSettings.drink" :span="8" class="showBox">
+							<a-col :span="5" class="labelText">免费点数</a-col>
+							<a-col :span="9" class="selectSearch">
+								<a-input v-model:value="details.gameSettings.number301" allow-clear />
+							</a-col>
+						</a-col>
+					</a-row>
+					<a-row class="rowStyle">
+						<a-col :span="2" class="labelText">元/币</a-col>
+						<a-col :span="2">
+							<a-input v-model:value="details.gameSettings.number301" allow-clear />
+						</a-col>
+						<a-col :span="2" class="labelText">金额/币</a-col>
+						<a-col :span="2">
+							<a-input v-model:value="details.gameSettings.number301" allow-clear />
+						</a-col>
+						<a-col :span="2" class="labelText">币/点</a-col>
+						<a-col :span="2">
+							<a-input v-model:value="details.gameSettings.number301" allow-clear />
+						</a-col>
+					</a-row>
+				</a-tab-pane>
 			</a-tabs>
 		</a-row>
 	</div>
@@ -307,10 +377,10 @@ export default defineComponent({
 			optionValue: '1',
 			details: {
 				gameSettings: {
-					option301:{
+					option301: {
 						checked: true,
-						point:1,
-						round:1,
+						point: 1,
+						round: 1
 					},
 					check301: true,
 					check501: true,

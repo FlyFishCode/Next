@@ -10,4 +10,8 @@ const createShop = '/shop/insert';
 const shopMachineList = '/machine/listatshop';
 // 删除店铺
 const deleteShop = 'shop/delete';
-export { shopList, shopSingleInfo, editShopinfo, createShop, shopMachineList, deleteShop };
+// 新增机器
+const createMachine = 'machine/insert';
+// 修改机器
+const editorMachine = 'machine/insert';
+export { shopList, shopSingleInfo, editShopinfo, createShop, shopMachineList, deleteShop, createMachine, editorMachine };

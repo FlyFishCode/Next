@@ -51,19 +51,14 @@ const routes: Array<RouteRecordRaw> = [
 				component: () => import(/* webpackChunkName: "Machine" */ '../views/Machine/Machine/index.vue')
 			},
 			{
-				path: '/MachineCreate',
-				name: 'MachineCreate',
-				component: () => import(/* webpackChunkName: "MachineCreate" */ '../views/Machine/Machine/MachineCreate.vue')
+				path: '/MachineEditor',
+				name: 'MachineEditor',
+				component: () => import(/* webpackChunkName: "MachineEditor" */ '../views/Machine/Machine/MachineEditor.vue')
 			},
 			{
 				path: '/entryLabelPage',
 				name: 'entryLabelPage',
 				component: () => import(/* webpackChunkName: "entryLabelPage" */ '../views/Machine/Machine/entryLabelPage.vue')
-			},
-			{
-				path: '/entryShopPage',
-				name: 'entryShopPage',
-				component: () => import(/* webpackChunkName: "entryShopPage" */ '../views/Machine/Machine/entryShopPage.vue')
 			},
 			{
 				path: '/EditorShop',
