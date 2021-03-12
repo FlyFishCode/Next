@@ -17,48 +17,16 @@
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
-				{{ 'Agent' }}
-			</a-col>
-			<a-col :span="9" class="selectSearch">
-				<a-select show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
-					<a-select-option v-for="d in agentList" :key="d.id">
-						<div :title="d.name">{{ d.name }}</div>
-					</a-select-option>
-				</a-select>
-			</a-col>
-			<!-- <a-col :span="3" class="labelText">
-				{{ 'Owner' }}
-			</a-col>
-			<a-col :span="9" class="selectSearch">
-				<a-select show-search v-model:value="infoVO.ownerId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="ownerSearch">
-					<a-select-option v-for="d in ownerList" :key="d.id">
-						<div :title="d.username">{{ d.username }}</div>
-					</a-select-option>
-				</a-select>
-			</a-col> -->
-			<a-col :span="3" class="labelText">
 				{{ 'Attracts' }}
 			</a-col>
 			<a-col :span="9">
-				<a-input v-model:value="infoVO.title" />
-			</a-col>
-		</a-row>
-		<a-row v-if="isAdmin" class="rowStyle">
-			<a-col :span="3" class="labelText">
-				{{ 'Country' }}
-			</a-col>
-			<a-col :span="9">
-				<a-select v-model:value="infoVO.countryId" @change="countryChange" class="selectBox" allowClear>
-					<a-select-option v-for="item in countryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
-				</a-select>
+				<a-input v-model:value="infoVO.attracts" allow-clear />
 			</a-col>
 			<a-col :span="3" class="labelText">
-				{{ 'Area' }}
+				{{ 'Average Cost' }}
 			</a-col>
 			<a-col :span="9">
-				<a-select v-model:value="infoVO.areaId" class="selectBox" allowClear>
-					<a-select-option v-for="item in areaList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
-				</a-select>
+				<a-input v-model:value="infoVO.averageCost" allow-clear />
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
@@ -114,14 +82,13 @@
 				<a-button size="small" type="primary" @click="preview">{{ '预览' }}</a-button>
 			</a-col>
 			<a-col :span="3" class="labelText">
-				{{ 'Placing Type' }}
+				{{ 'Supplier' }}
 			</a-col>
-			<a-col :span="9" class="selectSearch">
-				<a-select v-model:value="infoVO.longitude">
-					<a-select-option value="1">Free</a-select-option>
-					<a-select-option value="2">Rent</a-select-option>
-					<a-select-option value="3">Sell</a-select-option>
-				</a-select>
+			<a-col :span="9" class="radioStyle">
+				<a-radio-group name="radioGroup" v-model:value="infoVO.supplier">
+					<a-radio :value="1">{{ 'Yes' }}</a-radio>
+					<a-radio :value="0">{{ 'No' }}</a-radio>
+				</a-radio-group>
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
@@ -180,22 +147,33 @@
 					<a-radio :value="0">{{ 'No' }}</a-radio>
 				</a-radio-group>
 			</a-col>
-			<a-col :span="3" class="labelText">
-				{{ 'Supplier' }}
+			<a-col v-if="isAdmin" :span="3" class="labelText">
+				{{ 'Agent' }}
 			</a-col>
-			<a-col :span="9" class="radioStyle">
-				<a-radio-group name="radioGroup" v-model:value="infoVO.supplier">
-					<a-radio :value="1">{{ 'Yes' }}</a-radio>
-					<a-radio :value="0">{{ 'No' }}</a-radio>
-				</a-radio-group>
+			<a-col v-if="isAdmin" :span="9" class="selectSearch">
+				<a-select show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
+					<a-select-option v-for="d in agentList" :key="d.id">
+						<div :title="d.name">{{ d.name }}</div>
+					</a-select-option>
+				</a-select>
 			</a-col>
 		</a-row>
-		<a-row class="rowStyle">
+		<a-row v-if="isAdmin" class="rowStyle">
 			<a-col :span="3" class="labelText">
-				{{ 'Average Cost' }}
+				{{ 'Country' }}
 			</a-col>
-			<a-col :span="21">
-				<a-input v-model:value="infoVO.averageCost" />
+			<a-col :span="9">
+				<a-select v-model:value="infoVO.countryId" @change="countryChange" class="selectBox" allowClear>
+					<a-select-option v-for="item in countryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+				</a-select>
+			</a-col>
+			<a-col :span="3" class="labelText">
+				{{ 'Area' }}
+			</a-col>
+			<a-col :span="9">
+				<a-select v-model:value="infoVO.areaId" class="selectBox" allowClear>
+					<a-select-option v-for="item in areaList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+				</a-select>
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
@@ -231,10 +209,14 @@
 					<a-input v-model:value="machineVO.serial" allow-clear />
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ 'Current Credits' }}
+					{{ 'Placing Type' }}
 				</a-col>
-				<a-col :span="4">
-					<a-input v-model:value="machineVO.title" allow-clear />
+				<a-col :span="4" class="selectSearch">
+					<a-select v-model:value="machineVO.placingType" allow-clear>
+						<a-select-option :value="1">Free</a-select-option>
+						<a-select-option :value="2">Rent</a-select-option>
+						<a-select-option :value="3">Sell</a-select-option>
+					</a-select>
 				</a-col>
 			</a-row>
 			<a-row class="rowStyle">
@@ -248,16 +230,10 @@
 					<a-date-picker v-model:value="machineVO.maxLastOnlineTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ 'Life Credits' }}
+					{{ 'Type' }}
 				</a-col>
 				<a-col :span="4">
-					<a-input v-model:value="machineVO.title" allow-clear />
-				</a-col>
-				<a-col :span="2" class="labelText">
-					{{ 'Current Coins' }}
-				</a-col>
-				<a-col :span="4">
-					<a-input v-model:value="machineVO.title" allow-clear />
+					<a-input v-model:value="machineVO.type" allow-clear />
 				</a-col>
 				<a-col :span="2" class="labelText">
 					<a-button type="primary" size="small" @click="search">{{ '搜索' }}</a-button>
@@ -265,7 +241,13 @@
 			</a-row>
 		</div>
 		<a-row class="rowStyle">
-			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" class="tableStyle" rowKey="id"></a-table>
+			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" class="tableStyle" rowKey="id">
+				<template #PlacingType="{ record }">
+					<div v-if="record.placingType === 1">{{ 'Free' }}</div>
+					<div v-if="record.placingType === 2">{{ 'Rent' }}</div>
+					<div v-if="record.placingType === 3">{{ 'Sell' }}</div>
+				</template>
+			</a-table>
 		</a-row>
 		<div class="paginationStyle">
 			<a-pagination show-quick-jumper v-model:current="currentPage" :total="total" @change="pageChange" />
@@ -304,7 +286,7 @@ export default defineComponent({
 	},
 	setup() {
 		const ROUTE = useRoute();
-		const isAdmin = false;
+		const isAdmin = true;
 		const id = ROUTE.query.id;
 		const options = ref(null);
 		const data = reactive({
@@ -312,12 +294,13 @@ export default defineComponent({
 			mapDialog: false,
 			urlBox: false,
 			infoVO: {
+				id: id,
 				name: '',
 				type: '',
 				agentId: '',
-				ownerId: '',
 				countryId: '',
 				areaId: '',
+				attracts: '',
 				address: '',
 				phone: '',
 				fax: '',
@@ -325,7 +308,6 @@ export default defineComponent({
 				website: '',
 				img: '',
 				businessHours: '',
-				title: '',
 				longitude: '',
 				latitude: '',
 				room: 1,
@@ -339,8 +321,10 @@ export default defineComponent({
 			machineVO: {
 				id: '',
 				name: '',
+				type: '',
 				shopId: id,
 				serial: '',
+				placingType: '',
 				minLastOnlineTime: '',
 				maxLastOnlineTime: '',
 				pageIndex: 1,
@@ -368,12 +352,7 @@ export default defineComponent({
 					key: 'Serial'
 				},
 				{
-					title: 'Shop',
-					dataIndex: 'shopName',
-					key: 'Shop'
-				},
-				{
-					title: 'Time',
+					title: 'Last Online',
 					dataIndex: 'lastOnlineTime',
 					key: 'Time'
 				},
@@ -383,9 +362,9 @@ export default defineComponent({
 					key: 'Type'
 				},
 				{
-					title: 'Attracts',
-					dataIndex: 'age',
-					key: 'Attracts'
+					title: 'Placing Type',
+					dataIndex: 'Placing Type',
+					slots: { customRender: 'PlacingType' }
 				}
 			],
 			tableList: [{ id: 1 }],
@@ -468,9 +447,37 @@ export default defineComponent({
 				});
 			};
 		};
+		const setInfoData = (response) => {
+			data.infoVO.name = response.name;
+			data.infoVO.type = response.type;
+			data.infoVO.agentId = response.agentId;
+			data.infoVO.attracts = response.attracts;
+			data.infoVO.address = response.address;
+			data.infoVO.phone = response.phone;
+			data.infoVO.fax = response.fax;
+			data.infoVO.email = response.email;
+			data.infoVO.website = response.website;
+			data.infoVO.website = response.website;
+			data.infoVO.businessHours = response.businessHours;
+			data.infoVO.img = response.img;
+			data.infoVO.supplier = response.supplier;
+			data.infoVO.longitude = response.longitude;
+			data.infoVO.latitude = response.latitude;
+			data.infoVO.isValid = response.isValid;
+			data.infoVO.room = response.room;
+			data.infoVO.parking = response.parking;
+			data.infoVO.credit = response.credit;
+			data.infoVO.averageCost = response.averageCost;
+			data.infoVO.memo = response.memo;
+			if (isAdmin) {
+				data.infoVO.countryId = response.countryId;
+				data.infoVO.areaId = response.areaId;
+				data.infoVO.agentId = response.agentId;
+			}
+		};
 		const getShopInfo = (id) => {
 			shopSingleInfoHttp({ shopId: id }).then((res) => {
-				data.infoVO = res.data.data;
+				setInfoData(res.data.data);
 			});
 		};
 		const getCountryList = () => {
@@ -486,7 +493,7 @@ export default defineComponent({
 		const init = (id) => {
 			getCountryList();
 			getAreaList();
-			data.agentSearch('');
+			// data.agentSearch('');
 			data.search();
 			if (id) {
 				getShopInfo(id);

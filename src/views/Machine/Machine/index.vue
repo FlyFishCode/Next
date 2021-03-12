@@ -77,7 +77,7 @@
 				<a-button type="link" @click="handleMachineClick(record.id)">{{ record.name }}</a-button>
 			</template>
 			<template #shop="{ record }">
-				<a-button type="link" @click="handleShopClick(record.id)">{{ record.shopName }}</a-button>
+				<a-button type="link" @click="handleShopClick(record.shopId)">{{ record.shopName }}</a-button>
 			</template>
 		</a-table>
 	</a-row>
@@ -210,7 +210,6 @@ export default defineComponent({
 				});
 			},
 			handleShopClick: (id: number) => {
-				console.log(id);
 				ROUTER.push({
 					path: 'EditorShop',
 					query: { id }

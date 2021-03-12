@@ -266,13 +266,13 @@ export default defineComponent({
 			},
 			AdvertEdit: (id: number) => {
 				ROUTER.push({
-					path: 'MachineEditor',
+					path: 'EditorMachine',
 					query: { id }
 				});
 			},
 			handleTitleClick: (id: number) => {
 				ROUTER.push({
-					path: 'MachineEditor',
+					path: 'EditorMachine',
 					query: { id }
 				});
 			},
@@ -283,7 +283,7 @@ export default defineComponent({
 				});
 			},
 			handleCreate: () => {
-				ROUTER.push('MachineEditor');
+				ROUTER.push('EditorMachine');
 			},
 			pageChange: () => {
 				AdvertTableListHttp(data.infoVO).then((res: any) => {

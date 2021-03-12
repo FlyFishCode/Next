@@ -31,9 +31,9 @@ const routes: Array<RouteRecordRaw> = [
 				component: () => import(/* webpackChunkName: "ShopInfo" */ '../views/Bulletin/Advert/Shop/ShopInfo.vue')
 			},
 			{
-				path: '/MachineEditor',
-				name: 'MachineEditor',
-				component: () => import(/* webpackChunkName: "MachineEditor" */ '../views/Bulletin/Advert/Machine/MachineEditor.vue')
+				path: '/EditorMachine',
+				name: 'EditorMachine',
+				component: () => import(/* webpackChunkName: "EditorMachine" */ '../views/Bulletin/Advert/Machine/MachineEditor.vue')
 			},
 			{
 				path: '/MachineInfo',
