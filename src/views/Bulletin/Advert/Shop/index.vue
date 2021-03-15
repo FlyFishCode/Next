@@ -83,11 +83,11 @@
 			<template #ShopNumber="{ record }">
 				<div>{{ record.shopList.length }}</div>
 			</template>
-			<template #handle="{ record }">
+			<!-- <template #handle="{ record }">
 				<div class="tableBtn">
 					<a-button size="small" type="primary" @click="AdvertEdit(record.id)">{{ 'edit' }}</a-button>
 				</div>
-			</template>
+			</template> -->
 		</a-table>
 	</a-row>
 	<showUrlDialog :visible="urlBox" :src="src" @showBoxCancel="showBoxCancel" />
@@ -161,9 +161,6 @@ export default defineComponent({
 				{
 					title: 'Creation time',
 					dataIndex: 'createTime'
-				},
-				{
-					slots: { customRender: 'handle' }
 				}
 			],
 			shopList: [],
@@ -262,12 +259,12 @@ export default defineComponent({
 			handleDeleteAll: () => {
 				data.allVisible = true;
 			},
-			AdvertEdit: (id: number) => {
-				ROUTER.push({
-					path: 'ShopEditor',
-					query: { id }
-				});
-			},
+			// AdvertEdit: (id: number) => {
+			// 	ROUTER.push({
+			// 		path: 'ShopEditor',
+			// 		query: { id }
+			// 	});
+			// },
 			handleTitleClick: (id: number) => {
 				ROUTER.push({
 					path: 'ShopEditor',

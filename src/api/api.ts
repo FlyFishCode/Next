@@ -6,7 +6,19 @@ import { loginUrl, changePassword, userList, countryList, areaList } from '@/api
 import { AdvertTableList, AdvertTableAdd, AdvertSearch, AdvertChange, AdvertList, MachineInfo, deleteAdvertShop, deleteAdvert, MachineList } from '@/api/Advert/index';
 
 // Machine
-import { shopList, shopSingleInfo, editShopinfo, createShop, shopMachineList, deleteShop, createMachine, editorMachine, getMachineInfo } from '@/api/Machine/index';
+import {
+	shopList,
+	shopSingleInfo,
+	editShopinfo,
+	createShop,
+	shopMachineList,
+	deleteShop,
+	createMachine,
+	editorMachine,
+	getMachineInfo,
+	getShopMachineSetting,
+	setShopMachineSetting
+} from '@/api/Machine/index';
 
 // Agent
 import { agentList } from '@/api/Agent/index';
@@ -150,6 +162,14 @@ const editorMachineHttp = (data: any) => {
 const getMachineInfoHttp = (data: any) => {
 	return Axios.get(getNewUrl(getMachineInfo, data));
 };
+// 查询店铺下机器设置
+const getShopMachineSettingHttp = (data: any) => {
+	return Axios.get(getNewUrl(getShopMachineSetting, data));
+};
+// 修改店铺下机器设置
+const setShopMachineSettingHttp = (data: any) => {
+	return Axios.post(setShopMachineSetting, data);
+};
 export {
 	loginHttp,
 	changePasswordHttp,
@@ -174,5 +194,7 @@ export {
 	MachineListHttp,
 	createMachineHttp,
 	editorMachineHttp,
-	getMachineInfoHttp
+	getMachineInfoHttp,
+	getShopMachineSettingHttp,
+	setShopMachineSettingHttp
 };

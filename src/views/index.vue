@@ -17,14 +17,14 @@
 					<a-menu-item key="Shop">Shop</a-menu-item>
 					<a-menu-item key="Machine">Machine</a-menu-item>
 				</a-sub-menu>
-				<a-sub-menu key="sub3">
+				<!-- <a-sub-menu key="sub3">
 					<template #title>
 						<span><SettingOutlined /><span>Credit</span></span>
 					</template>
 					<a-menu-item key="Order">Order</a-menu-item>
 					<a-menu-item key="CreditCard">Credit Card</a-menu-item>
 					<a-menu-item key="MachineOrder">Machine Order</a-menu-item>
-				</a-sub-menu>
+				</a-sub-menu> -->
 			</a-menu>
 		</a-col>
 		<a-col :span="20" class="centent">
@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue';
-import { MailOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons-vue';
+import { MailOutlined, AppstoreOutlined } from '@ant-design/icons-vue';
 import hearder from '@/components/hearder.vue';
 import { useRouter } from 'vue-router';
 
@@ -53,7 +53,6 @@ export default defineComponent({
 	components: {
 		MailOutlined,
 		AppstoreOutlined,
-		SettingOutlined,
 		hearder
 	},
 	setup() {

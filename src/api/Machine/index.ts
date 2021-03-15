@@ -16,4 +16,8 @@ const createMachine = 'machine/insert';
 const editorMachine = 'machine/update';
 // 查询机器
 const getMachineInfo = 'machine/select';
-export { shopList, shopSingleInfo, editShopinfo, createShop, shopMachineList, deleteShop, createMachine, editorMachine, getMachineInfo };
+// 查询店铺下机器设置
+const getShopMachineSetting = 'shop/selectshopmachinesetting';
+// 修改店铺下机器设置
+const setShopMachineSetting = 'shop/updateshopmachinesetting';
+export { shopList, shopSingleInfo, editShopinfo, createShop, shopMachineList, deleteShop, createMachine, editorMachine, getMachineInfo, getShopMachineSetting, setShopMachineSetting };

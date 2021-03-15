@@ -27,8 +27,11 @@
 			<a-col :span="2" class="labelText">
 				{{ 'Type' }}
 			</a-col>
-			<a-col :span="4">
-				<a-input v-model:value="infoVO.type" allow-clear />
+			<a-col :span="4" class="selectSearch">
+				<a-select v-model:value="infoVO.type" allow-clear>
+					<a-select-option value="A1">A1</a-select-option>
+					<a-select-option value="W1">W1</a-select-option>
+				</a-select>
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
@@ -66,11 +69,11 @@
 		<a-col :span="1">
 			<a-button type="danger" size="small" @click="handleDelete">{{ '删除' }}</a-button>
 		</a-col>
-		<!-- <a-col :span="1">
-			<a-button type="primary" size="small" @click="handleChange">{{ '修改' }}</a-button>
-		</a-col> -->
 		<a-col :span="1">
 			<a-button type="primary" size="small" @click="handleCreate">{{ '创建' }}</a-button>
+		</a-col>
+		<a-col :span="1">
+			<a-button type="primary" size="small" @click="handleSetting">{{ '设置' }}</a-button>
 		</a-col>
 		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
 			<template #label="{ record }">
@@ -215,8 +218,8 @@ export default defineComponent({
 					query: { id }
 				});
 			},
-			handleChange: () => {
-				console.log('handleChange');
+			handleSetting: () => {
+				console.log('handleSetting');
 			},
 			pageChange: (index: number) => {
 				data.infoVO.pageIndex = index;

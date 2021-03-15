@@ -71,6 +71,11 @@ const routes: Array<RouteRecordRaw> = [
 				component: () => import(/* webpackChunkName: "Shop" */ '../views/Machine/Shop/index.vue')
 			},
 			{
+				path: '/shopGameOptions',
+				name: 'shopGameOptions',
+				component: () => import(/* webpackChunkName: "shopGameOptions" */ '../views/Machine/Shop/shopGameOptions.vue')
+			},
+			{
 				path: '/CreditCard',
 				name: 'CreditCard',
 				component: () => import(/* webpackChunkName: "CreditCard" */ '../views/Credit/CreditCard/index.vue')

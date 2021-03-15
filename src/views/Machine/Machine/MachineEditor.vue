@@ -1,5 +1,5 @@
 <template>
-	<labelTitle :value="'MachineCreate'" :btn="id ? update : create" />
+	<labelTitle :value="'MachineEditor'" :btn="id ? update : create" />
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
@@ -11,8 +11,11 @@
 			<a-col :span="3" class="labelText">
 				{{ 'Type' }}
 			</a-col>
-			<a-col :span="9">
-				<a-input v-model:value="infoVO.type" allow-clear />
+			<a-col :span="9" class="selectSearch">
+				<a-select v-model:value="infoVO.type" allow-clear>
+					<a-select-option value="A1">A1</a-select-option>
+					<a-select-option value="W1">W1</a-select-option>
+				</a-select>
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
@@ -182,7 +185,7 @@ export default defineComponent({
 				data.infoVO.placingType = res.data.data.placingType;
 				data.infoVO.serial = res.data.data.serial;
 				data.infoVO.memo = res.data.data.memo;
-				data.infoVO.setting =  res.data.data.setting
+				data.infoVO.setting = res.data.data.setting;
 			});
 		};
 		onMounted(() => {

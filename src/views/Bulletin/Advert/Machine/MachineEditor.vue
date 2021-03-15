@@ -65,6 +65,9 @@
 					<a-button key="submit" type="primary" @click="handleOk">Ok</a-button>
 				</div>
 			</template>
+			<div class="paginationStyle">
+				<a-pagination show-quick-jumper v-model:current="shopVO.pageIndex" :total="machineTotal" @change="pageChange" />
+			</div>
 		</a-modal>
 	</div>
 </template>
@@ -79,10 +82,10 @@ import { useRoute } from 'vue-router';
 import { message } from 'ant-design-vue';
 
 interface DataProps {
+	machineTotal: number;
 	getMachineList: () => void;
 	machineList: any;
 	tableList: any[];
-	allMachineList: any[];
 	showUrlDialog: boolean;
 	showShopDialog: boolean;
 	infoVO: { [x: string]: any };
@@ -128,7 +131,6 @@ export default defineComponent({
 				hideDefaultSelections: true,
 				onChange: (changableRowKeys: any) => {
 					defaultSelectList.value = changableRowKeys;
-					console.log(defaultSelectList.value);
 				}
 			};
 		});
@@ -147,8 +149,9 @@ export default defineComponent({
 			shopVO: {
 				name: '',
 				pageIndex: 1,
-				pageSize: 99999
+				pageSize: 10
 			},
+			machineTotal: 1,
 			columns: [
 				{
 					title: 'Shop Name',
@@ -190,7 +193,6 @@ export default defineComponent({
 				}
 			],
 			machineList: [],
-			allMachineList: [],
 			tableList: [],
 			rowSelection: {
 				columnWidth: 50,
@@ -258,16 +260,11 @@ export default defineComponent({
 			getMachineList: () => {
 				MachineListHttp(data.shopVO).then((res) => {
 					data.machineList = res.data.data.list;
-				});
-				MachineListHttp({ name: '', pageSize: 9999 }).then((res) => {
-					data.allMachineList = res.data.data.list;
+					data.machineTotal = res.data.data.totalCount;
 				});
 			},
-			shopChange: () => {
+			pageChange: () => {
 				data.getMachineList();
-			},
-			handleChange(value: any) {
-				console.log(value);
 			},
 			create: () => {
 				data.infoVO.machineIds = data.tableList.map((i: any) => i.id);
@@ -277,10 +274,6 @@ export default defineComponent({
 				obj.title = data.infoVO.title;
 				obj.url = data.infoVO.url;
 				return AdvertChangeHttp(obj);
-			},
-			pageChange: () => {
-				// eslint-disable-next-line @typescript-eslint/no-use-before-define
-				getInfo();
 			}
 		});
 		const getInfo = () => {
@@ -303,7 +296,6 @@ export default defineComponent({
 		});
 		return {
 			...toRefs(data),
-			defaultSelectList,
 			shopRowSelection,
 			ROUTE
 		};

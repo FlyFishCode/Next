@@ -57,11 +57,11 @@
 		<a-col :span="1">
 			<a-button type="danger" size="small" @click="handleDelete">{{ '删除' }}</a-button>
 		</a-col>
-		<!-- <a-col :span="1">
-			<a-button type="primary" size="small" @click="handleChange">{{ '修改' }}</a-button>
-		</a-col> -->
 		<a-col :span="1">
 			<a-button type="primary" size="small" @click="handleCreate">{{ '创建' }}</a-button>
+		</a-col>
+		<a-col :span="1">
+			<a-button type="primary" size="small" @click="handleSetting">{{ '设置' }}</a-button>
 		</a-col>
 		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
 			<template #name="{ record }">
@@ -173,8 +173,10 @@ export default defineComponent({
 					console.log('1111111');
 				}
 			},
-			handleChange: () => {
-				console.log('handleChange');
+			handleSetting: () => {
+				ROUTER.push({
+					path: 'shopGameOptions'
+				});
 			},
 			pageChange: () => {
 				data.search();
