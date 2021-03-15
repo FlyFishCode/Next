@@ -219,7 +219,9 @@ export default defineComponent({
 				});
 			},
 			handleSetting: () => {
-				console.log('handleSetting');
+				ROUTER.push({
+					path: 'MachineGameOptions'
+				});
 			},
 			pageChange: (index: number) => {
 				data.infoVO.pageIndex = index;

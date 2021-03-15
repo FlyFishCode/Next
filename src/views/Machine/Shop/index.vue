@@ -175,7 +175,7 @@ export default defineComponent({
 			},
 			handleSetting: () => {
 				ROUTER.push({
-					path: 'shopGameOptions'
+					path: 'ShopGameOptions'
 				});
 			},
 			pageChange: () => {
