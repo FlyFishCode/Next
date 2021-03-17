@@ -1,5 +1,5 @@
 <template>
-	<div class="gameBox">
+	<div>
 		<a-row class="rowStyle">
 			<a-tabs v-model:activeKey="optionValue" tab-position="left" class="tabBox">
 				<a-tab-pane key="1" tab="游戏设置">
@@ -431,7 +431,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue';
-
+import { deepClone, initDataToNumber, initDataToBoolean } from '@/components/common/tools';
 enum State {
 	OFF,
 	NO = 0,
@@ -808,11 +808,22 @@ export default defineComponent({
 				{ id: 2, label: '50/50' }
 			]
 		});
+		const getData = () => {
+			const obj = deepClone(data.setting);
+			initDataToNumber(obj);
+			obj.others = JSON.stringify(obj.others);
+			obj.common = JSON.stringify(obj.common);
+			return obj;
+		};
 		const setData = (obj: any) => {
+			obj.others = JSON.parse(obj.others);
+			obj.common = JSON.parse(obj.common);
+			initDataToBoolean(obj);
 			data.setting = obj;
 		};
 		return {
 			...toRefs(data),
+			getData,
 			setData
 		};
 	}

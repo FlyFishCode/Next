@@ -17,7 +17,8 @@ import {
 	editorMachine,
 	getMachineInfo,
 	getShopMachineSetting,
-	setShopMachineSetting
+	setShopMachineSetting,
+	setMachineSetting
 } from '@/api/Machine/index';
 
 // Agent
@@ -170,6 +171,10 @@ const getShopMachineSettingHttp = (data: any) => {
 const setShopMachineSettingHttp = (data: any) => {
 	return Axios.post(setShopMachineSetting, data);
 };
+// 修改机器设置
+const setMachineSettingHttp = (data: any) => {
+	return Axios.post(setMachineSetting, data);
+};
 export {
 	loginHttp,
 	changePasswordHttp,
@@ -196,5 +201,6 @@ export {
 	editorMachineHttp,
 	getMachineInfoHttp,
 	getShopMachineSettingHttp,
-	setShopMachineSettingHttp
+	setShopMachineSettingHttp,
+	setMachineSettingHttp
 };

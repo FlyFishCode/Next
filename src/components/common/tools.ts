@@ -40,6 +40,7 @@ const initDataToNumber = (data: any) => {
 };
 
 const initDataToBoolean = (data: any) => {
+	// 转换布尔类型为数字类型
 	const matchList = [
 		'mode',
 		'allGameOfMatch',

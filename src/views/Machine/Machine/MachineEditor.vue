@@ -86,7 +86,10 @@ export default defineComponent({
 				shopId: '',
 				serial: '',
 				memo: '',
-				setting: {},
+				setting: {
+					common: '',
+					others: ''
+				},
 				placingType: 1,
 				pageIndex: 1,
 				pageSize: 10
@@ -167,11 +170,11 @@ export default defineComponent({
 				console.log(value);
 			},
 			create: () => {
-				data.infoVO.setting = options.value.setting;
+				data.infoVO.setting = options.value.getData();
 				return createMachineHttp(data.infoVO);
 			},
 			update: () => {
-				data.infoVO.setting = options.value.setting;
+				data.infoVO.setting = options.value.getData();
 				return editorMachineHttp(data.infoVO);
 			}
 		});
@@ -185,7 +188,7 @@ export default defineComponent({
 				data.infoVO.placingType = res.data.data.placingType;
 				data.infoVO.serial = res.data.data.serial;
 				data.infoVO.memo = res.data.data.memo;
-				data.infoVO.setting = res.data.data.setting;
+				options.value.setData(res.data.data.setting);
 			});
 		};
 		onMounted(() => {

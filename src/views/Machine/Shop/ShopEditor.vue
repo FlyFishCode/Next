@@ -185,12 +185,6 @@
 			</a-col>
 		</a-row>
 	</div>
-	<a-row class="rowStyle" type="flex" justify="end">
-		<a-col :sapn="1">
-			<a-button type="primary" size="small" @click="saveGameOption">{{ '保存' }}</a-button>
-		</a-col>
-	</a-row>
-	<MachineOptions ref="options" :gameOptions="infoVO.machineSetting" />
 	<div v-if="id">
 		<labelTitle :value="'Machines'" />
 		<div class="searchBox">
@@ -252,11 +246,17 @@
 					<div v-if="record.placingType === 2">{{ 'Rent' }}</div>
 					<div v-if="record.placingType === 3">{{ 'Sell' }}</div>
 				</template>
+				<template #gameSetting="{ record }">
+					<a-button size="small" type="primary" @click="setGameSetting(record.id)">{{ '游戏设置' }}</a-button>
+				</template>
 			</a-table>
 		</a-row>
 		<div class="paginationStyle">
 			<a-pagination show-quick-jumper v-model:current="currentPage" :total="total" @change="pageChange" />
 		</div>
+	</div>
+	<div v-else>
+		<MachineOptions ref="options" :gameOptions="infoVO.machineSetting" />
 	</div>
 	<showUrlDialog :visible="urlBox" :src="infoVO.img" @showBoxCancel="showBoxCancel" />
 	<a-modal v-model:visible="mapDialog" title="Map" width="50%" :footer="null">
@@ -272,6 +272,15 @@
 		</a-row>
 		<div id="map"></div>
 	</a-modal>
+	<!-- 机器设置弹框 -->
+	<a-modal v-model:visible="MachineSettingDialog" title="Game Setting" width="80%" :footer="null" centered>
+		<a-row class="rowStyle" type="flex" justify="end">
+			<a-col :sapn="1">
+				<a-button type="primary" size="small" @click="saveGameOption">{{ '保存' }}</a-button>
+			</a-col>
+		</a-row>
+		<MachineOptions ref="options" :gameOptions="infoVO.machineSetting" />
+	</a-modal>
 </template>
 
 <script>
@@ -279,10 +288,9 @@ import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
 import showUrlDialog from '@/components/common/showUrlDialog.vue';
 import { useRoute } from 'vue-router';
-import { shopSingleInfoHttp, agentListHttp, countryListHttp, areaListHttp, editShopHttp, createShopHttp, shopMachineListHttp, getShopMachineSettingHttp, setShopMachineSettingHttp } from '@/api/api';
+import { shopSingleInfoHttp, agentListHttp, countryListHttp, areaListHttp, editShopHttp, createShopHttp, shopMachineListHttp, setMachineSettingHttp, getMachineInfoHttp } from '@/api/api';
 import { message } from 'ant-design-vue';
 import MachineOptions from '@/components/common/MachineOptions.vue';
-import { deepClone, initDataToNumber, initDataToBoolean } from '@/components/common/tools';
 export default defineComponent({
 	name: 'ShopEditor',
 	components: {
@@ -295,10 +303,12 @@ export default defineComponent({
 		const isAdmin = true;
 		const id = ROUTE.query.id;
 		const options = ref(null);
+		let currentMachineId = null;
 		const data = reactive({
 			map: false,
 			mapDialog: false,
 			urlBox: false,
+			MachineSettingDialog: false,
 			infoVO: {
 				id: id,
 				name: '',
@@ -372,6 +382,9 @@ export default defineComponent({
 					title: 'Placing Type',
 					dataIndex: 'Placing Type',
 					slots: { customRender: 'PlacingType' }
+				},
+				{
+					slots: { customRender: 'gameSetting' }
 				}
 			],
 			tableList: [{ id: 1 }],
@@ -423,28 +436,31 @@ export default defineComponent({
 				});
 			},
 			create: () => {
-				data.infoVO.machineSetting = deepClone(options.value.setting);
-				// eslint-disable-next-line @typescript-eslint/no-use-before-define
-				initDataToNumber(data.infoVO.machineSetting);
-				data.infoVO.machineSetting.common = JSON.stringify(data.infoVO.machineSetting.common);
-				data.infoVO.machineSetting.others = JSON.stringify(data.infoVO.machineSetting.others);
-				return createShopHttp(data.infoVO);
+				debugger;
+				return createShopHttp(options.value.getData());
 			},
 			update: () => {
 				return editShopHttp(data.infoVO);
 			},
+			setGameSetting: (id) => {
+				getMachineInfoHttp({ machineId: id }).then((res) => {
+					if (res.data.data.setting) {
+						options.value.setData(res.data.data.setting);
+					}
+				});
+				data.MachineSettingDialog = true;
+				currentMachineId = id;
+			},
 			saveGameOption: () => {
 				const obj = {
-					shopId: id,
-					common: '',
-					others: ''
+					machineId: currentMachineId,
+					common: options.value.getData().common,
+					others: options.value.getData().others
 				};
-				data.infoVO.machineSetting = deepClone(options.value.setting);
-				// eslint-disable-next-line @typescript-eslint/no-use-before-define
-				initDataToNumber(data.infoVO.machineSetting);
-				obj.common = JSON.stringify(data.infoVO.machineSetting.common);
-				obj.others = JSON.stringify(data.infoVO.machineSetting.others);
-				setShopMachineSettingHttp(obj).then((res) => {
+				setMachineSettingHttp(obj).then((res) => {
+					if (res.data.code == 100) {
+						data.MachineSettingDialog = false;
+					}
 					message.warning(res.data.msg);
 				});
 			},
@@ -500,14 +516,14 @@ export default defineComponent({
 				data.infoVO.agentId = response.agentId;
 			}
 		};
-		const getMachineSetting = (id) => {
-			getShopMachineSettingHttp({ shopId: id }).then((res) => {
-				data.infoVO.machineSetting.common = JSON.parse(res.data.data.common);
-				data.infoVO.machineSetting.others = JSON.parse(res.data.data.others);
-				initDataToBoolean(data.infoVO.machineSetting.common);
-				options.value.setData(data.infoVO.machineSetting);
-			});
-		};
+		// const getMachineSetting = (id) => {
+		// 	getShopMachineSettingHttp({ shopId: id }).then((res) => {
+		// 		data.infoVO.machineSetting.common = JSON.parse(res.data.data.common);
+		// 		data.infoVO.machineSetting.others = JSON.parse(res.data.data.others);
+		// 		initDataToBoolean(data.infoVO.machineSetting.common);
+		// 		options.value.setData(data.infoVO.machineSetting);
+		// 	});
+		// };
 		const getShopInfo = (id) => {
 			shopSingleInfoHttp({ shopId: id }).then((res) => {
 				setInfoData(res.data.data);
@@ -530,7 +546,6 @@ export default defineComponent({
 			data.search();
 			if (id) {
 				getShopInfo(id);
-				getMachineSetting(id);
 			}
 		};
 		onMounted(() => {

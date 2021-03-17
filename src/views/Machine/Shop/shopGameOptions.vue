@@ -21,7 +21,7 @@
 					{{ 'Name' }}
 				</a-col>
 				<a-col :span="8">
-					<a-input v-model:value="infoVO.name" allowClear />
+					<a-input v-model:value="searchVO.name" allowClear />
 				</a-col>
 				<a-col :span="3" class="labelText">
 					{{ 'Shop Address' }}
@@ -29,7 +29,7 @@
 				<a-col :span="8" class="selectSearch">
 					<a-select
 						show-search
-						v-model:value="infoVO.shopName"
+						v-model:value="searchVO.shopName"
 						:default-active-first-option="false"
 						:show-arrow="false"
 						:filter-option="false"
@@ -49,7 +49,7 @@
 		</div>
 		<a-table bordered :row-selection="shopRowSelection" :columns="dialogShopColumns" :data-source="dialogShopList" :pagination="false" rowKey="id" class="tableStyle"> </a-table>
 		<div class="paginationStyle">
-			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="dialogShopTotal" @change="dialogShopPageChange" />
+			<a-pagination show-quick-jumper v-model:current="searchVO.pageIndex" :total="dialogShopTotal" @change="dialogShopPageChange" />
 		</div>
 	</a-modal>
 </template>
@@ -86,11 +86,13 @@ export default defineComponent({
 		const data = reactive({
 			visible: false,
 			infoVO: {
+				machineSetting: {}
+			},
+			searchVO: {
 				name: '',
 				address: '',
 				pageIndex: 1,
-				pageSize: 10,
-				machineSetting: {}
+				pageSize: 10
 			},
 			dialogShopTotal: 1,
 			total: 1,
@@ -158,7 +160,7 @@ export default defineComponent({
 				data.total = allSelectList.length;
 			},
 			dialogShopPageChange: (index: number) => {
-				data.infoVO.pageIndex = index;
+				data.searchVO.pageIndex = index;
 				data.search();
 			},
 			handleDelete: (id: number) => {
@@ -185,7 +187,7 @@ export default defineComponent({
 				});
 			},
 			search: () => {
-				shopListHttp(data.infoVO).then((res: any) => {
+				shopListHttp(data.searchVO).then((res: any) => {
 					data.dialogShopList = res.data.data.list;
 					data.dialogShopTotal = res.data.data.totalCount;
 				});

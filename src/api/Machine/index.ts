@@ -20,4 +20,19 @@ const getMachineInfo = 'machine/select';
 const getShopMachineSetting = 'shop/selectshopmachinesetting';
 // 修改店铺下机器设置
 const setShopMachineSetting = 'shop/updateshopmachinesetting';
-export { shopList, shopSingleInfo, editShopinfo, createShop, shopMachineList, deleteShop, createMachine, editorMachine, getMachineInfo, getShopMachineSetting, setShopMachineSetting };
+// 修改机器设置
+const setMachineSetting = 'machine/updatemachinesetting';
+export {
+	shopList,
+	shopSingleInfo,
+	editShopinfo,
+	createShop,
+	shopMachineList,
+	deleteShop,
+	createMachine,
+	editorMachine,
+	getMachineInfo,
+	getShopMachineSetting,
+	setShopMachineSetting,
+	setMachineSetting
+};
