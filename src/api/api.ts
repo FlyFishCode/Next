@@ -167,7 +167,7 @@ const getMachineInfoHttp = (data: any) => {
 const getShopMachineSettingHttp = (data: any) => {
 	return Axios.get(getNewUrl(getShopMachineSetting, data));
 };
-// 修改店铺下机器设置
+// 修改店铺游戏设置
 const setShopMachineSettingHttp = (data: any) => {
 	return Axios.post(setShopMachineSetting, data);
 };

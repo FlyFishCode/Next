@@ -18,7 +18,7 @@ const editorMachine = 'machine/update';
 const getMachineInfo = 'machine/select';
 // 查询店铺下机器设置
 const getShopMachineSetting = 'shop/selectshopmachinesetting';
-// 修改店铺下机器设置
+// 修改店铺游戏设置
 const setShopMachineSetting = 'shop/updateshopmachinesetting';
 // 修改机器设置
 const setMachineSetting = 'machine/updatemachinesetting';

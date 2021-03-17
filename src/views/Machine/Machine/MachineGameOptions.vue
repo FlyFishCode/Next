@@ -1,8 +1,8 @@
 <template>
-	<labelTitle :value="'Machine Game Options'" :btn="id ? update : create" />
+	<labelTitle :value="'Machine Game Options'" :btn="create" />
 	<a-row class="rowStyle">
 		<a-col :span="2" class="labelText">
-			<a-button type="primary" size="small" @click="addShop">{{ '添加店铺' }}</a-button>
+			<a-button type="primary" size="small" @click="addShop">{{ '添加机器' }}</a-button>
 		</a-col>
 	</a-row>
 	<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
@@ -11,45 +11,32 @@
 		</template>
 	</a-table>
 	<div class="paginationStyle">
-		<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" @change="pageChange" />
+		<a-pagination show-quick-jumper v-model:current="pageIndex" :total="total" @change="pageChange" />
 	</div>
-	<MachineOptions ref="options" :gameOptions="infoVO.machineSetting" />
+	<MachineOptions ref="options" />
 	<a-modal v-model:visible="visible" title="Basic Modal" :footer="null" centered width="50%" @cancel="cancel">
 		<div class="searchBox">
 			<a-row class="rowStyle">
 				<a-col :span="3" class="labelText">
-					{{ 'Name' }}
+					{{ 'Machine Name' }}
 				</a-col>
 				<a-col :span="8">
-					<a-input v-model:value="infoVO.name" allowClear />
+					<a-input v-model:value="searchVO.name" allowClear />
 				</a-col>
 				<a-col :span="3" class="labelText">
-					{{ 'Shop Address' }}
+					{{ 'Machine Serial' }}
 				</a-col>
 				<a-col :span="8" class="selectSearch">
-					<a-select
-						show-search
-						v-model:value="infoVO.shopName"
-						:default-active-first-option="false"
-						:show-arrow="false"
-						:filter-option="false"
-						:not-found-content="null"
-						allowClear
-						@search="shopSearch"
-					>
-						<a-select-option v-for="shop in shopList" :key="shop.name">
-							<div :title="shop.name">{{ shop.name }}</div>
-						</a-select-option>
-					</a-select>
+					<a-input v-model:value="searchVO.serial" allowClear />
 				</a-col>
 				<a-col :span="2" class="labelText">
 					<a-button type="primary" size="small" @click="search">{{ '搜索' }}</a-button>
 				</a-col>
 			</a-row>
 		</div>
-		<a-table bordered :row-selection="shopRowSelection" :columns="dialogShopColumns" :data-source="dialogShopList" :pagination="false" rowKey="id" class="tableStyle"> </a-table>
+		<a-table bordered :row-selection="shopRowSelection" :columns="dialogShopColumns" :data-source="dialogMachineList" :pagination="false" rowKey="id" class="tableStyle"> </a-table>
 		<div class="paginationStyle">
-			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="dialogShopTotal" @change="dialogShopPageChange" />
+			<a-pagination show-quick-jumper v-model:current="searchVO.pageIndex" :total="dialogMachineTotal" @change="dialogMachinePageChange" />
 		</div>
 	</a-modal>
 </template>
@@ -57,10 +44,8 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref, toRefs, computed, unref } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { useRoute } from 'vue-router';
-import { editShopHttp, createShopHttp, shopListHttp } from '@/api/api';
+import { MachineListHttp, setMachineSettingHttp } from '@/api/api';
 import MachineOptions from '@/components/common/MachineOptions.vue';
-import { deepClone } from '@/components/common/tools';
 export default defineComponent({
 	name: 'ShopEditor',
 	components: {
@@ -68,8 +53,6 @@ export default defineComponent({
 		MachineOptions
 	},
 	setup() {
-		const ROUTE = useRoute();
-		const id = ROUTE.query.id;
 		const options: any = ref(null);
 		const defaultSelectList: any = ref([]);
 		let allSelectList: any = [];
@@ -80,39 +63,40 @@ export default defineComponent({
 				hideDefaultSelections: true,
 				onChange: (changableRowKeys: any) => {
 					defaultSelectList.value = changableRowKeys;
+					// eslint-disable-next-line @typescript-eslint/no-use-before-define
+					data.infoVO.machineIds = changableRowKeys;
 				}
 			};
 		});
 		const data = reactive({
 			visible: false,
 			infoVO: {
-				name: '',
-				address: '',
-				pageIndex: 1,
-				pageSize: 10,
-				machineSetting: {}
+				common: '',
+				others: '',
+				machineIds: []
 			},
-			dialogShopTotal: 1,
+			searchVO: {
+				name: '',
+				serial: '',
+				pageIndex: 1,
+				pageSize: 10
+			},
 			total: 1,
-			shopList: [],
+			pageIndex: 1,
+			dialogMachineTotal: 1,
 			columns: [
 				{
-					title: 'Name',
+					title: 'Machine Name',
 					dataIndex: 'name',
 					key: 'Label'
 				},
 				{
-					title: 'Shop Address',
+					title: 'Machine Serial',
 					dataIndex: 'serial',
 					key: 'Serial'
 				},
 				{
-					title: 'Shop Number',
-					dataIndex: 'lastOnlineTime',
-					key: 'Time'
-				},
-				{
-					title: 'Type',
+					title: 'Machine Type',
 					dataIndex: 'type',
 					key: 'Type'
 				},
@@ -122,43 +106,39 @@ export default defineComponent({
 			],
 			dialogShopColumns: [
 				{
-					title: 'Name',
+					title: 'Machine Name',
 					dataIndex: 'name',
 					key: 'Label'
 				},
 				{
-					title: 'Shop Address',
-					dataIndex: 'address',
-					key: 'address'
+					title: 'Machine Serial',
+					dataIndex: 'serial',
+					key: 'serial'
 				},
 				{
-					title: 'Shop Number',
-					dataIndex: 'machineCount',
-					key: 'machineCount'
-				},
-				{
-					title: 'Type',
+					title: 'Machine Type',
 					dataIndex: 'type',
 					key: 'Type'
 				}
 			],
 			tableList: [],
-			dialogShopList: [{ id: 1 }],
+			allMachineList: [],
+			dialogMachineList: [{ id: 1 }],
 			addShop: () => {
 				data.visible = true;
 			},
 			cancel: () => {
 				allSelectList = [];
 				defaultSelectList.value.forEach((i: any) => {
-					if (data.shopList.find((j: any) => j.id === i)) {
-						allSelectList.push(data.shopList.find((j: any) => j.id === i));
+					if (data.allMachineList.find((j: any) => j.id === i)) {
+						allSelectList.push(data.allMachineList.find((j: any) => j.id === i));
 					}
 				});
-				data.tableList = allSelectList.slice(0, 9);
+				data.tableList = allSelectList.slice(0, 10);
 				data.total = allSelectList.length;
 			},
-			dialogShopPageChange: (index: number) => {
-				data.infoVO.pageIndex = index;
+			dialogMachinePageChange: (index: number) => {
+				data.searchVO.pageIndex = index;
 				data.search();
 			},
 			handleDelete: (id: number) => {
@@ -169,53 +149,33 @@ export default defineComponent({
 				const tableSelectId = data.tableList.findIndex((i: any) => i.id === id);
 				if (selectId >= 0) {
 					data.tableList.splice(tableSelectId, 1);
+					allSelectList.splice(tableSelectId, 1);
 				}
 			},
 			pageChange: (index: number) => {
 				if (index > 1) {
-					const firstNumber = index - 1;
-					data.tableList = allSelectList.slice(`${firstNumber}0`, `${firstNumber}9`);
+					data.tableList = allSelectList.slice(`${index - 1}0`, `${index}0`);
 				} else {
-					data.tableList = allSelectList.slice(0, 9);
+					data.tableList = allSelectList.slice(0, 10);
 				}
 			},
-			shopSearch(value: any) {
-				shopListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res) => {
-					data.shopList = res.data.data.list;
-				});
-			},
 			search: () => {
-				shopListHttp(data.infoVO).then((res: any) => {
-					data.dialogShopList = res.data.data.list;
-					data.dialogShopTotal = res.data.data.totalCount;
+				MachineListHttp(data.searchVO).then((res: any) => {
+					data.dialogMachineList = res.data.data.list;
+					data.dialogMachineTotal = res.data.data.totalCount;
+				});
+				MachineListHttp({ pageSize: 999999 }).then((res: any) => {
+					data.allMachineList = res.data.data.list;
 				});
 			},
 			create: () => {
-				debugger;
-				data.infoVO.machineSetting = deepClone(options.value.setting);
-				// eslint-disable-next-line @typescript-eslint/no-use-before-define
-				initData(data.infoVO.machineSetting);
-				return createShopHttp(data.infoVO);
-			},
-			update: () => {
-				data.infoVO.machineSetting = deepClone(options.value.setting);
-				// eslint-disable-next-line @typescript-eslint/no-use-before-define
-				initData(data.infoVO.machineSetting);
-				return editShopHttp(data.infoVO);
+				data.infoVO.common = options.value.getData().common;
+				data.infoVO.others = options.value.getData().others;
+				return setMachineSettingHttp(data.infoVO);
 			}
 		});
-		const initData = (data: any) => {
-			for (const [key, value] of Object.entries(data)) {
-				if (value && typeof value === 'object') {
-					data = initData(value);
-				} else if (typeof value === 'boolean') {
-					data[key] = Number(value);
-				}
-			}
-		};
 		const init = () => {
 			data.search();
-			data.shopSearch('');
 		};
 		onMounted(() => {
 			init();
@@ -223,8 +183,7 @@ export default defineComponent({
 		return {
 			...toRefs(data),
 			shopRowSelection,
-			options,
-			id
+			options
 		};
 	}
 });

@@ -30,7 +30,7 @@
 		</a-row>
 	</div>
 	<a-row>
-		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" :scroll="{ y: 600 }" :rowKey="rowKey" class="tableStyle">
+		<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="machineId" class="tableStyle">
 			<template #handle="{ record }">
 				<div class="tableBtn">
 					<a-button size="small" type="danger" @click="shopDelete(record)">{{ 'delete' }}</a-button>
@@ -38,11 +38,14 @@
 			</template>
 		</a-table>
 	</a-row>
+	<div class="paginationStyle">
+		<a-pagination show-quick-jumper v-model:current="shopVO.pageIndex" :total="tableListTotal" @change="machineChange" />
+	</div>
 	<!-- 广告链接的预览 -->
 	<showUrlDialog :visible="showUrlDialog" :src="infoVO.url" @showBoxCancel="showBoxCancel" />
 	<!-- 添加机器 -->
 	<div>
-		<a-modal v-model:visible="showShopDialog" centered title="Machine" width="60%">
+		<a-modal v-model:visible="showShopDialog" centered title="Machine" width="60%" :footer="null" @cancel="cancel">
 			<div class="searchBox">
 				<a-row>
 					<a-col :span="3" class="labelText">
@@ -57,14 +60,8 @@
 				</a-row>
 			</div>
 			<a-row class="shopBodyBox">
-				<a-table bordered :row-selection="shopRowSelection" :columns="shopDialogColumns" :data-source="machineList" :pagination="false" :rowKey="rowKey" class="tableStyle"> </a-table>
+				<a-table bordered :row-selection="shopRowSelection" :columns="shopDialogColumns" :data-source="machineList" :pagination="false" rowKey="id" class="tableStyle"> </a-table>
 			</a-row>
-			<template #footer>
-				<div class="footerBtnClass">
-					<a-button key="back" @click="handleCancel">Cancel</a-button>
-					<a-button key="submit" type="primary" @click="handleOk">Ok</a-button>
-				</div>
-			</template>
 			<div class="paginationStyle">
 				<a-pagination show-quick-jumper v-model:current="shopVO.pageIndex" :total="machineTotal" @change="pageChange" />
 			</div>
@@ -82,6 +79,9 @@ import { useRoute } from 'vue-router';
 import { message } from 'ant-design-vue';
 
 interface DataProps {
+	getAllMachineList: () => void;
+	allMachineList: Array<any>;
+	tableListTotal: number;
 	machineTotal: number;
 	getMachineList: () => void;
 	machineList: any;
@@ -108,7 +108,7 @@ export default defineComponent({
 	setup() {
 		const ROUTE = useRoute();
 		const id: any = ROUTE.query.id || null;
-		let selectList: number[] = [];
+		let allSelectList: any = [];
 		const defaultSelectList: any = ref([]);
 		const obj: ObjProps = {
 			title: '',
@@ -137,9 +137,6 @@ export default defineComponent({
 		const data: DataProps = reactive({
 			showUrlDialog: false,
 			showShopDialog: false,
-			rowKey: (row: any) => {
-				return row.id || row.machineId;
-			},
 			infoVO: {
 				type: 2,
 				url: '',
@@ -152,6 +149,7 @@ export default defineComponent({
 				pageSize: 10
 			},
 			machineTotal: 1,
+			tableListTotal: 1,
 			columns: [
 				{
 					title: 'Shop Name',
@@ -193,45 +191,32 @@ export default defineComponent({
 				}
 			],
 			machineList: [],
+			allMachineList: [],
 			tableList: [],
-			rowSelection: {
-				columnWidth: 50,
-				onChange: (selectedRowKeys: number[], selectedRows: any) => {
-					selectList = selectedRows.map((i: any) => i.id);
-					console.log(selectList);
-				}
+			cancel: () => {
+				allSelectList = [];
+				defaultSelectList.value.forEach((i: any) => {
+					const temp = data.allMachineList.find((j: any) => j.id === i);
+					if (temp) {
+						allSelectList.push(temp);
+					}
+				});
+				allSelectList = allSelectList.map((i: any) => {
+					return {
+						machineId: i.id,
+						shopName: i.shopName,
+						machineName: i.name,
+						machineSerial: i.serial,
+						machineType: i.type
+					};
+				});
+				data.tableList = allSelectList.slice(0, 10);
+				data.tableListTotal = allSelectList.length;
 			},
 			showBoxCancel: (value: boolean) => {
 				data.showUrlDialog = value;
 			},
 			handleCancel: () => {
-				data.showShopDialog = false;
-			},
-			handleOk: () => {
-				const tableListIds = defaultSelectList.value;
-				const list: any = [];
-				tableListIds.forEach((i: number) => {
-					const item = data.machineList.find((j: any) => i === j.id);
-					if (item && !data.tableList.find((k: any) => k.machineId === i)) {
-						list.push(item);
-					}
-				});
-				data.tableList.unshift(
-					...list.map((i: any) => {
-						return {
-							machineId: i.id,
-							shopName: i.shopName,
-							machineType: i.type,
-							machineName: i.name,
-							machineSerial: i.serial
-						};
-					})
-				);
-				if (id) {
-					obj.addMachineIds = list.map((i: any) => i.id);
-				} else {
-					data.infoVO.machineIds = list.map((i: any) => i.id);
-				}
 				data.showShopDialog = false;
 			},
 			preview: () => {
@@ -249,6 +234,7 @@ export default defineComponent({
 				const selectId = defaultSelectList.value.findIndex((i: number) => i === row.machineId);
 				if (selectId >= 0) {
 					defaultSelectList.value.splice(selectId, 1);
+					allSelectList.splice(selectId, 1);
 				}
 				if (id) {
 					obj.delMachineIds.push(row.id || row.machineId);
@@ -262,6 +248,18 @@ export default defineComponent({
 					data.machineList = res.data.data.list;
 					data.machineTotal = res.data.data.totalCount;
 				});
+			},
+			getAllMachineList: () => {
+				MachineListHttp({ pageSize: 99999 }).then((res) => {
+					data.allMachineList = res.data.data.list;
+				});
+			},
+			machineChange: (index: number) => {
+				if (index > 1) {
+					data.tableList = allSelectList.slice(`${index - 1}0`, `${index}0`);
+				} else {
+					data.tableList = allSelectList.slice(0, 10);
+				}
 			},
 			pageChange: () => {
 				data.getMachineList();
@@ -287,6 +285,7 @@ export default defineComponent({
 		};
 		const init = (id: any) => {
 			data.getMachineList();
+			data.getAllMachineList();
 			if (id) {
 				getInfo();
 			}
@@ -307,9 +306,5 @@ export default defineComponent({
 .shopBodyBox {
 	height: 650px;
 	overflow-y: auto;
-}
-.footerBtnClass {
-	display: flex;
-	justify-content: center;
 }
 </style>

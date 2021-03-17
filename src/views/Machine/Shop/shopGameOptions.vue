@@ -1,5 +1,5 @@
 <template>
-	<labelTitle :value="'Shop Game Options'" :btn="id ? update : create" />
+	<labelTitle :value="'Shop Game Options'" :btn="create" />
 	<a-row class="rowStyle">
 		<a-col :span="2" class="labelText">
 			<a-button type="primary" size="small" @click="addShop">{{ '添加店铺' }}</a-button>
@@ -11,9 +11,9 @@
 		</template>
 	</a-table>
 	<div class="paginationStyle">
-		<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" @change="pageChange" />
+		<a-pagination show-quick-jumper v-model:current="pageIndex" :total="total" @change="pageChange" />
 	</div>
-	<MachineOptions ref="options" :gameOptions="infoVO.machineSetting" />
+	<MachineOptions ref="options" />
 	<a-modal v-model:visible="visible" title="Basic Modal" :footer="null" centered width="50%" @cancel="cancel">
 		<div class="searchBox">
 			<a-row class="rowStyle">
@@ -57,10 +57,8 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref, toRefs, computed, unref } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { useRoute } from 'vue-router';
-import { editShopHttp, createShopHttp, shopListHttp } from '@/api/api';
+import { shopListHttp, setShopMachineSettingHttp } from '@/api/api';
 import MachineOptions from '@/components/common/MachineOptions.vue';
-import { deepClone } from '@/components/common/tools';
 export default defineComponent({
 	name: 'ShopEditor',
 	components: {
@@ -68,8 +66,6 @@ export default defineComponent({
 		MachineOptions
 	},
 	setup() {
-		const ROUTE = useRoute();
-		const id = ROUTE.query.id;
 		const options: any = ref(null);
 		const defaultSelectList: any = ref([]);
 		let allSelectList: any = [];
@@ -80,13 +76,17 @@ export default defineComponent({
 				hideDefaultSelections: true,
 				onChange: (changableRowKeys: any) => {
 					defaultSelectList.value = changableRowKeys;
+					// eslint-disable-next-line @typescript-eslint/no-use-before-define
+					data.infoVO.shopIds = changableRowKeys;
 				}
 			};
 		});
 		const data = reactive({
 			visible: false,
 			infoVO: {
-				machineSetting: {}
+				common: '',
+				others: '',
+				shopIds: []
 			},
 			searchVO: {
 				name: '',
@@ -94,6 +94,7 @@ export default defineComponent({
 				pageIndex: 1,
 				pageSize: 10
 			},
+			pageIndex: 1,
 			dialogShopTotal: 1,
 			total: 1,
 			shopList: [],
@@ -156,7 +157,7 @@ export default defineComponent({
 						allSelectList.push(data.shopList.find((j: any) => j.id === i));
 					}
 				});
-				data.tableList = allSelectList.slice(0, 9);
+				data.tableList = allSelectList.slice(0, 10);
 				data.total = allSelectList.length;
 			},
 			dialogShopPageChange: (index: number) => {
@@ -171,14 +172,15 @@ export default defineComponent({
 				const tableSelectId = data.tableList.findIndex((i: any) => i.id === id);
 				if (selectId >= 0) {
 					data.tableList.splice(tableSelectId, 1);
+					allSelectList.splice(tableSelectId, 1);
+					// data.total = allSelectList.length;
 				}
 			},
 			pageChange: (index: number) => {
 				if (index > 1) {
-					const firstNumber = index - 1;
-					data.tableList = allSelectList.slice(`${firstNumber}0`, `${firstNumber}9`);
+					data.tableList = allSelectList.slice(`${index - 1}0`, `${index}0`);
 				} else {
-					data.tableList = allSelectList.slice(0, 9);
+					data.tableList = allSelectList.slice(0, 10);
 				}
 			},
 			shopSearch(value: any) {
@@ -193,28 +195,11 @@ export default defineComponent({
 				});
 			},
 			create: () => {
-				debugger;
-				data.infoVO.machineSetting = deepClone(options.value.setting);
-				// eslint-disable-next-line @typescript-eslint/no-use-before-define
-				initData(data.infoVO.machineSetting);
-				return createShopHttp(data.infoVO);
-			},
-			update: () => {
-				data.infoVO.machineSetting = deepClone(options.value.setting);
-				// eslint-disable-next-line @typescript-eslint/no-use-before-define
-				initData(data.infoVO.machineSetting);
-				return editShopHttp(data.infoVO);
+				data.infoVO.common = options.value.getData().common;
+				data.infoVO.others = options.value.getData().others;
+				return setShopMachineSettingHttp(data.infoVO);
 			}
 		});
-		const initData = (data: any) => {
-			for (const [key, value] of Object.entries(data)) {
-				if (value && typeof value === 'object') {
-					data = initData(value);
-				} else if (typeof value === 'boolean') {
-					data[key] = Number(value);
-				}
-			}
-		};
 		const init = () => {
 			data.search();
 			data.shopSearch('');
@@ -225,8 +210,7 @@ export default defineComponent({
 		return {
 			...toRefs(data),
 			shopRowSelection,
-			options,
-			id
+			options
 		};
 	}
 });
