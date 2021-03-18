@@ -67,8 +67,8 @@ export default defineComponent({
 	},
 	setup() {
 		const options: any = ref(null);
-		const defaultSelectList: any = ref([]);
 		let allSelectList: any = [];
+		const defaultSelectList: any = ref([]);
 		const shopRowSelection = computed(() => {
 			return {
 				columnWidth: 50,

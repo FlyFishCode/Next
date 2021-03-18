@@ -11,7 +11,7 @@
 				{{ 'Machine Name' }}
 			</a-col>
 			<a-col :span="6" class="selectSearch">
-				<a-input v-model:value="infoVO.title" allow-clear />
+				<a-input v-model:value="infoVO.name" allow-clear />
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
@@ -19,10 +19,10 @@
 				{{ 'Creation time' }}
 			</a-col>
 			<a-col :span="3" class="datePicker">
-				<a-date-picker v-model:value="infoVO.stratTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
+				<a-date-picker v-model:value="infoVO.minCreateTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
 			</a-col>
 			<a-col :span="3" class="datePicker">
-				<a-date-picker v-model:value="infoVO.endTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
+				<a-date-picker v-model:value="infoVO.maxCreateTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 			</a-col>
 			<a-col :span="3" class="labelText">
 				{{ 'Url' }}

@@ -19,11 +19,10 @@
 				</a-sub-menu>
 				<!-- <a-sub-menu key="sub3">
 					<template #title>
-						<span><SettingOutlined /><span>Credit</span></span>
+						<span><SettingOutlined /><span>Settlement</span></span>
 					</template>
-					<a-menu-item key="Order">Order</a-menu-item>
-					<a-menu-item key="CreditCard">Credit Card</a-menu-item>
-					<a-menu-item key="MachineOrder">Machine Order</a-menu-item>
+					<a-menu-item key="SettlementInfo">SettlementInfo</a-menu-item>
+					<a-menu-item key="Settlement">Settlement</a-menu-item>
 				</a-sub-menu> -->
 			</a-menu>
 		</a-col>
@@ -53,6 +52,7 @@ export default defineComponent({
 	components: {
 		MailOutlined,
 		AppstoreOutlined,
+		// SettingOutlined,
 		hearder
 	},
 	setup() {

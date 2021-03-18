@@ -56,11 +56,6 @@ const routes: Array<RouteRecordRaw> = [
 				component: () => import(/* webpackChunkName: "MachineEditor" */ '../views/Machine/Machine/MachineEditor.vue')
 			},
 			{
-				path: '/entryLabelPage',
-				name: 'entryLabelPage',
-				component: () => import(/* webpackChunkName: "entryLabelPage" */ '../views/Machine/Machine/entryLabelPage.vue')
-			},
-			{
 				path: '/EditorShop',
 				name: 'EditorShop',
 				component: () => import(/* webpackChunkName: "EditorShop" */ '../views/Machine/Shop/ShopEditor.vue')
@@ -94,6 +89,16 @@ const routes: Array<RouteRecordRaw> = [
 				path: '/Order',
 				name: 'Order',
 				component: () => import(/* webpackChunkName: "Order" */ '../views/Credit/Order/index.vue')
+			},
+			{
+				path: '/Settlement',
+				name: 'Settlement',
+				component: () => import(/* webpackChunkName: "Settlement" */ '../views/Settlement/Settlement.vue')
+			},
+			{
+				path: '/SettlementInfo',
+				name: 'SettlementInfo',
+				component: () => import(/* webpackChunkName: "SettlementInfo" */ '../views/Settlement/SettlementInfo.vue')
 			}
 		]
 	},

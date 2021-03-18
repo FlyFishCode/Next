@@ -30,7 +30,7 @@
 		</a-row>
 	</div>
 	<a-row>
-		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" :rowKey="rowKey" :scroll="{ y: 600 }" class="tableStyle">
+		<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" :rowKey="rowKey" :scroll="{ y: 600 }" class="tableStyle">
 			<template #handle="{ record }">
 				<div class="tableBtn">
 					<a-button size="small" type="danger" @click="shopDelete(record)">{{ 'delete' }}</a-button>
@@ -108,7 +108,6 @@ export default defineComponent({
 	setup() {
 		const ROUTE = useRoute();
 		const id: any = ROUTE.query.id || null;
-		let selectList: number[] = [];
 		const defaultSelectList: any = ref([]);
 		const obj: ObjProps = {
 			title: '',
@@ -131,7 +130,6 @@ export default defineComponent({
 				hideDefaultSelections: true,
 				onChange: (changableRowKeys: any) => {
 					defaultSelectList.value = changableRowKeys;
-					console.log(defaultSelectList.value);
 				}
 			};
 		});
@@ -199,13 +197,6 @@ export default defineComponent({
 			],
 			shopList: [],
 			tableList: [],
-			rowSelection: {
-				columnWidth: 50,
-				onChange: (selectedRowKeys: number[]) => {
-					selectList = selectedRowKeys;
-					console.log(selectList);
-				}
-			},
 			showBoxCancel: (value: boolean) => {
 				data.showUrlDialog = value;
 			},
@@ -270,11 +261,23 @@ export default defineComponent({
 				return AdvertTableAddHttp(data.infoVO);
 			},
 			update: () => {
+				const addSetList: any = new Set(obj.addShopIds);
+				const deleteSetList: any = new Set(obj.delShopIds);
 				obj.title = data.infoVO.title;
 				obj.url = data.infoVO.url;
+				// eslint-disable-next-line @typescript-eslint/no-use-before-define
+				obj.addShopIds = handleList(addSetList, deleteSetList);
+				// eslint-disable-next-line @typescript-eslint/no-use-before-define
+				obj.delShopIds = handleList(deleteSetList, addSetList);
 				return AdvertChangeHttp(obj);
 			}
 		});
+		const handleList = (addList: any, deleteList: any) => {
+			let newList = [];
+			const totalNumberList = new Set([...addList].filter((x) => deleteList.has(x)));
+			newList = [...new Set([...addList].filter((x) => !totalNumberList.has(x)))];
+			return newList;
+		};
 		const getInfo = () => {
 			AdvertSearchHttp(objVO).then((res: any) => {
 				if (res.data.data) {

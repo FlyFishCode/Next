@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<labelTitle :value="'Settlement'" />
+		<labelTitle :value="'SettlementInfo'" />
 		<div class="searchBox">
 			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
@@ -39,13 +39,10 @@
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ 'Date' }}
+					{{ 'NO' }}
 				</a-col>
-				<a-col :span="2" class="datePicker">
-					<a-date-picker v-model:value="infoVO.minCreateTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
-				</a-col>
-				<a-col :span="2" class="datePicker">
-					<a-date-picker v-model:value="infoVO.maxCreateTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
+				<a-col :span="4">
+					<a-input v-model:value="infoVO.name" allowClear />
 				</a-col>
 			</a-row>
 			<a-row class="rowStyle">
@@ -75,14 +72,23 @@
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
+					{{ 'Date' }}
+				</a-col>
+				<a-col :span="2" class="datePicker">
+					<a-date-picker v-model:value="infoVO.minCreateTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
+				</a-col>
+				<a-col :span="2" class="datePicker">
+					<a-date-picker v-model:value="infoVO.maxCreateTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
+				</a-col>
+				<a-col :span="2" class="labelText">
 					<a-button type="primary" size="small" @click="search">{{ '搜索' }}</a-button>
 				</a-col>
 			</a-row>
 		</div>
 		<a-row class="rowStyle">
 			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
-				<template #handle="{ record }">
-					<a-button size="small" type="primary" @click="handleClick(record.id)">{{ '结算' }}</a-button>
+				<template #name="{ record }">
+					<a-button type="link" @click="handleShopClick(record.id)">{{ record.name }}</a-button>
 				</template>
 			</a-table>
 		</a-row>
@@ -90,43 +96,19 @@
 			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" @change="pageChange" />
 		</div>
 	</div>
-	<a-modal v-model:visible="visible" width="70%" :footer="null" centered>
-		<a-table bordered :row-selection="shopRowSelection" :columns="dialogColumns" :data-source="dialogTableList" :pagination="false" rowKey="id" class="tableStyle"></a-table>
-		<div class="paginationStyle">
-			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="dialogTotal" @change="dialogPageChange" />
-		</div>
-		<a-table bordered :columns="totalColumns" :data-source="totalTableList" :pagination="false" rowKey="id">
-			<template #ok="{ record }">
-				<a-button size="small" @click="handleClick(record.id)">{{ '结算' }}</a-button>
-			</template>
-		</a-table>
-	</a-modal>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, toRefs, ref, unref, computed } from 'vue';
+import { defineComponent, onMounted, reactive, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
 import { agentListHttp, countryListHttp, areaListHttp, shopListHttp } from '@/api/api';
 export default defineComponent({
-	name: 'SettlementPage',
+	name: 'SettlementInfo',
 	components: {
 		labelTitle
 	},
 	setup() {
-		const defaultSelectList: any = ref([]);
-		const shopRowSelection = computed(() => {
-			return {
-				columnWidth: 100,
-				columnTitle: '选择对账',
-				selectedRowKeys: unref(defaultSelectList),
-				hideDefaultSelections: true,
-				onChange: (changableRowKeys: any) => {
-					defaultSelectList.value = changableRowKeys;
-				}
-			};
-		});
 		const data = reactive({
-			visible: false,
 			infoVO: {
 				id: '',
 				shopName: '',
@@ -189,7 +171,7 @@ export default defineComponent({
 					key: 'Locked Dates'
 				},
 				{
-					title: 'Settlement',
+					title: 'settlement',
 					dataIndex: 'lockedDates',
 					key: 'Locked Dates'
 				},
@@ -202,118 +184,14 @@ export default defineComponent({
 					title: 'Proxy',
 					dataIndex: 'lockedDates',
 					key: 'Locked Dates'
-				},
-				{
-					slots: { customRender: 'handle' }
-				}
-			],
-			dialogColumns: [
-				{
-					title: 'Date',
-					dataIndex: 'Date',
-					key: 'Id'
-				},
-				{
-					title: 'NO',
-					dataIndex: 'NO',
-					key: 'NO'
-				},
-				{
-					title: 'Coin',
-					dataIndex: 'Coin',
-					key: 'NO'
-				},
-				{
-					title: 'Notes',
-					dataIndex: 'Notes',
-					key: 'NO'
-				},
-				{
-					title: 'QR Code',
-					dataIndex: 'QR Code',
-					key: 'NO'
-				},
-				{
-					title: 'Point',
-					dataIndex: 'Point',
-					key: 'NO'
-				},
-				{
-					title: 'Credit',
-					dataIndex: 'Credit',
-					key: 'NO'
-				},
-				{
-					title: '场地收入',
-					dataIndex: '场地收入',
-					key: 'NO'
-				},
-				{
-					title: '代理收入',
-					dataIndex: '代理收入',
-					key: 'NO'
-				},
-				{
-					title: '店家/代理拆账比率',
-					dataIndex: '店家/代理拆账比率',
-					key: 'NO'
-				},
-				{
-					title: '状态',
-					dataIndex: '状态',
-					key: 'NO'
-				}
-			],
-			totalColumns: [
-				{
-					title: 'Coin',
-					dataIndex: 'Coin',
-					key: 'Coin'
-				},
-				{
-					title: 'Notes',
-					dataIndex: 'Notes',
-					key: 'Coin'
-				},
-				{
-					title: 'QR Code',
-					dataIndex: 'QR Code',
-					key: 'Coin'
-				},
-				{
-					title: 'Point',
-					dataIndex: 'Point',
-					key: 'Coin'
-				},
-				{
-					title: 'Total',
-					dataIndex: 'Total',
-					key: 'Coin'
-				},
-				{
-					title: '场地收入',
-					dataIndex: '场地收入',
-					key: 'Coin'
-				},
-				{
-					title: '代理收入',
-					dataIndex: '代理收入',
-					key: 'Coin'
-				},
-				{
-					title: '确认本期对账',
-					slots: { customRender: 'ok' }
 				}
 			],
 			total: 1,
-			dialogTotal: 1,
 			shopList: [],
 			agentList: [],
 			areaList: [],
 			countryList: [],
-			tableList: [{ id: 1 }],
-			dialogTableList: [{ id: 1 }],
-			totalTableList: [{ id: 1 }],
+			tableList: [],
 			disabledStartDate: (startValue: any) => {
 				if (!startValue || !data.infoVO.maxCreateTime) {
 					return false;
@@ -325,10 +203,6 @@ export default defineComponent({
 					return false;
 				}
 				return new Date(data.infoVO.minCreateTime).valueOf() >= endValue.valueOf();
-			},
-			handleClick: (id: number) => {
-				data.visible = true;
-				console.log(id);
 			},
 			agentSearch: (value: any) => {
 				agentListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
@@ -346,9 +220,6 @@ export default defineComponent({
 				getAreaList();
 			},
 			pageChange: (index: number) => {
-				console.log(index);
-			},
-			dialogPageChange: (index: number) => {
 				console.log(index);
 			},
 			search: () => {
@@ -374,8 +245,7 @@ export default defineComponent({
 			init();
 		});
 		return {
-			...toRefs(data),
-			shopRowSelection
+			...toRefs(data)
 		};
 	}
 });
