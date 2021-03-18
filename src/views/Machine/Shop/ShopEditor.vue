@@ -196,7 +196,7 @@
 					<a-input v-model:value="machineVO.id" allow-clear />
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ 'Label' }}
+					{{ 'Name' }}
 				</a-col>
 				<a-col :span="4">
 					<a-input v-model:value="machineVO.name" allow-clear />
@@ -231,8 +231,11 @@
 				<a-col :span="2" class="labelText">
 					{{ 'Type' }}
 				</a-col>
-				<a-col :span="4">
-					<a-input v-model:value="machineVO.type" allow-clear />
+				<a-col :span="4" class="selectSearch">
+					<a-select v-model:value="machineVO.type" allow-clear>
+						<a-select-option value="A1">A1</a-select-option>
+						<a-select-option value="W1">W1</a-select-option>
+					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
 					<a-button type="primary" size="small" @click="search">{{ '搜索' }}</a-button>
@@ -359,12 +362,12 @@ export default defineComponent({
 					key: 'ID'
 				},
 				{
-					title: 'Label',
+					title: 'Shop Name',
 					dataIndex: 'name',
-					key: 'Label'
+					key: 'Shop Name'
 				},
 				{
-					title: 'Serial',
+					title: 'Machine Serial',
 					dataIndex: 'serial',
 					key: 'Serial'
 				},
@@ -453,7 +456,7 @@ export default defineComponent({
 			},
 			saveGameOption: () => {
 				const obj = {
-					machineId: currentMachineId,
+					machineIds: [currentMachineId],
 					common: options.value.getData().common,
 					others: options.value.getData().others
 				};

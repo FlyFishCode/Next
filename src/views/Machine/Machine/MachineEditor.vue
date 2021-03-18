@@ -3,7 +3,7 @@
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
-				{{ 'Label' }}
+				{{ 'Name' }}
 			</a-col>
 			<a-col :span="9">
 				<a-input v-model:value="infoVO.name" allow-clear />

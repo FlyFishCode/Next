@@ -100,7 +100,7 @@ export default defineComponent({
 			shopList: [],
 			columns: [
 				{
-					title: 'Name',
+					title: 'Shop Name',
 					dataIndex: 'name',
 					key: 'Label'
 				},

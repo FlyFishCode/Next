@@ -9,7 +9,7 @@
 				<a-input v-model:value="infoVO.id" allow-clear />
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Label' }}
+				{{ 'Name' }}
 			</a-col>
 			<a-col :span="3" class="selectSearch">
 				<a-input v-model:value="infoVO.name" allow-clear />
@@ -128,7 +128,7 @@ export default defineComponent({
 					key: 'Id'
 				},
 				{
-					title: 'Label',
+					title: 'Name',
 					key: 'Label',
 					slots: { customRender: 'label' }
 				},

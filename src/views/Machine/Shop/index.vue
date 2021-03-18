@@ -9,7 +9,7 @@
 				<a-input v-model:value="infoVO.id" allowClear />
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Label' }}
+				{{ 'Name' }}
 			</a-col>
 			<a-col :span="4">
 				<a-input v-model:value="infoVO.name" allowClear />
@@ -108,7 +108,7 @@ export default defineComponent({
 					key: 'Id'
 				},
 				{
-					title: 'Label',
+					title: 'Shop Name',
 					dataIndex: 'name',
 					key: 'Name',
 					slots: { customRender: 'name' }
