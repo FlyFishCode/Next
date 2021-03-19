@@ -80,7 +80,7 @@ import showUrlDialog from '@/components/common/showUrlDialog.vue';
 import { AdvertTableAddHttp, AdvertSearchHttp, AdvertChangeHttp, shopListHttp } from '@/api/api';
 import { useRoute } from 'vue-router';
 import { message } from 'ant-design-vue';
-
+import { handleList } from '@/components/common/tools';
 interface DataProps {
 	getShopList: () => void;
 	shopPageTotal: any;
@@ -204,9 +204,8 @@ export default defineComponent({
 				data.showShopDialog = false;
 			},
 			handleOk: () => {
-				const tableListIds = defaultSelectList.value;
 				const list: any = [];
-				tableListIds.forEach((i: number) => {
+				defaultSelectList.value.forEach((i: number) => {
 					const item = data.shopList.find((j: any) => i === j.id);
 					if (item && !data.tableList.find((k: any) => k.shopId === i)) {
 						list.push(item);
@@ -272,12 +271,6 @@ export default defineComponent({
 				return AdvertChangeHttp(obj);
 			}
 		});
-		const handleList = (addList: any, deleteList: any) => {
-			let newList = [];
-			const totalNumberList = new Set([...addList].filter((x) => deleteList.has(x)));
-			newList = [...new Set([...addList].filter((x) => !totalNumberList.has(x)))];
-			return newList;
-		};
 		const getInfo = () => {
 			AdvertSearchHttp(objVO).then((res: any) => {
 				if (res.data.data) {
@@ -310,9 +303,5 @@ export default defineComponent({
 .shopBodyBox {
 	height: 650px;
 	overflow-y: auto;
-}
-.footerBtnClass {
-	display: flex;
-	justify-content: center;
 }
 </style>

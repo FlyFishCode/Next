@@ -69,4 +69,10 @@ const initDataToBoolean = (data: any) => {
 	}
 };
 
-export { handleSelectEvent, deepClone, initDataToNumber, initDataToBoolean };
+const handleList = (addList: any, deleteList: any) => {
+	let newList = [];
+	const totalNumberList = new Set([...addList].filter((x) => deleteList.has(x)));
+	newList = [...new Set([...addList].filter((x) => !totalNumberList.has(x)))];
+	return newList;
+};
+export { handleSelectEvent, deepClone, initDataToNumber, initDataToBoolean, handleList };

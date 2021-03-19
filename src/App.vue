@@ -90,4 +90,9 @@ video {
 	position: absolute;
 	background: red;
 }
+/* 弹框下按钮样式 */
+.footerBtnClass {
+	display: flex;
+	justify-content: center;
+}
 </style>

@@ -45,7 +45,7 @@
 	<showUrlDialog :visible="showUrlDialog" :src="infoVO.url" @showBoxCancel="showBoxCancel" />
 	<!-- 添加机器 -->
 	<div>
-		<a-modal v-model:visible="showShopDialog" centered title="Machine" width="60%" :footer="null" @cancel="cancel">
+		<a-modal v-model:visible="showShopDialog" centered title="Machine" width="60%">
 			<div class="searchBox">
 				<a-row>
 					<a-col :span="3" class="labelText">
@@ -65,6 +65,12 @@
 			<div class="paginationStyle">
 				<a-pagination show-quick-jumper v-model:current="shopVO.pageIndex" :total="machineTotal" @change="pageChange" />
 			</div>
+			<template #footer>
+				<div class="footerBtnClass">
+					<a-button key="back" @click="handleCancel">Cancel</a-button>
+					<a-button key="submit" type="primary" @click="handleOk">Ok</a-button>
+				</div>
+			</template>
 		</a-modal>
 	</div>
 </template>
@@ -77,6 +83,7 @@ import showUrlDialog from '@/components/common/showUrlDialog.vue';
 import { AdvertTableAddHttp, AdvertSearchHttp, AdvertChangeHttp, MachineListHttp } from '@/api/api';
 import { useRoute } from 'vue-router';
 import { message } from 'ant-design-vue';
+import { handleList } from '@/components/common/tools';
 
 interface DataProps {
 	getAllMachineList: () => void;
@@ -193,10 +200,14 @@ export default defineComponent({
 			machineList: [],
 			allMachineList: [],
 			tableList: [],
-			cancel: () => {
+			handleOk: () => {
+				const list: Array<any> = [];
 				allSelectList = [];
 				defaultSelectList.value.forEach((i: any) => {
 					const temp = data.allMachineList.find((j: any) => j.id === i);
+					if (temp && !data.tableList.find((k: any) => k.machineId === i)) {
+						list.push(temp);
+					}
 					if (temp) {
 						allSelectList.push(temp);
 					}
@@ -210,8 +221,10 @@ export default defineComponent({
 						machineType: i.type
 					};
 				});
+				obj.addMachineIds = list.map((i: any) => i.id);
 				data.tableList = allSelectList.slice(0, 10);
 				data.tableListTotal = allSelectList.length;
+				data.showShopDialog = false;
 			},
 			showBoxCancel: (value: boolean) => {
 				data.showUrlDialog = value;
@@ -269,8 +282,14 @@ export default defineComponent({
 				return AdvertTableAddHttp(data.infoVO);
 			},
 			update: () => {
+				const addSetList: any = new Set(obj.addMachineIds);
+				const deleteSetList: any = new Set(obj.delMachineIds);
 				obj.title = data.infoVO.title;
 				obj.url = data.infoVO.url;
+				// eslint-disable-next-line @typescript-eslint/no-use-before-define
+				obj.addMachineIds = handleList(addSetList, deleteSetList);
+				// eslint-disable-next-line @typescript-eslint/no-use-before-define
+				obj.delMachineIds = handleList(deleteSetList, addSetList);
 				return AdvertChangeHttp(obj);
 			}
 		});
