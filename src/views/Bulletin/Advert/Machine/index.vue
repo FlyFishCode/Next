@@ -2,13 +2,13 @@
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
-				{{ 'Title' }}
+				{{ $t('default.4') }}
 			</a-col>
 			<a-col :span="6">
 				<a-input v-model:value="infoVO.title" allow-clear />
 			</a-col>
 			<a-col :span="3" class="labelText">
-				{{ 'Machine Name' }}
+				{{ $t('default.13') }}
 			</a-col>
 			<a-col :span="6" class="selectSearch">
 				<a-input v-model:value="infoVO.name" allow-clear />
@@ -16,7 +16,7 @@
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
-				{{ 'Creation time' }}
+				{{ $t('default.6') }}
 			</a-col>
 			<a-col :span="3" class="datePicker">
 				<a-date-picker v-model:value="infoVO.minCreateTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
@@ -25,23 +25,23 @@
 				<a-date-picker v-model:value="infoVO.maxCreateTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 			</a-col>
 			<a-col :span="3" class="labelText">
-				{{ 'Url' }}
+				{{ $t('default.7') }}
 			</a-col>
 			<a-col :span="6">
 				<a-input v-model:value="infoVO.url" allow-clear />
 			</a-col>
 			<a-col :span="3" class="labelText">
-				<a-button type="primary" size="small" @click="search">{{ '搜索' }}</a-button>
+				<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
 			</a-col>
 		</a-row>
 	</div>
 	<a-row class="rowStyle">
 		<a-col :span="1" id="deleteBtnBox">
-			<a-button type="danger" size="small" @click="handleDelete">{{ '删除' }}</a-button>
+			<a-button type="danger" size="small" @click="handleDelete">{{ $t('default.10') }}</a-button>
 			<!-- <a-button type="danger" size="small" @click="handleDeleteAll">{{ '删除所有数据' }}</a-button> -->
 		</a-col>
 		<a-col :span="1">
-			<a-button type="primary" size="small" @click="handleCreate">{{ '创建' }}</a-button>
+			<a-button type="primary" size="small" @click="handleCreate">{{ $t('default.9') }}</a-button>
 		</a-col>
 		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
 			<template #aaa="{ record }">
@@ -49,22 +49,22 @@
 			</template>
 			<template #Machine="{ record }">
 				<div v-if="record.machineList.length" class="tableShop">
-					<a-button type="link" @click="handleShopClick(record.machineList[0].machineId)">{{ record.machineList[0].machineName }}</a-button>
-					<div class="tableRightBox">
+					<div class="moreShopBox">
+						<a-button type="link" :title="record.machineList[0].machineName" @click="handleShopClick(record.machineList[0].machineId)">{{ record.machineList[0].machineName }}</a-button>
 						<div>
 							<a-button type="danger" size="small" :loading="loading" @click="machineDelete(record.id, record.machineList[0].machineId)">{{ '删除' }}</a-button>
 						</div>
-						<div v-show="record.machineList.length > 1" class="link">
-							<span v-if="record.flag" @click="record.flag = !record.flag"><DownOutlined /></span>
-							<span v-else @click="record.flag = !record.flag"><UpOutlined /></span>
-						</div>
+					</div>
+					<div v-show="record.machineList.length > 1" class="link">
+						<span v-if="record.flag" @click="record.flag = !record.flag"><DownOutlined /></span>
+						<span v-else @click="record.flag = !record.flag"><UpOutlined /></span>
 					</div>
 				</div>
 				<transition enter-active-class="animate__animated animate__fadeInUp">
 					<div v-show="record.flag" class="shopItem">
-						<div v-for="(item, index) in record.machineList" :key="item.id" class="moreShopBox">
+						<div v-for="(item, index) in record.machineList" :key="item.id">
 							<div v-if="index" class="moreShopBox">
-								<a-button type="link" @click="handleShopClick(item.machineId)">{{ item.machineName }}</a-button>
+								<a-button type="link" :title="item.machineName" @click="handleShopClick(item.machineId)">{{ item.machineName }}</a-button>
 								<div>
 									<a-button type="danger" size="small" :loading="loading" @click="machineDelete(record.id, item.machineId)">{{ '删除' }}</a-button>
 								</div>
@@ -98,7 +98,7 @@
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
 // import labelTitle from '@/components/labelTitle.vue';
 import { useRouter } from 'vue-router';
-import { handleSelectEvent } from '@/components/common/tools';
+import { handleSelectEvent, i18n } from '@/components/common/tools';
 import { message } from 'ant-design-vue';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import DeleteAllDialog from '@/components/common/DeleteAllDialog.vue';
@@ -141,26 +141,26 @@ export default defineComponent({
 			pageTotal: 1,
 			columns: [
 				{
-					title: 'Title',
+					title: i18n('default.4'),
 					dataIndex: 'title',
 					slots: { customRender: 'aaa' }
 				},
 				{
-					title: 'Machine',
+					title: i18n('default.13'),
 					dataIndex: 'Machine',
 					slots: { customRender: 'Machine' }
 				},
 				{
-					title: 'Url',
+					title: i18n('default.7'),
 					dataIndex: 'url',
 					slots: { customRender: 'url' }
 				},
 				{
-					title: 'Machine Number',
+					title: i18n('default.14'),
 					slots: { customRender: 'MachineNumber' }
 				},
 				{
-					title: 'Creation time',
+					title: i18n('default.6'),
 					dataIndex: 'createTime'
 				}
 			],
@@ -312,17 +312,13 @@ export default defineComponent({
 	display: flex;
 	justify-content: space-between;
 }
-.tableRightBox {
-	display: flex;
-	justify-content: space-between;
-	width: 80px;
-	line-height: 32px;
-}
 .moreShopBox {
-	width: 100%;
 	line-height: 32px;
 	display: flex;
 	justify-content: space-between;
+}
+.moreShopBox .ant-btn-link {
+	width: 160px;
 }
 .shopItem {
 	display: flex;

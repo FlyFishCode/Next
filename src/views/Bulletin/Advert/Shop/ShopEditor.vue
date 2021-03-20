@@ -3,7 +3,7 @@
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="4" class="labelText">
-				{{ 'Title' }}
+				{{ $t('default.4') }}
 			</a-col>
 			<a-col :span="20">
 				<a-input v-model:value="infoVO.title" allow-clear />
@@ -11,21 +11,21 @@
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="4" class="labelText">
-				{{ 'Url' }}
+				{{ $t('default.7') }}
 			</a-col>
 			<a-col :span="15">
 				<a-input v-model:value="infoVO.url" allow-clear />
 			</a-col>
 			<a-col :span="2" class="searchButton">
-				<a-button size="small" type="primary" @click="preview">{{ '预览' }}</a-button>
+				<a-button size="small" type="primary" @click="preview">{{ $t('default.16') }}</a-button>
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="4" class="labelText">
-				{{ 'Shop' }}
+				{{ $t('default.2') }}
 			</a-col>
 			<a-col :span="1" class="searchButton">
-				<a-button size="small" type="primary" @click="addShop">{{ '添加' }}</a-button>
+				<a-button size="small" type="primary" @click="addShop">{{ $t('default.20') }}</a-button>
 			</a-col>
 		</a-row>
 	</div>
@@ -33,7 +33,7 @@
 		<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" :rowKey="rowKey" :scroll="{ y: 600 }" class="tableStyle">
 			<template #handle="{ record }">
 				<div class="tableBtn">
-					<a-button size="small" type="danger" @click="shopDelete(record)">{{ 'delete' }}</a-button>
+					<a-button size="small" type="danger" @click="shopDelete(record)">{{ $t('default.10') }}</a-button>
 				</div>
 			</template>
 		</a-table>
@@ -42,17 +42,17 @@
 	<showUrlDialog :visible="showUrlDialog" :src="infoVO.url" @showBoxCancel="showBoxCancel" />
 	<!-- 添加店铺 -->
 	<div>
-		<a-modal v-model:visible="showShopDialog" centered title="Shop" width="60%">
+		<a-modal v-model:visible="showShopDialog" centered :title="$t('default.2')" width="60%">
 			<div class="searchBox">
 				<a-row>
 					<a-col :span="2" class="labelText">
-						{{ 'Shop Name' }}
+						{{ $t('default.5') }}
 					</a-col>
 					<a-col :span="5">
 						<a-input v-model:value="shopVO.name" />
 					</a-col>
 					<a-col :span="2" class="searchButton">
-						<a-button size="small" type="primary" @click="getShopList">{{ '搜索' }}</a-button>
+						<a-button size="small" type="primary" @click="getShopList">{{ $t('default.8') }}</a-button>
 					</a-col>
 				</a-row>
 			</div>
@@ -64,8 +64,8 @@
 			</div> -->
 			<template #footer>
 				<div class="footerBtnClass">
-					<a-button key="back" @click="handleCancel">Cancel</a-button>
-					<a-button key="submit" type="primary" @click="handleOk">Ok</a-button>
+					<a-button key="back" @click="handleCancel">{{ $t('default.19') }}</a-button>
+					<a-button key="submit" type="primary" @click="handleOk">{{ $t('default.18') }}</a-button>
 				</div>
 			</template>
 		</a-modal>
@@ -80,7 +80,7 @@ import showUrlDialog from '@/components/common/showUrlDialog.vue';
 import { AdvertTableAddHttp, AdvertSearchHttp, AdvertChangeHttp, shopListHttp } from '@/api/api';
 import { useRoute } from 'vue-router';
 import { message } from 'ant-design-vue';
-import { handleList } from '@/components/common/tools';
+import { handleList, i18n } from '@/components/common/tools';
 interface DataProps {
 	getShopList: () => void;
 	shopPageTotal: any;
@@ -153,20 +153,15 @@ export default defineComponent({
 			shopPageTotal: 1,
 			columns: [
 				{
-					title: 'Name',
+					title: i18n('default.5'),
 					dataIndex: 'shopName'
 				},
 				{
-					title: 'Address',
+					title: i18n('default.17'),
 					dataIndex: 'shopAddress'
 				},
 				{
-					title: 'Type',
-					width: 100,
-					dataIndex: 'shopType'
-				},
-				{
-					title: 'Shop Number',
+					title: i18n('default.14'),
 					width: 200,
 					dataIndex: 'machineCount'
 				},
@@ -177,20 +172,15 @@ export default defineComponent({
 			],
 			shopDialogColumns: [
 				{
-					title: 'Name',
+					title: i18n('default.5'),
 					dataIndex: 'name'
 				},
 				{
-					title: 'Address',
+					title: i18n('default.17'),
 					dataIndex: 'address'
 				},
 				{
-					title: 'Type',
-					width: 100,
-					dataIndex: 'shopType'
-				},
-				{
-					title: 'Machine Number',
+					title: i18n('default.14'),
 					width: 200,
 					dataIndex: 'machineCount'
 				}

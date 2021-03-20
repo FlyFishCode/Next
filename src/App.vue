@@ -15,6 +15,9 @@
 .tableStyle {
 	width: 100%;
 }
+.tableStyle td {
+	text-align: center;
+}
 /* 日期选择器 */
 .datePicker .ant-calendar-picker {
 	width: 100%;

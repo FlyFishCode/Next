@@ -5,17 +5,21 @@
 			<a-menu mode="inline" theme="dark" :openKeys="openKeys" v-model:selectedKeys="selectedKeys" style="width:100%;height:100%" @click="handleClick" @openChange="onOpenChange">
 				<a-sub-menu key="sub1">
 					<template #title>
-						<span><MailOutlined /><span>Bulletin</span></span>
+						<span
+							><MailOutlined /><span>{{ $t('default.1') }}</span></span
+						>
 					</template>
 					<!-- <a-menu-item key="Bulletin">Bulletin</a-menu-item> -->
-					<a-menu-item key="Advert">Advert</a-menu-item>
+					<a-menu-item key="Advert">{{ $t('default.11') }}</a-menu-item>
 				</a-sub-menu>
 				<a-sub-menu key="sub2">
 					<template #title>
-						<span><AppstoreOutlined /><span>Machine</span></span>
+						<span
+							><AppstoreOutlined /><span>{{ $t('default.3') }}</span></span
+						>
 					</template>
-					<a-menu-item key="Shop">Shop</a-menu-item>
-					<a-menu-item key="Machine">Machine</a-menu-item>
+					<a-menu-item key="Shop">{{ $t('default.2') }}</a-menu-item>
+					<a-menu-item key="Machine">{{ $t('default.3') }}</a-menu-item>
 				</a-sub-menu>
 				<!-- <a-sub-menu key="sub3">
 					<template #title>
@@ -76,9 +80,6 @@ export default defineComponent({
 				}
 			}
 		});
-		// onMounted(() => {
-		// 	data.routes = Object.values(ROUTE.meta);
-		// });
 		return {
 			...toRefs(data)
 		};

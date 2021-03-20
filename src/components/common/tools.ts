@@ -1,3 +1,4 @@
+import { getCurrentInstance } from 'vue';
 import { message } from 'ant-design-vue';
 // 表格点击事件
 const handleSelectEvent = (list: Array<number>, id: string) => {
@@ -75,4 +76,9 @@ const handleList = (addList: any, deleteList: any) => {
 	newList = [...new Set([...addList].filter((x) => !totalNumberList.has(x)))];
 	return newList;
 };
-export { handleSelectEvent, deepClone, initDataToNumber, initDataToBoolean, handleList };
+const i18n = (value: string) => {
+	const currentInstance: any = getCurrentInstance();
+	const instance: any = currentInstance.appContext.config.globalProperties.$i18n.global;
+	return instance.t(value);
+};
+export { handleSelectEvent, deepClone, initDataToNumber, initDataToBoolean, handleList, i18n };

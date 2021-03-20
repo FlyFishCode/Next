@@ -2,7 +2,7 @@
 	<a-row class="label">
 		<div class="label-g">{{ value }}</div>
 		<div v-if="btn" class="searchButton">
-			<a-button type="primary" size="small" @click="handleBtn">{{ '保存' }}</a-button>
+			<a-button type="primary" size="small" @click="handleBtn">{{ $t('default.15') }}</a-button>
 		</div>
 	</a-row>
 </template>

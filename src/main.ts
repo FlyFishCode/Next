@@ -11,7 +11,9 @@ const i18n = createI18n({
 	legacy: true,
 	locale: 'zh-cn',
 	messages: {
-		'zh-cn': require('@/i18n/zh-cn')
+		'zh-cn': require('@/i18n/zh-cn'),
+		'zh-ft': require('@/i18n/zh-ft'),
+		'en-us': require('@/i18n/en-us')
 	}
 });
 
@@ -32,6 +34,7 @@ app.use(Antd);
 // app.component('el-table', ElTable);
 // app.component('el-table-column', ElTableColumn);
 // app.component('el-pagination', ElPagination);
+app.use(i18n);
 app.use(store);
 app.use(router);
 app.mount('#app');

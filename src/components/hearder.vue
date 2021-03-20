@@ -6,7 +6,13 @@
 					<img :src="logoImg" alt="" />
 				</div>
 			</a-col>
-			<a-col :span="4" :offset="16" class="loginOutBox">
+			<a-col :lg="1" :offset="16" class="languageStyle">{{ $t('default.0') }}</a-col>
+			<a-col :lg="2" class="languageStyle">
+				<a-select v-model:value="$i18n.locale" size="small">
+					<a-select-option v-for="item in languageList" :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
+				</a-select>
+			</a-col>
+			<a-col :span="1" class="loginOutBox">
 				<div class="box">
 					<div class="userBox">
 						<UserOutlined />
@@ -115,6 +121,11 @@ export default defineComponent({
 				newPasswordTwo: '',
 				userId: sessionStorage.getItem('userId') || ''
 			},
+			languageList: [
+				{ key: 'zh-cn', label: '简体中文' },
+				{ key: 'zh-ft', label: '繁体中文' },
+				{ key: 'en-us', label: '英文' }
+			],
 			infoVisible: false,
 			passwordVisible: false,
 			logoImg: require('@/assets/logo.png'),
@@ -208,5 +219,9 @@ export default defineComponent({
 .showBox div:hover {
 	background: #888;
 	color: #fff;
+}
+.languageStyle {
+	line-height: 50px;
+	text-align: center;
 }
 </style>

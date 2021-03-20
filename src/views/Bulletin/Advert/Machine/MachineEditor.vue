@@ -49,10 +49,22 @@
 			<div class="searchBox">
 				<a-row>
 					<a-col :span="3" class="labelText">
+						{{ 'Shop Name' }}
+					</a-col>
+					<a-col :span="4">
+						<a-input v-model:value="shopVO.shopName" allow-clear />
+					</a-col>
+					<a-col :span="3" class="labelText">
 						{{ 'Machine Name' }}
 					</a-col>
-					<a-col :span="5">
-						<a-input v-model:value="shopVO.name" />
+					<a-col :span="4">
+						<a-input v-model:value="shopVO.machineName" allow-clear />
+					</a-col>
+					<a-col :span="3" class="labelText">
+						{{ 'Machine Serial' }}
+					</a-col>
+					<a-col :span="4">
+						<a-input v-model:value="shopVO.serial" allow-clear />
 					</a-col>
 					<a-col :span="2" class="searchButton">
 						<a-button size="small" type="primary" @click="getMachineList">{{ '搜索' }}</a-button>

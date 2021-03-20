@@ -2,13 +2,13 @@
 	<a-tabs v-model:activeKey="activeKey">
 		<a-tab-pane key="1">
 			<template #tab>
-				<span>Shop</span>
+				<span>{{ $t('default.2') }}</span>
 			</template>
 			<shopIndex />
 		</a-tab-pane>
 		<a-tab-pane key="2">
 			<template #tab>
-				<span>Machine</span>
+				<span>{{ $t('default.3') }}</span>
 			</template>
 			<machineIndex />
 		</a-tab-pane>

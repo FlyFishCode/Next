@@ -18,6 +18,7 @@ import { defineComponent, reactive, toRefs, watch } from 'vue';
 // import { SettingFilled} from '@ant-design/icons-vue';
 export default defineComponent({
 	name: 'showUrlDialog',
+	emits: ['showBoxCancel'],
 	props: ['visible', 'src'],
 	components: {},
 	setup(prop, ctx) {

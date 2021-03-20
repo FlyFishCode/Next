@@ -156,11 +156,6 @@ export default defineComponent({
 					title: 'Last Online',
 					dataIndex: 'lastOnlineTime',
 					key: 'Last Online'
-				},
-				{
-					title: 'Locked Dates',
-					dataIndex: 'lockedDates',
-					key: 'Locked Dates'
 				}
 			],
 			tableList: [],
