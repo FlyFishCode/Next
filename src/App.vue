@@ -98,4 +98,12 @@ video {
 	display: flex;
 	justify-content: center;
 }
+/* 弹框样式 */
+.ant-modal .ant-modal-content {
+	min-height: 800px;
+}
+/* 确认删除弹框样式 */
+.deleteBox .ant-modal-content {
+	min-height: 200px;
+}
 </style>

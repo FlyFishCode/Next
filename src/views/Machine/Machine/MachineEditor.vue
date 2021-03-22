@@ -1,15 +1,15 @@
 <template>
-	<labelTitle :value="'MachineEditor'" :btn="id ? update : create" />
+	<labelTitle :value="$t('default.3')" :btn="id ? update : create" />
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
-				{{ 'Name' }}
+				{{ $t('default.13') }}
 			</a-col>
 			<a-col :span="9">
 				<a-input v-model:value="infoVO.name" allow-clear />
 			</a-col>
 			<a-col :span="3" class="labelText">
-				{{ 'Type' }}
+				{{ $t('default.22') }}
 			</a-col>
 			<a-col :span="9" class="selectSearch">
 				<a-select v-model:value="infoVO.type" allow-clear>
@@ -20,7 +20,7 @@
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
-				{{ 'Shop Name' }}
+				{{ $t('default.5') }}
 			</a-col>
 			<a-col :span="9" class="selectSearch">
 				<a-select show-search v-model:value="infoVO.shopId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allow-clear @search="shopSearch">
@@ -30,19 +30,19 @@
 				</a-select>
 			</a-col>
 			<a-col :span="3" class="labelText">
-				{{ 'Placing Type' }}
+				{{ $t('default.84') }}
 			</a-col>
 			<a-col :span="9" class="selectSearch">
 				<a-select v-model:value="infoVO.placingType">
-					<a-select-option :value="1">Free</a-select-option>
-					<a-select-option :value="2">Rent</a-select-option>
-					<a-select-option :value="3">Sell</a-select-option>
+					<a-select-option :value="1">{{ $t('default.86') }}</a-select-option>
+					<a-select-option :value="2">{{ $t('default.87') }}</a-select-option>
+					<a-select-option :value="3">{{ $t('default.88') }}</a-select-option>
 				</a-select>
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
-				{{ 'Serial' }}
+				{{ $t('default.21') }}
 			</a-col>
 			<a-col :span="9">
 				<a-input v-model:value="infoVO.serial" allow-clear />
@@ -50,7 +50,7 @@
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
-				{{ 'Memo' }}
+				{{ $t('default.85') }}
 			</a-col>
 			<a-col :span="21">
 				<a-textarea v-model:value="infoVO.memo" :rows="4" allow-clear />

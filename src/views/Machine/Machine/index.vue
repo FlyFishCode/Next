@@ -1,5 +1,5 @@
 <template>
-	<labelTitle :value="'Machine'" />
+	<labelTitle :value="$t('default.3')" />
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
@@ -9,13 +9,13 @@
 				<a-input v-model:value="infoVO.id" allow-clear />
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Name' }}
+				{{ $t('default.13') }}
 			</a-col>
 			<a-col :span="3" class="selectSearch">
 				<a-input v-model:value="infoVO.name" allow-clear />
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Shop' }}
+				{{ $t('default.5') }}
 			</a-col>
 			<a-col :span="4" class="selectSearch">
 				<a-select show-search v-model:value="infoVO.shopName" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="shopSearch">
@@ -25,7 +25,7 @@
 				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Type' }}
+				{{ $t('default.22') }}
 			</a-col>
 			<a-col :span="4" class="selectSearch">
 				<a-select v-model:value="infoVO.type" allow-clear>
@@ -36,23 +36,23 @@
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
-				{{ 'Serial' }}
+				{{ $t('default.21') }}
 			</a-col>
 			<a-col :span="3">
 				<a-input v-model:value="infoVO.serial" allow-clear />
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Placing Type' }}
+				{{ $t('default.84') }}
 			</a-col>
 			<a-col :span="3" class="selectSearch">
 				<a-select v-model:value="infoVO.placingType" allow-clear>
-					<a-select-option value="1">Free</a-select-option>
-					<a-select-option value="2">Rent</a-select-option>
-					<a-select-option value="3">Sell</a-select-option>
+					<a-select-option value="1">{{ $t('default.86') }}</a-select-option>
+					<a-select-option value="2">{{ $t('default.87') }}</a-select-option>
+					<a-select-option value="3">{{ $t('default.88') }}</a-select-option>
 				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Last Online' }}
+				{{ $t('default.89') }}
 			</a-col>
 			<a-col :span="2">
 				<a-date-picker v-model:value="infoVO.minLastOnlineTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
@@ -60,20 +60,30 @@
 			<a-col :span="2">
 				<a-date-picker v-model:value="infoVO.maxLastOnlineTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 			</a-col>
+			<a-col v-if="isAdmin" :span="2" class="labelText">
+				{{ $t('default.26') }}
+			</a-col>
+			<a-col v-if="isAdmin" :span="4" class="selectSearch">
+				<a-select show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
+					<a-select-option v-for="d in agentList" :key="d.id">
+						<div :title="d.name">{{ d.name }}</div>
+					</a-select-option>
+				</a-select>
+			</a-col>
 			<a-col :span="2" class="labelText">
-				<a-button type="primary" size="small" @click="search">{{ '搜索' }}</a-button>
+				<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
 			</a-col>
 		</a-row>
 	</div>
 	<a-row class="rowStyle">
 		<a-col :span="1">
-			<a-button type="danger" size="small" @click="handleDelete">{{ '删除' }}</a-button>
+			<a-button type="danger" size="small" @click="handleDelete">{{ $t('default.10') }}</a-button>
 		</a-col>
 		<a-col :span="1">
-			<a-button type="primary" size="small" @click="handleCreate">{{ '创建' }}</a-button>
+			<a-button type="primary" size="small" @click="handleCreate">{{ $t('default.9') }}</a-button>
 		</a-col>
 		<a-col :span="1">
-			<a-button type="primary" size="small" @click="handleSetting">{{ '设置' }}</a-button>
+			<a-button type="primary" size="small" @click="handleSetting">{{ $t('default.27') }}</a-button>
 		</a-col>
 		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
 			<template #label="{ record }">
@@ -82,30 +92,40 @@
 			<template #shop="{ record }">
 				<a-button type="link" @click="handleShopClick(record.shopId)">{{ record.shopName }}</a-button>
 			</template>
+			<template #placingType="{ record }">
+				<div v-if="record.placingType === 1">{{ $t('default.86') }}</div>
+				<div v-if="record.placingType === 2">{{ $t('default.87') }}</div>
+				<div v-if="record.placingType === 3">{{ $t('default.88') }}</div>
+			</template>
 		</a-table>
 	</a-row>
 	<div class="paginationStyle">
 		<a-pagination show-quick-jumper v-model:current="currentPage" :total="totalSize" @change="pageChange" />
 	</div>
+	<DeleteDialog :visible="visible" @afterClose="afterClose" @handleOk="handleDeleteOk" />
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-import { MachineListHttp, shopListHttp, deleteShopHttp } from '@/api/api';
+import { MachineListHttp, shopListHttp, deleteMachinepHttp, agentListHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
+import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
-import { handleSelectEvent } from '@/components/common/tools';
+import { handleSelectEvent, i18n } from '@/components/common/tools';
 // import { SettingFilled} from '@ant-design/icons-vue';
 export default defineComponent({
 	name: 'Machine',
 	components: {
-		labelTitle
+		labelTitle,
+		DeleteDialog
 	},
 	setup() {
 		const ROUTER = useRouter();
 		let selectList: number[] = [];
+		const isAdmin = sessionStorage.getItem('userType');
 		const data = reactive({
+			visible: false,
 			infoVO: {
 				id: '',
 				name: '',
@@ -118,7 +138,6 @@ export default defineComponent({
 				pageIndex: 1,
 				pageSize: 10
 			},
-			shopList: [],
 			currentPage: 1,
 			totalSize: 1,
 			columns: [
@@ -128,43 +147,44 @@ export default defineComponent({
 					key: 'Id'
 				},
 				{
-					title: 'Name',
+					title: i18n('default.13'),
 					key: 'Label',
 					slots: { customRender: 'label' }
 				},
 				{
-					title: 'Shop',
+					title: i18n('default.17'),
 					key: 'Shop',
 					slots: { customRender: 'shop' }
 				},
 				{
-					title: 'Type',
+					title: i18n('default.22'),
 					dataIndex: 'type',
 					key: 'Type'
 				},
 				{
-					title: 'Serial',
+					title: i18n('default.21'),
 					dataIndex: 'serial',
 					key: 'Serial'
 				},
 				{
-					title: 'Placing Type',
-					dataIndex: 'placingType',
-					key: 'placingType'
+					title: i18n('default.84'),
+					key: 'placingType',
+					slots: { customRender: 'placingType' }
 				},
 				{
-					title: 'Last Online',
+					title: i18n('default.89'),
 					dataIndex: 'lastOnlineTime',
 					key: 'Last Online'
 				}
 			],
 			tableList: [],
+			shopList: [],
+			agentList: [],
 			rowSelection: {
 				columnWidth: 50,
 				// columnTitle: '全选',
-				onChange: (selectedRowKeys: number[], selectedRows: any) => {
-					selectList = selectedRows.map((i: any) => i.id);
-					console.log(selectList);
+				onChange: (selectedRowKeys: number[]) => {
+					selectList = selectedRowKeys;
 				}
 			},
 			disabledStartDate: (startValue: any) => {
@@ -184,18 +204,30 @@ export default defineComponent({
 					data.shopList = res.data.data.list;
 				});
 			},
+			agentSearch: (value: any) => {
+				agentListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
+					data.agentList = res.data.data.list;
+				});
+			},
 			search: () => {
 				MachineListHttp(data.infoVO).then((res: any) => {
 					data.tableList = res.data.data.list;
 					data.totalSize = res.data.data.totalCount;
 				});
 			},
+			afterClose: (value: boolean) => {
+				data.visible = value;
+			},
+			handleDeleteOk: () => {
+				deleteMachinepHttp(selectList).then((res: any) => {
+					message.warning(res.data.msg);
+					data.search();
+				});
+				data.visible = false;
+			},
 			handleDelete: () => {
-				if (handleSelectEvent(selectList, 'id').length) {
-					deleteShopHttp(selectList).then((res: any) => {
-						message.info(res.data.msg);
-						data.search();
-					});
+				if (handleSelectEvent(selectList, '').length) {
+					data.visible = true;
 				}
 			},
 			handleCreate: () => {
@@ -227,7 +259,8 @@ export default defineComponent({
 			data.search();
 		});
 		return {
-			...toRefs(data)
+			...toRefs(data),
+			isAdmin
 		};
 	}
 });

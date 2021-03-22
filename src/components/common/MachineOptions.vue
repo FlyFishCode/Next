@@ -2,34 +2,36 @@
 	<div>
 		<a-row class="rowStyle">
 			<a-tabs v-model:activeKey="optionValue" tab-position="left" class="tabBox">
-				<a-tab-pane key="1" tab="游戏设置">
+				<a-tab-pane key="1" :tab="$t('default.29')">
 					<div class="gameBox">
-						<div class="title-g">标准游戏</div>
+						<div class="title-g">{{ $t('default.30') }}</div>
 						<a-row class="rowStyle">
-							<a-col :span="2" class="labelText">301 游戏</a-col>
-							<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.gameSetting[301].available"/></a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.31') }}</a-col>
+							<a-col :span="2" class="switchBox"
+								><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.gameSetting[301].available"
+							/></a-col>
 							<a-col v-show="setting.common.gameSetting[301].available" :span="20" class="showBox">
-								<a-col :span="2" class="labelText">点数</a-col>
+								<a-col :span="2" class="labelText">{{ $t('default.35') }}</a-col>
 								<a-col :span="2" class="selectSearch">
 									<a-input v-model:value="setting.common.gameSetting[301].credits" />
 								</a-col>
-								<a-col :span="2" class="labelText">回合</a-col>
+								<a-col :span="2" class="labelText">{{ $t('default.36') }}</a-col>
 								<a-col :span="2" class="selectSearch">
 									<a-input v-model:value="setting.common.gameSetting[301].round" />
 								</a-col>
-								<a-col :span="2" class="labelText">游戏开标</a-col>
+								<a-col :span="2" class="labelText">{{ $t('default.37') }}</a-col>
 								<a-col :span="4" class="selectSearch">
 									<a-select v-model:value="setting.common.gameSetting[301].in">
 										<a-select-option v-for="option in gameBeginOptions" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
-								<a-col :span="2" class="labelText">游戏结标</a-col>
+								<a-col :span="2" class="labelText">{{ $t('default.38') }}</a-col>
 								<a-col :span="4" class="selectSearch">
 									<a-select v-model:value="setting.common.gameSetting[301].out">
 										<a-select-option v-for="option in gameEndOptions" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
-								<a-col :span="2" class="labelText">红心</a-col>
+								<a-col :span="2" class="labelText">{{ $t('default.39') }}</a-col>
 								<a-col :span="2" class="selectSearch">
 									<a-select v-model:value="setting.common.gameSetting[301].bull">
 										<a-select-option v-for="option in bullOptions" :key="option.id">{{ option.label }}</a-select-option>
@@ -38,30 +40,32 @@
 							</a-col>
 						</a-row>
 						<a-row>
-							<a-col :span="2" class="labelText">501 游戏</a-col>
-							<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.gameSetting[501].available"/></a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.32') }}</a-col>
+							<a-col :span="2" class="switchBox"
+								><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.gameSetting[501].available"
+							/></a-col>
 							<a-col v-show="setting.common.gameSetting[501].available" :span="20" class="showBox">
-								<a-col :span="2" class="labelText">点数</a-col>
+								<a-col :span="2" class="labelText">{{ $t('default.35') }}</a-col>
 								<a-col :span="2" class="selectSearch">
 									<a-input v-model:value="setting.common.gameSetting[501].credits" />
 								</a-col>
-								<a-col :span="2" class="labelText">回合</a-col>
+								<a-col :span="2" class="labelText">{{ $t('default.36') }}</a-col>
 								<a-col :span="2" class="selectSearch">
 									<a-input v-model:value="setting.common.gameSetting[501].round" />
 								</a-col>
-								<a-col :span="2" class="labelText">游戏开标</a-col>
+								<a-col :span="2" class="labelText">{{ $t('default.37') }}</a-col>
 								<a-col :span="4" class="selectSearch">
 									<a-select v-model:value="setting.common.gameSetting[501].in">
 										<a-select-option v-for="option in gameBeginOptions" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
-								<a-col :span="2" class="labelText">游戏结标</a-col>
+								<a-col :span="2" class="labelText">{{ $t('default.38') }}</a-col>
 								<a-col :span="4" class="selectSearch">
 									<a-select v-model:value="setting.common.gameSetting[501].out">
 										<a-select-option v-for="option in gameEndOptions" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
-								<a-col :span="2" class="labelText">红心</a-col>
+								<a-col :span="2" class="labelText">{{ $t('default.39') }}</a-col>
 								<a-col :span="2" class="selectSearch">
 									<a-select v-model:value="setting.common.gameSetting[501].bull">
 										<a-select-option v-for="option in bullOptions" :key="option.id">{{ option.label }}</a-select-option>
@@ -70,30 +74,32 @@
 							</a-col>
 						</a-row>
 						<a-row class="rowStyle">
-							<a-col :span="2" class="labelText">701 游戏</a-col>
-							<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.gameSetting[701].available"/></a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.33') }}</a-col>
+							<a-col :span="2" class="switchBox"
+								><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.gameSetting[701].available"
+							/></a-col>
 							<a-col v-show="setting.common.gameSetting[701].available" :span="20" class="showBox">
-								<a-col :span="2" class="labelText">点数</a-col>
+								<a-col :span="2" class="labelText">{{ $t('default.35') }}</a-col>
 								<a-col :span="2" class="selectSearch">
 									<a-input v-model:value="setting.common.gameSetting[701].credits" />
 								</a-col>
-								<a-col :span="2" class="labelText">回合</a-col>
+								<a-col :span="2" class="labelText">{{ $t('default.36') }}</a-col>
 								<a-col :span="2" class="selectSearch">
 									<a-input v-model:value="setting.common.gameSetting[701].round" />
 								</a-col>
-								<a-col :span="2" class="labelText">游戏开标</a-col>
+								<a-col :span="2" class="labelText">{{ $t('default.37') }}</a-col>
 								<a-col :span="4" class="selectSearch">
 									<a-select v-model:value="setting.common.gameSetting[701].in">
 										<a-select-option v-for="option in gameBeginOptions" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
-								<a-col :span="2" class="labelText">游戏结标</a-col>
+								<a-col :span="2" class="labelText">{{ $t('default.38') }}</a-col>
 								<a-col :span="4" class="selectSearch">
 									<a-select v-model:value="setting.common.gameSetting[701].out">
 										<a-select-option v-for="option in gameEndOptions" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
-								<a-col :span="2" class="labelText">红心</a-col>
+								<a-col :span="2" class="labelText">{{ $t('default.39') }}</a-col>
 								<a-col :span="2" class="selectSearch">
 									<a-select v-model:value="setting.common.gameSetting[701].bull">
 										<a-select-option v-for="option in bullOptions" :key="option.id">{{ option.label }}</a-select-option>
@@ -102,30 +108,32 @@
 							</a-col>
 						</a-row>
 						<a-row>
-							<a-col :span="2" class="labelText">901 游戏</a-col>
-							<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.gameSetting[901].available"/></a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.34') }}</a-col>
+							<a-col :span="2" class="switchBox"
+								><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.gameSetting[901].available"
+							/></a-col>
 							<a-col v-show="setting.common.gameSetting[901].available" :span="20" class="showBox">
-								<a-col :span="2" class="labelText">点数</a-col>
+								<a-col :span="2" class="labelText">{{ $t('default.35') }}</a-col>
 								<a-col :span="2" class="selectSearch">
 									<a-input v-model:value="setting.common.gameSetting[901].credits" />
 								</a-col>
-								<a-col :span="2" class="labelText">回合</a-col>
+								<a-col :span="2" class="labelText">{{ $t('default.36') }}</a-col>
 								<a-col :span="2" class="selectSearch">
 									<a-input v-model:value="setting.common.gameSetting[901].round" />
 								</a-col>
-								<a-col :span="2" class="labelText">游戏开标</a-col>
+								<a-col :span="2" class="labelText">{{ $t('default.37') }}</a-col>
 								<a-col :span="4" class="selectSearch">
 									<a-select v-model:value="setting.common.gameSetting[901].in">
 										<a-select-option v-for="option in gameBeginOptions" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
-								<a-col :span="2" class="labelText">游戏结标</a-col>
+								<a-col :span="2" class="labelText">{{ $t('default.38') }}</a-col>
 								<a-col :span="4" class="selectSearch">
 									<a-select v-model:value="setting.common.gameSetting[901].out">
 										<a-select-option v-for="option in gameEndOptions" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
-								<a-col :span="2" class="labelText">红心</a-col>
+								<a-col :span="2" class="labelText">{{ $t('default.39') }}</a-col>
 								<a-col :span="2" class="selectSearch">
 									<a-select v-model:value="setting.common.gameSetting[901].bull">
 										<a-select-option v-for="option in bullOptions" :key="option.id">{{ option.label }}</a-select-option>
@@ -135,30 +143,34 @@
 						</a-row>
 					</div>
 					<div class="gameBox">
-						<div class="title-g">米老鼠</div>
+						<div class="title-g">{{ $t('default.40') }}</div>
 						<a-row class="rowStyle">
-							<a-col :span="2" class="labelText">标准米老鼠</a-col>
-							<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.gameSetting.stardardCT.available"/></a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.41') }}</a-col>
+							<a-col :span="2" class="switchBox"
+								><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.gameSetting.stardardCT.available"
+							/></a-col>
 							<a-col v-show="setting.common.gameSetting.stardardCT.available" :span="8" class="showBox">
-								<a-col :span="3" class="labelText">点数</a-col>
+								<a-col :span="3" class="labelText">{{ $t('default.35') }}</a-col>
 								<a-col :span="9" class="selectSearch">
 									<a-input v-model:value="setting.common.gameSetting.stardardCT.credits" />
 								</a-col>
-								<a-col :span="3" class="labelText">回合</a-col>
+								<a-col :span="3" class="labelText">{{ $t('default.36') }}</a-col>
 								<a-col :span="9" class="selectSearch">
 									<a-input v-model:value="setting.common.gameSetting.stardardCT.round" />
 								</a-col>
 							</a-col>
 						</a-row>
 						<a-row>
-							<a-col :span="2" class="labelText">加分米老鼠</a-col>
-							<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.gameSetting.accumulationCT.available"/></a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.42') }}</a-col>
+							<a-col :span="2" class="switchBox"
+								><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.gameSetting.accumulationCT.available"
+							/></a-col>
 							<a-col v-show="setting.common.gameSetting.accumulationCT.available" :span="8" class="showBox">
-								<a-col :span="3" class="labelText">点数</a-col>
+								<a-col :span="3" class="labelText">{{ $t('default.35') }}</a-col>
 								<a-col :span="9" class="selectSearch">
 									<a-input v-model:value="setting.common.gameSetting.accumulationCT.credits" />
 								</a-col>
-								<a-col :span="3" class="labelText">回合</a-col>
+								<a-col :span="3" class="labelText">{{ $t('default.36') }}</a-col>
 								<a-col :span="9" class="selectSearch">
 									<a-input v-model:value="setting.common.gameSetting.accumulationCT.round" />
 								</a-col>
@@ -166,30 +178,34 @@
 						</a-row>
 					</div>
 					<div class="gameBox">
-						<div class="title-g">高分</div>
+						<div class="title-g">{{ $t('default.43') }}</div>
 						<a-row class="rowStyle">
-							<a-col :span="2" class="labelText">标准高分赛</a-col>
-							<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.gameSetting.stardardCUp.available"/></a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.44') }}</a-col>
+							<a-col :span="2" class="switchBox"
+								><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.gameSetting.stardardCUp.available"
+							/></a-col>
 							<a-col v-show="setting.common.gameSetting.stardardCUp.available" :span="8" class="showBox">
-								<a-col :span="3" class="labelText">点数</a-col>
+								<a-col :span="3" class="labelText">{{ $t('default.35') }}</a-col>
 								<a-col :span="9" class="selectSearch">
 									<a-input v-model:value="setting.common.gameSetting.stardardCUp.credits" />
 								</a-col>
-								<a-col :span="3" class="labelText">回合</a-col>
+								<a-col :span="3" class="labelText">{{ $t('default.36') }}</a-col>
 								<a-col :span="9" class="selectSearch">
 									<a-input v-model:value="setting.common.gameSetting.stardardCUp.round" />
 								</a-col>
 							</a-col>
 						</a-row>
 						<a-row>
-							<a-col :span="2" class="labelText">计时高分赛</a-col>
-							<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.gameSetting.timeLimitedCUp.available"/></a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.45') }}</a-col>
+							<a-col :span="2" class="switchBox"
+								><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.gameSetting.timeLimitedCUp.available"
+							/></a-col>
 							<a-col v-show="setting.common.gameSetting.timeLimitedCUp.available" :span="8" class="showBox">
-								<a-col :span="3" class="labelText">点数</a-col>
+								<a-col :span="3" class="labelText">{{ $t('default.35') }}</a-col>
 								<a-col :span="9" class="selectSearch">
 									<a-input v-model:value="setting.common.gameSetting.timeLimitedCUp.credits" />
 								</a-col>
-								<a-col :span="3" class="labelText">时间</a-col>
+								<a-col :span="3" class="labelText">{{ $t('default.46') }}</a-col>
 								<a-col :span="9" class="selectSearch">
 									<a-input v-model:value="setting.common.gameSetting.timeLimitedCUp.second" allow-clear />
 								</a-col>
@@ -197,36 +213,42 @@
 						</a-row>
 					</div>
 					<div class="gameBox">
-						<div class="title-g">其他游戏</div>
+						<div class="title-g">{{ $t('default.49') }}</div>
 						<a-row class="rowStyle">
-							<a-col :span="2" class="labelText">减半</a-col>
-							<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.gameSetting.halving.available"/></a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.50') }}</a-col>
+							<a-col :span="2" class="switchBox"
+								><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.gameSetting.halving.available"
+							/></a-col>
 							<a-col v-show="setting.common.gameSetting.halving.available" :span="8" class="showBox">
-								<a-col :span="3" class="labelText">点数</a-col>
+								<a-col :span="3" class="labelText">{{ $t('default.35') }}</a-col>
 								<a-col :span="9" class="selectSearch">
 									<a-input v-model:value="setting.common.gameSetting.halving.credits" />
 								</a-col>
 							</a-col>
 						</a-row>
 						<a-row class="rowStyle">
-							<a-col :span="2" class="labelText">饮酒</a-col>
-							<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.gameSetting.drink.available"/></a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.51') }}</a-col>
+							<a-col :span="2" class="switchBox"
+								><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.gameSetting.drink.available"
+							/></a-col>
 							<a-col v-show="setting.common.gameSetting.drink.available" :span="8" class="showBox">
-								<a-col :span="3" class="labelText">点数</a-col>
+								<a-col :span="3" class="labelText">{{ $t('default.35') }}</a-col>
 								<a-col :span="9" class="selectSearch">
 									<a-input v-model:value="setting.common.gameSetting.drink.credits" />
 								</a-col>
 							</a-col>
 						</a-row>
 						<a-row>
-							<a-col :span="2" class="labelText">鹰眼</a-col>
-							<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.gameSetting.eagleEye.available"/></a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.52') }}</a-col>
+							<a-col :span="2" class="switchBox"
+								><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.gameSetting.eagleEye.available"
+							/></a-col>
 							<a-col v-show="setting.common.gameSetting.eagleEye.available" :span="8" class="showBox">
-								<a-col :span="3" class="labelText">点数</a-col>
+								<a-col :span="3" class="labelText">{{ $t('default.35') }}</a-col>
 								<a-col :span="9" class="selectSearch">
 									<a-input v-model:value="setting.common.gameSetting.eagleEye.credits" />
 								</a-col>
-								<a-col :span="3" class="labelText">回合</a-col>
+								<a-col :span="3" class="labelText">{{ $t('default.36') }}</a-col>
 								<a-col :span="9" class="selectSearch">
 									<a-select v-model:value="setting.common.gameSetting.eagleEye.round">
 										<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
@@ -235,14 +257,16 @@
 							</a-col>
 						</a-row>
 						<a-row>
-							<a-col :span="2" class="labelText">大红心</a-col>
-							<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.gameSetting.bigbull.available"/></a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.53') }}</a-col>
+							<a-col :span="2" class="switchBox"
+								><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.gameSetting.bigbull.available"
+							/></a-col>
 							<a-col v-show="setting.common.gameSetting.bigbull.available" :span="8" class="showBox">
-								<a-col :span="3" class="labelText">点数</a-col>
+								<a-col :span="3" class="labelText">{{ $t('default.35') }}</a-col>
 								<a-col :span="9" class="selectSearch">
 									<a-input v-model:value="setting.common.gameSetting.bigbull.credits" />
 								</a-col>
-								<a-col :span="3" class="labelText">回合</a-col>
+								<a-col :span="3" class="labelText">{{ $t('default.36') }}</a-col>
 								<a-col :span="9" class="selectSearch">
 									<a-select v-model:value="setting.common.gameSetting.bigbull.round">
 										<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
@@ -251,10 +275,12 @@
 							</a-col>
 						</a-row>
 						<a-row class="rowStyle">
-							<a-col :span="2" class="labelText">米老鼠高分赛</a-col>
-							<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.gameSetting.crcup.available"/></a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.54') }}</a-col>
+							<a-col :span="2" class="switchBox"
+								><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.gameSetting.crcup.available"
+							/></a-col>
 							<a-col v-show="setting.common.gameSetting.crcup.available" :span="8" class="showBox">
-								<a-col :span="3" class="labelText">点数</a-col>
+								<a-col :span="3" class="labelText">{{ $t('default.35') }}</a-col>
 								<a-col :span="9" class="selectSearch">
 									<a-input v-model:value="setting.common.gameSetting.crcup.credits" />
 								</a-col>
@@ -262,15 +288,15 @@
 						</a-row>
 					</div>
 					<div class="gameBox">
-						<div class="title-g">网上对战</div>
+						<div class="title-g">{{ $t('default.55') }}</div>
 						<a-row class="rowStyle">
-							<a-col :span="2" class="labelText">501</a-col>
-							<a-col :span="2" class="labelText">点数</a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.56') }}</a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.35') }}</a-col>
 							<a-col :span="4" class="selectSearch">
 								<a-input v-model:value="setting.common.gameSetting.online501.credits" />
 							</a-col>
-							<a-col :span="2" class="labelText">701</a-col>
-							<a-col :span="2" class="labelText">点数</a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.57') }}</a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.35') }}</a-col>
 							<a-col :span="4" class="selectSearch">
 								<a-select v-model:value="setting.common.gameSetting.online701.credits">
 									<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
@@ -278,42 +304,42 @@
 							</a-col>
 						</a-row>
 						<a-row>
-							<a-col :span="2" class="labelText">501DO</a-col>
-							<a-col :span="2" class="labelText">点数</a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.58') }}</a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.35') }}</a-col>
 							<a-col :span="4" class="selectSearch">
 								<a-input v-model:value="setting.common.gameSetting.online501DO.credits" />
 							</a-col>
-							<a-col :span="2" class="labelText">701MO</a-col>
-							<a-col :span="2" class="labelText">点数</a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.59') }}</a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.35') }}</a-col>
 							<a-col :span="4" class="selectSearch">
 								<a-input v-model:value="setting.common.gameSetting.online701MO.credits" />
 							</a-col>
 						</a-row>
 						<a-row>
-							<a-col :span="2" class="labelText">标准米老鼠</a-col>
-							<a-col :span="2" class="labelText">点数</a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.41') }}</a-col>
+							<a-col :span="2" class="labelText">{{ $t('default.35') }}</a-col>
 							<a-col :span="4" class="selectSearch">
 								<a-input v-model:value="setting.common.gameSetting.onlinesdCrcket.credits" />
 							</a-col>
 						</a-row>
 					</div>
 				</a-tab-pane>
-				<a-tab-pane key="2" tab="通用设置">
+				<a-tab-pane key="2" :tab="$t('default.60')">
 					<a-row class="rowStyle">
-						<a-col :span="2" class="labelText">屏保</a-col>
-						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.screenSaverSwitch"/></a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.61') }}</a-col>
+						<a-col :span="2" class="switchBox"><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.screenSaverSwitch"/></a-col>
 						<a-col v-show="setting.common.screenSaverSwitch" :span="8" class="showBox">
-							<a-col :span="5" class="labelText">屏保间隔</a-col>
+							<a-col :span="5" class="labelText">{{ $t('default.62') }}</a-col>
 							<a-col :span="9" class="selectSearch">
 								<a-select v-model:value="setting.common.screenSaverTime">
 									<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
 								</a-select>
 							</a-col>
 						</a-col>
-						<a-col :span="2" class="labelText">自动切换</a-col>
-						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.autoChange"/></a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.63') }}</a-col>
+						<a-col :span="2" class="switchBox"><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.autoChange"/></a-col>
 						<a-col v-show="setting.common.autoChange" :span="8" class="showBox">
-							<a-col :span="5" class="labelText">自动切换时间</a-col>
+							<a-col :span="5" class="labelText">{{ $t('default.64') }}</a-col>
 							<a-col :span="9" class="selectSearch">
 								<a-select v-model:value="setting.common.changingOver">
 									<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
@@ -323,102 +349,108 @@
 					</a-row>
 
 					<a-row class="rowStyle">
-						<a-col :span="2" class="labelText">投标计时开关</a-col>
-						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.showTimedSwitch"/></a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.65') }}</a-col>
+						<a-col :span="2" class="switchBox"><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.showTimedSwitch"/></a-col>
 						<a-col v-show="setting.common.showTimedSwitch" :span="8" class="showBox">
-							<a-col :span="5" class="labelText">投标计时</a-col>
+							<a-col :span="5" class="labelText">{{ $t('default.66') }}</a-col>
 							<a-col :span="9" class="selectSearch">
 								<a-select v-model:value="setting.common.showTimed">
 									<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
 								</a-select>
 							</a-col>
 						</a-col>
-						<a-col :span="2" class="labelText">密码设置</a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.67') }}</a-col>
 						<a-col :span="2" class="switchBox">
 							<a-input v-model:value="setting.others.password" type="password" allow-clear />
+						</a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.97') }}</a-col>
+						<a-col :span="5" class="switchBox">
+							<a-input v-model:value="setting.others.shopManagerCard" allow-clear />
 						</a-col>
 					</a-row>
 
 					<a-row class="rowStyle">
-						<a-col :span="2" class="labelText">空标报警</a-col>
-						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.emptyDartAlarm"/></a-col>
-						<a-col :span="2" class="labelText">测试模式</a-col>
-						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.isDebug"/></a-col>
-						<a-col :span="2" class="labelText">演示模式</a-col>
-						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.mode"/></a-col>
-						<a-col :span="2" class="labelText">点卡开关</a-col>
-						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.creditsBrushSwitch"/></a-col>
-						<a-col :span="2" class="labelText">身份卡开关</a-col>
-						<a-col :span="2" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.IDBrushSwitch"/></a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.68') }}</a-col>
+						<a-col :span="2" class="switchBox"><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.emptyDartAlarm"/></a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.69') }}</a-col>
+						<a-col :span="2" class="switchBox"><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.isDebug"/></a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.70') }}</a-col>
+						<a-col :span="2" class="switchBox"><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.mode"/></a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.71') }}</a-col>
+						<a-col :span="2" class="switchBox"><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.creditsBrushSwitch"/></a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.72') }}</a-col>
+						<a-col :span="2" class="switchBox"><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.IDBrushSwitch"/></a-col>
 					</a-row>
 				</a-tab-pane>
-				<a-tab-pane key="3" tab="投币设置">
+				<a-tab-pane key="3" :tab="$t('default.73')">
 					<a-row class="rowStyle">
-						<a-col :span="2" class="labelText">二维码开关</a-col>
-						<a-col :span="3" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.qrcodeSwitch"/></a-col>
-						<a-col :span="2" class="labelText">硬币开关</a-col>
-						<a-col :span="3" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.coinsSwitch"/></a-col>
-						<a-col :span="2" class="labelText">纸币开关</a-col>
-						<a-col :span="3" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.moneySwitch"/></a-col>
-						<a-col :span="2" class="labelText">是否免费</a-col>
-						<a-col :span="3" class="switchBox"><a-switch checked-children="开" un-checked-children="关" v-model:checked="setting.common.systemSetting.others.isFree"/></a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.74') }}</a-col>
+						<a-col :span="3" class="switchBox"><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.qrcodeSwitch"/></a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.75') }}</a-col>
+						<a-col :span="3" class="switchBox"><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.coinsSwitch"/></a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.76') }}</a-col>
+						<a-col :span="3" class="switchBox"><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.moneySwitch"/></a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.77') }}</a-col>
+						<a-col :span="3" class="switchBox"
+							><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.systemSetting.others.isFree"
+						/></a-col>
 						<a-col v-show="setting.common.systemSetting.others.isFree" :span="4" class="showBox">
-							<a-col :span="10" class="labelText">免费点数</a-col>
+							<a-col :span="10" class="labelText">{{ $t('default.78') }}</a-col>
 							<a-col :span="14" class="selectSearch">
 								<a-input v-model:value="setting.common.systemSetting.others.freeCoins" allow-clear />
 							</a-col>
 						</a-col>
 					</a-row>
 					<a-row class="rowStyle">
-						<a-col :span="2" class="labelText">元/币</a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.79') }}</a-col>
 						<a-col :span="3">
 							<a-input v-model:value="setting.common.systemSetting.exchange.rmbToCoin" allow-clear />
 						</a-col>
-						<a-col :span="2" class="labelText">金额/币</a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.80') }}</a-col>
 						<a-col :span="3">
 							<a-input v-model:value="setting.common.systemSetting.exchange.moneyToCoin" allow-clear />
 						</a-col>
-						<a-col :span="2" class="labelText">币/点</a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.81') }}</a-col>
 						<a-col :span="3">
 							<a-input v-model:value="setting.common.systemSetting.exchange.coinToCrdits" allow-clear />
 						</a-col>
 					</a-row>
 					<a-row class="rowStyle">
-						<a-col :span="2" class="labelText">金额1</a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.82') + '1' }}</a-col>
 						<a-col :span="3">
 							<a-input v-model:value="setting.common.moneyOpt.money0" allow-clear />
 						</a-col>
-						<a-col :span="2" class="labelText">金额2</a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.82') + '2' }}</a-col>
 						<a-col :span="3">
 							<a-input v-model:value="setting.common.moneyOpt.money1" allow-clear />
 						</a-col>
-						<a-col :span="2" class="labelText">金额3</a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.82') + '3' }}</a-col>
 						<a-col :span="3">
 							<a-input v-model:value="setting.common.moneyOpt.money2" allow-clear />
 						</a-col>
-						<a-col :span="2" class="labelText">金额4</a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.82') + '4' }}</a-col>
 						<a-col :span="3">
 							<a-input v-model:value="setting.common.moneyOpt.money3" allow-clear />
 						</a-col>
-						<a-col :span="1" class="labelText">金额5</a-col>
+						<a-col :span="1" class="labelText">{{ $t('default.82') + '5' }}</a-col>
 						<a-col :span="3">
 							<a-input v-model:value="setting.common.moneyOpt.money4" allow-clear />
 						</a-col>
 					</a-row>
 					<a-row>
-						<a-col :span="2" class="labelText">金额6</a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.82') + '6' }}</a-col>
 						<a-col :span="3">
 							<a-input v-model:value="setting.common.moneyOpt.money5" allow-clear />
 						</a-col>
-						<a-col :span="2" class="labelText">金额7</a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.82') + '7' }}</a-col>
 						<a-col :span="3">
 							<a-input v-model:value="setting.common.moneyOpt.money6" allow-clear />
 						</a-col>
-						<a-col :span="2" class="labelText">金额8</a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.82') + '8' }}</a-col>
 						<a-col :span="3">
 							<a-input v-model:value="setting.common.moneyOpt.money7" allow-clear />
 						</a-col>
-						<a-col :span="2" class="labelText">金额9</a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.82') + '9' }}</a-col>
 						<a-col :span="3">
 							<a-input v-model:value="setting.common.moneyOpt.money8" allow-clear />
 						</a-col>
@@ -467,7 +499,8 @@ export default defineComponent({
 			optionValue: '1',
 			setting: {
 				others: {
-					password: ''
+					password: '',
+					shopManagerCard:"",
 				},
 				common: {
 					startBegin: null,
@@ -493,8 +526,8 @@ export default defineComponent({
 					language: 'English', //语言
 					mute: Boolean(State.OFF), //静音
 					coins: 0, //币值
-					credits: 0, //点数
-					freeCredits: 0, //点数
+					credits: 0, //{{ $t('default.35') }}
+					freeCredits: 0, //{{ $t('default.35') }}
 					cash: 0, //现金
 					edition: EOtherOptions.BUSINESSEDITION,
 					autoChange: Boolean(State.OFF), //是否自动切

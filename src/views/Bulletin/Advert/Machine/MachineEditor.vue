@@ -1,9 +1,9 @@
 <template>
-	<labelTitle :value="'MachineEditor'" :btn="ROUTE.query.id ? update : create" />
+	<labelTitle :value="$t('default.3')" :btn="ROUTE.query.id ? update : create" />
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="4" class="labelText">
-				{{ 'Title' }}
+				{{ $t('default.4') }}
 			</a-col>
 			<a-col :span="20">
 				<a-input v-model:value="infoVO.title" />
@@ -11,21 +11,21 @@
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="4" class="labelText">
-				{{ 'Url' }}
+				{{ $t('default.7') }}
 			</a-col>
 			<a-col :span="15">
 				<a-input v-model:value="infoVO.url" />
 			</a-col>
 			<a-col :span="2" class="searchButton">
-				<a-button size="small" type="primary" @click="preview">{{ '预览' }}</a-button>
+				<a-button size="small" type="primary" @click="preview">{{ $t('default.16') }}</a-button>
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="4" class="labelText">
-				{{ 'Machine' }}
+				{{ $t('default.3') }}
 			</a-col>
 			<a-col :span="1" class="searchButton">
-				<a-button size="small" type="primary" @click="addShop">{{ '添加' }}</a-button>
+				<a-button size="small" type="primary" @click="addShop">{{ $t('default.20') }}</a-button>
 			</a-col>
 		</a-row>
 	</div>
@@ -45,29 +45,29 @@
 	<showUrlDialog :visible="showUrlDialog" :src="infoVO.url" @showBoxCancel="showBoxCancel" />
 	<!-- 添加机器 -->
 	<div>
-		<a-modal v-model:visible="showShopDialog" centered title="Machine" width="60%">
+		<a-modal v-model:visible="showShopDialog" centered :title="$t('default.3')" width="60%">
 			<div class="searchBox">
 				<a-row>
 					<a-col :span="3" class="labelText">
-						{{ 'Shop Name' }}
+						{{ $t('default.5') }}
 					</a-col>
 					<a-col :span="4">
 						<a-input v-model:value="shopVO.shopName" allow-clear />
 					</a-col>
 					<a-col :span="3" class="labelText">
-						{{ 'Machine Name' }}
+						{{ $t('default.13') }}
 					</a-col>
 					<a-col :span="4">
 						<a-input v-model:value="shopVO.machineName" allow-clear />
 					</a-col>
 					<a-col :span="3" class="labelText">
-						{{ 'Machine Serial' }}
+						{{ $t('default.21') }}
 					</a-col>
 					<a-col :span="4">
 						<a-input v-model:value="shopVO.serial" allow-clear />
 					</a-col>
 					<a-col :span="2" class="searchButton">
-						<a-button size="small" type="primary" @click="getMachineList">{{ '搜索' }}</a-button>
+						<a-button size="small" type="primary" @click="getMachineList">{{ $t('default.8') }}</a-button>
 					</a-col>
 				</a-row>
 			</div>
@@ -79,8 +79,8 @@
 			</div>
 			<template #footer>
 				<div class="footerBtnClass">
-					<a-button key="back" @click="handleCancel">Cancel</a-button>
-					<a-button key="submit" type="primary" @click="handleOk">Ok</a-button>
+					<a-button key="back" @click="handleCancel">{{ $t('default.19') }}</a-button>
+					<a-button key="submit" type="primary" @click="handleOk">{{ $t('default.18') }}</a-button>
 				</div>
 			</template>
 		</a-modal>
@@ -95,7 +95,7 @@ import showUrlDialog from '@/components/common/showUrlDialog.vue';
 import { AdvertTableAddHttp, AdvertSearchHttp, AdvertChangeHttp, MachineListHttp } from '@/api/api';
 import { useRoute } from 'vue-router';
 import { message } from 'ant-design-vue';
-import { handleList } from '@/components/common/tools';
+import { handleList, i18n } from '@/components/common/tools';
 
 interface DataProps {
 	getAllMachineList: () => void;
@@ -171,19 +171,19 @@ export default defineComponent({
 			tableListTotal: 1,
 			columns: [
 				{
-					title: 'Shop Name',
+					title: i18n('default.5'),
 					dataIndex: 'shopName'
 				},
 				{
-					title: 'Mchine Name',
+					title: i18n('default.13'),
 					dataIndex: 'machineName'
 				},
 				{
-					title: 'Mchine No',
+					title: i18n('default.21'),
 					dataIndex: 'machineSerial'
 				},
 				{
-					title: 'Type',
+					title: i18n('default.22'),
 					dataIndex: 'machineType'
 				},
 				{
@@ -193,19 +193,19 @@ export default defineComponent({
 			],
 			shopDialogColumns: [
 				{
-					title: 'Shop Name',
+					title: i18n('default.5'),
 					dataIndex: 'shopName'
 				},
 				{
-					title: 'Mchine Name',
+					title: i18n('default.13'),
 					dataIndex: 'name'
 				},
 				{
-					title: 'Mchine No',
+					title: i18n('default.21'),
 					dataIndex: 'serial'
 				},
 				{
-					title: 'Type',
+					title: i18n('default.22'),
 					dataIndex: 'type'
 				}
 			],

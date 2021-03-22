@@ -18,7 +18,8 @@ import {
 	getMachineInfo,
 	getShopMachineSetting,
 	setShopMachineSetting,
-	setMachineSetting
+	setMachineSetting,
+	deleteMachine
 } from '@/api/Machine/index';
 
 // Agent
@@ -151,6 +152,10 @@ const shopMachineListHttp = (data: any) => {
 const deleteShopHttp = (data: any) => {
 	return Axios.post(deleteShop, data);
 };
+// 删除机器
+const deleteMachinepHttp = (data: any) => {
+	return Axios.post(deleteMachine, data);
+};
 // 创建机器
 const createMachineHttp = (data: any) => {
 	return Axios.post(createMachine, data);
@@ -202,5 +207,6 @@ export {
 	getMachineInfoHttp,
 	getShopMachineSettingHttp,
 	setShopMachineSettingHttp,
-	setMachineSettingHttp
+	setMachineSettingHttp,
+	deleteMachinepHttp
 };

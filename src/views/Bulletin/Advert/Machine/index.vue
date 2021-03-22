@@ -219,7 +219,7 @@ export default defineComponent({
 						deleteAll: false
 					};
 					deleteAdvertHttp(obj).then((res: any) => {
-						message.success(res.data.msg);
+						message.warning(res.data.msg);
 						data.search();
 					});
 				} else {
@@ -230,7 +230,7 @@ export default defineComponent({
 						deleteAll: false
 					};
 					deleteAdvertShopHttp(obj).then((res: any) => {
-						message.success(res.data.msg);
+						message.warning(res.data.msg);
 						data.search();
 					});
 				}
@@ -242,7 +242,7 @@ export default defineComponent({
 					deleteAll: true
 				};
 				deleteAdvertHttp(obj).then((res: any) => {
-					message.success(res.data.msg);
+					message.warning(res.data.msg);
 					data.allVisible = false;
 					data.search();
 				});

@@ -150,7 +150,7 @@ export default defineComponent({
 					formData.append('newPassword', data.infoVO.newPasswordTwo);
 					formData.append('userId', data.infoVO.userId);
 					changePasswordHttp(formData).then((res: any) => {
-						message.success(res.data.msg);
+						message.warning(res.data.msg);
 						data.passwordVisible = false;
 					});
 				}

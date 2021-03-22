@@ -1,36 +1,36 @@
 <template>
-	<labelTitle :value="'Machine Game Options'" :btn="create" />
+	<labelTitle :value="$t('default.3')" :btn="create" />
 	<a-row class="rowStyle">
 		<a-col :span="2" class="labelText">
-			<a-button type="primary" size="small" @click="addShop">{{ '添加机器' }}</a-button>
+			<a-button type="primary" size="small" @click="addShop">{{ $t('default.83') }}</a-button>
 		</a-col>
 	</a-row>
 	<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
 		<template #handle="{ record }">
-			<a-button size="small" type="danger" @click="handleDelete(record.id)">{{ '删除' }}</a-button>
+			<a-button size="small" type="danger" @click="handleDelete(record.id)">{{ $t('default.10') }}</a-button>
 		</template>
 	</a-table>
 	<div class="paginationStyle">
 		<a-pagination show-quick-jumper v-model:current="pageIndex" :total="total" @change="pageChange" />
 	</div>
 	<MachineOptions ref="options" />
-	<a-modal v-model:visible="visible" title="Basic Modal" :footer="null" centered width="50%" @cancel="cancel">
+	<a-modal v-model:visible="visible" :title="$t('default.3')" :footer="null" centered width="50%" @cancel="cancel">
 		<div class="searchBox">
 			<a-row class="rowStyle">
 				<a-col :span="3" class="labelText">
-					{{ 'Machine Name' }}
+					{{ $t('default.13') }}
 				</a-col>
 				<a-col :span="8">
 					<a-input v-model:value="searchVO.name" allowClear />
 				</a-col>
 				<a-col :span="3" class="labelText">
-					{{ 'Machine Serial' }}
+					{{ $t('default.21') }}
 				</a-col>
 				<a-col :span="8" class="selectSearch">
 					<a-input v-model:value="searchVO.serial" allowClear />
 				</a-col>
 				<a-col :span="2" class="labelText">
-					<a-button type="primary" size="small" @click="search">{{ '搜索' }}</a-button>
+					<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
 				</a-col>
 			</a-row>
 		</div>
@@ -46,6 +46,7 @@ import { defineComponent, onMounted, reactive, ref, toRefs, computed, unref } fr
 import labelTitle from '@/components/labelTitle.vue';
 import { MachineListHttp, setMachineSettingHttp } from '@/api/api';
 import MachineOptions from '@/components/common/MachineOptions.vue';
+import { i18n } from '@/components/common/tools';
 export default defineComponent({
 	name: 'ShopEditor',
 	components: {
@@ -86,17 +87,17 @@ export default defineComponent({
 			dialogMachineTotal: 1,
 			columns: [
 				{
-					title: 'Machine Name',
+					title: i18n('default.13'),
 					dataIndex: 'name',
 					key: 'Label'
 				},
 				{
-					title: 'Machine Serial',
+					title: i18n('default.21'),
 					dataIndex: 'serial',
 					key: 'Serial'
 				},
 				{
-					title: 'Machine Type',
+					title: i18n('default.22'),
 					dataIndex: 'type',
 					key: 'Type'
 				},
@@ -106,17 +107,17 @@ export default defineComponent({
 			],
 			dialogShopColumns: [
 				{
-					title: 'Machine Name',
+					title: i18n('default.13'),
 					dataIndex: 'name',
 					key: 'Label'
 				},
 				{
-					title: 'Machine Serial',
+					title: i18n('default.21'),
 					dataIndex: 'serial',
 					key: 'serial'
 				},
 				{
-					title: 'Machine Type',
+					title: i18n('default.22'),
 					dataIndex: 'type',
 					key: 'Type'
 				}

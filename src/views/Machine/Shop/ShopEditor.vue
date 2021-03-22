@@ -1,15 +1,15 @@
 <template>
-	<labelTitle :value="'ShopEditor'" :btn="id ? update : create" />
+	<labelTitle :value="$t('default.2')" :btn="id ? update : create" />
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
-				{{ 'Label' }}
+				{{ $t('default.5') }}
 			</a-col>
 			<a-col :span="9">
 				<a-input v-model:value="infoVO.name" allow-clear />
 			</a-col>
 			<a-col :span="3" class="labelText">
-				{{ 'Type' }}
+				{{ $t('default.25') }}
 			</a-col>
 			<a-col :span="9">
 				<a-input v-model:value="infoVO.type" allow-clear />
@@ -31,13 +31,13 @@
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
-				{{ 'Address' }}
+				{{ $t('default.17') }}
 			</a-col>
 			<a-col :span="9">
 				<a-input v-model:value="infoVO.address" allow-clear />
 			</a-col>
 			<a-col :span="3" class="labelText">
-				{{ 'Phone' }}
+				{{ $t('default.90') }}
 			</a-col>
 			<a-col :span="9">
 				<a-input v-model:value="infoVO.phone" allow-clear />
@@ -51,7 +51,7 @@
 				<a-input v-model:value="infoVO.fax" allow-clear />
 			</a-col>
 			<a-col :span="3" class="labelText">
-				{{ 'Email' }}
+				{{ $t('default.91') }}
 			</a-col>
 			<a-col :span="9">
 				<a-input v-model:value="infoVO.email" allow-clear />
@@ -59,7 +59,7 @@
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
-				{{ 'Website' }}
+				{{ $t('default.92') }}
 			</a-col>
 			<a-col :span="9">
 				<a-input v-model:value="infoVO.website" allow-clear />
@@ -73,13 +73,13 @@
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
-				{{ 'Picture' }}
+				{{ $t('default.93') }}
 			</a-col>
 			<a-col :span="7">
 				<a-input v-model:value="infoVO.img" allow-clear />
 			</a-col>
 			<a-col :span="2" class="searchButton">
-				<a-button size="small" type="primary" @click="preview">{{ '预览' }}</a-button>
+				<a-button size="small" type="primary" @click="preview">{{ $t('default.16') }}</a-button>
 			</a-col>
 			<a-col :span="3" class="labelText">
 				{{ 'Supplier' }}
@@ -93,19 +93,19 @@
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
-				{{ 'Longtitude' }}
+				{{ $t('default.94') }}
 			</a-col>
 			<a-col :span="2">
 				<a-input v-model:value="infoVO.longitude" disabled />
 			</a-col>
 			<a-col :span="3" class="labelText">
-				{{ 'Latitude' }}
+				{{ $t('default.95') }}
 			</a-col>
 			<a-col :span="2">
 				<a-input v-model:value="infoVO.latitude" disabled />
 			</a-col>
 			<a-col :span="2" class="labelText">
-				<a-button size="small" type="primary" @click="getPositionMap">{{ '获取' }}</a-button>
+				<a-button size="small" type="primary" @click="getPositionMap">{{ $t('default.96') }}</a-button>
 			</a-col>
 			<a-col :span="3" class="labelText">
 				{{ 'Valid' }}
@@ -148,7 +148,7 @@
 				</a-radio-group>
 			</a-col>
 			<a-col v-if="isAdmin" :span="3" class="labelText">
-				{{ 'Agent' }}
+				{{ $t('default.26') }}
 			</a-col>
 			<a-col v-if="isAdmin" :span="9" class="selectSearch">
 				<a-select show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
@@ -160,7 +160,7 @@
 		</a-row>
 		<a-row v-if="isAdmin" class="rowStyle">
 			<a-col :span="3" class="labelText">
-				{{ 'Country' }}
+				{{ $t('default.23') }}
 			</a-col>
 			<a-col :span="9">
 				<a-select v-model:value="infoVO.countryId" @change="countryChange" class="selectBox" allowClear>
@@ -168,7 +168,7 @@
 				</a-select>
 			</a-col>
 			<a-col :span="3" class="labelText">
-				{{ 'Area' }}
+				{{ $t('default.24') }}
 			</a-col>
 			<a-col :span="9">
 				<a-select v-model:value="infoVO.areaId" class="selectBox" allowClear>
@@ -178,7 +178,7 @@
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
-				{{ 'Memo' }}
+				{{ $t('default.85') }}
 			</a-col>
 			<a-col :span="21">
 				<a-textarea v-model:value="infoVO.memo" :rows="4" allow-clear />
@@ -186,7 +186,7 @@
 		</a-row>
 	</div>
 	<div v-if="id">
-		<labelTitle :value="'Machines'" />
+		<labelTitle :value="$t('default.3')" />
 		<div class="searchBox">
 			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
@@ -196,31 +196,31 @@
 					<a-input v-model:value="machineVO.id" allow-clear />
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ 'Name' }}
+					{{ $t('default.13') }}
 				</a-col>
 				<a-col :span="4">
 					<a-input v-model:value="machineVO.name" allow-clear />
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ 'Serial' }}
+					{{ $t('default.21') }}
 				</a-col>
 				<a-col :span="4">
 					<a-input v-model:value="machineVO.serial" allow-clear />
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ 'Placing Type' }}
+					{{ $t('default.84') }}
 				</a-col>
 				<a-col :span="4" class="selectSearch">
 					<a-select v-model:value="machineVO.placingType" allow-clear>
-						<a-select-option :value="1">Free</a-select-option>
-						<a-select-option :value="2">Rent</a-select-option>
-						<a-select-option :value="3">Sell</a-select-option>
+						<a-select-option :value="1">{{ $t('default.86') }}</a-select-option>
+						<a-select-option :value="2">{{ $t('default.87') }}</a-select-option>
+						<a-select-option :value="3">{{ $t('default.88') }}</a-select-option>
 					</a-select>
 				</a-col>
 			</a-row>
 			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
-					{{ 'Last Online' }}
+					{{ $t('default.89') }}
 				</a-col>
 				<a-col :span="2">
 					<a-date-picker v-model:value="machineVO.minLastOnlineTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
@@ -229,7 +229,7 @@
 					<a-date-picker v-model:value="machineVO.maxLastOnlineTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ 'Type' }}
+					{{ $t('default.22') }}
 				</a-col>
 				<a-col :span="4" class="selectSearch">
 					<a-select v-model:value="machineVO.type" allow-clear>
@@ -238,19 +238,19 @@
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
-					<a-button type="primary" size="small" @click="search">{{ '搜索' }}</a-button>
+					<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
 				</a-col>
 			</a-row>
 		</div>
 		<a-row class="rowStyle">
 			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" class="tableStyle" rowKey="id">
 				<template #PlacingType="{ record }">
-					<div v-if="record.placingType === 1">{{ 'Free' }}</div>
-					<div v-if="record.placingType === 2">{{ 'Rent' }}</div>
-					<div v-if="record.placingType === 3">{{ 'Sell' }}</div>
+					<div v-if="record.placingType === 1">{{ $t('default.86') }}</div>
+					<div v-if="record.placingType === 2">{{ $t('default.87') }}</div>
+					<div v-if="record.placingType === 3">{{ $t('default.88') }}</div>
 				</template>
 				<template #gameSetting="{ record }">
-					<a-button size="small" type="primary" @click="setGameSetting(record.id)">{{ '游戏设置' }}</a-button>
+					<a-button size="small" type="primary" @click="setGameSetting(record.id)">{{ $t('default.29') }}</a-button>
 				</template>
 			</a-table>
 		</a-row>
@@ -262,24 +262,30 @@
 		<MachineOptions ref="options" :gameOptions="infoVO.machineSetting" />
 	</div>
 	<showUrlDialog :visible="urlBox" :src="infoVO.img" @showBoxCancel="showBoxCancel" />
-	<a-modal v-model:visible="mapDialog" title="Map" width="50%" :footer="null">
+	<a-modal v-model:visible="mapDialog" centered title="Map" width="50%">
 		<a-row class="rowStyle">
-			<a-col :span="3" class="labelText">{{ 'Longtitude' }}</a-col>
+			<a-col :span="3" class="labelText">{{ $t('default.94') }}</a-col>
 			<a-col :span="9">
-				<a-input v-model:value="infoVO.longitude" disabled />
+				<a-input v-model:value="mapInfoObj.longitude" disabled />
 			</a-col>
-			<a-col :span="3" class="labelText">{{ 'Latitude' }}</a-col>
+			<a-col :span="3" class="labelText">{{ $t('default.95') }}</a-col>
 			<a-col :span="9">
-				<a-input v-model:value="infoVO.latitude" disabled />
+				<a-input v-model:value="mapInfoObj.latitude" disabled />
 			</a-col>
 		</a-row>
 		<div id="map"></div>
+		<template #footer>
+			<div class="footerBtnClass">
+				<a-button key="back" @click="handleCancel">{{ $t('default.19') }}</a-button>
+				<a-button key="submit" type="primary" @click="handleOk">{{ $t('default.18') }}</a-button>
+			</div>
+		</template>
 	</a-modal>
 	<!-- 机器设置弹框 -->
 	<a-modal v-model:visible="MachineSettingDialog" title="Game Setting" width="80%" :footer="null" centered>
 		<a-row class="rowStyle" type="flex" justify="end">
 			<a-col :sapn="1">
-				<a-button type="primary" size="small" @click="saveGameOption">{{ '保存' }}</a-button>
+				<a-button type="primary" size="small" @click="saveGameOption">{{ $t('default.15') }}</a-button>
 			</a-col>
 		</a-row>
 		<MachineOptions ref="options" :gameOptions="infoVO.machineSetting" />
@@ -294,6 +300,7 @@ import { useRoute } from 'vue-router';
 import { shopSingleInfoHttp, agentListHttp, countryListHttp, areaListHttp, editShopHttp, createShopHttp, shopMachineListHttp, setMachineSettingHttp, getMachineInfoHttp } from '@/api/api';
 import { message } from 'ant-design-vue';
 import MachineOptions from '@/components/common/MachineOptions.vue';
+import { i18n } from '@/components/common/tools';
 export default defineComponent({
 	name: 'ShopEditor',
 	components: {
@@ -350,6 +357,10 @@ export default defineComponent({
 				pageIndex: 1,
 				pageSize: 10
 			},
+			mapInfoObj: {
+				longitude: '',
+				latitude: ''
+			},
 			countryList: [],
 			areaList: [],
 			agentList: [],
@@ -362,27 +373,27 @@ export default defineComponent({
 					key: 'ID'
 				},
 				{
-					title: 'Shop Name',
+					title: i18n('default.13'),
 					dataIndex: 'name',
 					key: 'Shop Name'
 				},
 				{
-					title: 'Machine Serial',
+					title: i18n('default.21'),
 					dataIndex: 'serial',
 					key: 'Serial'
 				},
 				{
-					title: 'Last Online',
-					dataIndex: 'lastOnlineTime',
-					key: 'Time'
-				},
-				{
-					title: 'Type',
+					title: i18n('default.22'),
 					dataIndex: 'type',
 					key: 'Type'
 				},
 				{
-					title: 'Placing Type',
+					title: i18n('default.89'),
+					dataIndex: 'lastOnlineTime',
+					key: 'Time'
+				},
+				{
+					title: i18n('default.84'),
 					dataIndex: 'Placing Type',
 					slots: { customRender: 'PlacingType' }
 				},
@@ -409,6 +420,14 @@ export default defineComponent({
 				} else {
 					message.warning('请添加广告链接');
 				}
+			},
+			handleCancel: () => {
+				data.mapDialog = false;
+			},
+			handleOk: () => {
+				data.infoVO.longitude = data.mapInfoObj.longitude;
+				data.infoVO.latitude = data.mapInfoObj.latitude;
+				data.mapDialog = false;
 			},
 			showBoxCancel: (value) => {
 				data.urlBox = value;
@@ -486,8 +505,8 @@ export default defineComponent({
 					zoom: 13
 				});
 				map.on('click', function(e) {
-					data.infoVO.longitude = e.lnglat.getLng();
-					data.infoVO.latitude = e.lnglat.getLat();
+					data.mapInfoObj.longitude = e.lnglat.getLng();
+					data.mapInfoObj.latitude = e.lnglat.getLat();
 				});
 			};
 		};
@@ -566,6 +585,6 @@ export default defineComponent({
 
 <style scoped>
 #map {
-	height: 500px;
+	height: 700px;
 }
 </style>

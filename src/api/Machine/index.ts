@@ -14,6 +14,8 @@ const deleteShop = 'shop/delete';
 const createMachine = 'machine/insert';
 // 修改机器
 const editorMachine = 'machine/update';
+// 删除机器
+const deleteMachine = 'machine/delete';
 // 查询机器
 const getMachineInfo = 'machine/select';
 // 查询店铺下机器设置
@@ -34,5 +36,6 @@ export {
 	getMachineInfo,
 	getShopMachineSetting,
 	setShopMachineSetting,
-	setMachineSetting
+	setMachineSetting,
+	deleteMachine
 };

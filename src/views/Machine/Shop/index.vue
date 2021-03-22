@@ -1,5 +1,5 @@
 <template>
-	<labelTitle :value="'Shop'" />
+	<labelTitle :value="$t('default.2')" />
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
@@ -9,13 +9,13 @@
 				<a-input v-model:value="infoVO.id" allowClear />
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Name' }}
+				{{ $t('default.5') }}
 			</a-col>
 			<a-col :span="4">
 				<a-input v-model:value="infoVO.name" allowClear />
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Country' }}
+				{{ $t('default.23') }}
 			</a-col>
 			<a-col :span="4">
 				<a-select v-model:value="infoVO.countryId" @change="countryChange" class="selectBox" allowClear>
@@ -23,7 +23,7 @@
 				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Area' }}
+				{{ $t('default.24') }}
 			</a-col>
 			<a-col :span="4">
 				<a-select v-model:value="infoVO.areaId" class="selectBox" allowClear>
@@ -33,13 +33,13 @@
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
-				{{ 'Type' }}
+				{{ $t('default.25') }}
 			</a-col>
 			<a-col :span="4">
 				<a-input v-model:value="infoVO.type" allowClear />
 			</a-col>
 			<a-col v-if="isAdmin" :span="2" class="labelText">
-				{{ 'Agent' }}
+				{{ $t('default.26') }}
 			</a-col>
 			<a-col v-if="isAdmin" :span="4" class="selectSearch">
 				<a-select show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
@@ -49,19 +49,19 @@
 				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
-				<a-button type="primary" size="small" @click="search">{{ '搜索' }}</a-button>
+				<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
 			</a-col>
 		</a-row>
 	</div>
 	<a-row class="rowStyle">
 		<a-col :span="1">
-			<a-button type="danger" size="small" @click="handleDelete">{{ '删除' }}</a-button>
+			<a-button type="danger" size="small" @click="handleDelete">{{ $t('default.10') }}</a-button>
 		</a-col>
 		<a-col :span="1">
-			<a-button type="primary" size="small" @click="handleCreate">{{ '创建' }}</a-button>
+			<a-button type="primary" size="small" @click="handleCreate">{{ $t('default.9') }}</a-button>
 		</a-col>
 		<a-col :span="1">
-			<a-button type="primary" size="small" @click="handleSetting">{{ '设置' }}</a-button>
+			<a-button type="primary" size="small" @click="handleSetting">{{ $t('default.27') }}</a-button>
 		</a-col>
 		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
 			<template #name="{ record }">
@@ -72,24 +72,29 @@
 	<div class="paginationStyle">
 		<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" @change="pageChange" />
 	</div>
+	<DeleteDialog :visible="visible" @afterClose="afterClose" @handleOk="handleDeleteOk" />
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-import { shopListHttp, countryListHttp, areaListHttp, agentListHttp, userListHttp } from '@/api/api';
+import { shopListHttp, countryListHttp, areaListHttp, agentListHttp, userListHttp, deleteShopHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
+import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { useRouter } from 'vue-router';
-import { handleSelectEvent } from '@/components/common/tools';
+import { message } from 'ant-design-vue';
+import { handleSelectEvent, i18n } from '@/components/common/tools';
 export default defineComponent({
 	name: 'Shop',
 	components: {
-		labelTitle
+		labelTitle,
+		DeleteDialog
 	},
 	setup() {
 		const ROUTER = useRouter();
 		let selectList: number[] = [];
+		const isAdmin = sessionStorage.getItem('userType');
 		const data = reactive({
-			isAdmin: false,
+			visible: false,
 			infoVO: {
 				id: '',
 				name: '',
@@ -108,28 +113,28 @@ export default defineComponent({
 					key: 'Id'
 				},
 				{
-					title: 'Shop Name',
+					title: i18n('default.5'),
 					dataIndex: 'name',
 					key: 'Name',
 					slots: { customRender: 'name' }
 				},
 				{
-					title: 'Agent',
+					title: i18n('default.26'),
 					dataIndex: 'agentName',
 					key: 'Agent'
 				},
 				{
-					title: 'Country',
+					title: i18n('default.23'),
 					dataIndex: 'countryName',
 					key: 'Country'
 				},
 				{
-					title: 'Area',
+					title: i18n('default.24'),
 					dataIndex: 'areaName',
 					key: 'Area'
 				},
 				{
-					title: 'Type',
+					title: i18n('default.25'),
 					dataIndex: 'type',
 					key: 'Type'
 				}
@@ -142,8 +147,8 @@ export default defineComponent({
 			rowSelection: {
 				columnWidth: 50,
 				// columnTitle: '全选',
-				onChange: (selectedRowKeys: number[], selectedRows: any) => {
-					selectList = selectedRows.map((i: any) => i.id);
+				onChange: (selectedRowKeys: number[]) => {
+					selectList = selectedRowKeys;
 				}
 			},
 			shopList: [],
@@ -162,16 +167,26 @@ export default defineComponent({
 					data.ownerList = res.data.data.list;
 				});
 			},
+			handleDelete: () => {
+				if (handleSelectEvent(selectList, '').length) {
+					data.visible = true;
+				}
+			},
+			afterClose: (value: boolean) => {
+				data.visible = value;
+			},
+			handleDeleteOk: () => {
+				deleteShopHttp(selectList).then((res: any) => {
+					message.warning(res.data.msg);
+					data.search();
+				});
+				data.visible = false;
+			},
 			search: () => {
 				shopListHttp(data.infoVO).then((res: any) => {
 					data.tableList = res.data.data.list;
 					data.total = res.data.data.totalCount;
 				});
-			},
-			handleDelete: () => {
-				if (handleSelectEvent(selectList, 'id')) {
-					console.log('1111111');
-				}
 			},
 			handleSetting: () => {
 				ROUTER.push({
@@ -214,7 +229,8 @@ export default defineComponent({
 			init();
 		});
 		return {
-			...toRefs(data)
+			...toRefs(data),
+			isAdmin
 		};
 	}
 });

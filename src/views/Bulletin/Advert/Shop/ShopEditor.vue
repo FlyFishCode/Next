@@ -1,5 +1,5 @@
 <template>
-	<labelTitle :value="'ShopEditor'" :btn="ROUTE.query.id ? update : create" />
+	<labelTitle :value="$t('default.2')" :btn="ROUTE.query.id ? update : create" />
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="4" class="labelText">
@@ -205,7 +205,7 @@ export default defineComponent({
 					...list.map((i: any) => {
 						return {
 							shopId: i.id,
-							shopType: i.shopType,
+							machineCount: i.machineCount,
 							shopName: i.name,
 							shopAddress: i.address
 						};
