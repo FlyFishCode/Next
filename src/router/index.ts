@@ -14,6 +14,7 @@ const routes: Array<RouteRecordRaw> = [
 		// this generates a separate chunk (about.[hash].js) for this route
 		// which is lazy-loaded when the route is visited.
 		component: () => import(/* webpackChunkName: "index" */ '@/views/index.vue'),
+		meta: [{ label: 'default.10', path: '/Machine' }],
 		children: [
 			{
 				path: '/Advert',
@@ -48,7 +49,8 @@ const routes: Array<RouteRecordRaw> = [
 			{
 				path: '/Machine',
 				name: 'Machine',
-				component: () => import(/* webpackChunkName: "Machine" */ '../views/Machine/Machine/index.vue')
+				component: () => import(/* webpackChunkName: "Machine" */ '../views/Machine/Machine/index.vue'),
+				meta: [{ label: 'default.3', path: 'Machine' }]
 			},
 			{
 				path: '/MachineEditor',
@@ -56,24 +58,25 @@ const routes: Array<RouteRecordRaw> = [
 				component: () => import(/* webpackChunkName: "MachineEditor" */ '../views/Machine/Machine/MachineEditor.vue')
 			},
 			{
+				path: '/MachineGameOptions',
+				name: 'MachineGameOptions',
+				component: () => import(/* webpackChunkName: "MachineGameOptions" */ '../views/Machine/Machine/MachineGameOptions.vue')
+			},
+			{
+				path: '/Shop',
+				name: 'Shop',
+				component: () => import(/* webpackChunkName: "Shop" */ '../views/Machine/Shop/index.vue'),
+				meta: [{ label: 'default.2', path: 'Shop' }]
+			},
+			{
 				path: '/EditorShop',
 				name: 'EditorShop',
 				component: () => import(/* webpackChunkName: "EditorShop" */ '../views/Machine/Shop/ShopEditor.vue')
 			},
 			{
-				path: '/Shop',
-				name: 'Shop',
-				component: () => import(/* webpackChunkName: "Shop" */ '../views/Machine/Shop/index.vue')
-			},
-			{
 				path: '/ShopGameOptions',
 				name: 'ShopGameOptions',
 				component: () => import(/* webpackChunkName: "ShopGameOptions" */ '../views/Machine/Shop/ShopGameOptions.vue')
-			},
-			{
-				path: '/MachineGameOptions',
-				name: 'MachineGameOptions',
-				component: () => import(/* webpackChunkName: "MachineGameOptions" */ '../views/Machine/Machine/MachineGameOptions.vue')
 			},
 			{
 				path: '/CreditCard',

@@ -14,7 +14,7 @@
 		<a-pagination show-quick-jumper v-model:current="pageIndex" :total="total" @change="pageChange" />
 	</div>
 	<MachineOptions ref="options" />
-	<a-modal v-model:visible="visible" class="dialogBox" :title="$t('default.2')" :footer="null" centered width="50%" @cancel="cancel">
+	<a-modal v-model:visible="visible" class="dialogBox" :title="$t('default.2')" centered width="50%" @cancel="cancel">
 		<div class="searchBox">
 			<a-row class="rowStyle">
 				<a-col :span="3" class="labelText">
@@ -51,6 +51,12 @@
 		<div class="paginationStyle">
 			<a-pagination show-quick-jumper v-model:current="searchVO.pageIndex" :total="dialogShopTotal" @change="dialogShopPageChange" />
 		</div>
+		<template #footer>
+			<div class="footerBtnClass">
+				<a-button key="back" @click="handleCancel">{{ $t('default.19') }}</a-button>
+				<a-button key="submit" type="primary" @click="handleOk">{{ $t('default.18') }}</a-button>
+			</div>
+		</template>
 	</a-modal>
 </template>
 
@@ -151,7 +157,7 @@ export default defineComponent({
 			addShop: () => {
 				data.visible = true;
 			},
-			cancel: () => {
+			handleOk: () => {
 				allSelectList = [];
 				defaultSelectList.value.forEach((i: any) => {
 					if (data.shopList.find((j: any) => j.id === i)) {
@@ -160,6 +166,10 @@ export default defineComponent({
 				});
 				data.tableList = allSelectList.slice(0, 10);
 				data.total = allSelectList.length;
+				data.visible = false;
+			},
+			handleCancel: () => {
+				data.visible = false;
 			},
 			dialogShopPageChange: (index: number) => {
 				data.searchVO.pageIndex = index;

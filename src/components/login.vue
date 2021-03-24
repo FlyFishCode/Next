@@ -12,7 +12,7 @@
 					<template #prefix><LockOutlined /></template>
 				</a-input>
 				<a-row class="LoginButton">
-					<a-button type="primary" size="small" @click="login">{{ '登录' }}</a-button>
+					<a-button type="primary" size="small" @click="login">{{ $t('default.98') }}</a-button>
 				</a-row>
 			</div>
 		</div>

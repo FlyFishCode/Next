@@ -12,6 +12,7 @@ import { defineComponent, onMounted, reactive, toRefs, watch } from 'vue';
 export default defineComponent({
 	name: 'MyDialog',
 	props: ['visible'],
+	emits: ['handleAllOk', 'afterAllClose'],
 	components: {},
 	setup(prop: any, ctx: any) {
 		const data = reactive({

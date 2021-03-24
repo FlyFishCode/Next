@@ -6,8 +6,18 @@
 					<img :src="logoImg" alt="" />
 				</div>
 			</a-col>
-			<a-col :lg="1" :offset="16" class="languageStyle">{{ $t('default.0') }}</a-col>
-			<a-col :lg="2" class="languageStyle">
+			<a-col :span="14">
+				<a-breadcrumb :routes="routes" class="breadCrumb">
+					<template #itemRender="{ route }">
+						<router-link :to="$route.path">
+							<div>{{ route }}</div>
+						</router-link>
+					</template>
+				</a-breadcrumb>
+				<br />
+			</a-col>
+			<a-col :span="1" :offset="2" class="languageStyle">{{ $t('default.0') }}</a-col>
+			<a-col :span="2" class="languageStyle">
 				<a-select v-model:value="$i18n.locale" size="small">
 					<a-select-option v-for="item in languageList" :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
 				</a-select>
@@ -21,67 +31,67 @@
 					<div class="showBox">
 						<div @click="Modify">
 							<UserOutlined />
-							{{ 'Modify Account Info' }}
+							{{ $t('default.99') }}
 						</div>
 						<div @click="Change">
 							<UserOutlined />
-							{{ 'Change Password' }}
+							{{ $t('default.100') }}
 						</div>
 						<div @click="Logout">
 							<UserOutlined />
-							{{ 'Login Out' }}
+							{{ $t('default.101') }}
 						</div>
 					</div>
 				</div>
 			</a-col>
 		</a-row>
 
-		<a-modal v-model:visible="infoVisible" title="Modify Account Info" centered width="50%">
+		<a-modal v-model:visible="infoVisible" class="deleteBox" :title="$t('default.99')" centered width="50%">
 			<a-row class="rowStyle">
-				<a-col :span="4" class="labelText">{{ 'Mobile' }}</a-col>
+				<a-col :span="4" class="labelText">{{ $t('default.90') }}</a-col>
 				<a-col :span="8">
 					<a-input v-model:value="modifyVO.mobile" allow-clear />
 				</a-col>
-				<a-col :span="4" class="labelText">{{ 'Nickname' }}</a-col>
+				<a-col :span="4" class="labelText">{{ $t('default.104') }}</a-col>
 				<a-col :span="8">
 					<a-input v-model:value="modifyVO.nickname" allow-clear />
 				</a-col>
 			</a-row>
 			<a-row class="rowStyle">
-				<a-col :span="4" class="labelText">{{ 'Gender' }}</a-col>
+				<a-col :span="4" class="labelText">{{ $t('default.105') }}</a-col>
 				<a-col :span="8">
 					<a-select v-model:value="modifyVO.gender" class="selectBox" allow-clear>
-						<a-select-option value="1">{{ 'Male' }}</a-select-option>
-						<a-select-option value="2">{{ 'Female' }}</a-select-option>
+						<a-select-option value="1">{{ $t('default.106') }}</a-select-option>
+						<a-select-option value="2">{{ $t('default.107') }}</a-select-option>
 					</a-select>
 				</a-col>
-				<a-col :span="4" class="labelText">{{ 'Birth' }}</a-col>
+				<a-col :span="4" class="labelText">{{ $t('default.108') }}</a-col>
 				<a-col :span="8" class="datePicker">
 					<a-date-picker v-model:value="modifyVO.birth" />
 				</a-col>
 			</a-row>
 			<template #footer>
 				<a-row type="flex" justify="center">
-					<a-button type="primary" @click="changeInfoBtn">{{ 'OK' }}</a-button>
+					<a-button type="primary" @click="changeInfoBtn">{{ $t('default.18') }}</a-button>
 				</a-row>
 			</template>
 		</a-modal>
 
-		<a-modal v-model:visible="passwordVisible" title="Change Password" centered>
+		<a-modal v-model:visible="passwordVisible" class="deleteBox" :title="$t('default.100')" centered>
 			<a-row class="rowStyle">
-				<a-col :span="6" class="labelText">{{ 'Old Password' }}</a-col>
+				<a-col :span="6" class="labelText">{{ $t('default.102') }}</a-col>
 				<a-col :span="18">
 					<a-input v-model:value="infoVO.oldPassword" type="password" allow-clear />
 				</a-col>
 			</a-row>
 			<a-row class="rowStyle">
-				<a-col :span="6" class="labelText">{{ 'New Password' }}</a-col>
+				<a-col :span="6" class="labelText">{{ $t('default.103') }}</a-col>
 				<a-col :span="18">
 					<a-input v-model:value="infoVO.newPasswordOne" type="password" allow-clear />
 				</a-col>
 			</a-row>
 			<a-row class="rowStyle">
-				<a-col :span="6" class="labelText">{{ 'New Password' }}</a-col>
+				<a-col :span="6" class="labelText">{{ $t('default.103') }}</a-col>
 				<a-col :span="18">
 					<a-input v-model:value="infoVO.newPasswordTwo" type="password" allow-clear />
 				</a-col>
@@ -101,6 +111,7 @@ import { UserOutlined } from '@ant-design/icons-vue';
 import { useRouter } from 'vue-router';
 import { changePasswordHttp } from '@/api/api';
 import { message } from 'ant-design-vue';
+import { useStore } from 'vuex';
 export default defineComponent({
 	name: 'templete',
 	components: {
@@ -108,6 +119,8 @@ export default defineComponent({
 	},
 	setup() {
 		const ROUTER = useRouter();
+		const store: any = useStore();
+		const routes: any = store.state.routes;
 		const data = reactive({
 			modifyVO: {
 				mobile: '',
@@ -166,7 +179,8 @@ export default defineComponent({
 			}
 		});
 		return {
-			...toRefs(data)
+			...toRefs(data),
+			routes
 		};
 	}
 });
@@ -223,5 +237,11 @@ export default defineComponent({
 .languageStyle {
 	line-height: 50px;
 	text-align: center;
+}
+.breadCrumb {
+	height: 50px;
+	line-height: 50px;
+	font-size: 16px;
+	display: flex;
 }
 </style>

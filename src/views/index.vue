@@ -31,9 +31,6 @@
 			</a-menu>
 		</a-col>
 		<a-col :span="20" class="centent">
-			<!-- <div class="breadcrumbBox">
-				<div v-for="(route, index) in routes" :key="index">{{ route.name }}</div>
-			</div> -->
 			<router-view />
 		</a-col>
 	</a-row>
@@ -48,7 +45,6 @@ import { useRouter } from 'vue-router';
 interface DataProps {
 	rootSubmenuKeys: any;
 	openKeys: Array<any>;
-	routes: any;
 }
 
 export default defineComponent({
@@ -63,7 +59,6 @@ export default defineComponent({
 		const ROUTER = useRouter();
 		// const ROUTE = useRoute();
 		const data: DataProps = reactive({
-			routes: [],
 			logoImg: require('@/assets/logo.png'),
 			rootSubmenuKeys: ['sub1', 'sub2', 'sub3'],
 			openKeys: [],
