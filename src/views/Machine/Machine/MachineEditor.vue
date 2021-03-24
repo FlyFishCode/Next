@@ -13,8 +13,8 @@
 			</a-col>
 			<a-col :span="9" class="selectSearch">
 				<a-select v-model:value="infoVO.type" allow-clear>
-					<a-select-option value="A1">A1</a-select-option>
-					<a-select-option value="W1">W1</a-select-option>
+					<a-select-option value="1">A1</a-select-option>
+					<a-select-option value="2">W1</a-select-option>
 				</a-select>
 			</a-col>
 		</a-row>

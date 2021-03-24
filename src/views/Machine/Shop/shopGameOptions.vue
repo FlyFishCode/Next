@@ -14,7 +14,7 @@
 		<a-pagination show-quick-jumper v-model:current="pageIndex" :total="total" @change="pageChange" />
 	</div>
 	<MachineOptions ref="options" />
-	<a-modal v-model:visible="visible" class="dialogBox" :title="$t('default.2')" centered width="50%" @cancel="cancel">
+	<a-modal v-model:visible="visible" class="dialogBox" :title="$t('default.2')" centered width="50%">
 		<div class="searchBox">
 			<a-row class="rowStyle">
 				<a-col :span="3" class="labelText">

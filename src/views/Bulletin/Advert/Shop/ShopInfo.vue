@@ -1,15 +1,15 @@
 <template>
-	<labelTitle :value="'Shop Info'" />
+	<labelTitle :value="$t('default.110')" />
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
-				{{ 'Shop Name' }}
+				{{ $t('default.5') }}
 			</a-col>
 			<a-col :span="9">
 				<a-input v-model:value="infoVO.name" :disabled="true" />
 			</a-col>
 			<a-col :span="3" class="labelText">
-				{{ 'Type' }}
+				{{ $t('default.25') }}
 			</a-col>
 			<a-col :span="9">
 				<a-input v-model:value="infoVO.type" :disabled="true" />
@@ -17,30 +17,30 @@
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
-				{{ 'Address' }}
+				{{ $t('default.17') }}
 			</a-col>
 			<a-col :span="9">
 				<a-input v-model:value="infoVO.address" :disabled="true" />
 			</a-col>
 			<a-col :span="3" class="labelText">
-				{{ 'Phone' }}
+				{{ $t('default.90') }}
 			</a-col>
 			<a-col :span="9">
 				<a-input v-model:value="infoVO.phone" :disabled="true" />
 			</a-col>
 		</a-row>
 	</div>
-	<labelTitle :value="'Machines'" />
+	<labelTitle :value="$t('default.3')" />
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
-				{{ 'Title' }}
+				{{ $t('default.4') }}
 			</a-col>
 			<a-col :span="4">
 				<a-input v-model:value="advertVO.title" allow-clear />
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Time' }}
+				{{ $t('default.46') }}
 			</a-col>
 			<a-col :span="3" class="datePicker">
 				<a-date-picker v-model:value="advertVO.minCreateTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
@@ -49,13 +49,13 @@
 				<a-date-picker v-model:value="advertVO.maxCreateTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Url' }}
+				{{ $t('default.7') }}
 			</a-col>
 			<a-col :span="6">
 				<a-input v-model:value="advertVO.url" allow-clear />
 			</a-col>
 			<a-col :span="2" class="labelText">
-				<a-button type="primary" size="small" @click="search">{{ '搜索' }}</a-button>
+				<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
 			</a-col>
 		</a-row>
 	</div>
@@ -88,6 +88,7 @@ import labelTitle from '@/components/labelTitle.vue';
 import showUrlDialog from '@/components/common/showUrlDialog.vue';
 import { useRoute } from 'vue-router';
 import { message } from 'ant-design-vue';
+import { i18n } from '@/components/common/tools';
 import { shopSingleInfoHttp, AdvertListHttp, deleteAdvertShopHttp } from '@/api/api';
 export default defineComponent({
 	name: 'ShopInfo',
@@ -126,16 +127,16 @@ export default defineComponent({
 			total: 1,
 			columns: [
 				{
-					title: 'Title',
+					title: i18n('default.4'),
 					dataIndex: 'title'
 				},
 				{
-					title: 'Url',
+					title: i18n('default.7'),
 					dataIndex: 'url',
 					slots: { customRender: 'url' }
 				},
 				{
-					title: 'Time',
+					title: i18n('default.46'),
 					dataIndex: 'createTime'
 				}
 			],

@@ -7,14 +7,12 @@
 				</div>
 			</a-col>
 			<a-col :span="14">
-				<a-breadcrumb :routes="routes" class="breadCrumb">
-					<template #itemRender="{ route }">
-						<router-link :to="$route.path">
-							<div>{{ route }}</div>
-						</router-link>
-					</template>
-				</a-breadcrumb>
-				<br />
+				<div class="breadCrumb">
+					<div v-for="(item, index) in metaList" :key="index">
+						<a-button type="link" size="small" @click="ROUTER.push(item.path)">{{ $t(item.label) }}</a-button>
+						<span v-if="index !== metaList.length - 1">/</span>
+					</div>
+				</div>
 			</a-col>
 			<a-col :span="1" :offset="2" class="languageStyle">{{ $t('default.0') }}</a-col>
 			<a-col :span="2" class="languageStyle">
@@ -106,21 +104,26 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from 'vue';
+import { defineComponent, reactive, toRefs, computed } from 'vue';
 import { UserOutlined } from '@ant-design/icons-vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { changePasswordHttp } from '@/api/api';
 import { message } from 'ant-design-vue';
-import { useStore } from 'vuex';
 export default defineComponent({
-	name: 'templete',
+	name: 'hearder',
 	components: {
 		UserOutlined
 	},
 	setup() {
 		const ROUTER = useRouter();
-		const store: any = useStore();
-		const routes: any = store.state.routes;
+		const ROUTE = useRoute();
+		const metaList = computed(() => {
+			const list: any[] = [];
+			for (const item of Object.values(ROUTE.meta)) {
+				list.push(item);
+			}
+			return list;
+		});
 		const data = reactive({
 			modifyVO: {
 				mobile: '',
@@ -180,7 +183,8 @@ export default defineComponent({
 		});
 		return {
 			...toRefs(data),
-			routes
+			metaList,
+			ROUTER
 		};
 	}
 });
@@ -243,5 +247,11 @@ export default defineComponent({
 	line-height: 50px;
 	font-size: 16px;
 	display: flex;
+}
+.breadCrumb::before {
+	display: block;
+	content: '';
+	background: red;
+	width: 3px;
 }
 </style>

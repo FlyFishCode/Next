@@ -57,7 +57,6 @@ export default defineComponent({
 	},
 	setup() {
 		const ROUTER = useRouter();
-		// const ROUTE = useRoute();
 		const data: DataProps = reactive({
 			logoImg: require('@/assets/logo.png'),
 			rootSubmenuKeys: ['sub1', 'sub2', 'sub3'],
