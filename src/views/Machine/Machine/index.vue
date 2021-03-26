@@ -89,6 +89,10 @@
 			<template #label="{ record }">
 				<a-button type="link" @click="handleMachineClick(record.id)">{{ record.name }}</a-button>
 			</template>
+			<template #type="{ record }">
+				<div v-if="record.type === '1'">{{ 'A1' }}</div>
+				<div v-if="record.type === '2'">{{ 'W1' }}</div>
+			</template>
 			<template #shop="{ record }">
 				<a-button type="link" @click="handleShopClick(record.shopId)">{{ record.shopName }}</a-button>
 			</template>
@@ -159,7 +163,8 @@ export default defineComponent({
 				{
 					title: i18n('default.22'),
 					dataIndex: 'type',
-					key: 'Type'
+					key: 'Type',
+					slots: { customRender: 'type' }
 				},
 				{
 					title: i18n('default.21'),

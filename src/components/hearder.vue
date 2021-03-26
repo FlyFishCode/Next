@@ -242,6 +242,9 @@ export default defineComponent({
 	line-height: 50px;
 	text-align: center;
 }
+.languageStyle div {
+	width: 100px;
+}
 .breadCrumb {
 	height: 50px;
 	line-height: 50px;

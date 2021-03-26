@@ -74,7 +74,7 @@ const routes = [
 				component: () => import(/* webpackChunkName: "MachineEditor" */ '../views/Machine/Machine/MachineEditor.vue'),
 				meta: [
 					{ label: 'default.3', path: 'Machine' },
-					{ label: 'default.111', path: 'MachineInfo' }
+					{ label: 'default.111', path: 'MachineEditor' }
 				]
 			},
 			{

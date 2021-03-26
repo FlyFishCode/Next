@@ -282,7 +282,7 @@
 		</template>
 	</a-modal>
 	<!-- 机器设置弹框 -->
-	<a-modal v-model:visible="MachineSettingDialog" title="Game Setting" width="80%" :footer="null" centered>
+	<a-modal v-model:visible="MachineSettingDialog" :title="$t('default.29')" width="80%" :footer="null" centered>
 		<a-row class="rowStyle" type="flex" justify="end">
 			<a-col :sapn="1">
 				<a-button type="primary" size="small" @click="saveGameOption">{{ $t('default.15') }}</a-button>
