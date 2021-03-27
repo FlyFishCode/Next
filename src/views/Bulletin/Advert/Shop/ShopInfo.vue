@@ -40,7 +40,7 @@
 				<a-input v-model:value="advertVO.title" allow-clear />
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ $t('default.46') }}
+				{{ $t('default.120') }}
 			</a-col>
 			<a-col :span="3" class="datePicker">
 				<a-date-picker v-model:value="advertVO.minCreateTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />

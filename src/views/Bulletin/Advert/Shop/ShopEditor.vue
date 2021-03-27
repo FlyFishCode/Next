@@ -107,6 +107,7 @@ export default defineComponent({
 	},
 	setup() {
 		const ROUTE = useRoute();
+		let allSelectList: any = [];
 		const id: any = ROUTE.query.id || null;
 		const defaultSelectList: any = ref([]);
 		const obj: ObjProps = {
@@ -130,6 +131,8 @@ export default defineComponent({
 				hideDefaultSelections: true,
 				onChange: (changableRowKeys: any) => {
 					defaultSelectList.value = changableRowKeys;
+					// eslint-disable-next-line @typescript-eslint/no-use-before-define
+					data.infoVO.shopIds = changableRowKeys;
 				}
 			};
 		});
@@ -194,27 +197,24 @@ export default defineComponent({
 				data.showShopDialog = false;
 			},
 			handleOk: () => {
-				const list: any = [];
+				allSelectList = [];
 				defaultSelectList.value.forEach((i: number) => {
 					const item = data.shopList.find((j: any) => i === j.id);
-					if (item && !data.tableList.find((k: any) => k.shopId === i)) {
-						list.push(item);
+					if (item) {
+						allSelectList.push(item);
 					}
 				});
-				data.tableList.unshift(
-					...list.map((i: any) => {
-						return {
-							shopId: i.id,
-							machineCount: i.machineCount,
-							shopName: i.name,
-							shopAddress: i.address
-						};
-					})
-				);
+				allSelectList = allSelectList.map((i: any) => {
+					return {
+						shopId: i.id,
+						machineCount: i.machineCount,
+						shopName: i.name,
+						shopAddress: i.address
+					};
+				});
+				data.tableList = allSelectList;
 				if (id) {
-					obj.addShopIds = list.map((i: any) => i.id);
-				} else {
-					data.infoVO.shopIds = list.map((i: any) => i.id);
+					obj.addShopIds = allSelectList.map((i: any) => i.shopId);
 				}
 				data.showShopDialog = false;
 			},

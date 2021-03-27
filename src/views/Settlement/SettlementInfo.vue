@@ -1,10 +1,10 @@
 <template>
 	<div>
-		<labelTitle :value="'SettlementInfo'" />
+		<labelTitle :value="$t('default.117')" />
 		<div class="searchBox">
 			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
-					{{ 'Country' }}
+					{{ $t('default.23') }}
 				</a-col>
 				<a-col :span="4">
 					<a-select v-model:value="infoVO.countryId" @change="countryChange" class="selectBox" allowClear>
@@ -12,7 +12,7 @@
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ 'Area' }}
+					{{ $t('default.24') }}
 				</a-col>
 				<a-col :span="4">
 					<a-select v-model:value="infoVO.areaId" class="selectBox" allowClear>
@@ -20,7 +20,7 @@
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ 'Agent' }}
+					{{ $t('default.26') }}
 				</a-col>
 				<a-col :span="4" class="selectSearch">
 					<a-select
@@ -39,21 +39,24 @@
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ 'NO' }}
+					{{ $t('default.120') }}
 				</a-col>
-				<a-col :span="4">
-					<a-input v-model:value="infoVO.name" allowClear />
+				<a-col :span="2" class="datePicker">
+					<a-date-picker v-model:value="infoVO.minCreateTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
+				</a-col>
+				<a-col :span="2" class="datePicker">
+					<a-date-picker v-model:value="infoVO.maxCreateTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 				</a-col>
 			</a-row>
 			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
-					{{ 'Shop ID' }}
+					{{ $t('default.121') }}
 				</a-col>
 				<a-col :span="4">
 					<a-input v-model:value="infoVO.Id" allowClear />
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ 'Shop Name' }}
+					{{ $t('default.5') }}
 				</a-col>
 				<a-col :span="4" class="selectSearch">
 					<a-select
@@ -72,16 +75,13 @@
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ 'Date' }}
+					{{ $t('default.122') }}
 				</a-col>
-				<a-col :span="2" class="datePicker">
-					<a-date-picker v-model:value="infoVO.minCreateTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
-				</a-col>
-				<a-col :span="2" class="datePicker">
-					<a-date-picker v-model:value="infoVO.maxCreateTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
+				<a-col :span="4">
+					<a-input v-model:value="infoVO.name" allowClear />
 				</a-col>
 				<a-col :span="2" class="labelText">
-					<a-button type="primary" size="small" @click="search">{{ '搜索' }}</a-button>
+					<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
 				</a-col>
 			</a-row>
 		</div>
@@ -102,6 +102,7 @@
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
 import { agentListHttp, countryListHttp, areaListHttp, shopListHttp } from '@/api/api';
+import { i18n } from '@/components/common/tools';
 export default defineComponent({
 	name: 'SettlementInfo',
 	components: {
@@ -123,40 +124,40 @@ export default defineComponent({
 			},
 			columns: [
 				{
-					title: 'Date',
+					title: i18n('default.120'),
 					dataIndex: 'Date',
 					key: 'Id'
 				},
 				{
-					title: 'Shop Name',
+					title: i18n('default.5'),
 					key: 'Label'
 				},
 				{
-					title: 'Shop ID',
+					title: i18n('default.121'),
 					key: 'Shop'
 				},
 				{
-					title: 'NO',
+					title: i18n('default.122'),
 					dataIndex: 'NO',
 					key: 'Type'
 				},
 				{
-					title: 'Coin',
+					title: i18n('default.123'),
 					dataIndex: 'Coin',
 					key: 'Serial'
 				},
 				{
-					title: 'Notes',
+					title: i18n('default.124'),
 					dataIndex: 'Notes',
 					key: 'placingType'
 				},
 				{
-					title: 'QR Code',
+					title: i18n('default.125'),
 					dataIndex: 'QR Code',
 					key: 'Last Online'
 				},
 				{
-					title: 'Free point',
+					title: i18n('default.78'),
 					dataIndex: 'lockedDates',
 					key: 'Locked Dates'
 				},
@@ -171,7 +172,7 @@ export default defineComponent({
 					key: 'Locked Dates'
 				},
 				{
-					title: 'settlement',
+					title: i18n('default.116'),
 					dataIndex: 'lockedDates',
 					key: 'Locked Dates'
 				},
@@ -181,7 +182,7 @@ export default defineComponent({
 					key: 'Locked Dates'
 				},
 				{
-					title: 'Proxy',
+					title: i18n('default.118'),
 					dataIndex: 'lockedDates',
 					key: 'Locked Dates'
 				}

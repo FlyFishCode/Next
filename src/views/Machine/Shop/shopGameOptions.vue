@@ -113,14 +113,14 @@ export default defineComponent({
 				},
 				{
 					title: i18n('default.17'),
-					dataIndex: 'serial',
-					key: 'Serial'
+					dataIndex: 'address',
+					key: 'address'
 				},
-				{
-					title: 'aaaaaaaaaaaaaa',
-					dataIndex: 'lastOnlineTime',
-					key: 'Time'
-				},
+				// {
+				// 	title: 'aaaaaaaaaaaaaa',
+				// 	dataIndex: 'lastOnlineTime',
+				// 	key: 'Time'
+				// },
 				{
 					title: i18n('default.25'),
 					dataIndex: 'type',

@@ -21,13 +21,15 @@
 					<a-menu-item key="Shop">{{ $t('default.2') }}</a-menu-item>
 					<a-menu-item key="Machine">{{ $t('default.3') }}</a-menu-item>
 				</a-sub-menu>
-				<!-- <a-sub-menu key="sub3">
+				<a-sub-menu key="sub3">
 					<template #title>
-						<span><SettingOutlined /><span>Settlement</span></span>
+						<span
+							><SettingOutlined /><span>{{ $t('default.118') }}</span></span
+						>
 					</template>
-					<a-menu-item key="SettlementInfo">SettlementInfo</a-menu-item>
-					<a-menu-item key="Settlement">Settlement</a-menu-item>
-				</a-sub-menu> -->
+					<a-menu-item key="SettlementInfo">{{ $t('default.117') }}</a-menu-item>
+					<a-menu-item key="Settlement">{{ $t('default.118') }}</a-menu-item>
+				</a-sub-menu>
 			</a-menu>
 		</a-col>
 		<a-col :span="20" class="centent">
@@ -38,7 +40,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue';
-import { MailOutlined, AppstoreOutlined } from '@ant-design/icons-vue';
+import { MailOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons-vue';
 import hearder from '@/components/hearder.vue';
 import { useRouter } from 'vue-router';
 
@@ -52,7 +54,7 @@ export default defineComponent({
 	components: {
 		MailOutlined,
 		AppstoreOutlined,
-		// SettingOutlined,
+		SettingOutlined,
 		hearder
 	},
 	setup() {

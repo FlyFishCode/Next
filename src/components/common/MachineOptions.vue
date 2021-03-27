@@ -238,7 +238,7 @@
 								</a-col>
 							</a-col>
 						</a-row>
-						<a-row>
+						<a-row class="rowStyle">
 							<a-col :span="2" class="labelText">{{ $t('default.52') }}</a-col>
 							<a-col :span="2" class="switchBox"
 								><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.gameSetting.eagleEye.available"
@@ -256,7 +256,7 @@
 								</a-col>
 							</a-col>
 						</a-row>
-						<a-row>
+						<a-row class="rowStyle">
 							<a-col :span="2" class="labelText">{{ $t('default.53') }}</a-col>
 							<a-col :span="2" class="switchBox"
 								><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.gameSetting.bigbull.available"
@@ -303,7 +303,7 @@
 								</a-select>
 							</a-col>
 						</a-row>
-						<a-row>
+						<a-row class="rowStyle">
 							<a-col :span="2" class="labelText">{{ $t('default.58') }}</a-col>
 							<a-col :span="2" class="labelText">{{ $t('default.35') }}</a-col>
 							<a-col :span="4" class="selectSearch">
@@ -358,14 +358,6 @@
 									<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
 								</a-select>
 							</a-col>
-						</a-col>
-						<a-col :span="2" class="labelText">{{ $t('default.67') }}</a-col>
-						<a-col :span="2" class="switchBox">
-							<a-input v-model:value="setting.others.password" type="password" allow-clear />
-						</a-col>
-						<a-col :span="2" class="labelText">{{ $t('default.97') }}</a-col>
-						<a-col :span="5" class="switchBox">
-							<a-input v-model:value="setting.others.shopManagerCard" allow-clear />
 						</a-col>
 					</a-row>
 
@@ -456,6 +448,18 @@
 						</a-col>
 					</a-row>
 				</a-tab-pane>
+				<a-tab-pane key="4" :tab="$t('default.119')">
+					<a-row class="rowStyle">
+						<a-col :span="2" class="labelText">{{ $t('default.67') }}</a-col>
+						<a-col :span="5" class="switchBox">
+							<a-input v-model:value="setting.others.password" type="password" allow-clear />
+						</a-col>
+						<a-col :span="2" class="labelText">{{ $t('default.97') }}</a-col>
+						<a-col :span="5" class="switchBox">
+							<a-input v-model:value="setting.others.shopManagerCard" allow-clear />
+						</a-col>
+					</a-row>
+				</a-tab-pane>
 			</a-tabs>
 		</a-row>
 	</div>
@@ -500,7 +504,7 @@ export default defineComponent({
 			setting: {
 				others: {
 					password: '',
-					shopManagerCard:"",
+					shopManagerCard: ''
 				},
 				common: {
 					startBegin: null,

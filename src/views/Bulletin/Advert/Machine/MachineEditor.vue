@@ -33,7 +33,7 @@
 		<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="machineId" class="tableStyle">
 			<template #handle="{ record }">
 				<div class="tableBtn">
-					<a-button size="small" type="danger" @click="shopDelete(record)">{{ 'delete' }}</a-button>
+					<a-button size="small" type="danger" @click="shopDelete(record)">{{ $t('default.10') }}</a-button>
 				</div>
 			</template>
 		</a-table>
@@ -213,13 +213,9 @@ export default defineComponent({
 			allMachineList: [],
 			tableList: [],
 			handleOk: () => {
-				const list: Array<any> = [];
 				allSelectList = [];
 				defaultSelectList.value.forEach((i: any) => {
 					const temp = data.allMachineList.find((j: any) => j.id === i);
-					if (temp && !data.tableList.find((k: any) => k.machineId === i)) {
-						list.push(temp);
-					}
 					if (temp) {
 						allSelectList.push(temp);
 					}
@@ -233,7 +229,7 @@ export default defineComponent({
 						machineType: i.type
 					};
 				});
-				obj.addMachineIds = list.map((i: any) => i.id);
+				obj.addMachineIds = allSelectList.map((i: any) => i.id);
 				data.tableList = allSelectList.slice(0, 10);
 				data.tableListTotal = allSelectList.length;
 				data.showShopDialog = false;
