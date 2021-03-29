@@ -305,8 +305,10 @@ export default defineComponent({
 			AdvertSearchHttp(objVO).then((res: any) => {
 				if (res.data.data) {
 					data.infoVO = res.data.data;
-					data.tableList = res.data.data.advertConfigListPage.list;
-					defaultSelectList.value = data.tableList.map((i: any) => i.machineId);
+					if (res.data.data.advertConfigListPage) {
+						data.tableList = res.data.data.advertConfigListPage.list;
+						defaultSelectList.value = data.tableList.map((i: any) => i.machineId);
+					}
 				}
 			});
 		};

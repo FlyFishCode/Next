@@ -185,84 +185,88 @@
 			</a-col>
 		</a-row>
 	</div>
-	<div v-if="id">
-		<labelTitle :value="$t('default.3')" />
-		<div class="searchBox">
-			<a-row class="rowStyle">
-				<a-col :span="2" class="labelText">
-					{{ 'ID' }}
-				</a-col>
-				<a-col :span="4">
-					<a-input v-model:value="machineVO.id" allow-clear />
-				</a-col>
-				<a-col :span="2" class="labelText">
-					{{ $t('default.13') }}
-				</a-col>
-				<a-col :span="4">
-					<a-input v-model:value="machineVO.name" allow-clear />
-				</a-col>
-				<a-col :span="2" class="labelText">
-					{{ $t('default.21') }}
-				</a-col>
-				<a-col :span="4">
-					<a-input v-model:value="machineVO.serial" allow-clear />
-				</a-col>
-				<a-col :span="2" class="labelText">
-					{{ $t('default.84') }}
-				</a-col>
-				<a-col :span="4" class="selectSearch">
-					<a-select v-model:value="machineVO.placingType" allow-clear>
-						<a-select-option :value="1">{{ $t('default.86') }}</a-select-option>
-						<a-select-option :value="2">{{ $t('default.87') }}</a-select-option>
-						<a-select-option :value="3">{{ $t('default.88') }}</a-select-option>
-					</a-select>
-				</a-col>
-			</a-row>
-			<a-row class="rowStyle">
-				<a-col :span="2" class="labelText">
-					{{ $t('default.89') }}
-				</a-col>
-				<a-col :span="2">
-					<a-date-picker v-model:value="machineVO.minLastOnlineTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
-				</a-col>
-				<a-col :span="2">
-					<a-date-picker v-model:value="machineVO.maxLastOnlineTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
-				</a-col>
-				<a-col :span="2" class="labelText">
-					{{ $t('default.22') }}
-				</a-col>
-				<a-col :span="4" class="selectSearch">
-					<a-select v-model:value="machineVO.type" allow-clear>
-						<a-select-option value="1">A1</a-select-option>
-						<a-select-option value="2">W1</a-select-option>
-					</a-select>
-				</a-col>
-				<a-col :span="2" class="labelText">
-					<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
-				</a-col>
-			</a-row>
-		</div>
+	<labelTitle :value="$t('default.3')" />
+	<div class="searchBox">
 		<a-row class="rowStyle">
-			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" class="tableStyle" rowKey="id">
-				<template #PlacingType="{ record }">
-					<div v-if="record.placingType === 1">{{ $t('default.86') }}</div>
-					<div v-if="record.placingType === 2">{{ $t('default.87') }}</div>
-					<div v-if="record.placingType === 3">{{ $t('default.88') }}</div>
-				</template>
-				<template #gameSetting="{ record }">
-					<a-button size="small" type="primary" @click="setGameSetting(record.id)">{{ $t('default.29') }}</a-button>
-				</template>
-			</a-table>
+			<a-col :span="2" class="labelText">
+				{{ 'ID' }}
+			</a-col>
+			<a-col :span="4">
+				<a-input v-model:value="machineVO.id" allow-clear />
+			</a-col>
+			<a-col :span="2" class="labelText">
+				{{ $t('default.13') }}
+			</a-col>
+			<a-col :span="4">
+				<a-input v-model:value="machineVO.name" allow-clear />
+			</a-col>
+			<a-col :span="2" class="labelText">
+				{{ $t('default.21') }}
+			</a-col>
+			<a-col :span="4">
+				<a-input v-model:value="machineVO.serial" allow-clear />
+			</a-col>
+			<a-col :span="2" class="labelText">
+				{{ $t('default.84') }}
+			</a-col>
+			<a-col :span="4" class="selectSearch">
+				<a-select v-model:value="machineVO.placingType" allow-clear>
+					<a-select-option :value="1">{{ $t('default.86') }}</a-select-option>
+					<a-select-option :value="2">{{ $t('default.87') }}</a-select-option>
+					<a-select-option :value="3">{{ $t('default.88') }}</a-select-option>
+				</a-select>
+			</a-col>
 		</a-row>
-		<div class="paginationStyle">
-			<a-pagination show-quick-jumper v-model:current="currentPage" :total="total" @change="pageChange" />
-		</div>
+		<a-row class="rowStyle">
+			<a-col :span="2" class="labelText">
+				{{ $t('default.89') }}
+			</a-col>
+			<a-col :span="2">
+				<a-date-picker v-model:value="machineVO.minLastOnlineTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
+			</a-col>
+			<a-col :span="2">
+				<a-date-picker v-model:value="machineVO.maxLastOnlineTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
+			</a-col>
+			<a-col :span="2" class="labelText">
+				{{ $t('default.22') }}
+			</a-col>
+			<a-col :span="4" class="selectSearch">
+				<a-select v-model:value="machineVO.type" allow-clear>
+					<a-select-option value="1">A1</a-select-option>
+					<a-select-option value="2">W1</a-select-option>
+				</a-select>
+			</a-col>
+			<a-col :span="2" class="labelText">
+				<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
+			</a-col>
+		</a-row>
 	</div>
-	<div v-else>
-		<MachineOptions ref="options" :gameOptions="infoVO.machineSetting" />
+	<a-row class="rowStyle">
+		<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" class="tableStyle" rowKey="id">
+			<template #PlacingType="{ record }">
+				<div v-if="record.placingType === 1">{{ $t('default.86') }}</div>
+				<div v-if="record.placingType === 2">{{ $t('default.87') }}</div>
+				<div v-if="record.placingType === 3">{{ $t('default.88') }}</div>
+			</template>
+			<template #gameSetting="{ record }">
+				<a-button size="small" type="primary" @click="setGameSetting(record.id)">{{ $t('default.29') }}</a-button>
+			</template>
+		</a-table>
+	</a-row>
+	<div class="paginationStyle">
+		<a-pagination show-quick-jumper v-model:current="currentPage" :total="total" @change="pageChange" />
 	</div>
 	<showUrlDialog :visible="urlBox" :src="infoVO.img" @showBoxCancel="showBoxCancel" />
 	<a-modal v-model:visible="mapDialog" centered title="Map" width="50%">
+		<a-row class="rowStyle">
+			<a-col :span="3" class="labelText">{{ $t('default.5') }}</a-col>
+			<a-col :span="9">
+				<a-input id="placeName" v-model:value="mapName" allow-clear />
+			</a-col>
+			<!-- <a-col :span="2" class="labelText">
+				<a-button type="primary" size="small" @click="getPosition">{{ $t('default.8') }}</a-button>
+			</a-col> -->
+		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">{{ $t('default.94') }}</a-col>
 			<a-col :span="9">
@@ -301,6 +305,7 @@ import { shopSingleInfoHttp, agentListHttp, countryListHttp, areaListHttp, editS
 import { message } from 'ant-design-vue';
 import MachineOptions from '@/components/common/MachineOptions.vue';
 import { i18n } from '@/components/common/tools';
+import Axios from 'axios';
 export default defineComponent({
 	name: 'ShopEditor',
 	components: {
@@ -361,6 +366,7 @@ export default defineComponent({
 				longitude: '',
 				latitude: ''
 			},
+			mapName: '',
 			countryList: [],
 			areaList: [],
 			agentList: [],
@@ -458,8 +464,7 @@ export default defineComponent({
 				});
 			},
 			create: () => {
-				debugger;
-				return createShopHttp(options.value.getData());
+				return createShopHttp(data.infoVO);
 			},
 			update: () => {
 				return editShopHttp(data.infoVO);
@@ -490,6 +495,11 @@ export default defineComponent({
 				agentListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res) => {
 					data.agentList = res.data.data.list;
 				});
+			},
+			getPosition: () => {
+				Axios.get(`https://restapi.amap.com/v3/place/text?key=a9cef5218eebe10876a9bedfe7207454&keywords=${data.mapName}`).then((res) => {
+					console.log(res.data.pois);
+				});
 			}
 		});
 		const showMap = () => {
@@ -498,12 +508,43 @@ export default defineComponent({
 			jsapi.src = url;
 			document.head.appendChild(jsapi);
 			window.load = () => {
+				let geolocation = null;
 				// eslint-disable-next-line no-undef
 				const map = new AMap.Map('map', {
 					resizeEnable: true,
 					// center: [116.397428, 39.90923],
 					zoom: 13
 				});
+				// 添加插件
+				map.plugin(['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Geolocation'], function() {
+					// eslint-disable-next-line no-undef
+					geolocation = new AMap.Geolocation({
+						enableHighAccuracy: true, //是否使用高精度定位，默认:true
+						timeout: 5000, //超过5秒后停止定位，默认：无穷大
+						maximumAge: 0, //定位结果缓存0毫秒，默认：0
+						convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+						showButton: true, //显示定位按钮，默认：true
+						buttonPosition: 'RB', //定位按钮停靠位置，默认：'LB'，左下角
+						showMarker: true, //定位成功后在定位到的位置显示点标记，默认：true
+						showCircle: true, //定位成功后用圆圈表示定位精度范围，默认：true
+						panToLocation: true, //定位成功后将定位到的位置作为地图中心点，默认：true
+						zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+					});
+					map.addControl(geolocation);
+					geolocation.getCurrentPosition();
+				});
+				// eslint-disable-next-line no-undef
+				const auto = new AMap.Autocomplete({ input: 'placeName' });
+				// eslint-disable-next-line no-undef
+				const placeSearch = new AMap.PlaceSearch({
+					map: map
+				});
+				const select = (e) => {
+					placeSearch.setCity(e.poi.adcode);
+					placeSearch.search(e.poi.name); //关键字查询查询
+				};
+				// eslint-disable-next-line no-undef
+				AMap.event.addListener(auto, 'select', select); //注册监听，当选中某条记录时会触发
 				map.on('click', function(e) {
 					data.mapInfoObj.longitude = e.lnglat.getLng();
 					data.mapInfoObj.latitude = e.lnglat.getLat();
@@ -585,6 +626,10 @@ export default defineComponent({
 
 <style scoped>
 #map {
-	height: 700px;
+	height: 600px;
+}
+#map >>> .amap-copyright,
+#map >>> .amap-logo {
+	display: none !important;
 }
 </style>

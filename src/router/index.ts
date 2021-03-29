@@ -128,12 +128,14 @@ const routes = [
 			{
 				path: '/Settlement',
 				name: 'Settlement',
-				component: () => import(/* webpackChunkName: "Settlement" */ '../views/Settlement/Settlement.vue')
+				component: () => import(/* webpackChunkName: "Settlement" */ '../views/Settlement/Settlement.vue'),
+				meta: [{ label: 'default.118', path: 'Settlement' }]
 			},
 			{
 				path: '/SettlementInfo',
 				name: 'SettlementInfo',
-				component: () => import(/* webpackChunkName: "SettlementInfo" */ '../views/Settlement/SettlementInfo.vue')
+				component: () => import(/* webpackChunkName: "SettlementInfo" */ '../views/Settlement/SettlementInfo.vue'),
+				meta: [{ label: 'default.117', path: 'SettlementInfo' }]
 			}
 		]
 	},

@@ -25,6 +25,7 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
 import { loginHttp } from '@/api/api';
+import { MD5 } from '@/components/common/tools';
 export default defineComponent({
 	name: 'templete',
 	components: {
@@ -39,13 +40,17 @@ export default defineComponent({
 			login: () => {
 				const formData = new FormData();
 				formData.append('username', data.userName);
-				formData.append('password', data.passWord);
+				formData.append('password', MD5(data.passWord));
 				loginHttp(formData).then((res: any) => {
 					if (res.data.code === 100) {
 						message.warning(res.data.msg);
 						sessionStorage.setItem('userId', res.data.data.userId);
-						sessionStorage.setItem('userName', res.data.data.username);
+						sessionStorage.setItem('username', res.data.data.username);
 						sessionStorage.setItem('token', res.data.data.token);
+						sessionStorage.setItem('nickname', res.data.data.nickname);
+						sessionStorage.setItem('birthday', res.data.data.birthday);
+						sessionStorage.setItem('gender', res.data.data.gender);
+						sessionStorage.setItem('mobile', res.data.data.mobile);
 						ROUTER.push('index');
 					} else {
 						message.warning(res.data.msg);

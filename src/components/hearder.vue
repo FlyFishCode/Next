@@ -24,7 +24,7 @@
 				<div class="box">
 					<div class="userBox">
 						<UserOutlined />
-						<span>{{ userName }}</span>
+						<span>{{ username }}</span>
 					</div>
 					<div class="showBox">
 						<div @click="Modify">
@@ -59,13 +59,13 @@
 				<a-col :span="4" class="labelText">{{ $t('default.105') }}</a-col>
 				<a-col :span="8">
 					<a-select v-model:value="modifyVO.gender" class="selectBox" allow-clear>
-						<a-select-option value="1">{{ $t('default.106') }}</a-select-option>
-						<a-select-option value="2">{{ $t('default.107') }}</a-select-option>
+						<a-select-option :value="0">{{ $t('default.106') }}</a-select-option>
+						<a-select-option :value="1">{{ $t('default.107') }}</a-select-option>
 					</a-select>
 				</a-col>
 				<a-col :span="4" class="labelText">{{ $t('default.108') }}</a-col>
 				<a-col :span="8" class="datePicker">
-					<a-date-picker v-model:value="modifyVO.birth" />
+					<a-date-picker v-model:value="modifyVO.birthday" />
 				</a-col>
 			</a-row>
 			<template #footer>
@@ -107,8 +107,9 @@
 import { defineComponent, reactive, toRefs, computed } from 'vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { useRoute, useRouter } from 'vue-router';
-import { changePasswordHttp } from '@/api/api';
+import { changePasswordHttp, changeInfoHttp } from '@/api/api';
 import { message } from 'ant-design-vue';
+import { MD5 } from '@/components/common/tools';
 export default defineComponent({
 	name: 'hearder',
 	components: {
@@ -126,16 +127,15 @@ export default defineComponent({
 		});
 		const data = reactive({
 			modifyVO: {
-				mobile: '',
-				nickname: sessionStorage.getItem('userName'),
-				gender: '',
-				birth: ''
+				mobile: sessionStorage.getItem('mobile'),
+				nickname: sessionStorage.getItem('nickname'),
+				gender: Number(sessionStorage.getItem('gender')),
+				birthday: sessionStorage.getItem('birthday')
 			},
 			infoVO: {
 				oldPassword: '',
 				newPasswordOne: '',
-				newPasswordTwo: '',
-				userId: sessionStorage.getItem('userId') || ''
+				newPasswordTwo: ''
 			},
 			languageList: [
 				{ key: 'zh-cn', label: '简体中文' },
@@ -145,7 +145,7 @@ export default defineComponent({
 			infoVisible: false,
 			passwordVisible: false,
 			logoImg: require('@/assets/logo.png'),
-			userName: sessionStorage.getItem('userName'),
+			username: sessionStorage.getItem('username'),
 			Modify: () => {
 				data.infoVisible = true;
 			},
@@ -162,21 +162,27 @@ export default defineComponent({
 					data.infoVO.newPasswordTwo = '';
 				} else {
 					const formData = new FormData();
-					formData.append('oldPassword', data.infoVO.oldPassword);
-					formData.append('newPassword', data.infoVO.newPasswordTwo);
-					formData.append('userId', data.infoVO.userId);
+					formData.append('oldPassword', MD5(data.infoVO.oldPassword));
+					formData.append('newPassword', MD5(data.infoVO.newPasswordTwo));
 					changePasswordHttp(formData).then((res: any) => {
+						if (res.data.code === 100) {
+							data.passwordVisible = false;
+						}
 						message.warning(res.data.msg);
-						data.passwordVisible = false;
 					});
 				}
 			},
 			changeInfoBtn: () => {
-				data.infoVisible = false;
+				changeInfoHttp(data.modifyVO).then((res) => {
+					if (res.data.code === 100) {
+						data.infoVisible = false;
+					}
+					message.warning(res.data.msg);
+				});
 			},
 			Logout: () => {
 				sessionStorage.removeItem('userId');
-				sessionStorage.removeItem('username');
+				sessionStorage.removeItem('nickname');
 				sessionStorage.removeItem('token');
 				ROUTER.push('/');
 			}

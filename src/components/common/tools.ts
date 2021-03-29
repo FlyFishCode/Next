@@ -81,4 +81,9 @@ const i18n = (value: string) => {
 	const instance: any = currentInstance.appContext.config.globalProperties.$i18n.global;
 	return instance.t(value);
 };
-export { handleSelectEvent, deepClone, initDataToNumber, initDataToBoolean, handleList, i18n };
+
+const MD5 = (value: string | number) => {
+	const md5 = require('blueimp-md5');
+	return md5(value + 'kitekey').toUpperCase();
+};
+export { handleSelectEvent, deepClone, initDataToNumber, initDataToBoolean, handleList, i18n, MD5 };
