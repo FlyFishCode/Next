@@ -129,7 +129,7 @@ const routes = [
 				path: '/Settlement',
 				name: 'Settlement',
 				component: () => import(/* webpackChunkName: "Settlement" */ '../views/Settlement/Settlement.vue'),
-				meta: [{ label: 'default.118', path: 'Settlement' }]
+				meta: [{ label: 'default.116', path: 'Settlement' }]
 			},
 			{
 				path: '/SettlementInfo',

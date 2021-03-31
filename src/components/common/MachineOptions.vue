@@ -329,22 +329,20 @@
 						<a-col :span="2" class="labelText">{{ $t('default.61') }}</a-col>
 						<a-col :span="2" class="switchBox"><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.screenSaverSwitch"/></a-col>
 						<a-col v-show="setting.common.screenSaverSwitch" :span="8" class="showBox">
-							<a-col :span="5" class="labelText">{{ $t('default.62') }}</a-col>
-							<a-col :span="9" class="selectSearch">
-								<a-select v-model:value="setting.common.screenSaverTime">
-									<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
-								</a-select>
+							<a-col :span="10" class="labelText">{{ $t('default.62') }}</a-col>
+							<a-col :span="10" class="selectSearch">
+								<a-input v-model:value="setting.common.screenSaverTime" />
 							</a-col>
 						</a-col>
-						<a-col :span="2" class="labelText">{{ $t('default.63') }}</a-col>
-						<a-col :span="2" class="switchBox"><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.autoChange"/></a-col>
-						<a-col v-show="setting.common.autoChange" :span="8" class="showBox">
-							<a-col :span="5" class="labelText">{{ $t('default.64') }}</a-col>
-							<a-col :span="9" class="selectSearch">
-								<a-select v-model:value="setting.common.changingOver">
-									<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
-								</a-select>
-							</a-col>
+						<a-col :span="4" class="labelText">{{ $t('default.129') }}</a-col>
+						<a-col :span="2" class="selectSearch">
+							<a-select v-model:value="setting.common.systemSetting.others.shopRatio" @change="shopRatioChange">
+								<a-select-option v-for="option in shopRatioList" :key="option.id">{{ option.label }}</a-select-option>
+							</a-select>
+						</a-col>
+						<a-col :span="4" class="labelText">{{ $t('default.130') }}</a-col>
+						<a-col :span="2" class="selectSearch">
+							<a-input v-model:value="setting.common.systemSetting.others.agentRatio" :disabled="true" />
 						</a-col>
 					</a-row>
 
@@ -352,9 +350,20 @@
 						<a-col :span="2" class="labelText">{{ $t('default.65') }}</a-col>
 						<a-col :span="2" class="switchBox"><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.showTimedSwitch"/></a-col>
 						<a-col v-show="setting.common.showTimedSwitch" :span="8" class="showBox">
-							<a-col :span="5" class="labelText">{{ $t('default.66') }}</a-col>
-							<a-col :span="9" class="selectSearch">
-								<a-select v-model:value="setting.common.showTimed">
+							<a-col :span="10" class="labelText">{{ $t('default.66') }}</a-col>
+							<a-col :span="10" class="selectSearch">
+								<a-input v-model:value="setting.common.showTimed" />
+							</a-col>
+						</a-col>
+					</a-row>
+
+					<a-row class="rowStyle">
+						<a-col :span="2" class="labelText">{{ $t('default.63') }}</a-col>
+						<a-col :span="2" class="switchBox"><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.autoChange"/></a-col>
+						<a-col v-show="setting.common.autoChange" :span="8" class="showBox">
+							<a-col :span="10" class="labelText">{{ $t('default.64') }}</a-col>
+							<a-col :span="10" class="selectSearch">
+								<a-select v-model:value="setting.common.changingOver">
 									<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
 								</a-select>
 							</a-col>
@@ -814,7 +823,9 @@ export default defineComponent({
 							isFree: Boolean(State.YES), //是否免费
 							freeCoins: 0, //免费点数
 							isTimeFree: Boolean(State.YES), //是否限时免费
-							timeFreeData: 0 //免费时长
+							timeFreeData: 0, //免费时长
+							shopRatio: 0, // 店铺分账比率
+							agentRatio: '100%' // 代理商分账比率
 						}
 					},
 					game: null
@@ -843,7 +854,23 @@ export default defineComponent({
 			bullOptions: [
 				{ id: 1, label: '25/50' },
 				{ id: 2, label: '50/50' }
-			]
+			],
+			shopRatioList: [
+				{ id: 0, label: '0%' },
+				{ id: 10, label: '10%' },
+				{ id: 20, label: '20%' },
+				{ id: 30, label: '30%' },
+				{ id: 40, label: '40%' },
+				{ id: 50, label: '50%' },
+				{ id: 60, label: '60%' },
+				{ id: 70, label: '70%' },
+				{ id: 80, label: '80%' },
+				{ id: 90, label: '90%' },
+				{ id: 100, label: '100%' }
+			],
+			shopRatioChange: () => {
+				data.setting.common.systemSetting.others.agentRatio = 100 - data.setting.common.systemSetting.others.shopRatio + '%';
+			}
 		});
 		const getData = () => {
 			const obj = deepClone(data.setting);

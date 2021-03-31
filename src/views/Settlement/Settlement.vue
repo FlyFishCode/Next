@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<labelTitle :value="$t('default.118')" />
+		<labelTitle :value="$t('default.116')" />
 		<div class="searchBox">
 			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
@@ -90,7 +90,7 @@
 			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" @change="pageChange" />
 		</div>
 	</div>
-	<a-modal v-model:visible="visible" width="70%" :footer="null" centered>
+	<a-modal v-model:visible="visible" width="70%" :title="$t('default.118')" :footer="null" centered>
 		<a-table bordered :row-selection="shopRowSelection" :columns="dialogColumns" :data-source="dialogTableList" :pagination="false" rowKey="id" class="tableStyle"></a-table>
 		<div class="paginationStyle">
 			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="dialogTotal" @change="dialogPageChange" />
@@ -118,7 +118,7 @@ export default defineComponent({
 		const shopRowSelection = computed(() => {
 			return {
 				columnWidth: 100,
-				columnTitle: '选择对账',
+				columnTitle: i18n('default.118'),
 				selectedRowKeys: unref(defaultSelectList),
 				hideDefaultSelections: true,
 				onChange: (changableRowKeys: any) => {
@@ -200,7 +200,7 @@ export default defineComponent({
 					key: 'Locked Dates'
 				},
 				{
-					title: i18n('default.118'),
+					title: i18n('default.116'),
 					dataIndex: 'lockedDates',
 					key: 'Locked Dates'
 				}

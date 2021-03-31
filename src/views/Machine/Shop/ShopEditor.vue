@@ -509,14 +509,14 @@ export default defineComponent({
 			document.head.appendChild(jsapi);
 			window.load = () => {
 				let geolocation = null;
+				let auto = null;
 				// eslint-disable-next-line no-undef
 				const map = new AMap.Map('map', {
 					resizeEnable: true,
-					// center: [116.397428, 39.90923],
 					zoom: 13
 				});
 				// 添加插件
-				map.plugin(['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Geolocation'], function() {
+				map.plugin(['AMap.Autocomplete', 'AMap.Geolocation'], function() {
 					// eslint-disable-next-line no-undef
 					geolocation = new AMap.Geolocation({
 						enableHighAccuracy: true, //是否使用高精度定位，默认:true
@@ -534,14 +534,24 @@ export default defineComponent({
 					geolocation.getCurrentPosition();
 				});
 				// eslint-disable-next-line no-undef
-				const auto = new AMap.Autocomplete({ input: 'placeName' });
-				// eslint-disable-next-line no-undef
-				const placeSearch = new AMap.PlaceSearch({
-					map: map
-				});
-				const select = (e) => {
-					placeSearch.setCity(e.poi.adcode);
-					placeSearch.search(e.poi.name); //关键字查询查询
+				auto = new AMap.Autocomplete({ input: 'placeName' });
+				const select = (ev) => {
+					const obj = ev.poi;
+					if (obj.location) {
+						// eslint-disable-next-line no-undef
+						const marker = new AMap.Marker({
+							// eslint-disable-next-line no-undef
+							position: new AMap.LngLat(obj.location.lng, obj.location.lat), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+							title: obj.name
+						});
+						map.add(marker);
+						map.setZoomAndCenter(14, [obj.location.lng, obj.location.lat]);
+						marker.on('click', (e) => {
+							const { lng, lat } = e.lnglat;
+							data.mapInfoObj.longitude = lng;
+							data.mapInfoObj.latitude = lat;
+						});
+					}
 				};
 				// eslint-disable-next-line no-undef
 				AMap.event.addListener(auto, 'select', select); //注册监听，当选中某条记录时会触发

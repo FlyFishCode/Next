@@ -182,7 +182,7 @@ export default defineComponent({
 					key: 'Locked Dates'
 				},
 				{
-					title: i18n('default.118'),
+					title: i18n('default.116'),
 					dataIndex: 'lockedDates',
 					key: 'Locked Dates'
 				}

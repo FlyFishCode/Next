@@ -24,11 +24,11 @@
 				<a-sub-menu key="sub3">
 					<template #title>
 						<span
-							><SettingOutlined /><span>{{ $t('default.118') }}</span></span
+							><SettingOutlined /><span>{{ $t('default.116') }}</span></span
 						>
 					</template>
 					<a-menu-item key="SettlementInfo">{{ $t('default.117') }}</a-menu-item>
-					<a-menu-item key="Settlement">{{ $t('default.118') }}</a-menu-item>
+					<a-menu-item key="Settlement">{{ $t('default.116') }}</a-menu-item>
 				</a-sub-menu>
 			</a-menu>
 		</a-col>
