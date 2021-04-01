@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<labelTitle :value="$t('default.117')" />
+		<labelTitle :value="$t('default.116')" />
 		<div class="searchBox">
 			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
@@ -42,10 +42,10 @@
 					{{ $t('default.120') }}
 				</a-col>
 				<a-col :span="2" class="datePicker">
-					<a-date-picker v-model:value="infoVO.minRechargeTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
+					<a-date-picker v-model:value="infoVO.minCreateTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
 				</a-col>
 				<a-col :span="2" class="datePicker">
-					<a-date-picker v-model:value="infoVO.maxRechargeTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
+					<a-date-picker v-model:value="infoVO.maxCreateTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 				</a-col>
 			</a-row>
 			<a-row class="rowStyle">
@@ -53,7 +53,7 @@
 					{{ $t('default.121') }}
 				</a-col>
 				<a-col :span="4">
-					<a-input v-model:value="infoVO.shopId" allowClear />
+					<a-input v-model:value="infoVO.Id" allowClear />
 				</a-col>
 				<a-col :span="2" class="labelText">
 					{{ $t('default.5') }}
@@ -75,23 +75,14 @@
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ $t('default.122') }}
-				</a-col>
-				<a-col :span="4">
-					<a-input v-model:value="infoVO.machineSerial" allowClear />
-				</a-col>
-				<a-col :span="2" class="labelText">
 					<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
 				</a-col>
 			</a-row>
 		</div>
 		<a-row class="rowStyle">
-			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="shopId" class="tableStyle">
-				<template #status="{ record }">
-					<div>{{ record.status ? $t('default.135') : $t('default.134') }}</div>
-				</template>
-				<template #ratio="{ record }">
-					<div>{{ `${record.shopRate}%/${record.agentRate}%` }}</div>
+			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
+				<template #handle="{ record }">
+					<a-button size="small" @click="handleClick(record.id)">{{ $t('default.116') }}</a-button>
 				</template>
 			</a-table>
 		</a-row>
@@ -99,114 +90,243 @@
 			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" @change="pageChange" />
 		</div>
 	</div>
+	<a-modal v-model:visible="visible" width="70%" :title="$t('default.118')" :footer="null" centered>
+		<a-table bordered :row-selection="shopRowSelection" :columns="dialogColumns" :data-source="dialogTableList" :pagination="false" rowKey="id" class="tableStyle"></a-table>
+		<div class="paginationStyle">
+			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="dialogTotal" @change="dialogPageChange" />
+		</div>
+		<a-table bordered :columns="totalColumns" :data-source="totalTableList" :pagination="false" rowKey="id">
+			<template #ok="{ record }">
+				<a-button size="small" @click="handleClick(record.id)">{{ $t('default.116') }}</a-button>
+			</template>
+		</a-table>
+	</a-modal>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, toRefs } from 'vue';
+import { defineComponent, onMounted, reactive, toRefs, ref, unref, computed } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { agentListHttp, countryListHttp, areaListHttp, shopListHttp, settlementListHttp } from '@/api/api';
+import { agentListHttp, countryListHttp, areaListHttp, shopListHttp } from '@/api/api';
 import { i18n } from '@/components/common/tools';
 export default defineComponent({
-	name: 'SettlementInfo',
+	name: 'SettlementPage',
 	components: {
 		labelTitle
 	},
 	setup() {
+		const defaultSelectList: any = ref([]);
+		const shopRowSelection = computed(() => {
+			return {
+				columnWidth: 100,
+				columnTitle: i18n('default.118'),
+				selectedRowKeys: unref(defaultSelectList),
+				hideDefaultSelections: true,
+				onChange: (changableRowKeys: any) => {
+					defaultSelectList.value = changableRowKeys;
+				}
+			};
+		});
 		const data = reactive({
+			visible: false,
 			infoVO: {
-				shopId: null,
+				id: '',
 				shopName: '',
 				countryId: '',
 				areaId: '',
+				type: '',
 				agentId: '',
-				machineSerial: '',
-				minRechargeTime: '',
-				maxRechargeTime: '',
+				minCreateTime: '',
+				maxCreateTime: '',
 				pageIndex: 1,
 				pageSize: 10
 			},
 			columns: [
 				{
-					title: i18n('default.121'),
-					dataIndex: 'shopId',
-					key: 'Shop'
-				},
-				{
-					title: i18n('default.5'),
-					dataIndex: 'shopName',
-					key: 'Label'
-				},
-				{
 					title: i18n('default.120'),
-					dataIndex: 'rechargeTime',
+					dataIndex: 'Date',
 					key: 'Id'
 				},
 				{
+					title: i18n('default.5'),
+					key: 'Label'
+				},
+				{
+					title: i18n('default.121'),
+					key: 'Shop'
+				},
+				{
 					title: i18n('default.122'),
-					dataIndex: 'machineSerial',
+					dataIndex: 'NO',
 					key: 'Type'
 				},
 				{
 					title: i18n('default.123'),
-					dataIndex: 'coin',
+					dataIndex: 'Coin',
 					key: 'Serial'
 				},
 				{
 					title: i18n('default.124'),
-					dataIndex: 'cash',
+					dataIndex: 'Notes',
 					key: 'placingType'
 				},
 				{
 					title: i18n('default.125'),
-					dataIndex: 'qrcode',
+					dataIndex: 'QR Code',
 					key: 'Last Online'
 				},
 				{
 					title: i18n('default.78'),
-					dataIndex: 'free',
+					dataIndex: 'lockedDates',
 					key: 'Locked Dates'
 				},
 				{
 					title: 'Now Credit',
-					dataIndex: 'total',
+					dataIndex: 'lockedDates',
 					key: 'Locked Dates'
 				},
 				{
 					title: 'LifeTime',
-					dataIndex: 'lifetime',
+					dataIndex: 'lockedDates',
 					key: 'Locked Dates'
 				},
 				{
 					title: i18n('default.116'),
-					slots: { customRender: 'status' }
+					key: 'Locked Dates',
+					slots: { customRender: 'handle' }
 				},
 				{
 					title: i18n('default.136'),
-					slots: { customRender: 'ratio' }
+					dataIndex: 'lockedDates',
+					key: 'Locked Dates'
 				},
 				{
 					title: i18n('default.133'),
-					dataIndex: 'agentName',
+					dataIndex: 'lockedDates',
 					key: 'Locked Dates'
 				}
 			],
+			dialogColumns: [
+				{
+					title: i18n('default.120'),
+					dataIndex: 'Date',
+					key: 'Id'
+				},
+				{
+					title: i18n('default.122'),
+					dataIndex: 'NO',
+					key: 'NO'
+				},
+				{
+					title: i18n('default.123'),
+					dataIndex: 'Coin',
+					key: 'NO'
+				},
+				{
+					title: i18n('default.124'),
+					dataIndex: 'Notes',
+					key: 'NO'
+				},
+				{
+					title: i18n('default.125'),
+					dataIndex: 'QR Code',
+					key: 'NO'
+				},
+				{
+					title: i18n('default.35'),
+					dataIndex: 'Point',
+					key: 'NO'
+				},
+				{
+					title: 'Credit',
+					dataIndex: 'Credit',
+					key: 'NO'
+				},
+				{
+					title: i18n('default.127'),
+					dataIndex: '场地收入',
+					key: 'NO'
+				},
+				{
+					title: i18n('default.128'),
+					dataIndex: '代理收入',
+					key: 'NO'
+				},
+				{
+					title: i18n('default.136'),
+					dataIndex: '店家/代理拆账比率',
+					key: 'NO'
+				},
+				{
+					title: '状态',
+					dataIndex: '状态',
+					key: 'NO'
+				}
+			],
+			totalColumns: [
+				{
+					title: i18n('default.123'),
+					dataIndex: 'Coin',
+					key: 'Coin'
+				},
+				{
+					title: i18n('default.124'),
+					dataIndex: 'Notes',
+					key: 'Coin'
+				},
+				{
+					title: i18n('default.125'),
+					dataIndex: 'QR Code',
+					key: 'Coin'
+				},
+				{
+					title: i18n('default.35'),
+					dataIndex: 'Point',
+					key: 'Coin'
+				},
+				{
+					title: i18n('default.126'),
+					dataIndex: 'Total',
+					key: 'Coin'
+				},
+				{
+					title: i18n('default.127'),
+					dataIndex: '场地收入',
+					key: 'Coin'
+				},
+				{
+					title: i18n('default.128'),
+					dataIndex: '代理收入',
+					key: 'Coin'
+				},
+				{
+					title: '确认本期对账',
+					slots: { customRender: 'ok' }
+				}
+			],
 			total: 1,
+			dialogTotal: 1,
 			shopList: [],
 			agentList: [],
 			areaList: [],
 			countryList: [],
-			tableList: [],
+			tableList: [{ id: 1 }],
+			dialogTableList: [{ id: 1 }],
+			totalTableList: [{ id: 1 }],
 			disabledStartDate: (startValue: any) => {
-				if (!startValue || !data.infoVO.maxRechargeTime) {
+				if (!startValue || !data.infoVO.maxCreateTime) {
 					return false;
 				}
-				return startValue.valueOf() > new Date(data.infoVO.maxRechargeTime).valueOf();
+				return startValue.valueOf() > new Date(data.infoVO.maxCreateTime).valueOf();
 			},
 			disabledEndDate: (endValue: any) => {
-				if (!endValue || !data.infoVO.minRechargeTime) {
+				if (!endValue || !data.infoVO.minCreateTime) {
 					return false;
 				}
-				return new Date(data.infoVO.minRechargeTime).valueOf() >= endValue.valueOf();
+				return new Date(data.infoVO.minCreateTime).valueOf() >= endValue.valueOf();
+			},
+			handleClick: (id: number) => {
+				data.visible = true;
+				console.log(id);
 			},
 			agentSearch: (value: any) => {
 				agentListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
@@ -223,16 +343,14 @@ export default defineComponent({
 				// eslint-disable-next-line @typescript-eslint/no-use-before-define
 				getAreaList();
 			},
-			search: () => {
-				settlementListHttp(data.infoVO).then((res: any) => {
-					if (res.data.data) {
-						data.tableList = res.data.data.list;
-					}
-				});
-			},
 			pageChange: (index: number) => {
 				console.log(index);
-				data.search();
+			},
+			dialogPageChange: (index: number) => {
+				console.log(index);
+			},
+			search: () => {
+				console.log(1);
 			}
 		});
 		const getCountryList = () => {
@@ -255,7 +373,8 @@ export default defineComponent({
 			init();
 		});
 		return {
-			...toRefs(data)
+			...toRefs(data),
+			shopRowSelection
 		};
 	}
 });

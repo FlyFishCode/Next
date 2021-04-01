@@ -126,15 +126,15 @@ const routes = [
 				component: () => import(/* webpackChunkName: "Order" */ '../views/Credit/Order/index.vue')
 			},
 			{
-				path: '/Settlement',
-				name: 'Settlement',
-				component: () => import(/* webpackChunkName: "Settlement" */ '../views/Settlement/Settlement.vue'),
+				path: '/SettlementInfo',
+				name: 'SettlementInfo',
+				component: () => import(/* webpackChunkName: "Settlement" */ '../views/Settlement/SettlementInfonfo.vue'),
 				meta: [{ label: 'default.116', path: 'Settlement' }]
 			},
 			{
-				path: '/SettlementInfo',
-				name: 'SettlementInfo',
-				component: () => import(/* webpackChunkName: "SettlementInfo" */ '../views/Settlement/SettlementInfo.vue'),
+				path: '/Settlement',
+				name: 'Settlement',
+				component: () => import(/* webpackChunkName: "SettlementInfo" */ '../views/Settlement/Settlement.vue'),
 				meta: [{ label: 'default.117', path: 'SettlementInfo' }]
 			}
 		]

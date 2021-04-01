@@ -857,19 +857,19 @@ export default defineComponent({
 			],
 			shopRatioList: [
 				{ id: 0, label: '0%' },
-				{ id: 10, label: '10%' },
-				{ id: 20, label: '20%' },
-				{ id: 30, label: '30%' },
-				{ id: 40, label: '40%' },
-				{ id: 50, label: '50%' },
-				{ id: 60, label: '60%' },
-				{ id: 70, label: '70%' },
-				{ id: 80, label: '80%' },
-				{ id: 90, label: '90%' },
-				{ id: 100, label: '100%' }
+				{ id: 0.1, label: '10%' },
+				{ id: 0.2, label: '20%' },
+				{ id: 0.3, label: '30%' },
+				{ id: 0.4, label: '40%' },
+				{ id: 0.5, label: '50%' },
+				{ id: 0.6, label: '60%' },
+				{ id: 0.7, label: '70%' },
+				{ id: 0.8, label: '80%' },
+				{ id: 0.9, label: '90%' },
+				{ id: 1, label: '100%' }
 			],
 			shopRatioChange: () => {
-				data.setting.common.systemSetting.others.agentRatio = 100 - data.setting.common.systemSetting.others.shopRatio + '%';
+				data.setting.common.systemSetting.others.agentRatio = 100 - (data.setting.common.systemSetting.others.shopRatio * 100) + '%';
 			}
 		});
 		const getData = () => {

@@ -24,6 +24,10 @@ import {
 
 // Agent
 import { agentList } from '@/api/Agent/index';
+
+// Settlement
+import { settlementList } from '@/api/Settlement/index';
+
 const baseURL = '/apw';
 const Axios = axios.create({
 	baseURL: baseURL,
@@ -185,6 +189,12 @@ const setShopMachineSettingHttp = (data: any) => {
 const setMachineSettingHttp = (data: any) => {
 	return Axios.post(setMachineSetting, data);
 };
+
+// Settlement 对账列表
+const settlementListHttp = (data: any) => {
+	return Axios.post(settlementList, data);
+};
+
 export {
 	loginHttp,
 	changePasswordHttp,
@@ -214,5 +224,6 @@ export {
 	setShopMachineSettingHttp,
 	setMachineSettingHttp,
 	deleteMachinepHttp,
-	changeInfoHttp
+	changeInfoHttp,
+	settlementListHttp
 };
