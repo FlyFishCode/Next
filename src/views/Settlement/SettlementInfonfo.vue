@@ -20,40 +20,10 @@
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ $t('default.26') }}
-				</a-col>
-				<a-col :span="4" class="selectSearch">
-					<a-select
-						show-search
-						v-model:value="infoVO.agentId"
-						:default-active-first-option="false"
-						:show-arrow="false"
-						:filter-option="false"
-						:not-found-content="null"
-						allowClear
-						@search="agentSearch"
-					>
-						<a-select-option v-for="d in agentList" :key="d.id">
-							<div :title="d.name">{{ d.name }}</div>
-						</a-select-option>
-					</a-select>
-				</a-col>
-				<a-col :span="2" class="labelText">
-					{{ $t('default.120') }}
-				</a-col>
-				<a-col :span="2" class="datePicker">
-					<a-date-picker v-model:value="infoVO.minCreateTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
-				</a-col>
-				<a-col :span="2" class="datePicker">
-					<a-date-picker v-model:value="infoVO.maxCreateTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
-				</a-col>
-			</a-row>
-			<a-row class="rowStyle">
-				<a-col :span="2" class="labelText">
 					{{ $t('default.121') }}
 				</a-col>
 				<a-col :span="4">
-					<a-input v-model:value="infoVO.Id" allowClear />
+					<a-input v-model:value="infoVO.shopId" allowClear />
 				</a-col>
 				<a-col :span="2" class="labelText">
 					{{ $t('default.5') }}
@@ -74,15 +44,39 @@
 						</a-select-option>
 					</a-select>
 				</a-col>
+			</a-row>
+			<a-row class="rowStyle">
+				<a-col :span="2" class="labelText">
+					{{ $t('default.26') }}
+				</a-col>
+				<a-col :span="4" class="selectSearch">
+					<a-select
+						show-search
+						v-model:value="infoVO.agentId"
+						:default-active-first-option="false"
+						:show-arrow="false"
+						:filter-option="false"
+						:not-found-content="null"
+						allowClear
+						@search="agentSearch"
+					>
+						<a-select-option v-for="d in agentList" :key="d.id">
+							<div :title="d.name">{{ d.name }}</div>
+						</a-select-option>
+					</a-select>
+				</a-col>
 				<a-col :span="2" class="labelText">
 					<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
 				</a-col>
 			</a-row>
 		</div>
 		<a-row class="rowStyle">
-			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
+			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="shopId" class="tableStyle">
 				<template #handle="{ record }">
-					<a-button size="small" @click="handleClick(record.id)">{{ $t('default.116') }}</a-button>
+					<a-button type="primary" size="small" @click="handleClick(record.shopId)">{{ $t('default.116') }}</a-button>
+				</template>
+				<template #ratio="{ record }">
+					<div>{{ `${record.shopRate}%/${record.agentRate}%` }}</div>
 				</template>
 			</a-table>
 		</a-row>
@@ -91,10 +85,7 @@
 		</div>
 	</div>
 	<a-modal v-model:visible="visible" width="70%" :title="$t('default.118')" :footer="null" centered>
-		<a-table bordered :row-selection="shopRowSelection" :columns="dialogColumns" :data-source="dialogTableList" :pagination="false" rowKey="id" class="tableStyle"></a-table>
-		<div class="paginationStyle">
-			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="dialogTotal" @change="dialogPageChange" />
-		</div>
+		<a-table bordered :row-selection="shopRowSelection" :columns="dialogColumns" :data-source="dialogTableList" :pagination="false" rowKey="id" class="tableBox"></a-table>
 		<a-table bordered :columns="totalColumns" :data-source="totalTableList" :pagination="false" rowKey="id">
 			<template #ok="{ record }">
 				<a-button size="small" @click="handleClick(record.id)">{{ $t('default.116') }}</a-button>
@@ -106,7 +97,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs, ref, unref, computed } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { agentListHttp, countryListHttp, areaListHttp, shopListHttp } from '@/api/api';
+import { agentListHttp, countryListHttp, areaListHttp, shopListHttp, settlementInfoHttp } from '@/api/api';
 import { i18n } from '@/components/common/tools';
 export default defineComponent({
 	name: 'SettlementPage',
@@ -118,7 +109,7 @@ export default defineComponent({
 		const shopRowSelection = computed(() => {
 			return {
 				columnWidth: 100,
-				columnTitle: i18n('default.118'),
+				// columnTitle: i18n('default.118'),
 				selectedRowKeys: unref(defaultSelectList),
 				hideDefaultSelections: true,
 				onChange: (changableRowKeys: any) => {
@@ -129,80 +120,71 @@ export default defineComponent({
 		const data = reactive({
 			visible: false,
 			infoVO: {
-				id: '',
+				shopId: '',
 				shopName: '',
 				countryId: '',
 				areaId: '',
-				type: '',
 				agentId: '',
-				minCreateTime: '',
-				maxCreateTime: '',
 				pageIndex: 1,
 				pageSize: 10
 			},
 			columns: [
 				{
-					title: i18n('default.120'),
-					dataIndex: 'Date',
-					key: 'Id'
-				},
-				{
-					title: i18n('default.5'),
-					key: 'Label'
-				},
-				{
 					title: i18n('default.121'),
+					dataIndex: 'shopId',
 					key: 'Shop'
 				},
 				{
-					title: i18n('default.122'),
-					dataIndex: 'NO',
-					key: 'Type'
+					title: i18n('default.5'),
+					dataIndex: 'shopName',
+					key: 'Label'
 				},
 				{
 					title: i18n('default.123'),
-					dataIndex: 'Coin',
+					dataIndex: 'coin',
 					key: 'Serial'
 				},
 				{
 					title: i18n('default.124'),
-					dataIndex: 'Notes',
+					dataIndex: 'cash',
 					key: 'placingType'
 				},
 				{
+					title: i18n('default.137'),
+					dataIndex: 'card',
+					key: 'card'
+				},
+				{
 					title: i18n('default.125'),
-					dataIndex: 'QR Code',
+					dataIndex: 'qrcode',
 					key: 'Last Online'
 				},
 				{
 					title: i18n('default.78'),
-					dataIndex: 'lockedDates',
+					dataIndex: 'free',
 					key: 'Locked Dates'
 				},
 				{
-					title: 'Now Credit',
-					dataIndex: 'lockedDates',
+					title: i18n('default.138'),
+					dataIndex: 'total',
 					key: 'Locked Dates'
 				},
 				{
 					title: 'LifeTime',
-					dataIndex: 'lockedDates',
+					dataIndex: 'lifetime',
 					key: 'Locked Dates'
 				},
 				{
 					title: i18n('default.116'),
-					key: 'Locked Dates',
 					slots: { customRender: 'handle' }
 				},
 				{
 					title: i18n('default.136'),
-					dataIndex: 'lockedDates',
-					key: 'Locked Dates'
+					slots: { customRender: 'ratio' }
 				},
 				{
 					title: i18n('default.133'),
-					dataIndex: 'lockedDates',
-					key: 'Locked Dates'
+					dataIndex: 'agentName'
 				}
 			],
 			dialogColumns: [
@@ -304,26 +286,13 @@ export default defineComponent({
 				}
 			],
 			total: 1,
-			dialogTotal: 1,
 			shopList: [],
 			agentList: [],
 			areaList: [],
 			countryList: [],
-			tableList: [{ id: 1 }],
+			tableList: [{ shopId: 1 }],
 			dialogTableList: [{ id: 1 }],
 			totalTableList: [{ id: 1 }],
-			disabledStartDate: (startValue: any) => {
-				if (!startValue || !data.infoVO.maxCreateTime) {
-					return false;
-				}
-				return startValue.valueOf() > new Date(data.infoVO.maxCreateTime).valueOf();
-			},
-			disabledEndDate: (endValue: any) => {
-				if (!endValue || !data.infoVO.minCreateTime) {
-					return false;
-				}
-				return new Date(data.infoVO.minCreateTime).valueOf() >= endValue.valueOf();
-			},
 			handleClick: (id: number) => {
 				data.visible = true;
 				console.log(id);
@@ -346,11 +315,12 @@ export default defineComponent({
 			pageChange: (index: number) => {
 				console.log(index);
 			},
-			dialogPageChange: (index: number) => {
-				console.log(index);
-			},
 			search: () => {
-				console.log(1);
+				settlementInfoHttp(data.infoVO).then((res: any) => {
+					if (res.data.data) {
+						data.tableList = res.data.data.list;
+					}
+				});
 			}
 		});
 		const getCountryList = () => {
@@ -380,4 +350,9 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.tableBox {
+	height: 600px;
+	overflow-y: auto;
+}
+</style>

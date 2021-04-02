@@ -157,6 +157,11 @@ export default defineComponent({
 					key: 'placingType'
 				},
 				{
+					title: i18n('default.137'),
+					dataIndex: 'card',
+					key: 'card'
+				},
+				{
 					title: i18n('default.125'),
 					dataIndex: 'qrcode',
 					key: 'Last Online'
@@ -167,7 +172,7 @@ export default defineComponent({
 					key: 'Locked Dates'
 				},
 				{
-					title: 'Now Credit',
+					title: i18n('default.138'),
 					dataIndex: 'total',
 					key: 'Locked Dates'
 				},

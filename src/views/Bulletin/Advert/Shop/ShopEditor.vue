@@ -1,7 +1,7 @@
 <template>
 	<labelTitle :value="$t('default.2')" :btn="ROUTE.query.id ? update : create" />
 	<div class="searchBox">
-		<a-form id="form" :label-col="{ span: 2 }" :wrapper-col="{ span: 22 }" :model="infoVO" :rules="rules" ref="formRef">
+		<!-- <a-form id="form" :label-col="{ span: 2 }" :wrapper-col="{ span: 22 }" :model="infoVO" :rules="rules" ref="formRef">
 			<a-form-item :label="$t('default.4')" name="title">
 				<a-input v-model:value="infoVO.title" allow-clear />
 			</a-form-item>
@@ -17,9 +17,9 @@
 					<a-button size="small" type="primary" @click="addShop">{{ $t('default.28') }}</a-button>
 				</a-col>
 			</a-row>
-		</a-form>
+		</a-form> -->
 
-		<!-- <a-row class="rowStyle">
+		<a-row class="rowStyle">
 			<a-col :span="4" class="labelText">
 				{{ $t('default.4') }}
 			</a-col>
@@ -45,7 +45,7 @@
 			<a-col :span="1" class="searchButton">
 				<a-button size="small" type="primary" @click="addShop">{{ $t('default.20') }}</a-button>
 			</a-col>
-		</a-row> -->
+		</a-row>
 	</div>
 	<a-row>
 		<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" :rowKey="rowKey" :scroll="{ y: 600 }" class="tableStyle">
