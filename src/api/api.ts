@@ -26,7 +26,7 @@ import {
 import { agentList } from '@/api/Agent/index';
 
 // Settlement
-import { settlementList, settlementInfo } from '@/api/Settlement/index';
+import { settlementList, settlementInfo, machineSettlementList, final } from '@/api/Settlement/index';
 
 const baseURL = '/apw';
 const Axios = axios.create({
@@ -194,9 +194,17 @@ const setMachineSettingHttp = (data: any) => {
 const settlementListHttp = (data: any) => {
 	return Axios.post(settlementList, data);
 };
-// 结算列表
+// 店铺结算列表
 const settlementInfoHttp = (data: any) => {
 	return Axios.post(settlementInfo, data);
+};
+// 机器结算列表
+const machineSettlementListHttp = (data: any) => {
+	return Axios.get(getNewUrl(machineSettlementList, data));
+};
+// 机器结算
+const finalHttp = (data: any) => {
+	return Axios.post(final, data);
 };
 
 export {
@@ -230,5 +238,7 @@ export {
 	deleteMachinepHttp,
 	changeInfoHttp,
 	settlementListHttp,
-	settlementInfoHttp
+	settlementInfoHttp,
+	machineSettlementListHttp,
+	finalHttp
 };

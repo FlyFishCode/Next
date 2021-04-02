@@ -4,52 +4,6 @@
 		<div class="searchBox">
 			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
-					{{ $t('default.23') }}
-				</a-col>
-				<a-col :span="4">
-					<a-select v-model:value="infoVO.countryId" @change="countryChange" class="selectBox" allowClear>
-						<a-select-option v-for="item in countryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
-					</a-select>
-				</a-col>
-				<a-col :span="2" class="labelText">
-					{{ $t('default.24') }}
-				</a-col>
-				<a-col :span="4">
-					<a-select v-model:value="infoVO.areaId" class="selectBox" allowClear>
-						<a-select-option v-for="item in areaList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
-					</a-select>
-				</a-col>
-				<a-col :span="2" class="labelText">
-					{{ $t('default.26') }}
-				</a-col>
-				<a-col :span="4" class="selectSearch">
-					<a-select
-						show-search
-						v-model:value="infoVO.agentId"
-						:default-active-first-option="false"
-						:show-arrow="false"
-						:filter-option="false"
-						:not-found-content="null"
-						allowClear
-						@search="agentSearch"
-					>
-						<a-select-option v-for="d in agentList" :key="d.id">
-							<div :title="d.name">{{ d.name }}</div>
-						</a-select-option>
-					</a-select>
-				</a-col>
-				<a-col :span="2" class="labelText">
-					{{ $t('default.120') }}
-				</a-col>
-				<a-col :span="2" class="datePicker">
-					<a-date-picker v-model:value="infoVO.minRechargeTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
-				</a-col>
-				<a-col :span="2" class="datePicker">
-					<a-date-picker v-model:value="infoVO.maxRechargeTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
-				</a-col>
-			</a-row>
-			<a-row class="rowStyle">
-				<a-col :span="2" class="labelText">
 					{{ $t('default.121') }}
 				</a-col>
 				<a-col :span="4">
@@ -75,10 +29,65 @@
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
+					{{ $t('default.23') }}
+				</a-col>
+				<a-col :span="4">
+					<a-select v-model:value="infoVO.countryId" @change="countryChange" class="selectBox" allowClear>
+						<a-select-option v-for="item in countryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+					</a-select>
+				</a-col>
+				<a-col :span="2" class="labelText">
+					{{ $t('default.24') }}
+				</a-col>
+				<a-col :span="4">
+					<a-select v-model:value="infoVO.areaId" class="selectBox" allowClear>
+						<a-select-option v-for="item in areaList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+					</a-select>
+				</a-col>
+			</a-row>
+
+			<a-row class="rowStyle">
+				<a-col :span="2" class="labelText">
+					{{ $t('default.26') }}
+				</a-col>
+				<a-col :span="4" class="selectSearch">
+					<a-select
+						show-search
+						v-model:value="infoVO.agentId"
+						:default-active-first-option="false"
+						:show-arrow="false"
+						:filter-option="false"
+						:not-found-content="null"
+						allowClear
+						@search="agentSearch"
+					>
+						<a-select-option v-for="d in agentList" :key="d.id">
+							<div :title="d.name">{{ d.name }}</div>
+						</a-select-option>
+					</a-select>
+				</a-col>
+				<a-col :span="2" class="labelText">
+					{{ $t('default.120') }}
+				</a-col>
+				<a-col :span="2" class="datePicker">
+					<a-date-picker v-model:value="infoVO.minRecordTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
+				</a-col>
+				<a-col :span="2" class="datePicker">
+					<a-date-picker v-model:value="infoVO.maxRecordTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
+				</a-col>
+				<a-col :span="2" class="labelText">
 					{{ $t('default.122') }}
 				</a-col>
 				<a-col :span="4">
 					<a-input v-model:value="infoVO.machineSerial" allowClear />
+				</a-col>
+				<a-col :span="2" class="labelText">
+					{{ $t('default.139') }}
+				</a-col>
+				<a-col :span="2">
+					<a-select v-model:value="infoVO.status" class="selectBox" allowClear>
+						<a-select-option v-for="item in stateList" :key="item.id" :value="item.id">{{ item.label }}</a-select-option>
+					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
 					<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
@@ -115,13 +124,14 @@ export default defineComponent({
 		const data = reactive({
 			infoVO: {
 				shopId: null,
+				status: null,
 				shopName: '',
 				countryId: '',
 				areaId: '',
 				agentId: '',
 				machineSerial: '',
-				minRechargeTime: '',
-				maxRechargeTime: '',
+				minRecordTime: '',
+				maxRecordTime: '',
 				pageIndex: 1,
 				pageSize: 10
 			},
@@ -138,7 +148,7 @@ export default defineComponent({
 				},
 				{
 					title: i18n('default.120'),
-					dataIndex: 'rechargeTime',
+					dataIndex: 'recordTime',
 					key: 'Id'
 				},
 				{
@@ -201,17 +211,21 @@ export default defineComponent({
 			areaList: [],
 			countryList: [],
 			tableList: [],
+			stateList: [
+				{ id: 0, label: i18n('default.134') },
+				{ id: 1, label: i18n('default.135') }
+			],
 			disabledStartDate: (startValue: any) => {
-				if (!startValue || !data.infoVO.maxRechargeTime) {
+				if (!startValue || !data.infoVO.maxRecordTime) {
 					return false;
 				}
-				return startValue.valueOf() > new Date(data.infoVO.maxRechargeTime).valueOf();
+				return startValue.valueOf() > new Date(data.infoVO.maxRecordTime).valueOf();
 			},
 			disabledEndDate: (endValue: any) => {
-				if (!endValue || !data.infoVO.minRechargeTime) {
+				if (!endValue || !data.infoVO.minRecordTime) {
 					return false;
 				}
-				return new Date(data.infoVO.minRechargeTime).valueOf() >= endValue.valueOf();
+				return new Date(data.infoVO.minRecordTime).valueOf() >= endValue.valueOf();
 			},
 			agentSearch: (value: any) => {
 				agentListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
@@ -228,16 +242,17 @@ export default defineComponent({
 				// eslint-disable-next-line @typescript-eslint/no-use-before-define
 				getAreaList();
 			},
+			pageChange: (index: number) => {
+				data.infoVO.pageIndex = index;
+				data.search();
+			},
 			search: () => {
 				settlementListHttp(data.infoVO).then((res: any) => {
 					if (res.data.data) {
 						data.tableList = res.data.data.list;
+						data.total = res.data.data.totalCount;
 					}
 				});
-			},
-			pageChange: (index: number) => {
-				console.log(index);
-				data.search();
 			}
 		});
 		const getCountryList = () => {
