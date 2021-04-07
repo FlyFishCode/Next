@@ -26,7 +26,7 @@ import {
 import { agentList } from '@/api/Agent/index';
 
 // Settlement
-import { settlementList, settlementInfo, machineSettlementList, final } from '@/api/Settlement/index';
+import { settlementList, settlementInfo, machineSettlementList, final, rechargeRecord } from '@/api/Settlement/index';
 
 const baseURL = '/apw';
 const Axios = axios.create({
@@ -206,6 +206,10 @@ const machineSettlementListHttp = (data: any) => {
 const finalHttp = (data: any) => {
 	return Axios.post(final, data);
 };
+// 机器结算
+const rechargeRecordHttp = (data: any) => {
+	return Axios.post(rechargeRecord, data);
+};
 
 export {
 	loginHttp,
@@ -240,5 +244,6 @@ export {
 	settlementListHttp,
 	settlementInfoHttp,
 	machineSettlementListHttp,
-	finalHttp
+	finalHttp,
+	rechargeRecordHttp
 };

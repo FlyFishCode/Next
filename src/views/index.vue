@@ -29,6 +29,7 @@
 					</template>
 					<a-menu-item key="Settlement">{{ $t('default.117') }}</a-menu-item>
 					<a-menu-item key="SettlementInfo">{{ $t('default.116') }}</a-menu-item>
+					<a-menu-item key="RechargeRecord">{{ $t('default.143') }}</a-menu-item>
 				</a-sub-menu>
 			</a-menu>
 		</a-col>

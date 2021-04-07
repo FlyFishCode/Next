@@ -128,7 +128,7 @@ const routes = [
 			{
 				path: '/SettlementInfo',
 				name: 'SettlementInfo',
-				component: () => import(/* webpackChunkName: "Settlement" */ '../views/Settlement/SettlementInfonfo.vue'),
+				component: () => import(/* webpackChunkName: "Settlement" */ '../views/Settlement/SettlementInfo.vue'),
 				meta: [{ label: 'default.116', path: 'Settlement' }]
 			},
 			{
@@ -136,6 +136,12 @@ const routes = [
 				name: 'Settlement',
 				component: () => import(/* webpackChunkName: "SettlementInfo" */ '../views/Settlement/Settlement.vue'),
 				meta: [{ label: 'default.117', path: 'SettlementInfo' }]
+			},
+			{
+				path: '/RechargeRecord',
+				name: 'RechargeRecord',
+				component: () => import(/* webpackChunkName: "RechargeRecord" */ '../views/Settlement/RechargeRecord.vue'),
+				meta: [{ label: 'default.143', path: 'RechargeRecord' }]
 			}
 		]
 	},
