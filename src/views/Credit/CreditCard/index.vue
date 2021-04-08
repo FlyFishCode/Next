@@ -178,8 +178,8 @@ export default defineComponent({
 				console.log(2);
 			},
 			agentSearch: (value: any) => {
-				agentListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
-					data.agentList = res.data.data.list;
+				agentListHttp({ agentName: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
+					data.agentList = res.data.data;
 				});
 			},
 			ownerSearch: (value: any) => {

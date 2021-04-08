@@ -158,8 +158,8 @@ export default defineComponent({
 				getAreaList();
 			},
 			agentSearch: (value: any) => {
-				agentListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
-					data.agentList = res.data.data.list;
+				agentListHttp({ agentName: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
+					data.agentList = res.data.data;
 				});
 			},
 			ownerSearch: (value: any) => {

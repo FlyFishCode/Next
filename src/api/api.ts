@@ -151,7 +151,7 @@ const createShopHttp = (data: any) => {
 };
 // 代理商列表
 const agentListHttp = (data: any) => {
-	return Axios.post(agentList, data);
+	return Axios.get(getNewUrl(agentList, data));
 };
 // 查询店铺下机器列表
 const shopMachineListHttp = (data: any) => {

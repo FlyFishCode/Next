@@ -492,8 +492,8 @@ export default defineComponent({
 				});
 			},
 			agentSearch: (value) => {
-				agentListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res) => {
-					data.agentList = res.data.data.list;
+				agentListHttp({ agentName: value.split("'").join(''), pageSize: 999 }).then((res) => {
+					data.agentList = res.data.data;
 				});
 			},
 			getPosition: () => {

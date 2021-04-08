@@ -1,3 +1,3 @@
 // 代理商列表
-const agentList = '/agent/list';
+const agentList = 'user/agentlist';
 export { agentList };

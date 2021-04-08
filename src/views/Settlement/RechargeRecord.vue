@@ -212,8 +212,8 @@ export default defineComponent({
 				return new Date(data.infoVO.minRechargeTime).valueOf() >= endValue.valueOf();
 			},
 			agentSearch: (value: any) => {
-				agentListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
-					data.agentList = res.data.data.list;
+				agentListHttp({ agentName: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
+					data.agentList = res.data.data;
 				});
 			},
 			shopSearch(value: any) {
