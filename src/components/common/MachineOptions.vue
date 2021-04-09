@@ -334,7 +334,7 @@
 								<a-input v-model:value="setting.common.screenSaverTime" />
 							</a-col>
 						</a-col>
-						<a-col :span="4" class="labelText">{{ $t('default.129') }}</a-col>
+						<!-- <a-col :span="4" class="labelText">{{ $t('default.129') }}</a-col>
 						<a-col :span="2" class="selectSearch">
 							<a-select v-model:value="setting.common.systemSetting.others.shopRatio" @change="shopRatioChange">
 								<a-select-option v-for="option in shopRatioList" :key="option.id">{{ option.label }}</a-select-option>
@@ -343,7 +343,7 @@
 						<a-col :span="4" class="labelText">{{ $t('default.130') }}</a-col>
 						<a-col :span="2" class="selectSearch">
 							<a-input v-model:value="setting.common.systemSetting.others.agentRatio" :disabled="true" />
-						</a-col>
+						</a-col> -->
 					</a-row>
 
 					<a-row class="rowStyle">
@@ -855,22 +855,22 @@ export default defineComponent({
 				{ id: 1, label: '25/50' },
 				{ id: 2, label: '50/50' }
 			],
-			shopRatioList: [
-				{ id: 0, label: '0%' },
-				{ id: 0.1, label: '10%' },
-				{ id: 0.2, label: '20%' },
-				{ id: 0.3, label: '30%' },
-				{ id: 0.4, label: '40%' },
-				{ id: 0.5, label: '50%' },
-				{ id: 0.6, label: '60%' },
-				{ id: 0.7, label: '70%' },
-				{ id: 0.8, label: '80%' },
-				{ id: 0.9, label: '90%' },
-				{ id: 1, label: '100%' }
-			],
-			shopRatioChange: () => {
-				data.setting.common.systemSetting.others.agentRatio = 100 - (data.setting.common.systemSetting.others.shopRatio * 100) + '%';
-			}
+			// shopRatioList: [
+			// 	{ id: 0, label: '0%' },
+			// 	{ id: 0.1, label: '10%' },
+			// 	{ id: 0.2, label: '20%' },
+			// 	{ id: 0.3, label: '30%' },
+			// 	{ id: 0.4, label: '40%' },
+			// 	{ id: 0.5, label: '50%' },
+			// 	{ id: 0.6, label: '60%' },
+			// 	{ id: 0.7, label: '70%' },
+			// 	{ id: 0.8, label: '80%' },
+			// 	{ id: 0.9, label: '90%' },
+			// 	{ id: 1, label: '100%' }
+			// ],
+			// shopRatioChange: () => {
+			// 	data.setting.common.systemSetting.others.agentRatio = 100 - (data.setting.common.systemSetting.others.shopRatio * 100) + '%';
+			// }
 		});
 		const getData = () => {
 			const obj = deepClone(data.setting);

@@ -147,17 +147,19 @@
 					<a-radio :value="0">{{ 'No' }}</a-radio>
 				</a-radio-group>
 			</a-col>
-			<a-col v-if="isAdmin" :span="3" class="labelText">
-				{{ $t('default.26') }}
-			</a-col>
-			<a-col v-if="isAdmin" :span="9" class="selectSearch">
-				<a-select show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
-					<a-select-option v-for="d in agentList" :key="d.id">
-						<div :title="d.name">{{ d.name }}</div>
-					</a-select-option>
+
+			<a-col :span="3" class="labelText">{{ $t('default.129') }}</a-col>
+			<a-col :span="3" class="selectSearch">
+				<a-select v-model:value="infoVO.shopRate" @change="shopRatioChange">
+					<a-select-option v-for="option in shopRateList" :key="option.id">{{ option.label }}</a-select-option>
 				</a-select>
 			</a-col>
+			<a-col :span="3" class="labelText">{{ $t('default.130') }}</a-col>
+			<a-col :span="3" class="selectSearch">
+				<a-input v-model:value="infoVO.agentRate" :disabled="true" />
+			</a-col>
 		</a-row>
+
 		<a-row v-if="isAdmin" class="rowStyle">
 			<a-col :span="3" class="labelText">
 				{{ $t('default.23') }}
@@ -173,6 +175,18 @@
 			<a-col :span="9">
 				<a-select v-model:value="infoVO.areaId" class="selectBox" allowClear>
 					<a-select-option v-for="item in areaList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+				</a-select>
+			</a-col>
+		</a-row>
+		<a-row v-if="isAdmin">
+			<a-col :span="3" class="labelText">
+				{{ $t('default.26') }}
+			</a-col>
+			<a-col :span="9" class="selectSearch">
+				<a-select show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
+					<a-select-option v-for="d in agentList" :key="d.id">
+						<div :title="d.name">{{ d.name }}</div>
+					</a-select-option>
 				</a-select>
 			</a-col>
 		</a-row>
@@ -348,6 +362,8 @@ export default defineComponent({
 				isValid: 1,
 				averageCost: '',
 				memo: '',
+				shopRate: 0,
+				agentRate: '',
 				machineSetting: {}
 			},
 			machineVO: {
@@ -408,6 +424,22 @@ export default defineComponent({
 				}
 			],
 			tableList: [{ id: 1 }],
+			shopRateList: [
+				{ id: 0, label: '0%' },
+				{ id: 10, label: '10%' },
+				{ id: 20, label: '20%' },
+				{ id: 30, label: '30%' },
+				{ id: 40, label: '40%' },
+				{ id: 50, label: '50%' },
+				{ id: 60, label: '60%' },
+				{ id: 70, label: '70%' },
+				{ id: 80, label: '80%' },
+				{ id: 90, label: '90%' },
+				{ id: 100, label: '100%' }
+			],
+			shopRatioChange: () => {
+				data.infoVO.agentRate = 100 - data.infoVO.shopRate;
+			},
 			disabledStartDate: (startValue) => {
 				if (!startValue || !data.machineVO.maxLastOnlineTime) {
 					return false;
