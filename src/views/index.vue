@@ -24,12 +24,20 @@
 				<a-sub-menu key="sub3">
 					<template #title>
 						<span
-							><SettingOutlined /><span>{{ $t('default.116') }}</span></span
+							><CreditCardOutlined /><span>{{ $t('default.116') }}</span></span
 						>
 					</template>
 					<a-menu-item key="Settlement">{{ $t('default.117') }}</a-menu-item>
 					<a-menu-item key="SettlementInfo">{{ $t('default.116') }}</a-menu-item>
 					<a-menu-item key="RechargeRecord">{{ $t('default.143') }}</a-menu-item>
+				</a-sub-menu>
+				<a-sub-menu key="sub4">
+					<template #title>
+						<span
+							><SettingOutlined /><span>{{ $t('default.146') }}</span></span
+						>
+					</template>
+					<a-menu-item key="User">{{ $t('default.147') }}</a-menu-item>
 				</a-sub-menu>
 			</a-menu>
 		</a-col>
@@ -41,7 +49,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue';
-import { MailOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons-vue';
+import { MailOutlined, AppstoreOutlined, SettingOutlined, CreditCardOutlined } from '@ant-design/icons-vue';
 import hearder from '@/components/hearder.vue';
 import { useRouter } from 'vue-router';
 
@@ -56,6 +64,7 @@ export default defineComponent({
 		MailOutlined,
 		AppstoreOutlined,
 		SettingOutlined,
+		CreditCardOutlined,
 		hearder
 	},
 	setup() {

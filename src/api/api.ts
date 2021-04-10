@@ -28,6 +28,9 @@ import { agentList } from '@/api/Agent/index';
 // Settlement
 import { settlementList, settlementInfo, machineSettlementList, final, rechargeRecord } from '@/api/Settlement/index';
 
+// System
+import { systemUserList, addUser, searchUser, modifyUser } from '@/api/System/index';
+
 const baseURL = '/apw';
 const Axios = axios.create({
 	baseURL: baseURL,
@@ -211,6 +214,24 @@ const rechargeRecordHttp = (data: any) => {
 	return Axios.post(rechargeRecord, data);
 };
 
+// System
+// 用户列表
+const systemUserListHttp = (data: any) => {
+	return Axios.post(systemUserList, data);
+};
+// 创建用户
+const addUserHttp = (data: any) => {
+	return Axios.post(addUser, data);
+};
+// 查询用户
+const searchUserHttp = (data: any) => {
+	return Axios.get(getNewUrl(searchUser, data));
+};
+// 修改用户
+const modifyUserHttp = (data: any) => {
+	return Axios.post(modifyUser, data);
+};
+
 export {
 	loginHttp,
 	changePasswordHttp,
@@ -245,5 +266,9 @@ export {
 	settlementInfoHttp,
 	machineSettlementListHttp,
 	finalHttp,
-	rechargeRecordHttp
+	rechargeRecordHttp,
+	systemUserListHttp,
+	addUserHttp,
+	searchUserHttp,
+	modifyUserHttp
 };

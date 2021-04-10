@@ -39,6 +39,9 @@
 	text-align: center;
 	line-height: 32px;
 	font-size: 16px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 /* 搜索条件内btn */
 .searchButton {
@@ -102,11 +105,16 @@ video {
 	justify-content: center;
 }
 /* 弹框样式 */
-.ant-modal .ant-modal-content {
+/* .ant-modal .ant-modal-content {
 	min-height: 800px;
-}
+} */
 /* 确认删除弹框样式 */
 .deleteBox .ant-modal-content {
 	min-height: 200px;
+}
+/*  按钮巨中 */
+.buttonBox {
+	display: flex;
+	justify-content: center;
 }
 </style>

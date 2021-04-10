@@ -54,10 +54,11 @@
 			<template #shop="{ record }">
 				<div v-if="record.shopList.length" class="tableShop">
 					<div class="moreShopBox">
+						<!-- <div :title="record.shopList[0].shopName" @click="handleShopClick(record.shopList[0].shopId)">{{ record.shopList[0].shopName }}</div> -->
 						<a-button type="link" :title="record.shopList[0].shopName" @click="handleShopClick(record.shopList[0].shopId)">{{ record.shopList[0].shopName }}</a-button>
-						<div>
-							<a-button type="danger" size="small" @click="shopDelete(record.id, record.shopList[0].shopId)">{{ $t('default.10') }}</a-button>
-						</div>
+					</div>
+					<div style="lineHeight:32px">
+						<a-button type="danger" size="small" @click="shopDelete(record.id, record.shopList[0].shopId)">{{ $t('default.10') }}</a-button>
 					</div>
 					<div v-show="record.shopList.length > 1" class="link">
 						<span v-if="record.flag" @click="record.flag = !record.flag"><DownOutlined /></span>
@@ -319,11 +320,10 @@ export default defineComponent({
 .moreShopBox {
 	line-height: 32px;
 	display: flex;
-	overflow: hidden;
 }
-.moreShopBox .ant-btn-link {
+/* .moreShopBox .ant-btn-link {
 	width: 160px;
-}
+} */
 .shopItem {
 	display: flex;
 	flex-direction: column;
