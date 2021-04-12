@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<a-modal v-model:visible="isShow" :footer="null" width="40%" @cancel="cancel">
+		<a-modal v-model:visible="isShow" centered :footer="null" width="40%" @cancel="cancel">
 			<div class="modalBox">
 				<div v-if="isVideo">
 					<video :src="src" controls></video>

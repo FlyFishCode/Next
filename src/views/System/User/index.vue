@@ -107,7 +107,9 @@
 			</a-form-item>
 			<a-form-item :label="$t('default.23')" name="country">
 				<a-select v-model:value="dialogObj.countryId">
-					<a-select-option v-for="item in countryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+					<a-select-option value="shanghai">Zone one</a-select-option>
+					<a-select-option value="beijing">Zone two</a-select-option>
+					<!-- <a-select-option v-for="item in countryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option> -->
 				</a-select>
 			</a-form-item>
 			<a-form-item :label="$t('default.90')" name="mobile">
@@ -184,11 +186,11 @@ export default defineComponent({
 					{
 						required: true,
 						message: 'Please select country',
-						trigger: 'change',
-						type: 'string',
-						transform: (value: string) => {
-							return String(value);
-						}
+						trigger: 'change'
+						// type: 'string',
+						// transform: (value: string) => {
+						// 	return String(value);
+						// }
 					}
 				]
 			},

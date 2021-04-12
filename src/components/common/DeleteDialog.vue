@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<a-modal v-model:visible="flag" class="deleteBox" :title="$t('default.10')" ok-text="ok" cancel-text="cancle" @ok="ok" @cancel="cancel">
+		<a-modal v-model:visible="flag" centered class="deleteBox" :title="$t('default.10')" ok-text="ok" cancel-text="cancle" @ok="ok" @cancel="cancel">
 			<p>{{ '确认删除数据？（删除数据不可恢复）' }}</p>
 		</a-modal>
 	</div>
