@@ -31,6 +31,9 @@ import { settlementList, settlementInfo, machineSettlementList, final, rechargeR
 // System
 import { systemUserList, addUser, searchUser, modifyUser } from '@/api/System/index';
 
+// Player
+import { playerList, PlayerInfo, PlayerCreate, PlayerUpdate } from '@/api/Player/index';
+
 const baseURL = '/apw';
 const Axios = axios.create({
 	baseURL: baseURL,
@@ -232,6 +235,24 @@ const modifyUserHttp = (data: any) => {
 	return Axios.post(modifyUser, data);
 };
 
+// Player
+// 玩家列表
+const playerListHttp = (data: any) => {
+	return Axios.post(playerList, data);
+};
+// 查询玩家
+const PlayerInfoHttp = (data: any) => {
+	return Axios.get(getNewUrl(PlayerInfo, data));
+};
+// 创建玩家
+const PlayerCreateHttp = (data: any) => {
+	return Axios.post(PlayerCreate, data);
+};
+// 修改玩家
+const PlayerUpdateHttp = (data: any) => {
+	return Axios.post(PlayerUpdate, data);
+};
+
 export {
 	loginHttp,
 	changePasswordHttp,
@@ -270,5 +291,9 @@ export {
 	systemUserListHttp,
 	addUserHttp,
 	searchUserHttp,
-	modifyUserHttp
+	modifyUserHttp,
+	playerListHttp,
+	PlayerInfoHttp,
+	PlayerCreateHttp,
+	PlayerUpdateHttp
 };

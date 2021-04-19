@@ -29,8 +29,8 @@
 			</a-col>
 			<a-col :span="4" class="selectSearch">
 				<a-select v-model:value="infoVO.type" allow-clear>
-					<a-select-option value="1">A1</a-select-option>
-					<a-select-option value="2">W1</a-select-option>
+					<a-select-option value="A1">A1</a-select-option>
+					<a-select-option value="W1">W1</a-select-option>
 				</a-select>
 			</a-col>
 		</a-row>
@@ -90,8 +90,8 @@
 				<a-button type="link" @click="handleMachineClick(record.id)">{{ record.name }}</a-button>
 			</template>
 			<template #type="{ record }">
-				<div v-if="record.type === '1'">{{ 'A1' }}</div>
-				<div v-if="record.type === '2'">{{ 'W1' }}</div>
+				<div v-if="record.type === 'A1'">{{ 'A1' }}</div>
+				<div v-if="record.type === 'W1'">{{ 'W1' }}</div>
 			</template>
 			<template #shop="{ record }">
 				<a-button type="link" @click="handleShopClick(record.shopId)">{{ record.shopName }}</a-button>
@@ -135,7 +135,7 @@ export default defineComponent({
 				name: '',
 				serial: '',
 				shopName: '',
-				type: '',
+				type: 'A1',
 				placingType: '',
 				maxLastOnlineTime: '',
 				minLastOnlineTime: '',

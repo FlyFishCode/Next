@@ -39,6 +39,14 @@
 					</template>
 					<a-menu-item key="User">{{ $t('default.147') }}</a-menu-item>
 				</a-sub-menu>
+				<a-sub-menu key="sub5">
+					<template #title>
+						<span
+							><UserOutlined /><span>{{ $t('default.154') }}</span></span
+						>
+					</template>
+					<a-menu-item key="Player">{{ $t('default.154') }}</a-menu-item>
+				</a-sub-menu>
 			</a-menu>
 		</a-col>
 		<a-col :span="20" class="centent">
@@ -49,7 +57,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue';
-import { MailOutlined, AppstoreOutlined, SettingOutlined, CreditCardOutlined } from '@ant-design/icons-vue';
+import { MailOutlined, AppstoreOutlined, SettingOutlined, CreditCardOutlined, UserOutlined } from '@ant-design/icons-vue';
 import hearder from '@/components/hearder.vue';
 import { useRouter } from 'vue-router';
 
@@ -65,6 +73,7 @@ export default defineComponent({
 		AppstoreOutlined,
 		SettingOutlined,
 		CreditCardOutlined,
+		UserOutlined,
 		hearder
 	},
 	setup() {

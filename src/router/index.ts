@@ -149,6 +149,22 @@ const routes = [
 				name: 'User',
 				component: () => import(/* webpackChunkName: "User" */ '../views/System/User/index.vue'),
 				meta: [{ label: 'default.147', path: 'User' }]
+			},
+			// Player
+			{
+				path: '/Player',
+				name: 'Player',
+				component: () => import(/* webpackChunkName: "Player" */ '../views/Player/index.vue'),
+				meta: [{ label: 'default.154', path: 'Player' }]
+			},
+			{
+				path: '/PlayerInfo',
+				name: 'PlayerInfo',
+				component: () => import(/* webpackChunkName: "PlayerInfo" */ '../views/Player/PlayerInfo.vue'),
+				meta: [
+					{ label: 'default.154', path: 'Player' },
+					{ label: 'default.163', path: 'PlayerInfo' }
+				]
 			}
 		]
 	},

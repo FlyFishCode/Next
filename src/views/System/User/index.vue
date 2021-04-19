@@ -98,33 +98,37 @@
 		</div>
 	</div>
 	<a-modal v-model:visible="visible" width="40%" :title="$t('default.147')" :footer="null" centered>
-		<a-form ref="formRef" :model="dialogObj" :rules="rules" :label-col="{ span: 4 }" :wrapper-col="{ span: 18 }">
+		<a-form ref="formRef" :model="otherObj" :rules="rules" :label-col="{ span: 4 }" :wrapper-col="{ span: 18 }">
 			<a-form-item :label="$t('default.148')" name="username">
-				<a-input v-model:value="dialogObj.username" />
+				<a-input v-model:value="otherObj.username" allowClear />
 			</a-form-item>
 			<a-form-item :label="$t('default.104')" name="nickname">
-				<a-input v-model:value="dialogObj.nickname" />
+				<a-input v-model:value="otherObj.nickname" allowClear />
 			</a-form-item>
-			<a-form-item :label="$t('default.23')" name="country">
-				<a-select v-model:value="dialogObj.countryId">
-					<a-select-option value="shanghai">Zone one</a-select-option>
-					<a-select-option value="beijing">Zone two</a-select-option>
-					<!-- <a-select-option v-for="item in countryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option> -->
+			<a-form-item :label="$t('default.23')" name="countryId">
+				<a-select v-model:value="otherObj.countryId">
+					<a-select-option v-for="item in countryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
 				</a-select>
 			</a-form-item>
+			<a-form-item v-if="!otherObj.id" :label="$t('default.156')" name="password">
+				<a-input v-model:value="otherObj.password" type="password" allowClear />
+			</a-form-item>
+			<a-form-item v-if="!otherObj.id" :label="$t('default.157')" name="confirmPassword">
+				<a-input v-model:value="otherObj.confirmPassword" type="password" allowClear />
+			</a-form-item>
 			<a-form-item :label="$t('default.90')" name="mobile">
-				<a-input v-model:value="dialogObj.mobile" />
+				<a-input v-model:value="otherObj.mobile" allowClear />
 			</a-form-item>
 			<a-form-item :label="$t('default.108')" name="birthday">
-				<a-date-picker v-model:value="dialogObj.birthday" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
+				<a-date-picker v-model:value="otherObj.birthday" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
 			</a-form-item>
 			<a-form-item :label="$t('default.149')">
-				<a-select v-model:value="dialogObj.type" class="selectBox" allowClear>
+				<a-select v-model:value="otherObj.type" class="selectBox" allowClear>
 					<a-select-option v-for="item in typeList" :key="item.id" :value="item.id">{{ item.label }}</a-select-option>
 				</a-select>
 			</a-form-item>
 			<a-form-item :label="$t('default.105')">
-				<a-select v-model:value="dialogObj.gender" class="selectBox">
+				<a-select v-model:value="otherObj.gender" class="selectBox">
 					<a-select-option :value="1">{{ $t('default.106') }}</a-select-option>
 					<a-select-option :value="0">{{ $t('default.107') }}</a-select-option>
 				</a-select>
@@ -147,6 +151,7 @@ import labelTitle from '@/components/labelTitle.vue';
 import { systemUserListHttp, addUserHttp, modifyUserHttp, searchUserHttp, countryListHttp } from '@/api/api';
 import { i18n } from '@/components/common/tools';
 import { message } from 'ant-design-vue';
+import { MD5 } from '@/components/common/tools';
 export default defineComponent({
 	name: 'SettlementInfo',
 	components: {
@@ -154,6 +159,22 @@ export default defineComponent({
 	},
 	setup() {
 		const formRef: any = ref(null);
+		const checkCountry = async (rule: any, value: number) => {
+			if (!value) {
+				return Promise.reject(i18n('default.155'));
+			}
+		};
+		const passwordChange = async (rule: any, value: any) => {
+			if (!value) {
+				return Promise.reject(i18n('default.159'));
+			}
+			// eslint-disable-next-line @typescript-eslint/no-use-before-define
+			if (data.otherObj.password !== value) {
+				return Promise.reject(i18n('default.158'));
+			} else {
+				return Promise.resolve();
+			}
+		};
 		const data = reactive({
 			visible: false,
 			infoVO: {
@@ -173,6 +194,19 @@ export default defineComponent({
 				id: 0,
 				username: '',
 				nickname: '',
+				password: '',
+				confirmPassword: '',
+				mobile: '',
+				gender: 1,
+				birthday: '',
+				countryId: '',
+				type: 1
+			},
+			otherObj: {
+				id: 0,
+				username: '',
+				nickname: '',
+				password: '',
 				mobile: '',
 				gender: 1,
 				birthday: '',
@@ -182,15 +216,14 @@ export default defineComponent({
 			rules: {
 				username: [{ required: true, message: 'Please input username', trigger: 'blur' }],
 				nickname: [{ required: true, message: 'Please input nickname', trigger: 'blur' }],
-				country: [
+				password: [{ required: true, message: i18n('default.159'), trigger: 'blur' }],
+				mobile: [{ required: true, message: 'Please input mobile', trigger: 'blur' }],
+				confirmPassword: [{ required: true, message: i18n('default.158'), validator: passwordChange }],
+				countryId: [
 					{
 						required: true,
-						message: 'Please select country',
-						trigger: 'change'
-						// type: 'string',
-						// transform: (value: string) => {
-						// 	return String(value);
-						// }
+						message: i18n('default.155'),
+						validator: checkCountry
 					}
 				]
 			},
@@ -206,6 +239,10 @@ export default defineComponent({
 				{
 					title: i18n('default.90'),
 					dataIndex: 'mobile'
+				},
+				{
+					title: i18n('default.23'),
+					dataIndex: 'countryName'
 				},
 				{
 					title: i18n('default.108'),
@@ -244,19 +281,27 @@ export default defineComponent({
 				return new Date(data.infoVO.minBirthday).valueOf() >= endValue.valueOf();
 			},
 			handleCreate: () => {
+				data.otherObj.id = 0;
+				data.otherObj.username = '';
+				data.otherObj.nickname = '';
+				data.otherObj.countryId = '';
+				data.otherObj.mobile = '';
+				data.otherObj.birthday = '';
+				data.otherObj.type = 1;
+				data.otherObj.gender = 1;
 				data.visible = true;
 			},
 			handleUserName: (id: number) => {
-				data.dialogObj.id = id;
+				data.otherObj.id = id;
 				searchUserHttp({ userId: id }).then((res: any) => {
 					const responseData = res.data.data;
-					data.dialogObj.username = responseData.username;
-					data.dialogObj.nickname = responseData.nickname;
-					data.dialogObj.countryId = responseData.countryId;
-					data.dialogObj.mobile = responseData.mobile;
-					data.dialogObj.birthday = responseData.birthday;
-					data.dialogObj.type = responseData.type;
-					data.dialogObj.gender = responseData.gender;
+					data.otherObj.username = responseData.username;
+					data.otherObj.nickname = responseData.nickname;
+					data.otherObj.countryId = responseData.countryId;
+					data.otherObj.mobile = responseData.mobile;
+					data.otherObj.birthday = responseData.birthday;
+					data.otherObj.type = responseData.type;
+					data.otherObj.gender = responseData.gender;
 				});
 				data.visible = true;
 			},
@@ -277,29 +322,36 @@ export default defineComponent({
 			},
 			handleOk: () => {
 				let flag: any = null;
-				if (data.dialogObj.id) {
+				if (data.otherObj.id) {
 					flag = modifyUserHttp;
 				} else {
 					flag = addUserHttp;
 				}
-				formRef.value.validate().then(() => {
-					const P1 = new Promise((resolve, reject) => {
+				formRef.value
+					.validate()
+					.then(() => {
+						data.dialogObj.id = data.otherObj.id;
+						data.dialogObj.username = data.otherObj.username;
+						data.dialogObj.nickname = data.otherObj.nickname;
+						data.dialogObj.password = MD5(data.otherObj.password);
+						data.dialogObj.mobile = data.otherObj.mobile;
+						data.dialogObj.gender = data.otherObj.gender;
+						data.dialogObj.birthday = data.otherObj.birthday;
+						data.dialogObj.countryId = data.otherObj.countryId;
+						data.dialogObj.type = data.otherObj.type;
 						flag(data.dialogObj).then((res: any) => {
 							if (res.data.code === 100) {
-								resolve(true);
+								message.success('ok');
+								data.search();
+								data.visible = false;
 							} else {
-								reject(false);
+								message.warning(res.data.msg);
 							}
 						});
+					})
+					.catch((error: any) => {
+						console.log('error', error);
 					});
-					P1.then(() => {
-						data.search();
-						message.success('ok');
-						data.visible = false;
-					}).catch(() => {
-						return false;
-					});
-				});
 			}
 		});
 		const getCountryList = () => {

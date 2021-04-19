@@ -246,8 +246,8 @@
 			</a-col>
 			<a-col :span="4" class="selectSearch">
 				<a-select v-model:value="machineVO.type" allow-clear>
-					<a-select-option value="1">A1</a-select-option>
-					<a-select-option value="2">W1</a-select-option>
+					<a-select-option value="A1">A1</a-select-option>
+					<a-select-option value="W1">W1</a-select-option>
 				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
@@ -341,7 +341,7 @@ export default defineComponent({
 			infoVO: {
 				id: id,
 				name: '',
-				type: '',
+				type: 'A1',
 				agentId: '',
 				countryId: '',
 				areaId: '',
