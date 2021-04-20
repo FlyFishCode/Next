@@ -106,8 +106,8 @@
 				</a-col>
 				<a-col :span="4">
 					<a-select v-model:value="infoVO.isValid" class="selectBox" allowClear>
-						<a-select-option :value="1">{{ $t('default.106') }}</a-select-option>
-						<a-select-option :value="0">{{ $t('default.107') }}</a-select-option>
+						<a-select-option :value="1">{{ $t('default.170') }}</a-select-option>
+						<a-select-option :value="0">{{ $t('default.171') }}</a-select-option>
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
@@ -125,40 +125,68 @@
 				<template #nickname="{ record }">
 					<a-button type="link" size="small" @click="handleUserName(record.id)">{{ record.nickname }}</a-button>
 				</template>
+				<template #shopName="{ record }">
+					<a-button type="link" size="small" @click="handleShopClick(record.shopId)">{{ record.shopName }}</a-button>
+				</template>
 				<template #gender="{ record }">
 					<div>{{ record.gender ? $t('default.106') : $t('default.107') }}</div>
 				</template>
 				<template #type="{ record }">
 					<div v-if="record.type === 1">{{ $t('default.150') }}</div>
 					<div v-if="record.type === 2">{{ $t('default.26') }}</div>
-					<div v-if="record.type === 3">{{ $t('default.151') }}</div>
-					<div v-if="record.type === 4">{{ $t('default.152') }}</div>
-					<div v-if="record.type === 5">{{ $t('default.153') }}</div>
+				</template>
+				<template #handle="{ record }">
+					<div class="handleBtnDiv">
+						<a-button type="primary" size="small" @click="handlePassword(record.id)">{{ $t('default.168') }}</a-button>
+						<a-button type="danger" size="small" @click="playerDelete(record.id)">{{ $t('default.10') }}</a-button>
+					</div>
 				</template>
 			</a-table>
 		</a-row>
 		<div class="paginationStyle">
 			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" @change="pageChange" />
 		</div>
+		<a-modal v-model:visible="visible" width="40%" :title="$t('default.168')" :footer="null" centered>
+			<a-row class="rowStyle">
+				<a-col :span="4" class="labelText">{{ $t('default.168') }}</a-col>
+				<a-col :span="20"><a-input v-model:value="password" type="password" allowClear/></a-col>
+			</a-row>
+			<a-row class="rowStyle buttonBox">
+				<a-col :span="3">
+					<a-button @click="handleCancel">{{ $t('default.19') }}</a-button>
+				</a-col>
+				<a-col :span="3">
+					<a-button type="primary" @click="handleOk">{{ $t('default.18') }}</a-button>
+				</a-col>
+			</a-row>
+		</a-modal>
+		<DeleteDialog :visible="dialogVisible" @afterClose="afterClose" @handleOk="handledialogOK" />
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { playerListHttp, countryListHttp, areaListHttp, shopListHttp } from '@/api/api';
-import { i18n } from '@/components/common/tools';
+import { playerListHttp, countryListHttp, areaListHttp, shopListHttp, PlayerDeleteHttp, PlayerRestorePasswordHttp } from '@/api/api';
+import DeleteDialog from '@/components/common/DeleteDialog.vue';
+import { i18n, MD5 } from '@/components/common/tools';
 import { useRouter } from 'vue-router';
+import { message } from 'ant-design-vue';
+import qs from 'qs';
 export default defineComponent({
 	name: 'SettlementInfo',
 	components: {
-		labelTitle
+		labelTitle,
+		DeleteDialog
 	},
 	setup() {
 		const formRef: any = ref(null);
 		const ROUTER = useRouter();
 		const data = reactive({
 			visible: false,
+			dialogVisible: false,
+			playerId: 0,
+			password: '',
 			infoVO: {
 				username: '',
 				nickname: '',
@@ -192,7 +220,6 @@ export default defineComponent({
 				},
 				{
 					title: i18n('default.104'),
-					dataIndex: 'nickname',
 					slots: { customRender: 'nickname' }
 				},
 				{
@@ -217,7 +244,7 @@ export default defineComponent({
 				},
 				{
 					title: i18n('default.2'),
-					dataIndex: 'shopName'
+					slots: { customRender: 'shopName' }
 				},
 				{
 					title: i18n('default.105'),
@@ -226,6 +253,10 @@ export default defineComponent({
 				{
 					title: i18n('default.162'),
 					slots: { customRender: 'type' }
+				},
+				{
+					title: i18n('default.169'),
+					slots: { customRender: 'handle' }
 				}
 			],
 			typeList: [
@@ -269,6 +300,46 @@ export default defineComponent({
 					data.shopList = res.data.data.list;
 				});
 			},
+			handlePassword: (id: number) => {
+				data.visible = true;
+				data.playerId = id;
+			},
+			playerDelete: (id: number) => {
+				data.dialogVisible = true;
+				data.playerId = id;
+			},
+			afterClose: (value: boolean) => {
+				data.dialogVisible = value;
+			},
+			handledialogOK: () => {
+				PlayerDeleteHttp([data.playerId]).then((res: any) => {
+					if (res.data.code === 100) {
+						message.success(res.data.msg);
+						data.dialogVisible = false;
+						data.search();
+					} else {
+						message.warning(res.data.msg);
+					}
+				});
+			},
+			handleCancel: () => {
+				data.visible = false;
+			},
+			handleOk: () => {
+				const obj = {
+					memberId: data.playerId,
+					newPassword: MD5(data.password)
+				};
+				PlayerRestorePasswordHttp(qs.stringify(obj)).then((res: any) => {
+					if (res.data.code === 100) {
+						message.success(res.data.msg);
+						data.visible = false;
+						data.password = '';
+					} else {
+						message.warning(res.data.msg);
+					}
+				});
+			},
 			countryChange: () => {
 				data.infoVO.areaId = '';
 				// eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -282,6 +353,12 @@ export default defineComponent({
 			handleUserName: (id: number) => {
 				ROUTER.push({
 					path: 'PlayerInfo',
+					query: { id }
+				});
+			},
+			handleShopClick: (id: number) => {
+				ROUTER.push({
+					path: 'EditorShop',
 					query: { id }
 				});
 			},
@@ -327,5 +404,9 @@ export default defineComponent({
 <style scoped>
 #birthday {
 	width: 100%;
+}
+.handleBtnDiv {
+	display: flex;
+	justify-content: space-between;
 }
 </style>

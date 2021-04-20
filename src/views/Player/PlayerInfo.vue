@@ -1,6 +1,20 @@
 <template>
-	<labelTitle :value="$t('default.3')" :btn="id ? update : create" />
+	<labelTitle :value="$t('default.163')" :btn="id ? update : create" />
 	<div class="searchBox">
+		<a-row class="rowStyle">
+			<a-col :span="3" class="labelText">
+				{{ $t('default.148') }}
+			</a-col>
+			<a-col :span="9">
+				<a-input v-model:value="infoVO.username" :disabled="disabled" />
+			</a-col>
+			<a-col :span="3" class="labelText">
+				{{ $t('default.160') }}
+			</a-col>
+			<a-col :span="9">
+				<a-input v-model:value="infoVO.registerTime" :disabled="disabled" />
+			</a-col>
+		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
 				{{ $t('default.104') }}
@@ -101,34 +115,16 @@
 			</a-col>
 			<a-col :span="9" class="selectSearch">
 				<a-select v-model:value="infoVO.Language">
-					<a-select-option :value="1">{{ $t('default.86') }}</a-select-option>
-					<a-select-option :value="2">{{ $t('default.87') }}</a-select-option>
-					<a-select-option :value="3">{{ $t('default.88') }}</a-select-option>
+					<a-select-option :value="1">{{ $t('default.165') }}</a-select-option>
+					<a-select-option :value="2">{{ $t('default.166') }}</a-select-option>
+					<a-select-option :value="3">{{ $t('default.167') }}</a-select-option>
 				</a-select>
 			</a-col>
-			<!-- <a-col :span="3" class="labelText">
-				{{ $t('default.84') }}
+			<a-col v-if="!id" :span="3" class="labelText">
+				{{ $t('default.156') }}
 			</a-col>
-			<a-col :span="9" class="selectSearch">
-				<a-select v-model:value="infoVO.placingType">
-					<a-select-option :value="1">{{ $t('default.86') }}</a-select-option>
-					<a-select-option :value="2">{{ $t('default.87') }}</a-select-option>
-					<a-select-option :value="3">{{ $t('default.88') }}</a-select-option>
-				</a-select>
-			</a-col> -->
-		</a-row>
-		<a-row class="rowStyle">
-			<a-col :span="3" class="labelText">
-				{{ $t('default.148') }}
-			</a-col>
-			<a-col :span="9">
-				<a-input v-model:value="infoVO.username" disabled />
-			</a-col>
-			<a-col :span="3" class="labelText">
-				{{ $t('default.160') }}
-			</a-col>
-			<a-col :span="9">
-				<a-input v-model:value="infoVO.registerTime" disabled />
+			<a-col v-if="!id" :span="9" class="selectSearch">
+				<a-input-password v-model:value="infoVO.password" type="password" />
 			</a-col>
 		</a-row>
 	</div>
@@ -149,7 +145,7 @@ export default defineComponent({
 		const id: any = ROUTE.query.id;
 		const options: any = ref(null);
 		const data = reactive({
-			disabled: true,
+			disabled: false,
 			infoVO: {
 				id: '',
 				username: '',
@@ -157,6 +153,7 @@ export default defineComponent({
 				img: '',
 				gender: '',
 				shopId: '',
+				password: '',
 				mainCardNo: '',
 				birthday: '',
 				areaId: '',
@@ -268,7 +265,10 @@ export default defineComponent({
 			data.shopSearch('');
 			getCountryList();
 			getAreaList();
-			getPlayerInfo(id);
+			if (id) {
+				data.disabled = true;
+				getPlayerInfo(id);
+			}
 		};
 		onMounted(() => {
 			init(id);

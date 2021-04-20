@@ -6,4 +6,8 @@ const PlayerInfo = 'member/select';
 const PlayerCreate = 'member/insert';
 // 修改玩家
 const PlayerUpdate = 'member/update';
-export { playerList, PlayerInfo, PlayerCreate, PlayerUpdate };
+// 删除玩家
+const PlayerDelete = 'member/delete';
+// 重置密码
+const PlayerRestorePassword = 'member/resetpassword';
+export { playerList, PlayerInfo, PlayerCreate, PlayerUpdate, PlayerDelete, PlayerRestorePassword };

@@ -32,7 +32,7 @@ import { settlementList, settlementInfo, machineSettlementList, final, rechargeR
 import { systemUserList, addUser, searchUser, modifyUser } from '@/api/System/index';
 
 // Player
-import { playerList, PlayerInfo, PlayerCreate, PlayerUpdate } from '@/api/Player/index';
+import { playerList, PlayerInfo, PlayerCreate, PlayerUpdate, PlayerDelete, PlayerRestorePassword } from '@/api/Player/index';
 
 const baseURL = '/apw';
 const Axios = axios.create({
@@ -252,6 +252,14 @@ const PlayerCreateHttp = (data: any) => {
 const PlayerUpdateHttp = (data: any) => {
 	return Axios.post(PlayerUpdate, data);
 };
+// 删除玩家
+const PlayerDeleteHttp = (data: any) => {
+	return Axios.post(PlayerDelete, data);
+};
+// 重置密码
+const PlayerRestorePasswordHttp = (data: any) => {
+	return Axios.post(PlayerRestorePassword, data);
+};
 
 export {
 	loginHttp,
@@ -295,5 +303,7 @@ export {
 	playerListHttp,
 	PlayerInfoHttp,
 	PlayerCreateHttp,
-	PlayerUpdateHttp
+	PlayerUpdateHttp,
+	PlayerDeleteHttp,
+	PlayerRestorePasswordHttp
 };
