@@ -34,6 +34,9 @@ import { systemUserList, addUser, searchUser, modifyUser } from '@/api/System/in
 // Player
 import { playerList, PlayerInfo, PlayerCreate, PlayerUpdate, PlayerDelete, PlayerRestorePassword } from '@/api/Player/index';
 
+// UserCard
+import { UserCardList, UserCreate, UserUpdate, UserInfo, UserCardDelete } from '@/api/UserCard/index';
+
 const baseURL = '/apw';
 const Axios = axios.create({
 	baseURL: baseURL,
@@ -260,6 +263,27 @@ const PlayerDeleteHttp = (data: any) => {
 const PlayerRestorePasswordHttp = (data: any) => {
 	return Axios.post(PlayerRestorePassword, data);
 };
+// UserCard
+// 卡列表
+const UserCardListHttp = (data: any) => {
+	return Axios.post(UserCardList, data);
+};
+// 创建卡
+const UserCreateHttp = (data: any) => {
+	return Axios.post(UserCreate, data);
+};
+// 修改卡
+const UserUpdateHttp = (data: any) => {
+	return Axios.post(UserUpdate, data);
+};
+// 查询卡
+const UserInfoHttp = (data: any) => {
+	return Axios.get(getNewUrl(UserInfo, data));
+};
+// 删除卡
+const UserCardDeleteHttp = (data: any) => {
+	return Axios.post(UserCardDelete, data);
+};
 
 export {
 	loginHttp,
@@ -305,5 +329,10 @@ export {
 	PlayerCreateHttp,
 	PlayerUpdateHttp,
 	PlayerDeleteHttp,
-	PlayerRestorePasswordHttp
+	PlayerRestorePasswordHttp,
+	UserCardListHttp,
+	UserCreateHttp,
+	UserUpdateHttp,
+	UserInfoHttp,
+	UserCardDeleteHttp
 };

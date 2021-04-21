@@ -46,6 +46,7 @@
 						>
 					</template>
 					<a-menu-item key="Player">{{ $t('default.154') }}</a-menu-item>
+					<a-menu-item key="UserCard">{{ $t('default.172') }}</a-menu-item>
 				</a-sub-menu>
 			</a-menu>
 		</a-col>

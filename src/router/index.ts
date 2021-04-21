@@ -154,17 +154,24 @@ const routes = [
 			{
 				path: '/Player',
 				name: 'Player',
-				component: () => import(/* webpackChunkName: "Player" */ '../views/Player/index.vue'),
+				component: () => import(/* webpackChunkName: "Player" */ '../views/Player/Player/index.vue'),
 				meta: [{ label: 'default.154', path: 'Player' }]
 			},
 			{
 				path: '/PlayerInfo',
 				name: 'PlayerInfo',
-				component: () => import(/* webpackChunkName: "PlayerInfo" */ '../views/Player/PlayerInfo.vue'),
+				component: () => import(/* webpackChunkName: "PlayerInfo" */ '../views/Player/Player/PlayerInfo.vue'),
 				meta: [
 					{ label: 'default.154', path: 'Player' },
 					{ label: 'default.163', path: 'PlayerInfo' }
 				]
+			},
+			// UserCard
+			{
+				path: '/UserCard',
+				name: 'UserCard',
+				component: () => import(/* webpackChunkName: "UserCard" */ '../views/Player/UserCard/index.vue'),
+				meta: [{ label: 'default.154', path: 'UserCard' }]
 			}
 		]
 	},
