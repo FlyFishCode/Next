@@ -171,7 +171,7 @@ const routes = [
 				path: '/UserCard',
 				name: 'UserCard',
 				component: () => import(/* webpackChunkName: "UserCard" */ '../views/Player/UserCard/index.vue'),
-				meta: [{ label: 'default.154', path: 'UserCard' }]
+				meta: [{ label: 'default.172', path: 'UserCard' }]
 			}
 		]
 	},

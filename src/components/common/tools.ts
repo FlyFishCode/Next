@@ -86,4 +86,13 @@ const MD5 = (value: string | number) => {
 	const md5 = require('blueimp-md5');
 	return md5(value + 'kitekey').toUpperCase();
 };
-export { handleSelectEvent, deepClone, initDataToNumber, initDataToBoolean, handleList, i18n, MD5 };
+// UserCard 上传文件配置对象
+const token = sessionStorage.getItem('token');
+const uploadObj = {
+	src: 'http://adartstest.adarts-cn.com:9101//manage/card/import',
+	headers: {
+		userId: sessionStorage.getItem('userId'),
+		Authorization: `Bearer ${token}`
+	}
+};
+export { handleSelectEvent, deepClone, initDataToNumber, initDataToBoolean, handleList, i18n, MD5, uploadObj };

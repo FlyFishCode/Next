@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<labelTitle :value="$t('default.154')" />
+		<labelTitle :value="$t('default.172')" />
 		<div class="searchBox">
 			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
@@ -89,6 +89,14 @@
 			<a-col :span="1">
 				<a-button type="primary" size="small" @click="handleCreate">{{ $t('default.9') }}</a-button>
 			</a-col>
+			<a-col :span="1" id="file">
+				<a-upload v-model:file-list="fileList" name="file" :action="uploadObj.src" :headers="uploadObj.headers" @change="handleUploadChange">
+					<a-button type="danger" size="small">{{ $t('default.177') }}</a-button>
+				</a-upload>
+			</a-col>
+			<a-col :span="1">
+				<a-button type="danger" size="small" @click="download">{{ $t('default.178') }}</a-button>
+			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
 			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
@@ -175,9 +183,9 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { UserCardListHttp, playerListHttp, UserCreateHttp, UserUpdateHttp, UserInfoHttp, UserCardDeleteHttp } from '@/api/api';
+import { UserCardListHttp, playerListHttp, UserCreateHttp, UserUpdateHttp, UserInfoHttp, UserCardDeleteHttp, UserCardDownloadHttp } from '@/api/api';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
-import { i18n } from '@/components/common/tools';
+import { i18n, uploadObj } from '@/components/common/tools';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
 export default defineComponent({
@@ -188,6 +196,7 @@ export default defineComponent({
 	},
 	setup() {
 		const formRef: any = ref(null);
+		const fileList: any = ref(null);
 		const ROUTER = useRouter();
 		const checkMember = async (rule: any, value: number) => {
 			if (!value) {
@@ -195,6 +204,7 @@ export default defineComponent({
 			}
 		};
 		const data = reactive({
+			uploadObj,
 			visible: false,
 			dialogVisible: false,
 			userCardId: 0,
@@ -399,6 +409,26 @@ export default defineComponent({
 						data.total = res.data.data.totalCount;
 					}
 				});
+			},
+			handleUploadChange: (info: any) => {
+				if (info.file.status === 'done' && info.file.response.code === 100) {
+					message.success(`${info.file.response.msg}`);
+				}
+				if (info.file.status === 'done' && info.file.response.code !== 100) {
+					alert(info.file.response.msg);
+					// message.error(`${info.file.response.msg}`);
+				}
+			},
+			download: () => {
+				UserCardDownloadHttp(data.infoVO).then((res: any) => {
+					const url = window.URL.createObjectURL(res.data);
+					const a = document.createElement('a');
+					document.body.appendChild(a);
+					a.href = url;
+					a.download = res.headers['content-disposition'].split(' ')[1];
+					a.click();
+					window.URL.revokeObjectURL(url);
+				});
 			}
 		});
 		const init = () => {
@@ -409,6 +439,7 @@ export default defineComponent({
 		});
 		return {
 			...toRefs(data),
+			fileList,
 			formRef
 		};
 	}
@@ -422,5 +453,8 @@ export default defineComponent({
 .handleBtnDiv {
 	display: flex;
 	justify-content: space-between;
+}
+#file >>> .ant-upload-list {
+	display: none;
 }
 </style>

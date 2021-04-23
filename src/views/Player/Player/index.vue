@@ -136,6 +136,14 @@
 		</a-row>
 		<a-row class="rowStyle">
 			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
+				<template #cardList="{ record }">
+					<div class="tableRollBox">
+						<div v-for="card in record.cardList" :key="card.id">
+							{{ card.cardNo }}
+							<!-- <a-button type="link" size="small" @click="handleCardClick(record.id)">{{ card.cardNo }}</a-button> -->
+						</div>
+					</div>
+				</template>
 				<template #nickname="{ record }">
 					<a-button type="link" size="small" @click="handleUserName(record.id)">{{ record.nickname }}</a-button>
 				</template>
@@ -230,7 +238,7 @@ export default defineComponent({
 				},
 				{
 					title: i18n('default.161'),
-					dataIndex: 'mainCardNo'
+					slots: { customRender: 'cardList' }
 				},
 				{
 					title: i18n('default.104'),
@@ -372,6 +380,12 @@ export default defineComponent({
 					path: 'PlayerInfo'
 				});
 			},
+			handleCardClick: (id: number) => {
+				ROUTER.push({
+					path: 'PlayerInfo',
+					query: { id }
+				});
+			},
 			handleUserName: (id: number) => {
 				ROUTER.push({
 					path: 'PlayerInfo',
@@ -430,5 +444,9 @@ export default defineComponent({
 .handleBtnDiv {
 	display: flex;
 	justify-content: space-between;
+}
+.tableRollBox {
+	max-height: 100px;
+	overflow-y: auto;
 }
 </style>

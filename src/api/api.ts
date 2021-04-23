@@ -35,7 +35,7 @@ import { systemUserList, addUser, searchUser, modifyUser } from '@/api/System/in
 import { playerList, PlayerInfo, PlayerCreate, PlayerUpdate, PlayerDelete, PlayerRestorePassword } from '@/api/Player/index';
 
 // UserCard
-import { UserCardList, UserCreate, UserUpdate, UserInfo, UserCardDelete } from '@/api/UserCard/index';
+import { UserCardList, UserCreate, UserUpdate, UserInfo, UserCardDelete, UserCardDownload } from '@/api/UserCard/index';
 
 const baseURL = '/apw';
 const Axios = axios.create({
@@ -53,6 +53,9 @@ Axios.interceptors.request.use(
 		}
 		if (!config.headers.userId) {
 			config.headers.userId = userId;
+		}
+		if (config.url?.includes('export')) {
+			config.responseType = 'blob';
 		}
 		return config;
 	},
@@ -284,6 +287,10 @@ const UserInfoHttp = (data: any) => {
 const UserCardDeleteHttp = (data: any) => {
 	return Axios.post(UserCardDelete, data);
 };
+// 导出卡
+const UserCardDownloadHttp = (data: any) => {
+	return Axios.post(UserCardDownload, data);
+};
 
 export {
 	loginHttp,
@@ -334,5 +341,6 @@ export {
 	UserCreateHttp,
 	UserUpdateHttp,
 	UserInfoHttp,
-	UserCardDeleteHttp
+	UserCardDeleteHttp,
+	UserCardDownloadHttp
 };

@@ -8,4 +8,6 @@ const UserUpdate = 'card/update';
 const UserInfo = 'card/select';
 // 删除卡
 const UserCardDelete = 'card/delete';
-export { UserCardList, UserCreate, UserUpdate, UserInfo, UserCardDelete };
+// 下载文件
+const UserCardDownload = 'card/export';
+export { UserCardList, UserCreate, UserUpdate, UserInfo, UserCardDelete, UserCardDownload };
