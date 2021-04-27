@@ -66,9 +66,9 @@
 				</a-col>
 				<a-col :span="4">
 					<a-select v-model:value="infoVO.type" class="selectBox" allowClear>
-						<a-select-option :value="1">{{ $t('default.170') }}</a-select-option>
-						<a-select-option :value="2">{{ $t('default.171') }}</a-select-option>
-						<a-select-option :value="3">{{ $t('default.172') }}</a-select-option>
+						<a-select-option :value="1">{{ 'home' }}</a-select-option>
+						<a-select-option :value="2">{{ 'business' }}</a-select-option>
+						<a-select-option :value="3">{{ 'league' }}</a-select-option>
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
@@ -421,13 +421,17 @@ export default defineComponent({
 			},
 			download: () => {
 				UserCardDownloadHttp(data.infoVO).then((res: any) => {
-					const url = window.URL.createObjectURL(res.data);
-					const a = document.createElement('a');
-					document.body.appendChild(a);
-					a.href = url;
-					a.download = res.headers['content-disposition'].split(' ')[1];
-					a.click();
-					window.URL.revokeObjectURL(url);
+					if (res.data) {
+						const url = window.URL.createObjectURL(res.data);
+						const a = document.createElement('a');
+						document.body.appendChild(a);
+						a.href = url;
+						a.download = res.headers['content-disposition'].split(' ')[1];
+						a.click();
+						window.URL.revokeObjectURL(url);
+					} else {
+						message.error(res.data);
+					}
 				});
 			}
 		});

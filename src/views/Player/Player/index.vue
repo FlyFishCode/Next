@@ -119,9 +119,9 @@
 					{{ $t('default.162') }}
 				</a-col>
 				<a-col :span="4">
-					<a-select v-model:value="infoVO.isValid" class="selectBox" allowClear>
-						<a-select-option :value="1">{{ $t('default.170') }}</a-select-option>
-						<a-select-option :value="0">{{ $t('default.171') }}</a-select-option>
+					<a-select v-model:value="infoVO.status" class="selectBox" allowClear>
+						<a-select-option :value="1">{{ $t('default.174') }}</a-select-option>
+						<a-select-option :value="0">{{ $t('default.175') }}</a-select-option>
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
@@ -154,8 +154,8 @@
 					<div>{{ record.gender ? $t('default.106') : $t('default.107') }}</div>
 				</template>
 				<template #type="{ record }">
-					<div v-if="record.type === 1">{{ $t('default.150') }}</div>
-					<div v-if="record.type === 2">{{ $t('default.26') }}</div>
+					<div v-if="record.status === 0">{{ $t('default.175') }}</div>
+					<div v-if="record.status === 1">{{ $t('default.174') }}</div>
 				</template>
 				<template #handle="{ record }">
 					<div class="handleBtnDiv">
@@ -218,7 +218,7 @@ export default defineComponent({
 				cardNo: '',
 				shopId: '',
 				areaId: '',
-				isValid: '',
+				status: '',
 				countryId: '',
 				minBirthday: '',
 				maxBirthday: '',

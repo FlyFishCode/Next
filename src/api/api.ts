@@ -37,6 +37,9 @@ import { playerList, PlayerInfo, PlayerCreate, PlayerUpdate, PlayerDelete, Playe
 // UserCard
 import { UserCardList, UserCreate, UserUpdate, UserInfo, UserCardDelete, UserCardDownload } from '@/api/UserCard/index';
 
+// Country
+import { CountryList, CountryCreate, CountryUpdate, CountryInfo, AreaList, AreaCreate, AreaUpdate, AreaInfo } from '@/api/Country/index';
+
 const baseURL = '/apw';
 const Axios = axios.create({
 	baseURL: baseURL,
@@ -291,7 +294,39 @@ const UserCardDeleteHttp = (data: any) => {
 const UserCardDownloadHttp = (data: any) => {
 	return Axios.post(UserCardDownload, data);
 };
-
+// Country
+// 国家列表
+const CountryListHttp = (data: any) => {
+	return Axios.post(CountryList, data);
+};
+// 创建国家
+const CountryCreateHttp = (data: any) => {
+	return Axios.post(CountryCreate, data);
+};
+// 修改国家
+const CountryUpdateHttp = (data: any) => {
+	return Axios.post(CountryUpdate, data);
+};
+// 查询国家
+const CountryInfoHttp = (data: any) => {
+	return Axios.get(getNewUrl(CountryInfo, data));
+};
+// 地区列表
+const AreaListHttp = (data: any) => {
+	return Axios.post(AreaList, data);
+};
+// 创建地区
+const AreaCreateHttp = (data: any) => {
+	return Axios.post(AreaCreate, data);
+};
+// 修改地区
+const AreaUpdateHttp = (data: any) => {
+	return Axios.post(AreaUpdate, data);
+};
+// 查询地区
+const AreaInfoHttp = (data: any) => {
+	return Axios.get(getNewUrl(AreaInfo, data));
+};
 export {
 	loginHttp,
 	changePasswordHttp,
@@ -342,5 +377,13 @@ export {
 	UserUpdateHttp,
 	UserInfoHttp,
 	UserCardDeleteHttp,
-	UserCardDownloadHttp
+	UserCardDownloadHttp,
+	CountryListHttp,
+	CountryCreateHttp,
+	CountryUpdateHttp,
+	CountryInfoHttp,
+	AreaListHttp,
+	AreaCreateHttp,
+	AreaUpdateHttp,
+	AreaInfoHttp
 };

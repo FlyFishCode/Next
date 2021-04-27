@@ -172,6 +172,19 @@ const routes = [
 				name: 'UserCard',
 				component: () => import(/* webpackChunkName: "UserCard" */ '../views/Player/UserCard/index.vue'),
 				meta: [{ label: 'default.172', path: 'UserCard' }]
+			},
+			// Country
+			{
+				path: '/Country',
+				name: 'Country',
+				component: () => import(/* webpackChunkName: "Country" */ '../views/Country/Country/index.vue'),
+				meta: [{ label: 'default.23', path: 'Country' }]
+			},
+			{
+				path: '/Area',
+				name: 'Area',
+				component: () => import(/* webpackChunkName: "Area" */ '../views/Country/Area/index.vue'),
+				meta: [{ label: 'default.24', path: 'Area' }]
 			}
 		]
 	},
