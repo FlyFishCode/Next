@@ -182,13 +182,13 @@ export default defineComponent({
 			AreaRules: {
 				name: [{ required: true, message: 'Please input name', trigger: 'blur' }],
 				code: [{ required: true, message: 'Please input code', trigger: 'blur' }],
-				sort: [{ required: true, message: 'Please input sort', trigger: 'blur' }],
+				// sort: [{ required: true, message: 'Please input sort', trigger: 'blur' }],
 				countryId: [{ required: true, message: 'Please select country', validator: checkCountry }]
 			},
 			CountryRules: {
 				name: [{ required: true, message: 'Please input name', trigger: 'blur' }],
-				code: [{ required: true, message: 'Please input code', trigger: 'blur' }],
-				sort: [{ required: true, message: 'Please input sort', trigger: 'blur' }]
+				code: [{ required: true, message: 'Please input code', trigger: 'blur' }]
+				// sort: [{ required: true, message: 'Please input sort', trigger: 'blur' }]
 			},
 			columns: [
 				{
@@ -244,7 +244,11 @@ export default defineComponent({
 				data.countryId = code;
 				AreaInfoHttp({ areaId: code }).then((res: any) => {
 					if (res.data.data) {
-						data.dialogAreaInfo = res.data.data;
+						data.dialogAreaInfo.id = res.data.data.id;
+						data.dialogAreaInfo.name = res.data.data.name;
+						data.dialogAreaInfo.code = res.data.data.code;
+						data.dialogAreaInfo.sort = res.data.data.sort;
+						data.dialogAreaInfo.countryId = res.data.data.countryId;
 					}
 				});
 			},

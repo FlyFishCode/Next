@@ -150,6 +150,12 @@ const routes = [
 				component: () => import(/* webpackChunkName: "User" */ '../views/System/User/index.vue'),
 				meta: [{ label: 'default.147', path: 'User' }]
 			},
+			{
+				path: '/HistoryLog',
+				name: 'HistoryLog',
+				component: () => import(/* webpackChunkName: "HistoryLog" */ '../views/System/HistoryLog/index.vue'),
+				meta: [{ label: 'default.184', path: 'HistoryLog' }]
+			},
 			// Player
 			{
 				path: '/Player',

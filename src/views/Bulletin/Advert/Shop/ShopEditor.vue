@@ -1,24 +1,6 @@
 <template>
 	<labelTitle :value="$t('default.2')" :btn="ROUTE.query.id ? update : create" />
 	<div class="searchBox">
-		<!-- <a-form id="form" :label-col="{ span: 2 }" :wrapper-col="{ span: 22 }" :model="infoVO" :rules="rules" ref="formRef">
-			<a-form-item :label="$t('default.4')" name="title">
-				<a-input v-model:value="infoVO.title" allow-clear />
-			</a-form-item>
-			<a-form-item :label="$t('default.7')" name="url">
-				<a-input v-model:value="infoVO.url" allow-clear />
-			</a-form-item>
-			<a-row class="rowStyle">
-				<a-col :span="2" class="searchButton"> </a-col>
-				<a-col :span="1" class="searchButton">
-					<a-button size="small" type="primary" @click="preview">{{ $t('default.16') }}</a-button>
-				</a-col>
-				<a-col :span="2" class="searchButton">
-					<a-button size="small" type="primary" @click="addShop">{{ $t('default.28') }}</a-button>
-				</a-col>
-			</a-row>
-		</a-form> -->
-
 		<a-row class="rowStyle">
 			<a-col :span="4" class="labelText">
 				{{ $t('default.4') }}
@@ -270,11 +252,9 @@ export default defineComponent({
 				});
 			},
 			create: () => {
-				formRef.value.validate().then(() => {
-					AdvertTableAddHttp(data.infoVO).then((res: any) => {
-						return res;
-					});
-				});
+				// formRef.value.validate().then(() => {
+				return AdvertTableAddHttp(data.infoVO);
+				// });
 			},
 			update: () => {
 				const addSetList: any = new Set(obj.addShopIds);

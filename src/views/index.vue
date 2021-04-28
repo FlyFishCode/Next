@@ -56,6 +56,7 @@
 						>
 					</template>
 					<a-menu-item key="User">{{ $t('default.147') }}</a-menu-item>
+					<a-menu-item key="HistoryLog">{{ $t('default.184') }}</a-menu-item>
 				</a-sub-menu>
 			</a-menu>
 		</a-col>
