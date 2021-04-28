@@ -6,7 +6,7 @@
 					<img :src="logoImg" alt="" />
 				</div>
 			</a-col>
-			<a-col :span="14">
+			<a-col :span="12">
 				<div class="breadCrumb">
 					<div v-for="(item, index) in metaList" :key="index">
 						<a-button type="link" size="small" @click="ROUTER.push(item.path)">{{ $t(item.label) }}</a-button>
@@ -20,25 +20,23 @@
 					<a-select-option v-for="item in languageList" :key="item.key" :value="item.key">{{ item.label }}</a-select-option>
 				</a-select>
 			</a-col>
-			<a-col :span="1" class="loginOutBox">
-				<div class="box">
-					<div class="userBox">
+			<a-col :span="3" class="loginOutBox">
+				<div class="userBox">
+					<UserOutlined />
+					<span>{{ username }}</span>
+				</div>
+				<div class="showBox">
+					<div @click="Modify">
 						<UserOutlined />
-						<span>{{ username }}</span>
+						{{ $t('default.99') }}
 					</div>
-					<div class="showBox">
-						<div @click="Modify">
-							<UserOutlined />
-							{{ $t('default.99') }}
-						</div>
-						<div @click="Change">
-							<UserOutlined />
-							{{ $t('default.100') }}
-						</div>
-						<div @click="Logout">
-							<UserOutlined />
-							{{ $t('default.101') }}
-						</div>
+					<div @click="Change">
+						<UserOutlined />
+						{{ $t('default.100') }}
+					</div>
+					<div @click="Logout">
+						<UserOutlined />
+						{{ $t('default.101') }}
 					</div>
 				</div>
 			</a-col>
@@ -145,7 +143,7 @@ export default defineComponent({
 			infoVisible: false,
 			passwordVisible: false,
 			logoImg: require('@/assets/logo.png'),
-			username: sessionStorage.getItem('NextUsername'),
+			username: sessionStorage.getItem('NextNickname'),
 			Modify: () => {
 				data.infoVisible = true;
 			},
@@ -214,23 +212,24 @@ export default defineComponent({
 .loginOutBox {
 	background: #fff;
 	display: flex;
-	justify-content: flex-end;
+	justify-content: space-around;
+}
+.loginOutBox:hover .showBox {
+	display: block;
 }
 .userBox {
 	line-height: 50px;
 	font-size: 20px;
 	cursor: pointer;
 }
-.box:hover .showBox {
-	display: block;
-}
 .showBox {
-	width: 150px;
+	width: 100%;
 	height: 90px;
 	border: 1px solid #999;
 	position: absolute;
 	z-index: 1;
 	right: 0px;
+	top: 50px;
 	background: #eee;
 	font-size: 14px;
 	display: none;
