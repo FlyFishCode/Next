@@ -127,10 +127,10 @@ export default defineComponent({
 		});
 		const data = reactive({
 			modifyVO: {
-				mobile: sessionStorage.getItem('mobile'),
-				nickname: sessionStorage.getItem('nickname'),
-				gender: Number(sessionStorage.getItem('gender')),
-				birthday: sessionStorage.getItem('birthday')
+				mobile: sessionStorage.getItem('NextMobile'),
+				nickname: sessionStorage.getItem('NextNickname'),
+				gender: Number(sessionStorage.getItem('NextGender')),
+				birthday: sessionStorage.getItem('NextBirthday')
 			},
 			infoVO: {
 				oldPassword: '',
@@ -145,7 +145,7 @@ export default defineComponent({
 			infoVisible: false,
 			passwordVisible: false,
 			logoImg: require('@/assets/logo.png'),
-			username: sessionStorage.getItem('username'),
+			username: sessionStorage.getItem('NextUsername'),
 			Modify: () => {
 				data.infoVisible = true;
 			},
@@ -181,9 +181,9 @@ export default defineComponent({
 				});
 			},
 			Logout: () => {
-				sessionStorage.removeItem('userId');
-				sessionStorage.removeItem('nickname');
-				sessionStorage.removeItem('token');
+				sessionStorage.removeItem('NextUserId');
+				sessionStorage.removeItem('NextNickname');
+				sessionStorage.removeItem('NextToken');
 				ROUTER.push('/');
 			}
 		});

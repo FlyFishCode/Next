@@ -87,11 +87,11 @@ const MD5 = (value: string | number) => {
 	return md5(value + 'kitekey').toUpperCase();
 };
 // UserCard 上传文件配置对象
-const token = sessionStorage.getItem('token');
+const token = sessionStorage.getItem('NextToken');
 const uploadObj = {
 	src: 'http://adartstest.adarts-cn.com:9101//manage/card/import',
 	headers: {
-		userId: sessionStorage.getItem('userId'),
+		userId: sessionStorage.getItem('NextUserId'),
 		Authorization: `Bearer ${token}`
 	}
 };

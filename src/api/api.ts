@@ -49,8 +49,8 @@ const Axios = axios.create({
 Axios.interceptors.request.use(
 	(config) => {
 		// 修改获取token时机，解决token验证问题
-		const token = sessionStorage.getItem('token');
-		const userId = sessionStorage.getItem('userId');
+		const token = sessionStorage.getItem('NextToken');
+		const userId = sessionStorage.getItem('NextUserId');
 		if (!config.headers.Authorization) {
 			config.headers.Authorization = `Bearer ${token}`;
 		}

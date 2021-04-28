@@ -127,7 +127,7 @@ export default defineComponent({
 	setup() {
 		const ROUTER = useRouter();
 		let selectList: number[] = [];
-		const isAdmin = sessionStorage.getItem('userType');
+		const isAdmin = sessionStorage.getItem('NextUserType');
 		const data = reactive({
 			visible: false,
 			infoVO: {
