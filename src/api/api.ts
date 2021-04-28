@@ -1,5 +1,5 @@
 import axios from 'axios';
-// import { message } from 'ant-design-vue';
+import { message } from 'ant-design-vue';
 
 import { loginUrl, changePassword, userList, countryList, areaList, changeInfo } from '@/api/index';
 // Advert
@@ -68,6 +68,10 @@ Axios.interceptors.request.use(
 );
 Axios.interceptors.response.use(
 	(response) => {
+		if (response.data.code === 193) {
+			message.error(response.data.msg);
+			window.location.href = window.location.href.split('#')[0];
+		}
 		return response;
 	},
 	(err) => {

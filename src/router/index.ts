@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHashHistory } from 'vue-router';
 import login from '@/components/login.vue';
 
 const routes = [
@@ -196,9 +196,11 @@ const routes = [
 	},
 	{ path: '/:pathMatch(.*)*', redirect: '/' }
 ];
-
+// createWebHashHistory 带#号
+// createWebHistory 不带#号
 const router = createRouter({
-	history: createWebHistory(process.env.BASE_URL),
+	// history: createWebHashHistory(process.env.BASE_URL),
+	history: createWebHashHistory(),
 	routes
 });
 
