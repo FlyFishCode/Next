@@ -165,8 +165,14 @@ export default defineComponent({
 					changePasswordHttp(formData).then((res: any) => {
 						if (res.data.code === 100) {
 							data.passwordVisible = false;
+							sessionStorage.removeItem('NextUserId');
+							sessionStorage.removeItem('NextToken');
+							sessionStorage.removeItem('NextNickname');
+							message.info(res.data.msg);
+							ROUTER.push('/');
+						} else {
+							message.warning(res.data.msg);
 						}
-						message.warning(res.data.msg);
 					});
 				}
 			},

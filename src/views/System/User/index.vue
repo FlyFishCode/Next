@@ -97,52 +97,54 @@
 			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" @change="pageChange" />
 		</div>
 	</div>
-	<a-modal v-model:visible="visible" width="40%" :title="$t('default.147')" :footer="null" centered>
-		<a-form ref="formRef" :model="otherObj" :rules="rules" :label-col="{ span: 4 }" :wrapper-col="{ span: 18 }">
-			<a-form-item :label="$t('default.148')" name="username">
-				<a-input v-model:value="otherObj.username" allowClear />
-			</a-form-item>
-			<a-form-item :label="$t('default.104')" name="nickname">
-				<a-input v-model:value="otherObj.nickname" allowClear />
-			</a-form-item>
-			<a-form-item :label="$t('default.23')" name="countryId">
-				<a-select v-model:value="otherObj.countryId">
-					<a-select-option v-for="item in countryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
-				</a-select>
-			</a-form-item>
-			<a-form-item v-if="!otherObj.id" :label="$t('default.156')" name="password">
-				<a-input v-model:value="otherObj.password" type="password" allowClear />
-			</a-form-item>
-			<a-form-item v-if="!otherObj.id" :label="$t('default.157')" name="confirmPassword">
-				<a-input v-model:value="otherObj.confirmPassword" type="password" allowClear />
-			</a-form-item>
-			<a-form-item :label="$t('default.90')" name="mobile">
-				<a-input v-model:value="otherObj.mobile" allowClear />
-			</a-form-item>
-			<a-form-item :label="$t('default.108')" name="birthday">
-				<a-date-picker v-model:value="otherObj.birthday" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
-			</a-form-item>
-			<a-form-item :label="$t('default.149')">
-				<a-select v-model:value="otherObj.type" class="selectBox" allowClear>
-					<a-select-option v-for="item in typeList" :key="item.id" :value="item.id">{{ item.label }}</a-select-option>
-				</a-select>
-			</a-form-item>
-			<a-form-item :label="$t('default.105')">
-				<a-select v-model:value="otherObj.gender" class="selectBox">
-					<a-select-option :value="1">{{ $t('default.106') }}</a-select-option>
-					<a-select-option :value="0">{{ $t('default.107') }}</a-select-option>
-				</a-select>
-			</a-form-item>
-		</a-form>
-		<a-row class="rowStyle buttonBox">
-			<a-col :span="3">
-				<a-button @click="handleCancel">{{ $t('default.19') }}</a-button>
-			</a-col>
-			<a-col :span="3">
-				<a-button type="primary" @click="handleOk">{{ $t('default.18') }}</a-button>
-			</a-col>
-		</a-row>
-	</a-modal>
+	<div v-if="visible">
+		<a-modal v-model:visible="visible" width="40%" :title="$t('default.147')" :footer="null" centered>
+			<a-form ref="formRef" :model="otherObj" :rules="rules" :label-col="{ span: 4 }" :wrapper-col="{ span: 18 }">
+				<a-form-item :label="$t('default.148')" name="username">
+					<a-input v-model:value="otherObj.username" allowClear />
+				</a-form-item>
+				<a-form-item :label="$t('default.104')" name="nickname">
+					<a-input v-model:value="otherObj.nickname" allowClear />
+				</a-form-item>
+				<a-form-item :label="$t('default.23')" name="countryId">
+					<a-select v-model:value="otherObj.countryId">
+						<a-select-option v-for="item in countryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+					</a-select>
+				</a-form-item>
+				<a-form-item v-if="!otherObj.id" :label="$t('default.156')" name="password">
+					<a-input v-model:value="otherObj.password" type="password" allowClear />
+				</a-form-item>
+				<a-form-item v-if="!otherObj.id" :label="$t('default.157')" name="confirmPassword">
+					<a-input v-model:value="otherObj.confirmPassword" type="password" allowClear />
+				</a-form-item>
+				<a-form-item :label="$t('default.90')" name="mobile">
+					<a-input v-model:value="otherObj.mobile" allowClear />
+				</a-form-item>
+				<a-form-item :label="$t('default.108')" name="birthday">
+					<a-date-picker v-model:value="otherObj.birthday" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
+				</a-form-item>
+				<a-form-item :label="$t('default.149')">
+					<a-select v-model:value="otherObj.type" class="selectBox" allowClear>
+						<a-select-option v-for="item in typeList" :key="item.id" :value="item.id">{{ item.label }}</a-select-option>
+					</a-select>
+				</a-form-item>
+				<a-form-item :label="$t('default.105')">
+					<a-select v-model:value="otherObj.gender" class="selectBox">
+						<a-select-option :value="1">{{ $t('default.106') }}</a-select-option>
+						<a-select-option :value="0">{{ $t('default.107') }}</a-select-option>
+					</a-select>
+				</a-form-item>
+			</a-form>
+			<a-row class="rowStyle buttonBox">
+				<a-col :span="3">
+					<a-button @click="handleCancel">{{ $t('default.19') }}</a-button>
+				</a-col>
+				<a-col :span="3">
+					<a-button type="primary" @click="handleOk">{{ $t('default.18') }}</a-button>
+				</a-col>
+			</a-row>
+		</a-modal>
+	</div>
 </template>
 
 <script lang="ts">

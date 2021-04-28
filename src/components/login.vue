@@ -43,9 +43,8 @@ export default defineComponent({
 				formData.append('password', MD5(data.passWord));
 				loginHttp(formData).then((res: any) => {
 					if (res.data.code === 100) {
-						message.warning(res.data.msg);
+						message.info(res.data.msg);
 						sessionStorage.setItem('NextUserId', res.data.data.userId);
-						sessionStorage.setItem('NextUsername', res.data.data.username);
 						sessionStorage.setItem('NextToken', res.data.data.token);
 						sessionStorage.setItem('NextNickname', res.data.data.nickname);
 						sessionStorage.setItem('NextBirthday', res.data.data.birthday || '');
