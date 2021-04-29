@@ -95,4 +95,5 @@ const uploadObj = {
 		Authorization: `Bearer ${token}`
 	}
 };
+
 export { handleSelectEvent, deepClone, initDataToNumber, initDataToBoolean, handleList, i18n, MD5, uploadObj };

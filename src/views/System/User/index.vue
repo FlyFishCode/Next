@@ -77,7 +77,7 @@
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
-			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
+			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" :onChange="tableChange" class="tableStyle">
 				<template #username="{ record }">
 					<a-button type="link" size="small" @click="handleUserName(record.id)">{{ record.username }}</a-button>
 				</template>
@@ -94,7 +94,7 @@
 			</a-table>
 		</a-row>
 		<div class="paginationStyle">
-			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" @change="pageChange" />
+			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" rowKey="id" :total="total" @change="pageChange" />
 		</div>
 	</div>
 	<div v-if="visible">
@@ -124,8 +124,15 @@
 					<a-date-picker v-model:value="otherObj.birthday" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
 				</a-form-item>
 				<a-form-item :label="$t('default.149')">
-					<a-select v-model:value="otherObj.type" class="selectBox" allowClear>
+					<a-select v-model:value="otherObj.type" class="selectBox">
 						<a-select-option v-for="item in typeList" :key="item.id" :value="item.id">{{ item.label }}</a-select-option>
+					</a-select>
+				</a-form-item>
+				<a-form-item :label="$t('default.192')" v-if="otherObj.type === 3 || otherObj.type === 5" name="superUserId">
+					<a-select show-search v-model:value="otherObj.superUserId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" @search="agentSearch">
+						<a-select-option v-for="d in agentList" :key="d.id">
+							<div :title="d.name">{{ d.name }}</div>
+						</a-select-option>
 					</a-select>
 				</a-form-item>
 				<a-form-item :label="$t('default.105')">
@@ -150,7 +157,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { systemUserListHttp, addUserHttp, modifyUserHttp, searchUserHttp, countryListHttp } from '@/api/api';
+import { systemUserListHttp, addUserHttp, modifyUserHttp, searchUserHttp, countryListHttp, agentListHttp } from '@/api/api';
 import { i18n } from '@/components/common/tools';
 import { message } from 'ant-design-vue';
 import { MD5 } from '@/components/common/tools';
@@ -166,6 +173,11 @@ export default defineComponent({
 				return Promise.reject(i18n('default.155'));
 			}
 		};
+		const checkagent = async (rule: any, value: number) => {
+			if (!value) {
+				return Promise.reject('Please input agent name');
+			}
+		};
 		const passwordChange = async (rule: any, value: any) => {
 			if (!value) {
 				return Promise.reject(i18n('default.159'));
@@ -179,7 +191,9 @@ export default defineComponent({
 		};
 		const data = reactive({
 			visible: false,
+			isDisabled: true,
 			infoVO: {
+				sort: 1,
 				username: '',
 				nickname: '',
 				mobile: '',
@@ -200,6 +214,7 @@ export default defineComponent({
 				confirmPassword: '',
 				mobile: '',
 				gender: 1,
+				superUserId: '',
 				birthday: '',
 				countryId: '',
 				type: 1
@@ -211,6 +226,8 @@ export default defineComponent({
 				password: '',
 				mobile: '',
 				gender: 1,
+				confirmPassword: '',
+				superUserId: '',
 				birthday: '',
 				countryId: '',
 				type: 1
@@ -227,9 +244,21 @@ export default defineComponent({
 						message: i18n('default.155'),
 						validator: checkCountry
 					}
+				],
+				superUserId: [
+					{
+						required: true,
+						message: 'Please input agent name',
+						validator: checkagent
+					}
 				]
 			},
 			columns: [
+				{
+					title: 'ID',
+					dataIndex: 'id',
+					sorter: true
+				},
 				{
 					title: i18n('default.148'),
 					slots: { customRender: 'username' }
@@ -256,7 +285,13 @@ export default defineComponent({
 				},
 				{
 					title: i18n('default.149'),
-					slots: { customRender: 'type' }
+					slots: { customRender: 'type' },
+					dataIndex: 'type',
+					sorter: true
+				},
+				{
+					title: i18n('default.192'),
+					dataIndex: 'superUserName'
 				}
 			],
 			typeList: [
@@ -267,9 +302,27 @@ export default defineComponent({
 				{ id: 5, label: i18n('default.153') }
 			],
 			total: 1,
+			agentList: [],
 			tableList: [],
 			countryList: [],
 			areaList: [],
+			tableChange: (pagination: any, filters: any, { columnKey, order }: any) => {
+				if (columnKey === 'id') {
+					if (order === 'ascend') {
+						data.infoVO.sort = 1;
+					} else {
+						data.infoVO.sort = 2;
+					}
+				}
+				if (columnKey === 'type') {
+					if (order === 'ascend') {
+						data.infoVO.sort = 3;
+					} else {
+						data.infoVO.sort = 4;
+					}
+				}
+				data.search();
+			},
 			disabledStartDate: (startValue: any) => {
 				if (!startValue || !data.infoVO.maxBirthday) {
 					return false;
@@ -282,13 +335,21 @@ export default defineComponent({
 				}
 				return new Date(data.infoVO.minBirthday).valueOf() >= endValue.valueOf();
 			},
+			agentSearch: (value: any) => {
+				agentListHttp({ agentName: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
+					data.agentList = res.data.data;
+				});
+			},
 			handleCreate: () => {
 				data.otherObj.id = 0;
 				data.otherObj.username = '';
 				data.otherObj.nickname = '';
 				data.otherObj.countryId = '';
+				data.otherObj.password = '';
+				data.otherObj.confirmPassword = '';
 				data.otherObj.mobile = '';
 				data.otherObj.birthday = '';
+				data.otherObj.superUserId = '';
 				data.otherObj.type = 1;
 				data.otherObj.gender = 1;
 				data.visible = true;
@@ -303,6 +364,7 @@ export default defineComponent({
 					data.otherObj.mobile = responseData.mobile;
 					data.otherObj.birthday = responseData.birthday;
 					data.otherObj.type = responseData.type;
+					data.otherObj.superUserId = responseData.superUserId;
 					data.otherObj.gender = responseData.gender;
 				});
 				data.visible = true;
@@ -339,6 +401,7 @@ export default defineComponent({
 						data.dialogObj.mobile = data.otherObj.mobile;
 						data.dialogObj.gender = data.otherObj.gender;
 						data.dialogObj.birthday = data.otherObj.birthday;
+						data.dialogObj.superUserId = data.otherObj.superUserId;
 						data.dialogObj.countryId = data.otherObj.countryId;
 						data.dialogObj.type = data.otherObj.type;
 						flag(data.dialogObj).then((res: any) => {
@@ -363,6 +426,7 @@ export default defineComponent({
 		};
 		const init = () => {
 			data.search();
+			data.agentSearch('');
 			getCountryList();
 		};
 		onMounted(() => {

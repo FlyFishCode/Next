@@ -206,8 +206,7 @@ export default defineComponent({
 				data.id = id;
 			},
 			handleOk: () => {
-				const operationLogIds = [data.id];
-				HistoryLogDeleteHttp(operationLogIds).then((res: any) => {
+				HistoryLogDeleteHttp([data.id]).then((res: any) => {
 					if (res.data.data) {
 						message.warning(res.data.msg);
 						data.visible = false;
