@@ -101,7 +101,7 @@
 		<a-modal v-model:visible="visible" width="40%" :title="$t('default.147')" :footer="null" centered>
 			<a-form ref="formRef" :model="otherObj" :rules="rules" :label-col="{ span: 4 }" :wrapper-col="{ span: 18 }">
 				<a-form-item :label="$t('default.148')" name="username">
-					<a-input v-model:value="otherObj.username" allowClear />
+					<a-input v-model:value="otherObj.username" allowClear :disabled="otherObj.id ? true : false" />
 				</a-form-item>
 				<a-form-item :label="$t('default.104')" name="nickname">
 					<a-input v-model:value="otherObj.nickname" allowClear />
@@ -124,12 +124,21 @@
 					<a-date-picker v-model:value="otherObj.birthday" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
 				</a-form-item>
 				<a-form-item :label="$t('default.149')">
-					<a-select v-model:value="otherObj.type" class="selectBox">
+					<a-select v-model:value="otherObj.type" class="selectBox" :disabled="otherObj.id ? true : false">
 						<a-select-option v-for="item in typeList" :key="item.id" :value="item.id">{{ item.label }}</a-select-option>
 					</a-select>
 				</a-form-item>
 				<a-form-item :label="$t('default.192')" v-if="otherObj.type === 3 || otherObj.type === 5" name="superUserId">
-					<a-select show-search v-model:value="otherObj.superUserId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" @search="agentSearch">
+					<a-select
+						show-search
+						v-model:value="otherObj.superUserId"
+						:disabled="getDisabled(otherObj.type)"
+						:default-active-first-option="false"
+						:show-arrow="false"
+						:filter-option="false"
+						:not-found-content="null"
+						@search="agentSearch"
+					>
 						<a-select-option v-for="d in agentList" :key="d.id">
 							<div :title="d.name">{{ d.name }}</div>
 						</a-select-option>
@@ -168,6 +177,16 @@ export default defineComponent({
 	},
 	setup() {
 		const formRef: any = ref(null);
+		const checkUserName = async (rule: any, value: any) => {
+			// const exg = /^[a-zA-Z]\w{4,15}$/;
+			if (value) {
+				// if (!exg.test(value)) {
+				// 	return Promise.reject('字母开头，5-16位，可以数用字母、数字、下划线组合');
+				// }
+			} else {
+				return Promise.reject('Please input username');
+			}
+		};
 		const checkCountry = async (rule: any, value: number) => {
 			if (!value) {
 				return Promise.reject(i18n('default.155'));
@@ -233,7 +252,7 @@ export default defineComponent({
 				type: 1
 			},
 			rules: {
-				username: [{ required: true, message: 'Please input username', trigger: 'blur' }],
+				username: [{ required: true, validator: checkUserName }],
 				nickname: [{ required: true, message: 'Please input nickname', trigger: 'blur' }],
 				password: [{ required: true, message: i18n('default.159'), trigger: 'blur' }],
 				mobile: [{ required: true, message: 'Please input mobile', trigger: 'blur' }],
@@ -353,6 +372,17 @@ export default defineComponent({
 				data.otherObj.type = 1;
 				data.otherObj.gender = 1;
 				data.visible = true;
+			},
+			getDisabled: (type: number) => {
+				if (data.otherObj.id) {
+					if (type) {
+						return false;
+					} else {
+						return true;
+					}
+				} else {
+					return false;
+				}
 			},
 			handleUserName: (id: number) => {
 				data.otherObj.id = id;
