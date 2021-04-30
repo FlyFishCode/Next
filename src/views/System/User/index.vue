@@ -63,7 +63,7 @@
 				</a-col>
 				<a-col :span="4">
 					<a-select v-model:value="infoVO.type" class="selectBox" allowClear>
-						<a-select-option v-for="item in typeList" :key="item.id" :value="item.id">{{ item.label }}</a-select-option>
+						<a-select-option v-for="item in searchTypeList" :key="item.id" :value="item.id">{{ item.label }}</a-select-option>
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
@@ -90,6 +90,9 @@
 					<div v-if="record.type === 3">{{ $t('default.151') }}</div>
 					<div v-if="record.type === 4">{{ $t('default.152') }}</div>
 					<div v-if="record.type === 5">{{ $t('default.153') }}</div>
+				</template>
+				<template #handleBtn="{ record }">
+					<a-button v-if="showDeleteBtn(record.type)" type="danger" size="small" @click="handleBtnClick(record.id)">{{ $t('default.10') }}</a-button>
 				</template>
 			</a-table>
 		</a-row>
@@ -125,10 +128,10 @@
 				</a-form-item>
 				<a-form-item :label="$t('default.149')">
 					<a-select v-model:value="otherObj.type" class="selectBox" :disabled="otherObj.id ? true : false">
-						<a-select-option v-for="item in typeList" :key="item.id" :value="item.id">{{ item.label }}</a-select-option>
+						<a-select-option v-for="item in dialogTypeList" :key="item.id" :value="item.id">{{ item.label }}</a-select-option>
 					</a-select>
 				</a-form-item>
-				<a-form-item :label="$t('default.192')" v-if="otherObj.type === 3 || otherObj.type === 5" name="superUserId">
+				<a-form-item :label="$t('default.192')" v-if="handleTypeDisplay(otherObj.type)" name="superUserId">
 					<a-select
 						show-search
 						v-model:value="otherObj.superUserId"
@@ -166,7 +169,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { systemUserListHttp, addUserHttp, modifyUserHttp, searchUserHttp, countryListHttp, agentListHttp } from '@/api/api';
+import { systemUserListHttp, addUserHttp, modifyUserHttp, searchUserHttp, countryListHttp, agentListHttp, deleteUserHttp } from '@/api/api';
 import { i18n } from '@/components/common/tools';
 import { message } from 'ant-design-vue';
 import { MD5 } from '@/components/common/tools';
@@ -177,6 +180,7 @@ export default defineComponent({
 	},
 	setup() {
 		const formRef: any = ref(null);
+		const RoleType: any = sessionStorage.getItem('NextRoleType');
 		const checkUserName = async (rule: any, value: any) => {
 			// const exg = /^[a-zA-Z]\w{4,15}$/;
 			if (value) {
@@ -311,9 +315,20 @@ export default defineComponent({
 				{
 					title: i18n('default.192'),
 					dataIndex: 'superUserName'
+				},
+				{
+					title: i18n('default.169'),
+					slots: { customRender: 'handleBtn' }
 				}
 			],
-			typeList: [
+			searchTypeList: [
+				{ id: 1, label: i18n('default.150') },
+				{ id: 2, label: i18n('default.26') },
+				{ id: 3, label: i18n('default.151') },
+				{ id: 4, label: i18n('default.152') },
+				{ id: 5, label: i18n('default.153') }
+			],
+			dialogTypeList: [
 				{ id: 1, label: i18n('default.150') },
 				{ id: 2, label: i18n('default.26') },
 				{ id: 3, label: i18n('default.151') },
@@ -369,9 +384,29 @@ export default defineComponent({
 				data.otherObj.mobile = '';
 				data.otherObj.birthday = '';
 				data.otherObj.superUserId = '';
-				data.otherObj.type = 1;
 				data.otherObj.gender = 1;
+				if (RoleType === '2') {
+					data.otherObj.type = 5;
+				}
 				data.visible = true;
+			},
+			handleTypeDisplay: (value: number) => {
+				if (RoleType === '2') {
+					return false;
+				}
+				if (value === 3 || value === 5) {
+					return true;
+				} else {
+					return false;
+				}
+			},
+			handleBtnClick: (id: number) => {
+				deleteUserHttp([id]).then((res: any) => {
+					if (res.data.data) {
+						message.info(res.data.msg);
+						data.search();
+					}
+				});
 			},
 			getDisabled: (type: number) => {
 				if (data.otherObj.id) {
@@ -380,6 +415,13 @@ export default defineComponent({
 					} else {
 						return true;
 					}
+				} else {
+					return false;
+				}
+			},
+			showDeleteBtn: (value: number) => {
+				if (RoleType === '1' || (RoleType === '2' && value === 5)) {
+					return true;
 				} else {
 					return false;
 				}
@@ -431,7 +473,7 @@ export default defineComponent({
 						data.dialogObj.mobile = data.otherObj.mobile;
 						data.dialogObj.gender = data.otherObj.gender;
 						data.dialogObj.birthday = data.otherObj.birthday;
-						data.dialogObj.superUserId = data.otherObj.superUserId;
+						data.dialogObj.superUserId = data.otherObj.superUserId || sessionStorage.getItem('NextUserId') || '';
 						data.dialogObj.countryId = data.otherObj.countryId;
 						data.dialogObj.type = data.otherObj.type;
 						flag(data.dialogObj).then((res: any) => {
@@ -455,13 +497,14 @@ export default defineComponent({
 			});
 		};
 		const handleRole = () => {
-			const role: string | null = sessionStorage.getItem('NextRoleType');
-			if (role === '1') {
-				data.typeList = [
+			const role: string | null = RoleType;
+			if (role === '2') {
+				data.searchTypeList = [
 					{ id: 3, label: i18n('default.151') },
 					{ id: 5, label: i18n('default.153') }
 				];
-				data.columns.pop();
+				data.dialogTypeList = [{ id: 5, label: i18n('default.153') }];
+				data.columns.splice(data.columns.length - 2, 1);
 			}
 		};
 		const init = () => {

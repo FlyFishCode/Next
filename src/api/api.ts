@@ -29,7 +29,7 @@ import { agentList } from '@/api/Agent/index';
 import { settlementList, settlementInfo, machineSettlementList, final, rechargeRecord } from '@/api/Settlement/index';
 
 // System
-import { systemUserList, addUser, searchUser, modifyUser, HistoryLogList, HistoryLogDelete } from '@/api/System/index';
+import { systemUserList, addUser, searchUser, modifyUser, HistoryLogList, HistoryLogDelete, deleteUser } from '@/api/System/index';
 
 // Player
 import { playerList, PlayerInfo, PlayerCreate, PlayerUpdate, PlayerDelete, PlayerRestorePassword } from '@/api/Player/index';
@@ -247,6 +247,10 @@ const searchUserHttp = (data: any) => {
 const modifyUserHttp = (data: any) => {
 	return Axios.post(modifyUser, data);
 };
+// 删除用户
+const deleteUserHttp = (data: any) => {
+	return Axios.post(deleteUser, data);
+};
 // 操作日志列表
 const HistoryLogListHttp = (data: any) => {
 	return Axios.post(HistoryLogList, data);
@@ -399,5 +403,6 @@ export {
 	AreaUpdateHttp,
 	AreaInfoHttp,
 	HistoryLogListHttp,
-	HistoryLogDeleteHttp
+	HistoryLogDeleteHttp,
+	deleteUserHttp
 };
