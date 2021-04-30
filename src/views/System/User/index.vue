@@ -164,11 +164,13 @@
 			</a-row>
 		</a-modal>
 	</div>
+	<DeleteDialog :visible="deleteVisible" @afterClose="afterClose" @handleOk="handleDeleteOK" />
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
+import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { systemUserListHttp, addUserHttp, modifyUserHttp, searchUserHttp, countryListHttp, agentListHttp, deleteUserHttp } from '@/api/api';
 import { i18n } from '@/components/common/tools';
 import { message } from 'ant-design-vue';
@@ -176,7 +178,8 @@ import { MD5 } from '@/components/common/tools';
 export default defineComponent({
 	name: 'SettlementInfo',
 	components: {
-		labelTitle
+		labelTitle,
+		DeleteDialog
 	},
 	setup() {
 		const formRef: any = ref(null);
@@ -214,7 +217,9 @@ export default defineComponent({
 		};
 		const data = reactive({
 			visible: false,
+			deleteVisible: false,
 			isDisabled: true,
+			id: 0,
 			infoVO: {
 				sort: 1,
 				username: '',
@@ -374,6 +379,9 @@ export default defineComponent({
 					data.agentList = res.data.data;
 				});
 			},
+			afterClose: (value: boolean) => {
+				data.deleteVisible = value;
+			},
 			handleCreate: () => {
 				data.otherObj.id = 0;
 				data.otherObj.username = '';
@@ -400,13 +408,18 @@ export default defineComponent({
 					return false;
 				}
 			},
-			handleBtnClick: (id: number) => {
-				deleteUserHttp([id]).then((res: any) => {
+			handleDeleteOK: () => {
+				deleteUserHttp([data.id]).then((res: any) => {
 					if (res.data.data) {
 						message.info(res.data.msg);
+						data.deleteVisible = false;
 						data.search();
 					}
 				});
+			},
+			handleBtnClick: (id: number) => {
+				data.id = id;
+				data.deleteVisible = true;
 			},
 			getDisabled: (type: number) => {
 				if (data.otherObj.id) {
