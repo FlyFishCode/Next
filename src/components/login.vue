@@ -24,6 +24,7 @@ import { defineComponent, reactive, toRefs } from 'vue';
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 import { loginHttp } from '@/api/api';
 import { MD5 } from '@/components/common/tools';
 export default defineComponent({
@@ -33,6 +34,7 @@ export default defineComponent({
 		LockOutlined
 	},
 	setup() {
+		const STORE = useStore();
 		const ROUTER = useRouter();
 		const data = reactive({
 			userName: '',
@@ -43,13 +45,16 @@ export default defineComponent({
 				formData.append('password', MD5(data.passWord));
 				loginHttp(formData).then((res: any) => {
 					if (res.data.code === 100) {
+						const data = res.data.data;
+						sessionStorage.setItem('NextUserId', data.userId);
+						sessionStorage.setItem('NextToken', data.token);
+						sessionStorage.setItem('NextNickname', data.nickname);
+						sessionStorage.setItem('NextBirthday', data.birthday || '');
+						sessionStorage.setItem('NextGender', data.gender);
+						sessionStorage.setItem('NextMobile', data.mobile);
+						sessionStorage.setItem('NextRoleType', data.type);
+						STORE.commit('setRole', data.type);
 						message.info(res.data.msg);
-						sessionStorage.setItem('NextUserId', res.data.data.userId);
-						sessionStorage.setItem('NextToken', res.data.data.token);
-						sessionStorage.setItem('NextNickname', res.data.data.nickname);
-						sessionStorage.setItem('NextBirthday', res.data.data.birthday || '');
-						sessionStorage.setItem('NextGender', res.data.data.gender);
-						sessionStorage.setItem('NextMobile', res.data.data.mobile);
 						ROUTER.push('index');
 					} else {
 						message.warning(res.data.msg);

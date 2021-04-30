@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
-import login from '@/components/login.vue';
+import { message } from 'ant-design-vue';
 
+import login from '@/components/login.vue';
 const routes = [
 	{
 		path: '/',
@@ -196,12 +197,23 @@ const routes = [
 	},
 	{ path: '/:pathMatch(.*)*', redirect: '/' }
 ];
+
 // createWebHashHistory 带#号
 // createWebHistory 不带#号
 const router = createRouter({
 	// history: createWebHashHistory(process.env.BASE_URL),
 	history: createWebHashHistory(),
 	routes
+});
+
+router.beforeEach((guard: any) => {
+	const roleType = sessionStorage.getItem('NextRoleType');
+	if (!roleType) {
+		message.error('身份验证失效，请重新登录!');
+		if (guard.path !== '/') {
+			router.push('/');
+		}
+	}
 });
 
 export default router;

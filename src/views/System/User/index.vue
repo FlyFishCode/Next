@@ -375,7 +375,7 @@ export default defineComponent({
 			},
 			getDisabled: (type: number) => {
 				if (data.otherObj.id) {
-					if (type) {
+					if (type !== 5) {
 						return false;
 					} else {
 						return true;
@@ -454,7 +454,18 @@ export default defineComponent({
 				data.countryList = res.data.data.list;
 			});
 		};
+		const handleRole = () => {
+			const role: string | null = sessionStorage.getItem('NextRoleType');
+			if (role === '1') {
+				data.typeList = [
+					{ id: 3, label: i18n('default.151') },
+					{ id: 5, label: i18n('default.153') }
+				];
+				data.columns.pop();
+			}
+		};
 		const init = () => {
+			handleRole();
 			data.search();
 			data.agentSearch('');
 			getCountryList();
