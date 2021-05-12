@@ -128,7 +128,7 @@
 				</a-form-item>
 				<a-form-item :label="$t('default.149')">
 					<a-select v-model:value="otherObj.type" class="selectBox" :disabled="otherObj.id ? true : false">
-						<a-select-option v-for="item in dialogTypeList" :key="item.id" :value="item.id">{{ item.label }}</a-select-option>
+						<a-select-option v-for="item in dialogTypeList" :key="item.id" :value="item.id">{{ $t(item.label) }}</a-select-option>
 					</a-select>
 				</a-form-item>
 				<a-form-item :label="$t('default.192')" v-if="handleTypeDisplay(otherObj.type)" name="superUserId">
@@ -334,11 +334,11 @@ export default defineComponent({
 				{ id: 5, label: i18n('default.153') }
 			],
 			dialogTypeList: [
-				{ id: 1, label: i18n('default.150') },
-				{ id: 2, label: i18n('default.26') },
-				{ id: 3, label: i18n('default.151') },
-				{ id: 4, label: i18n('default.152') },
-				{ id: 5, label: i18n('default.153') }
+				{ id: 1, label: 'default.150' },
+				{ id: 2, label: 'default.26' },
+				{ id: 3, label: 'default.151' },
+				{ id: 4, label: 'default.152' },
+				{ id: 5, label: 'default.153' }
 			],
 			total: 1,
 			agentList: [],
@@ -382,22 +382,6 @@ export default defineComponent({
 			afterClose: (value: boolean) => {
 				data.deleteVisible = value;
 			},
-			handleCreate: () => {
-				data.otherObj.id = 0;
-				data.otherObj.username = '';
-				data.otherObj.nickname = '';
-				data.otherObj.countryId = '';
-				data.otherObj.password = '';
-				data.otherObj.confirmPassword = '';
-				data.otherObj.mobile = '';
-				data.otherObj.birthday = '';
-				data.otherObj.superUserId = '';
-				data.otherObj.gender = 1;
-				if (RoleType === '2') {
-					data.otherObj.type = 5;
-				}
-				data.visible = true;
-			},
 			handleTypeDisplay: (value: number) => {
 				if (RoleType === '2') {
 					return false;
@@ -439,6 +423,23 @@ export default defineComponent({
 					return false;
 				}
 			},
+			handleCreate: () => {
+				data.otherObj.id = 0;
+				data.otherObj.username = '';
+				data.otherObj.nickname = '';
+				data.otherObj.countryId = '';
+				data.otherObj.password = '';
+				data.otherObj.confirmPassword = '';
+				data.otherObj.mobile = '';
+				data.otherObj.birthday = '';
+				data.otherObj.superUserId = '';
+				data.otherObj.gender = 1;
+				if (RoleType === '2') {
+					data.otherObj.type = 5;
+					data.dialogTypeList = [{ id: 5, label: 'default.153' }];
+				}
+				data.visible = true;
+			},
 			handleUserName: (id: number) => {
 				data.otherObj.id = id;
 				searchUserHttp({ userId: id }).then((res: any) => {
@@ -452,6 +453,13 @@ export default defineComponent({
 					data.otherObj.superUserId = responseData.superUserId;
 					data.otherObj.gender = responseData.gender;
 				});
+				data.dialogTypeList = [
+					{ id: 1, label: 'default.150' },
+					{ id: 2, label: 'default.26' },
+					{ id: 3, label: 'default.151' },
+					{ id: 4, label: 'default.152' },
+					{ id: 5, label: 'default.153' }
+				];
 				data.visible = true;
 			},
 			pageChange: (index: number) => {
@@ -510,13 +518,11 @@ export default defineComponent({
 			});
 		};
 		const handleRole = () => {
-			const role: string | null = RoleType;
-			if (role === '2') {
+			if (RoleType === '2') {
 				data.searchTypeList = [
 					{ id: 3, label: i18n('default.151') },
 					{ id: 5, label: i18n('default.153') }
 				];
-				data.dialogTypeList = [{ id: 5, label: i18n('default.153') }];
 				data.columns.splice(data.columns.length - 2, 1);
 			}
 		};
