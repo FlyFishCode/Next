@@ -92,7 +92,10 @@
 					<div v-if="record.type === 5">{{ $t('default.153') }}</div>
 				</template>
 				<template #handleBtn="{ record }">
-					<a-button v-if="showDeleteBtn(record.type)" type="danger" size="small" @click="handleBtnClick(record.id)">{{ $t('default.10') }}</a-button>
+					<div v-if="showDeleteBtn(record.type)" class="handleBox">
+						<a-button type="primary" size="small" @click="handleResetPassword(record.id)">{{ $t('default.168') }}</a-button>
+						<a-button type="danger" size="small" @click="handleBtnClick(record.id)">{{ $t('default.10') }}</a-button>
+					</div>
 				</template>
 			</a-table>
 		</a-row>
@@ -100,6 +103,16 @@
 			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" rowKey="id" :total="total" @change="pageChange" />
 		</div>
 	</div>
+	<a-modal v-model:visible="ResetPasswordDialog" :title="$t('default.168')" @ok="handlePasswordOk" centered>
+		<a-form ref="dialogFormRef" :model="resetDialogObj" :rules="resetDialogRules" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }">
+			<a-form-item :label="$t('default.168')" name="password">
+				<a-input v-model:value="resetDialogObj.password" allowClear />
+			</a-form-item>
+			<a-form-item :label="$t('default.157')" name="comfimPassword">
+				<a-input v-model:value="resetDialogObj.comfimPassword" allowClear />
+			</a-form-item>
+		</a-form>
+	</a-modal>
 	<div v-if="visible">
 		<a-modal v-model:visible="visible" width="40%" :title="$t('default.147')" :footer="null" centered>
 			<a-form ref="formRef" :model="otherObj" :rules="rules" :label-col="{ span: 4 }" :wrapper-col="{ span: 18 }">
@@ -171,10 +184,11 @@
 import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
-import { systemUserListHttp, addUserHttp, modifyUserHttp, searchUserHttp, countryListHttp, agentListHttp, deleteUserHttp } from '@/api/api';
+import { systemUserListHttp, addUserHttp, modifyUserHttp, searchUserHttp, countryListHttp, agentListHttp, deleteUserHttp, resetUserPasswordHttp } from '@/api/api';
 import { i18n } from '@/components/common/tools';
 import { message } from 'ant-design-vue';
 import { MD5 } from '@/components/common/tools';
+import qs from 'qs';
 export default defineComponent({
 	name: 'SettlementInfo',
 	components: {
@@ -183,7 +197,14 @@ export default defineComponent({
 	},
 	setup() {
 		const formRef: any = ref(null);
+		const dialogFormRef: any = ref(null);
 		const RoleType: any = sessionStorage.getItem('NextRoleType');
+		const checkResetDialogPassword = async (rule: any, value: any) => {
+			// eslint-disable-next-line @typescript-eslint/no-use-before-define
+			if (data.resetDialogObj.password !== value) {
+				return Promise.reject('两次密码不一致！');
+			}
+		};
 		const checkUserName = async (rule: any, value: any) => {
 			// const exg = /^[a-zA-Z]\w{4,15}$/;
 			if (value) {
@@ -219,7 +240,14 @@ export default defineComponent({
 			visible: false,
 			deleteVisible: false,
 			isDisabled: true,
+			ResetPasswordDialog: false,
 			id: 0,
+			resetPassword: '',
+			resetUserId: 0,
+			resetDialogObj: {
+				password: '',
+				comfimPassword: ''
+			},
 			infoVO: {
 				sort: 1,
 				username: '',
@@ -281,6 +309,10 @@ export default defineComponent({
 					}
 				]
 			},
+			resetDialogRules: {
+				password: [{ required: true, message: 'Please input Password', trigger: 'blur' }],
+				comfimPassword: [{ required: true, validator: checkResetDialogPassword }]
+			},
 			columns: [
 				{
 					title: 'ID',
@@ -323,6 +355,7 @@ export default defineComponent({
 				},
 				{
 					title: i18n('default.169'),
+					width: 200,
 					slots: { customRender: 'handleBtn' }
 				}
 			],
@@ -401,9 +434,31 @@ export default defineComponent({
 					}
 				});
 			},
+			handlePasswordOk: () => {
+				dialogFormRef.value.validate().then(() => {
+					const obj = {
+						newPassword: data.resetDialogObj.password,
+						userId: data.resetUserId
+					};
+					resetUserPasswordHttp(qs.stringify(obj)).then((res: any) => {
+						if (res.data.code === 100) {
+							message.info(res.data.msg);
+							data.ResetPasswordDialog = false;
+							data.resetDialogObj.password = '';
+							data.resetDialogObj.comfimPassword = '';
+						}else{
+							message.warning(res.data.msg);
+						}
+					});
+				});
+			},
 			handleBtnClick: (id: number) => {
 				data.id = id;
 				data.deleteVisible = true;
+			},
+			handleResetPassword: (id: number) => {
+				data.ResetPasswordDialog = true;
+				data.resetUserId = id;
 			},
 			getDisabled: (type: number) => {
 				if (data.otherObj.id) {
@@ -537,7 +592,8 @@ export default defineComponent({
 		});
 		return {
 			...toRefs(data),
-			formRef
+			formRef,
+			dialogFormRef
 		};
 	}
 });
@@ -546,5 +602,9 @@ export default defineComponent({
 <style scoped>
 #birthday {
 	width: 100%;
+}
+.handleBox {
+	display: flex;
+	justify-content: space-around;
 }
 </style>

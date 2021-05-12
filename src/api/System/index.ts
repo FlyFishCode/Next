@@ -8,9 +8,11 @@ const searchUser = 'user/select';
 const modifyUser = 'user/update';
 // 删除用户
 const deleteUser = 'user/delete';
+// 修改用户密码
+const resetUserPassword = 'user/resetpassword';
 
 // 操作日志
 const HistoryLogList = 'log/list';
 // 删除日志
 const HistoryLogDelete = 'log/delete';
-export { systemUserList, addUser, searchUser, modifyUser, HistoryLogList, HistoryLogDelete, deleteUser };
+export { systemUserList, addUser, searchUser, modifyUser, HistoryLogList, HistoryLogDelete, deleteUser, resetUserPassword };
