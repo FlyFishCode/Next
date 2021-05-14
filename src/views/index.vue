@@ -49,7 +49,7 @@
 					<a-menu-item key="Country">{{ $t('default.23') }}</a-menu-item>
 					<a-menu-item key="Area">{{ $t('default.24') }}</a-menu-item>
 				</a-sub-menu>
-				<a-sub-menu key="sub6">
+				<a-sub-menu v-if="RoleType !== '5'" key="sub6">
 					<template #title>
 						<span
 							><SettingOutlined /><span>{{ $t('default.146') }}</span></span
@@ -90,6 +90,7 @@ export default defineComponent({
 	},
 	setup() {
 		const ROUTER = useRouter();
+		const RoleType: any = sessionStorage.getItem('NextRoleType');
 		const data: DataProps = reactive({
 			logoImg: require('@/assets/logo.png'),
 			rootSubmenuKeys: ['sub1', 'sub2', 'sub3'],
@@ -108,7 +109,8 @@ export default defineComponent({
 			}
 		});
 		return {
-			...toRefs(data)
+			...toRefs(data),
+			RoleType
 		};
 	}
 });

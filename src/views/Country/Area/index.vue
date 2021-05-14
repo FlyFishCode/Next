@@ -224,7 +224,7 @@ export default defineComponent({
 				});
 			},
 			CountrySearch: (value: string) => {
-				countryListHttp({ name: value }).then((res: any) => {
+				countryListHttp({ name: value, pageSize: 9999 }).then((res: any) => {
 					if (res.data.data) {
 						data.shopList = res.data.data.list;
 					}

@@ -158,7 +158,9 @@ export default defineComponent({
 			},
 			userSearch: (value: string) => {
 				systemUserListHttp({ username: value }).then((res: any) => {
-					data.userList = res.data.data.list;
+					if (data.userList) {
+						data.userList = res.data.data.list;
+					}
 				});
 			},
 			getTypeName: (value: number) => {

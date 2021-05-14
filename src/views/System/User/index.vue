@@ -33,10 +33,10 @@
 			</a-row>
 
 			<a-row class="rowStyle">
-				<a-col :span="2" class="labelText">
+				<a-col v-if="handleRoleRules()" :span="2" class="labelText">
 					{{ $t('default.23') }}
 				</a-col>
-				<a-col :span="4">
+				<a-col v-if="handleRoleRules()" :span="4">
 					<a-select v-model:value="infoVO.countryId" class="selectBox" allowClear>
 						<a-select-option v-for="item in countryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
 					</a-select>
@@ -79,7 +79,12 @@
 		<a-row class="rowStyle">
 			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" :onChange="tableChange" class="tableStyle">
 				<template #username="{ record }">
-					<a-button type="link" size="small" @click="handleUserName(record.id)">{{ record.username }}</a-button>
+					<div v-if="RoleType === '2' && record.type === 3">
+						<div>{{ record.username }}</div>
+					</div>
+					<div v-else>
+						<a-button type="link" size="small" @click="handleUserName(record.id)">{{ record.username }}</a-button>
+					</div>
 				</template>
 				<template #gender="{ record }">
 					<div>{{ record.gender ? $t('default.106') : $t('default.107') }}</div>
@@ -106,10 +111,10 @@
 	<a-modal v-model:visible="ResetPasswordDialog" :title="$t('default.168')" @ok="handlePasswordOk" centered>
 		<a-form ref="dialogFormRef" :model="resetDialogObj" :rules="resetDialogRules" :label-col="{ span: 4 }" :wrapper-col="{ span: 20 }">
 			<a-form-item :label="$t('default.168')" name="password">
-				<a-input v-model:value="resetDialogObj.password" allowClear />
+				<a-input v-model:value="resetDialogObj.password" type="password" allowClear />
 			</a-form-item>
 			<a-form-item :label="$t('default.157')" name="comfimPassword">
-				<a-input v-model:value="resetDialogObj.comfimPassword" allowClear />
+				<a-input v-model:value="resetDialogObj.comfimPassword" type="password" allowClear />
 			</a-form-item>
 		</a-form>
 	</a-modal>
@@ -140,7 +145,7 @@
 					<a-date-picker v-model:value="otherObj.birthday" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
 				</a-form-item>
 				<a-form-item :label="$t('default.149')">
-					<a-select v-model:value="otherObj.type" class="selectBox" :disabled="otherObj.id ? true : false">
+					<a-select v-model:value="otherObj.type" class="selectBox" :disabled="typeDisabled">
 						<a-select-option v-for="item in dialogTypeList" :key="item.id" :value="item.id">{{ $t(item.label) }}</a-select-option>
 					</a-select>
 				</a-form-item>
@@ -148,7 +153,7 @@
 					<a-select
 						show-search
 						v-model:value="otherObj.superUserId"
-						:disabled="getDisabled(otherObj.type)"
+						:disabled="superDisabled"
 						:default-active-first-option="false"
 						:show-arrow="false"
 						:filter-option="false"
@@ -241,6 +246,8 @@ export default defineComponent({
 			deleteVisible: false,
 			isDisabled: true,
 			ResetPasswordDialog: false,
+			typeDisabled: false,
+			superDisabled: false,
 			id: 0,
 			resetPassword: '',
 			resetUserId: 0,
@@ -422,6 +429,7 @@ export default defineComponent({
 				if (value === 3 || value === 5) {
 					return true;
 				} else {
+					data.otherObj.superUserId = '';
 					return false;
 				}
 			},
@@ -437,7 +445,7 @@ export default defineComponent({
 			handlePasswordOk: () => {
 				dialogFormRef.value.validate().then(() => {
 					const obj = {
-						newPassword: data.resetDialogObj.password,
+						newPassword: MD5(data.resetDialogObj.password),
 						userId: data.resetUserId
 					};
 					resetUserPasswordHttp(qs.stringify(obj)).then((res: any) => {
@@ -446,7 +454,7 @@ export default defineComponent({
 							data.ResetPasswordDialog = false;
 							data.resetDialogObj.password = '';
 							data.resetDialogObj.comfimPassword = '';
-						}else{
+						} else {
 							message.warning(res.data.msg);
 						}
 					});
@@ -460,15 +468,11 @@ export default defineComponent({
 				data.ResetPasswordDialog = true;
 				data.resetUserId = id;
 			},
-			getDisabled: (type: number) => {
-				if (data.otherObj.id) {
-					if (type !== 5) {
-						return false;
-					} else {
-						return true;
-					}
-				} else {
+			handleRoleRules: () => {
+				if (RoleType === '2' || RoleType === '5') {
 					return false;
+				} else {
+					return true;
 				}
 			},
 			showDeleteBtn: (value: number) => {
@@ -515,6 +519,9 @@ export default defineComponent({
 					{ id: 4, label: 'default.152' },
 					{ id: 5, label: 'default.153' }
 				];
+				if (RoleType === '2') {
+					data.typeDisabled = true;
+				}
 				data.visible = true;
 			},
 			pageChange: (index: number) => {
@@ -569,7 +576,9 @@ export default defineComponent({
 		});
 		const getCountryList = () => {
 			countryListHttp({}).then((res: any) => {
-				data.countryList = res.data.data.list;
+				if (res.data.data) {
+					data.countryList = res.data.data.list;
+				}
 			});
 		};
 		const handleRole = () => {
@@ -593,6 +602,7 @@ export default defineComponent({
 		return {
 			...toRefs(data),
 			formRef,
+			RoleType,
 			dialogFormRef
 		};
 	}
