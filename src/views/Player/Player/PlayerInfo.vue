@@ -260,7 +260,7 @@ export default defineComponent({
 			});
 		};
 		const getCountryList = () => {
-			countryListHttp({}).then((res: any) => {
+			countryListHttp({pageSize:999}).then((res: any) => {
 				data.countryList = res.data.data.list;
 			});
 		};

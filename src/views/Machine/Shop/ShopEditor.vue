@@ -341,7 +341,7 @@ export default defineComponent({
 			infoVO: {
 				id: id,
 				name: '',
-				type: 'A1',
+				type: '',
 				agentId: '',
 				countryId: '',
 				areaId: '',
@@ -363,7 +363,7 @@ export default defineComponent({
 				averageCost: '',
 				memo: '',
 				shopRate: 0,
-				agentRate: '',
+				agentRate: '100%',
 				machineSetting: {}
 			},
 			machineVO: {
@@ -438,7 +438,7 @@ export default defineComponent({
 				{ id: 100, label: '100%' }
 			],
 			shopRatioChange: () => {
-				data.infoVO.agentRate = 100 - data.infoVO.shopRate;
+				data.infoVO.agentRate = `${100 - data.infoVO.shopRate}%`;
 			},
 			disabledStartDate: (startValue) => {
 				if (!startValue || !data.machineVO.maxLastOnlineTime) {
@@ -496,9 +496,11 @@ export default defineComponent({
 				});
 			},
 			create: () => {
+				data.infoVO.agentRate = data.infoVO.agentRate.split('%')[0]
 				return createShopHttp(data.infoVO);
 			},
 			update: () => {
+				data.infoVO.agentRate = data.infoVO.agentRate.split('%')[0]
 				return editShopHttp(data.infoVO);
 			},
 			setGameSetting: (id) => {
@@ -596,6 +598,8 @@ export default defineComponent({
 		const setInfoData = (response) => {
 			data.infoVO.name = response.name;
 			data.infoVO.type = response.type;
+			data.infoVO.shopRate = response.shopRate;
+			data.infoVO.agentRate = `${response.agentRate}%`;
 			data.infoVO.agentId = response.agentId;
 			data.infoVO.attracts = response.attracts;
 			data.infoVO.address = response.address;
@@ -635,7 +639,7 @@ export default defineComponent({
 			});
 		};
 		const getCountryList = () => {
-			countryListHttp({}).then((res) => {
+			countryListHttp({pageSize:999}).then((res) => {
 				data.countryList = res.data.data.list;
 			});
 		};

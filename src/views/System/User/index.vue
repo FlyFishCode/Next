@@ -195,7 +195,7 @@ import { message } from 'ant-design-vue';
 import { MD5 } from '@/components/common/tools';
 import qs from 'qs';
 export default defineComponent({
-	name: 'SettlementInfo',
+	name: 'UserIndex',
 	components: {
 		labelTitle,
 		DeleteDialog
@@ -575,7 +575,7 @@ export default defineComponent({
 			}
 		});
 		const getCountryList = () => {
-			countryListHttp({}).then((res: any) => {
+			countryListHttp({pageSize:999}).then((res: any) => {
 				if (res.data.data) {
 					data.countryList = res.data.data.list;
 				}
