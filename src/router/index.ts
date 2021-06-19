@@ -192,7 +192,22 @@ const routes = [
 				name: 'Area',
 				component: () => import(/* webpackChunkName: "Area" */ '../views/Country/Area/index.vue'),
 				meta: [{ label: 'default.24', path: 'Area' }]
-			}
+			},
+			{
+				path: '/News',
+				name: 'News',
+				component: () => import(/* webpackChunkName: "News" */ '../views/News/index.vue'),
+				meta: [{ label: 'default.193', path: 'News' }]
+			},
+			{
+				path: '/NewsEdit',
+				name: 'NewsEdit',
+				component: () => import(/* webpackChunkName: "NewsEdit" */ '../views/News/NewsEdit.vue'),
+				meta: [
+					{ label: 'default.193', path: 'News' },
+					{ label: 'default.195', path: 'NewsEdit' }
+				]
+			},
 		]
 	},
 	{ path: '/:pathMatch(.*)*', redirect: '/' }

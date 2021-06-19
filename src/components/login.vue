@@ -8,7 +8,7 @@
 				<a-input placeholder="username" v-model:value="userName" class="userBox">
 					<template #prefix><user-outlined type="user"/></template>
 				</a-input>
-				<a-input placeholder="password" v-model:value="passWord" type="password" class="passBox">
+				<a-input placeholder="password" v-model:value="passWord" type="password" class="passBox" @keyup.enter="login">
 					<template #prefix><LockOutlined /></template>
 				</a-input>
 				<a-row class="LoginButton">

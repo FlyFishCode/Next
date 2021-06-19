@@ -49,7 +49,16 @@
 					<a-menu-item key="Country">{{ $t('default.23') }}</a-menu-item>
 					<a-menu-item key="Area">{{ $t('default.24') }}</a-menu-item>
 				</a-sub-menu>
-				<a-sub-menu v-if="RoleType !== '5'" key="sub6">
+				<a-sub-menu key="sub6">
+					<template #title>
+						<span
+							><ProfileOutlined /><span>{{ $t('default.193') }}</span></span
+						>
+					</template>
+					<a-menu-item key="News">{{ $t('default.193') }}</a-menu-item>
+					<a-menu-item key="Carousel">{{ $t('default.194') }}</a-menu-item>
+				</a-sub-menu>
+				<a-sub-menu v-if="RoleType !== '5'" key="sub100">
 					<template #title>
 						<span
 							><SettingOutlined /><span>{{ $t('default.146') }}</span></span
@@ -68,7 +77,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue';
-import { MailOutlined, AppstoreOutlined, SettingOutlined, CreditCardOutlined, UserOutlined, EnvironmentOutlined } from '@ant-design/icons-vue';
+import { MailOutlined, AppstoreOutlined, SettingOutlined, CreditCardOutlined, UserOutlined, EnvironmentOutlined, ProfileOutlined } from '@ant-design/icons-vue';
 import hearder from '@/components/hearder.vue';
 import { useRouter } from 'vue-router';
 
@@ -86,6 +95,7 @@ export default defineComponent({
 		CreditCardOutlined,
 		EnvironmentOutlined,
 		UserOutlined,
+		ProfileOutlined,
 		hearder
 	},
 	setup() {
