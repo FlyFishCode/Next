@@ -3,50 +3,47 @@
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
-				{{ 'ID' }}
-			</a-col>
-			<a-col :span="4">
-				<a-input v-model:value="infoVO.id" allowClear />
-			</a-col>
-			<a-col :span="2" class="labelText">
-				{{ $t('default.5') }}
-			</a-col>
-			<a-col :span="4">
-				<a-input v-model:value="infoVO.name" allowClear />
-			</a-col>
-			<a-col :span="2" class="labelText">
 				{{ $t('default.23') }}
 			</a-col>
 			<a-col :span="4">
-				<a-select v-model:value="infoVO.countryId" @change="countryChange" class="selectBox" allowClear>
+				<a-select v-model:value="infoVO.countryId" class="selectBox" allowClear>
 					<a-select-option v-for="item in countryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
 				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ $t('default.24') }}
+				{{ $t('default.196') }}
 			</a-col>
 			<a-col :span="4">
-				<a-select v-model:value="infoVO.areaId" class="selectBox" allowClear>
-					<a-select-option v-for="item in areaList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+				<a-select v-model:value="infoVO.category" class="selectBox">
+					<a-select-option v-for="item in categoryList" :key="item.id" :value="item.id">{{ $t(item.label) }}</a-select-option>
+				</a-select>
+			</a-col>
+			<a-col :span="2" class="labelText">
+				{{ $t('default.201') }}
+			</a-col>
+			<a-col :span="4">
+				<a-input v-model:value="infoVO.title" allowClear />
+			</a-col>
+			<a-col :span="2" class="labelText">
+				{{ $t('default.202') }}
+			</a-col>
+			<a-col :span="4" class="selectSearch">
+				<a-select show-search v-model:value="infoVO.opeatorIdName" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="userSearch">
+					<a-select-option v-for="user in userList" :key="user.id">
+						<div :title="user.username">{{ user.username }}</div>
+					</a-select-option>
 				</a-select>
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
-				{{ $t('default.25') }}
+				{{ $t('default.46') }}
 			</a-col>
-			<a-col :span="4">
-				<a-input v-model:value="infoVO.type" allowClear />
+			<a-col :span="2" class="datePicker">
+				<a-date-picker v-model:value="infoVO.registerStartDate" :disabled-date="disabledMinRegisterTime" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
 			</a-col>
-			<a-col v-if="isAdmin" :span="2" class="labelText">
-				{{ $t('default.26') }}
-			</a-col>
-			<a-col v-if="isAdmin" :span="4" class="selectSearch">
-				<a-select show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
-					<a-select-option v-for="d in agentList" :key="d.id">
-						<div :title="d.name">{{ d.name }}</div>
-					</a-select-option>
-				</a-select>
+			<a-col :span="2" class="datePicker">
+				<a-date-picker v-model:value="infoVO.registerEndDate" :disabled-date="disabledMaxRegisterTime" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 			</a-col>
 			<a-col :span="2" class="labelText">
 				<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
@@ -60,12 +57,15 @@
 		<a-col :span="1">
 			<a-button type="primary" size="small" @click="handleCreate">{{ $t('default.9') }}</a-button>
 		</a-col>
-		<a-col :span="1">
-			<a-button type="primary" size="small" @click="handleSetting">{{ $t('default.27') }}</a-button>
-		</a-col>
 		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
+			<template #img="{ record }">
+				<div class="imgBox"><img :src="record.thumbnail" alt=""></div>
+			</template>
 			<template #name="{ record }">
-				<a-button type="link" @click="handleShopClick(record.id)">{{ record.name }}</a-button>
+				<a-button type="link" @click="handleTitleClick(record.id)">{{ record.title }}</a-button>
+			</template>
+			<template #type="{ record }">
+				<div>{{ getTypeName(record.category) }}</div>
 			</template>
 		</a-table>
 	</a-row>
@@ -77,14 +77,14 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-import { shopListHttp, countryListHttp, areaListHttp, agentListHttp, userListHttp, deleteShopHttp } from '@/api/api';
+import { newsListHttp, countryListHttp, systemUserListHttp, deleteShopHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
 import { handleSelectEvent, i18n } from '@/components/common/tools';
 export default defineComponent({
-	name: 'Shop',
+	name: 'News',
 	components: {
 		labelTitle,
 		DeleteDialog
@@ -92,58 +92,71 @@ export default defineComponent({
 	setup() {
 		const ROUTER = useRouter();
 		let selectList: number[] = [];
-		const isAdmin = sessionStorage.getItem('NextUserType');
 		const data = reactive({
 			visible: false,
 			infoVO: {
-				id: '',
-				name: '',
 				countryId: '',
-				areaId: '',
-				type: '',
-				agentId: '',
+				title: '',
+				category: 0,
+				opeatorIdName:'',
+				registerEndDate:"",
+				registerStartDate:"",
 				pageIndex: 1,
 				pageSize: 10
 			},
+			img: require('@/assets/logo.png'),
 			total: 1,
+			userList: [],
+			countryList: [],
+			agentList: [],
+			ownerList: [],
+			shopList: [],
+			tableList: [],
 			columns: [
-				{
-					title: 'ID',
-					dataIndex: 'id',
-					key: 'Id'
-				},
-				{
-					title: i18n('default.5'),
-					dataIndex: 'name',
-					key: 'Name',
-					slots: { customRender: 'name' }
-				},
-				{
-					title: i18n('default.26'),
-					dataIndex: 'agentName',
-					key: 'Agent'
-				},
 				{
 					title: i18n('default.23'),
 					dataIndex: 'countryName',
-					key: 'Country'
 				},
 				{
-					title: i18n('default.24'),
-					dataIndex: 'areaName',
-					key: 'Area'
+					title: i18n('default.93'),
+					width: 100,
+					slots: { customRender: 'img' }
 				},
 				{
-					title: i18n('default.25'),
-					dataIndex: 'type',
-					key: 'Type'
+					title: i18n('default.201'),
+					slots: { customRender: 'name' }
+				},
+				{
+					title: i18n('default.46'),
+					dataIndex: 'cdateInt',
+				},
+				{
+					title: i18n('default.196'),
+					slots: { customRender: 'type' }
+				},
+				{
+					title: i18n('default.202'),
+					dataIndex: 'opeatorName',
 				}
 			],
-			countryList: [],
-			areaList: [],
-			agentList: [],
-			ownerList: [],
-			tableList: [{ id: 1 }],
+			categoryList:[
+				{ id: 0, label: 'default.200' },
+				{ id: 3, label: 'default.198' },
+				{ id: 4, label: 'default.197' },
+				{ id: 6, label: 'default.199' },
+			],
+			disabledMinRegisterTime: (startValue: any) => {
+				if (!startValue || !data.infoVO.registerEndDate) {
+					return false;
+				}
+				return startValue.valueOf() > new Date(data.infoVO.registerEndDate).valueOf();
+			},
+			disabledMaxRegisterTime: (endValue: any) => {
+				if (!endValue || !data.infoVO.registerStartDate) {
+					return false;
+				}
+				return new Date(data.infoVO.registerStartDate).valueOf() >= endValue.valueOf();
+			},
 			rowSelection: {
 				columnWidth: 50,
 				// columnTitle: '全选',
@@ -151,20 +164,26 @@ export default defineComponent({
 					selectList = selectedRowKeys;
 				}
 			},
-			shopList: [],
-			countryChange: () => {
-				data.infoVO.areaId = '';
-				// eslint-disable-next-line @typescript-eslint/no-use-before-define
-				getAreaList();
+			getTypeName:(id: number) =>{
+				let str = '';
+				switch(id){
+					case 3:
+						str = 'default.198'
+						break;
+					case 4:
+						str = 'default.197'
+						break;
+					default :
+						str = 'default.199';
+						break;
+				}
+				return i18n(str)
 			},
-			agentSearch: (value: any) => {
-				agentListHttp({ agentName: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
-					data.agentList = res.data.data;
-				});
-			},
-			ownerSearch: (value: any) => {
-				userListHttp({ username: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
-					data.ownerList = res.data.data.list;
+			userSearch: (value: string) => {
+				systemUserListHttp({ username: value, pageSize: 999 }).then((res: any) => {
+					if (data.userList) {
+						data.userList = res.data.data.list;
+					}
 				});
 			},
 			handleDelete: () => {
@@ -183,14 +202,9 @@ export default defineComponent({
 				data.visible = false;
 			},
 			search: () => {
-				shopListHttp(data.infoVO).then((res: any) => {
+				newsListHttp(data.infoVO).then((res: any) => {
 					data.tableList = res.data.data.list;
-					data.total = res.data.data.totalCount;
-				});
-			},
-			handleSetting: () => {
-				ROUTER.push({
-					path: 'ShopGameOptions'
+					data.total = res.data.data.total;
 				});
 			},
 			pageChange: () => {
@@ -201,9 +215,9 @@ export default defineComponent({
 					path: 'NewsEdit'
 				});
 			},
-			handleShopClick: (id: number) => {
+			handleTitleClick: (id: number) => {
 				ROUTER.push({
-					path: 'EditorShop',
+					path: 'NewsEdit',
 					query: {
 						id
 					}
@@ -215,25 +229,26 @@ export default defineComponent({
 				data.countryList = res.data.data.list;
 			});
 		};
-		const getAreaList = () => {
-			areaListHttp({ countryId: data.infoVO.countryId }).then((res: any) => {
-				data.areaList = res.data.data.list;
-			});
-		};
 		const init = () => {
 			data.search();
 			getCountryList();
-			getAreaList();
 		};
 		onMounted(() => {
 			init();
 		});
 		return {
 			...toRefs(data),
-			isAdmin
 		};
 	}
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.imgBox{
+	height: 60px;
+}
+.imgBox img{
+	width: 100%;
+	height: 100%;
+}
+</style>

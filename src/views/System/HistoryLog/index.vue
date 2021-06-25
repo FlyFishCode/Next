@@ -3,7 +3,7 @@
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
-				{{ $t('default.153') }}
+				{{ $t('default.202') }}
 			</a-col>
 			<a-col :span="3" class="selectSearch">
 				<a-select show-search v-model:value="infoVO.userId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="userSearch">
@@ -122,7 +122,7 @@ export default defineComponent({
 					slots: { customRender: 'handleInfo' }
 				},
 				{
-					title: i18n('default.153'),
+					title: i18n('default.202'),
 					dataIndex: 'username'
 				},
 				{
@@ -157,7 +157,7 @@ export default defineComponent({
 				});
 			},
 			userSearch: (value: string) => {
-				systemUserListHttp({ username: value }).then((res: any) => {
+				systemUserListHttp({ username: value, pageSize: 999 }).then((res: any) => {
 					if (data.userList) {
 						data.userList = res.data.data.list;
 					}
