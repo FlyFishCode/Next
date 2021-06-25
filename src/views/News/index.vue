@@ -46,6 +46,16 @@
 				<a-date-picker v-model:value="infoVO.registerEndDate" :disabled-date="disabledMaxRegisterTime" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 			</a-col>
 			<a-col :span="2" class="labelText">
+				{{ $t('default.203') }}
+			</a-col>
+			<a-col :span="4">
+				<a-select v-model:value="infoVO.display" class="selectBox">
+					<a-select-option value=" ">{{ $t('default.200') }}</a-select-option>
+					<a-select-option :value="1">{{ $t('default.204') }}</a-select-option>
+					<a-select-option :value="0">{{ $t('default.205') }}</a-select-option>
+				</a-select>
+			</a-col>
+			<a-col :span="2" class="labelText">
 				<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
 			</a-col>
 		</a-row>
@@ -67,6 +77,9 @@
 			<template #type="{ record }">
 				<div>{{ getTypeName(record.category) }}</div>
 			</template>
+			<template #handle="{ record }">
+				<a-checkbox v-model:checked="record.display" @change="checkboxChange(record)"></a-checkbox>
+			</template>
 		</a-table>
 	</a-row>
 	<div class="paginationStyle">
@@ -77,7 +90,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-import { newsListHttp, countryListHttp, systemUserListHttp, deleteShopHttp } from '@/api/api';
+import { newsListHttp, countryListHttp, systemUserListHttp, deleteShopHttp, newEditorHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { useRouter } from 'vue-router';
@@ -97,6 +110,7 @@ export default defineComponent({
 			infoVO: {
 				countryId: '',
 				title: '',
+				display:' ',
 				category: 0,
 				opeatorIdName:'',
 				registerEndDate:"",
@@ -137,6 +151,10 @@ export default defineComponent({
 				{
 					title: i18n('default.202'),
 					dataIndex: 'opeatorName',
+				},
+				{
+					title: i18n('default.203'),
+					slots: { customRender: 'handle' }
 				}
 			],
 			categoryList:[
@@ -203,6 +221,9 @@ export default defineComponent({
 			},
 			search: () => {
 				newsListHttp(data.infoVO).then((res: any) => {
+					res.data.data.list.forEach((i: any) => {
+						i.display = Boolean(i.display)
+					});
 					data.tableList = res.data.data.list;
 					data.total = res.data.data.total;
 				});
@@ -222,6 +243,20 @@ export default defineComponent({
 						id
 					}
 				});
+			},
+			checkboxChange:(row: any) =>{
+				const flagData = {
+					id:row.id,
+					title:row.title,
+					contents:row.contents,
+					category:row.category,
+					countryId:row.countryId,
+					registerDate:row.registerDate,
+					display:Number(row.display),
+				}
+				newEditorHttp(flagData).then((res: any) =>{
+					message.info(res.data.msg)
+				})
 			}
 		});
 		const getCountryList = () => {
