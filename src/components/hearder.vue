@@ -102,12 +102,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, toRefs, computed } from 'vue';
+import { defineComponent, reactive, toRefs, computed, onMounted } from 'vue';
 import { UserOutlined } from '@ant-design/icons-vue';
 import { useRoute, useRouter } from 'vue-router';
 import { changePasswordHttp, changeInfoHttp } from '@/api/api';
 import { message } from 'ant-design-vue';
 import { MD5 } from '@/components/common/tools';
+import { useStore } from 'vuex';
 export default defineComponent({
 	name: 'hearder',
 	components: {
@@ -116,6 +117,7 @@ export default defineComponent({
 	setup() {
 		const ROUTER = useRouter();
 		const ROUTE = useRoute();
+		const STORE = useStore();
 		const metaList = computed(() => {
 			const list: any[] = [];
 			for (const item of Object.values(ROUTE.meta)) {
@@ -185,12 +187,16 @@ export default defineComponent({
 				});
 			},
 			Logout: () => {
+				sessionStorage.removeItem('NextToken');
 				sessionStorage.removeItem('NextUserId');
 				sessionStorage.removeItem('NextNickname');
-				sessionStorage.removeItem('NextToken');
+				sessionStorage.removeItem('NextRoleType');
 				ROUTER.push('/');
 			}
 		});
+		onMounted(() =>{
+			STORE.commit('setRole', sessionStorage.getItem('NextRoleType'));
+		})
 		return {
 			...toRefs(data),
 			metaList,

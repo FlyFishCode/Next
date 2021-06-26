@@ -12,8 +12,9 @@
 				<a-col :span="2" class="labelText">
 					{{ $t('default.161') }}
 				</a-col>
-				<a-col :span="4" class="selectSearch">
+				<a-col :span="4">
 					<a-select
+					class="selectBox"
 						show-search
 						v-model:value="infoVO.cardNo"
 						:default-active-first-option="false"
@@ -41,8 +42,9 @@
 				<a-col :span="2" class="labelText">
 					{{ $t('default.154') }}
 				</a-col>
-				<a-col :span="4" class="selectSearch">
+				<a-col :span="4">
 					<a-select
+					class="selectBox"
 						show-search
 						v-model:value="infoVO.memberId"
 						:default-active-first-option="false"
@@ -134,6 +136,7 @@
 					</a-form-item>
 					<a-form-item :label="$t('default.154')" name="memberId">
 						<a-select
+						class="selectBox"
 							show-search
 							v-model:value="createUserCardObj.memberId"
 							:default-active-first-option="false"

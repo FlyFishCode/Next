@@ -17,8 +17,9 @@
 			<a-col :span="2" class="labelText">
 				{{ $t('default.23') }}
 			</a-col>
-			<a-col :span="4" class="selectSearch">
+			<a-col :span="4">
 				<a-select
+				class="selectBox"
 					show-search
 					v-model:value="infoVO.countryId"
 					:default-active-first-option="false"
@@ -78,6 +79,7 @@
 				</a-form-item>
 				<a-form-item :label="$t('default.23')" name="countryId">
 					<a-select
+					class="selectBox"
 						show-search
 						v-model:value="dialogAreaInfo.countryId"
 						:default-active-first-option="false"

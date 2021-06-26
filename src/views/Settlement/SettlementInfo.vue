@@ -12,8 +12,9 @@
 				<a-col :span="2" class="labelText">
 					{{ $t('default.5') }}
 				</a-col>
-				<a-col :span="4" class="selectSearch">
+				<a-col :span="4">
 					<a-select
+					class="selectBox"
 						show-search
 						v-model:value="infoVO.shopName"
 						:default-active-first-option="false"
@@ -49,8 +50,9 @@
 				<a-col :span="2" class="labelText">
 					{{ $t('default.26') }}
 				</a-col>
-				<a-col :span="4" class="selectSearch">
+				<a-col :span="4">
 					<a-select
+					class="selectBox"
 						show-search
 						v-model:value="infoVO.agentId"
 						:default-active-first-option="false"

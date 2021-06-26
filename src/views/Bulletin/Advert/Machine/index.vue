@@ -10,7 +10,7 @@
 			<a-col :span="3" class="labelText">
 				{{ $t('default.13') }}
 			</a-col>
-			<a-col :span="6" class="selectSearch">
+			<a-col :span="6">
 				<a-input v-model:value="infoVO.name" allow-clear />
 			</a-col>
 		</a-row>

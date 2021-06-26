@@ -75,13 +75,12 @@
 
 <script lang="ts">
 import { defineComponent, nextTick, onMounted, reactive, toRefs } from 'vue';
-import { countryListHttp, newEditorHttp, newsInfoHttp, newsImgUploadHttp } from '@/api/api';
+import { countryListHttp, newsEditorHttp, newsInfoHttp, newsImgUploadHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
 import showUrlDialog from '@/components/common/showUrlDialog.vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { useRoute } from 'vue-router';
 import { message } from 'ant-design-vue';
-import Axios from 'axios'
 import E from 'wangeditor'
 // import { i18n } from '@/components/common/tools';
 
@@ -143,14 +142,14 @@ export default defineComponent({
 					message.warning('请输入新闻标题');
 					return false;
 				}
-				return newEditorHttp(data.infoVO)
+				return newsEditorHttp(data.infoVO)
 			},
       update: () => {
 				if(!data.infoVO.title){
 					message.warning('请输入新闻标题');
 					return false;
 				}
-				return newEditorHttp(data.infoVO)
+				return newsEditorHttp(data.infoVO)
 			},
       getInfo:(id: any) =>{
         newsInfoHttp({id}).then((res: any) =>{
@@ -239,12 +238,8 @@ export default defineComponent({
         editor.config.customUploadImg = function a(resultFiles: any, insertImgFn: any) {
           const fd = new FormData();
           fd.append("image", resultFiles[0]);
-          Axios({
-            method: "POST",
-            url: "/uploadAbsolutelyPictures",
-            data: fd
-          }).then((res: any) => {
-            if (res.data.code === 1000) {
+          newsImgUploadHttp(fd).then((res: any) => {
+            if (res.data.code === 100) {
               insertImgFn(res.data.data);
             } else {
 							message.warning(res.data.msg);

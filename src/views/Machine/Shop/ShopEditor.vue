@@ -149,13 +149,13 @@
 			</a-col>
 
 			<a-col :span="3" class="labelText">{{ $t('default.129') }}</a-col>
-			<a-col :span="3" class="selectSearch">
-				<a-select v-model:value="infoVO.shopRate" @change="shopRatioChange">
+			<a-col :span="3">
+				<a-select class="selectBox" v-model:value="infoVO.shopRate" @change="shopRatioChange">
 					<a-select-option v-for="option in shopRateList" :key="option.id">{{ option.label }}</a-select-option>
 				</a-select>
 			</a-col>
 			<a-col :span="3" class="labelText">{{ $t('default.130') }}</a-col>
-			<a-col :span="3" class="selectSearch">
+			<a-col :span="3">
 				<a-input v-model:value="infoVO.agentRate" :disabled="true" />
 			</a-col>
 		</a-row>
@@ -182,8 +182,8 @@
 			<a-col :span="3" class="labelText">
 				{{ $t('default.26') }}
 			</a-col>
-			<a-col :span="9" class="selectSearch">
-				<a-select show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
+			<a-col :span="9">
+				<a-select class="selectBox" show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
 					<a-select-option v-for="d in agentList" :key="d.id">
 						<div :title="d.name">{{ d.name }}</div>
 					</a-select-option>
@@ -223,8 +223,8 @@
 			<a-col :span="2" class="labelText">
 				{{ $t('default.84') }}
 			</a-col>
-			<a-col :span="4" class="selectSearch">
-				<a-select v-model:value="machineVO.placingType" allow-clear>
+			<a-col :span="4">
+				<a-select class="selectBox" v-model:value="machineVO.placingType" allow-clear>
 					<a-select-option :value="1">{{ $t('default.86') }}</a-select-option>
 					<a-select-option :value="2">{{ $t('default.87') }}</a-select-option>
 					<a-select-option :value="3">{{ $t('default.88') }}</a-select-option>
@@ -244,8 +244,8 @@
 			<a-col :span="2" class="labelText">
 				{{ $t('default.22') }}
 			</a-col>
-			<a-col :span="4" class="selectSearch">
-				<a-select v-model:value="machineVO.type" allow-clear>
+			<a-col :span="4">
+				<a-select class="selectBox" v-model:value="machineVO.type" allow-clear>
 					<a-select-option value="A1">A1</a-select-option>
 					<a-select-option value="W1">W1</a-select-option>
 				</a-select>

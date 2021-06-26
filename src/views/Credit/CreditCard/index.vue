@@ -17,8 +17,8 @@
 			<a-col :span="2" class="labelText">
 				{{ 'Member' }}
 			</a-col>
-			<a-col :span="3" class="selectSearch">
-				<a-select show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
+			<a-col :span="3">
+				<a-select class="selectBox" show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
 					<a-select-option v-for="d in agentList" :key="d.id">
 						<div :title="d.name">{{ d.name }}</div>
 					</a-select-option>
@@ -27,8 +27,8 @@
 			<a-col :span="2" class="labelText">
 				{{ 'All Points' }}
 			</a-col>
-			<a-col :span="3" class="selectSearch">
-				<a-select show-search v-model:value="infoVO.ownerId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="ownerSearch">
+			<a-col :span="3">
+				<a-select class="selectBox" show-search v-model:value="infoVO.ownerId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="ownerSearch">
 					<a-select-option v-for="d in ownerList" :key="d.id">
 						<div :title="d.username">{{ d.username }}</div>
 					</a-select-option>

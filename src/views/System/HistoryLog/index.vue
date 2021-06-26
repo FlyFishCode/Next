@@ -5,8 +5,8 @@
 			<a-col :span="2" class="labelText">
 				{{ $t('default.202') }}
 			</a-col>
-			<a-col :span="3" class="selectSearch">
-				<a-select show-search v-model:value="infoVO.userId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="userSearch">
+			<a-col :span="3">
+				<a-select class="selectBox" show-search v-model:value="infoVO.userId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="userSearch">
 					<a-select-option v-for="user in userList" :key="user.id">
 						<div :title="user.username">{{ user.username }}</div>
 					</a-select-option>
@@ -15,16 +15,16 @@
 			<a-col :span="2" class="labelText">
 				{{ $t('default.190') }}
 			</a-col>
-			<a-col :span="4" class="selectSearch">
-				<a-select v-model:value="infoVO.module" allowClear>
+			<a-col :span="4">
+				<a-select class="selectBox" v-model:value="infoVO.module" allowClear>
 					<a-select-option v-for="modules in moduleList" :key="modules.id" :value="modules.id">{{ modules.label }}</a-select-option>
 				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
 				{{ $t('default.191') }}
 			</a-col>
-			<a-col :span="3" class="selectSearch">
-				<a-select v-model:value="infoVO.type" allowClear>
+			<a-col :span="3">
+				<a-select class="selectBox" v-model:value="infoVO.type" allowClear>
 					<a-select-option :value="1">{{ $t('default.185') }}</a-select-option>
 					<a-select-option :value="2">{{ $t('default.10') }}</a-select-option>
 					<a-select-option :value="3">{{ $t('default.187') }}</a-select-option>

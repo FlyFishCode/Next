@@ -10,8 +10,8 @@
 			<a-col :span="3" class="labelText">
 				{{ $t('default.5') }}
 			</a-col>
-			<a-col :span="6" class="selectSearch">
-				<a-select show-search v-model:value="infoVO.name" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allow-clear @search="shopSearch">
+			<a-col :span="6">
+				<a-select class="selectBox" show-search v-model:value="infoVO.name" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allow-clear @search="shopSearch">
 					<a-select-option v-for="d in shopList" :key="d.name">
 						<div :title="d.name">{{ d.name }}</div>
 					</a-select-option>

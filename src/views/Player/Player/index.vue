@@ -12,14 +12,15 @@
 				<a-col :span="2" class="labelText">
 					{{ $t('default.148') }}
 				</a-col>
-				<a-col :span="4" class="selectSearch">
+				<a-col :span="4">
 					<a-input v-model:value="infoVO.username" allowClear />
 				</a-col>
 				<a-col :span="2" class="labelText">
 					{{ $t('default.161') }}
 				</a-col>
-				<a-col :span="4" class="selectSearch">
+				<a-col :span="4">
 					<a-select
+					class="selectBox"
 						show-search
 						v-model:value="infoVO.cardNo"
 						:default-active-first-option="false"
@@ -97,8 +98,8 @@
 				<a-col :span="2" class="labelText">
 					{{ $t('default.2') }}
 				</a-col>
-				<a-col :span="4" class="selectSearch">
-					<a-select show-search v-model:value="infoVO.shopId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="shopSearch">
+				<a-col :span="4">
+					<a-select class="selectBox" show-search v-model:value="infoVO.shopId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="shopSearch">
 						<a-select-option v-for="shop in shopList" :key="shop.name">
 							<div :title="shop.name">{{ shop.name }}</div>
 						</a-select-option>

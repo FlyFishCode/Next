@@ -26,8 +26,9 @@
 				<a-col :span="3" class="labelText">
 					{{ $t('default.17') }}
 				</a-col>
-				<a-col :span="8" class="selectSearch">
+				<a-col :span="8">
 					<a-select
+					class="selectBox"
 						show-search
 						v-model:value="searchVO.shopName"
 						:default-active-first-option="false"

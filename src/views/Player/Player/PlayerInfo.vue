@@ -47,7 +47,7 @@
 			<a-col :span="3" class="labelText">
 				{{ $t('default.161') }}
 			</a-col>
-			<a-col :span="9" class="selectSearch">
+			<a-col :span="9">
 				<a-select
 					show-search
 					v-model:value="infoVO.mainCardNo"
@@ -66,8 +66,8 @@
 			<a-col :span="3" class="labelText">
 				{{ $t('default.5') }}
 			</a-col>
-			<a-col :span="9" class="selectSearch">
-				<a-select show-search v-model:value="infoVO.shopId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allow-clear @search="shopSearch">
+			<a-col :span="9">
+				<a-select class="selectBox" show-search v-model:value="infoVO.shopId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allow-clear @search="shopSearch">
 					<a-select-option v-for="d in shopList" :key="d.id">
 						<div :title="d.name">{{ d.name }}</div>
 					</a-select-option>
@@ -78,8 +78,8 @@
 			<a-col :span="3" class="labelText">
 				{{ $t('default.105') }}
 			</a-col>
-			<a-col :span="9" class="selectSearch">
-				<a-select v-model:value="infoVO.gender" allow-clear>
+			<a-col :span="9">
+				<a-select class="selectBox" v-model:value="infoVO.gender" allow-clear>
 					<a-select-option :value="1">{{ $t('default.106') }}</a-select-option>
 					<a-select-option :value="2">{{ $t('default.107') }}</a-select-option>
 				</a-select>
@@ -113,8 +113,8 @@
 			<a-col :span="3" class="labelText">
 				{{ $t('default.0') }}
 			</a-col>
-			<a-col :span="9" class="selectSearch">
-				<a-select v-model:value="infoVO.Language">
+			<a-col :span="9">
+				<a-select class="selectBox" v-model:value="infoVO.Language">
 					<a-select-option :value="1">{{ $t('default.165') }}</a-select-option>
 					<a-select-option :value="2">{{ $t('default.166') }}</a-select-option>
 					<a-select-option :value="3">{{ $t('default.167') }}</a-select-option>
@@ -123,7 +123,7 @@
 			<a-col v-if="!id" :span="3" class="labelText">
 				{{ $t('default.156') }}
 			</a-col>
-			<a-col v-if="!id" :span="9" class="selectSearch">
+			<a-col v-if="!id" :span="9">
 				<a-input-password v-model:value="infoVO.password" type="password" />
 			</a-col>
 		</a-row>

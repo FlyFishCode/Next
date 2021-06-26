@@ -12,28 +12,28 @@
 							/></a-col>
 							<a-col v-show="setting.common.gameSetting[301].available" :span="20" class="showBox">
 								<a-col :span="2" class="labelText">{{ $t('default.35') }}</a-col>
-								<a-col :span="2" class="selectSearch">
+								<a-col :span="2">
 									<a-input v-model:value="setting.common.gameSetting[301].credits" />
 								</a-col>
 								<a-col :span="2" class="labelText">{{ $t('default.36') }}</a-col>
-								<a-col :span="2" class="selectSearch">
+								<a-col :span="2">
 									<a-input v-model:value="setting.common.gameSetting[301].round" />
 								</a-col>
 								<a-col :span="2" class="labelText">{{ $t('default.37') }}</a-col>
-								<a-col :span="4" class="selectSearch">
-									<a-select v-model:value="setting.common.gameSetting[301].in">
+								<a-col :span="4">
+									<a-select class="selectBox" v-model:value="setting.common.gameSetting[301].in">
 										<a-select-option v-for="option in gameBeginOptions" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
 								<a-col :span="2" class="labelText">{{ $t('default.38') }}</a-col>
-								<a-col :span="4" class="selectSearch">
-									<a-select v-model:value="setting.common.gameSetting[301].out">
+								<a-col :span="4">
+									<a-select class="selectBox" v-model:value="setting.common.gameSetting[301].out">
 										<a-select-option v-for="option in gameEndOptions" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
 								<a-col :span="2" class="labelText">{{ $t('default.39') }}</a-col>
-								<a-col :span="2" class="selectSearch">
-									<a-select v-model:value="setting.common.gameSetting[301].bull">
+								<a-col :span="2">
+									<a-select class="selectBox" v-model:value="setting.common.gameSetting[301].bull">
 										<a-select-option v-for="option in bullOptions" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
@@ -46,28 +46,28 @@
 							/></a-col>
 							<a-col v-show="setting.common.gameSetting[501].available" :span="20" class="showBox">
 								<a-col :span="2" class="labelText">{{ $t('default.35') }}</a-col>
-								<a-col :span="2" class="selectSearch">
+								<a-col :span="2">
 									<a-input v-model:value="setting.common.gameSetting[501].credits" />
 								</a-col>
 								<a-col :span="2" class="labelText">{{ $t('default.36') }}</a-col>
-								<a-col :span="2" class="selectSearch">
+								<a-col :span="2">
 									<a-input v-model:value="setting.common.gameSetting[501].round" />
 								</a-col>
 								<a-col :span="2" class="labelText">{{ $t('default.37') }}</a-col>
-								<a-col :span="4" class="selectSearch">
-									<a-select v-model:value="setting.common.gameSetting[501].in">
+								<a-col :span="4">
+									<a-select class="selectBox" v-model:value="setting.common.gameSetting[501].in">
 										<a-select-option v-for="option in gameBeginOptions" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
 								<a-col :span="2" class="labelText">{{ $t('default.38') }}</a-col>
-								<a-col :span="4" class="selectSearch">
-									<a-select v-model:value="setting.common.gameSetting[501].out">
+								<a-col :span="4">
+									<a-select class="selectBox" v-model:value="setting.common.gameSetting[501].out">
 										<a-select-option v-for="option in gameEndOptions" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
 								<a-col :span="2" class="labelText">{{ $t('default.39') }}</a-col>
-								<a-col :span="2" class="selectSearch">
-									<a-select v-model:value="setting.common.gameSetting[501].bull">
+								<a-col :span="2">
+									<a-select class="selectBox" v-model:value="setting.common.gameSetting[501].bull">
 										<a-select-option v-for="option in bullOptions" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
@@ -80,28 +80,28 @@
 							/></a-col>
 							<a-col v-show="setting.common.gameSetting[701].available" :span="20" class="showBox">
 								<a-col :span="2" class="labelText">{{ $t('default.35') }}</a-col>
-								<a-col :span="2" class="selectSearch">
+								<a-col :span="2">
 									<a-input v-model:value="setting.common.gameSetting[701].credits" />
 								</a-col>
 								<a-col :span="2" class="labelText">{{ $t('default.36') }}</a-col>
-								<a-col :span="2" class="selectSearch">
+								<a-col :span="2">
 									<a-input v-model:value="setting.common.gameSetting[701].round" />
 								</a-col>
 								<a-col :span="2" class="labelText">{{ $t('default.37') }}</a-col>
-								<a-col :span="4" class="selectSearch">
-									<a-select v-model:value="setting.common.gameSetting[701].in">
+								<a-col :span="4">
+									<a-select class="selectBox" v-model:value="setting.common.gameSetting[701].in">
 										<a-select-option v-for="option in gameBeginOptions" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
 								<a-col :span="2" class="labelText">{{ $t('default.38') }}</a-col>
-								<a-col :span="4" class="selectSearch">
-									<a-select v-model:value="setting.common.gameSetting[701].out">
+								<a-col :span="4">
+									<a-select class="selectBox" v-model:value="setting.common.gameSetting[701].out">
 										<a-select-option v-for="option in gameEndOptions" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
 								<a-col :span="2" class="labelText">{{ $t('default.39') }}</a-col>
-								<a-col :span="2" class="selectSearch">
-									<a-select v-model:value="setting.common.gameSetting[701].bull">
+								<a-col :span="2">
+									<a-select class="selectBox" v-model:value="setting.common.gameSetting[701].bull">
 										<a-select-option v-for="option in bullOptions" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
@@ -114,28 +114,28 @@
 							/></a-col>
 							<a-col v-show="setting.common.gameSetting[901].available" :span="20" class="showBox">
 								<a-col :span="2" class="labelText">{{ $t('default.35') }}</a-col>
-								<a-col :span="2" class="selectSearch">
+								<a-col :span="2">
 									<a-input v-model:value="setting.common.gameSetting[901].credits" />
 								</a-col>
 								<a-col :span="2" class="labelText">{{ $t('default.36') }}</a-col>
-								<a-col :span="2" class="selectSearch">
+								<a-col :span="2">
 									<a-input v-model:value="setting.common.gameSetting[901].round" />
 								</a-col>
 								<a-col :span="2" class="labelText">{{ $t('default.37') }}</a-col>
-								<a-col :span="4" class="selectSearch">
-									<a-select v-model:value="setting.common.gameSetting[901].in">
+								<a-col :span="4">
+									<a-select class="selectBox" v-model:value="setting.common.gameSetting[901].in">
 										<a-select-option v-for="option in gameBeginOptions" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
 								<a-col :span="2" class="labelText">{{ $t('default.38') }}</a-col>
-								<a-col :span="4" class="selectSearch">
-									<a-select v-model:value="setting.common.gameSetting[901].out">
+								<a-col :span="4">
+									<a-select class="selectBox" v-model:value="setting.common.gameSetting[901].out">
 										<a-select-option v-for="option in gameEndOptions" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
 								<a-col :span="2" class="labelText">{{ $t('default.39') }}</a-col>
-								<a-col :span="2" class="selectSearch">
-									<a-select v-model:value="setting.common.gameSetting[901].bull">
+								<a-col :span="2">
+									<a-select class="selectBox" v-model:value="setting.common.gameSetting[901].bull">
 										<a-select-option v-for="option in bullOptions" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
@@ -151,11 +151,11 @@
 							/></a-col>
 							<a-col v-show="setting.common.gameSetting.stardardCT.available" :span="8" class="showBox">
 								<a-col :span="3" class="labelText">{{ $t('default.35') }}</a-col>
-								<a-col :span="9" class="selectSearch">
+								<a-col :span="9">
 									<a-input v-model:value="setting.common.gameSetting.stardardCT.credits" />
 								</a-col>
 								<a-col :span="3" class="labelText">{{ $t('default.36') }}</a-col>
-								<a-col :span="9" class="selectSearch">
+								<a-col :span="9">
 									<a-input v-model:value="setting.common.gameSetting.stardardCT.round" />
 								</a-col>
 							</a-col>
@@ -167,11 +167,11 @@
 							/></a-col>
 							<a-col v-show="setting.common.gameSetting.accumulationCT.available" :span="8" class="showBox">
 								<a-col :span="3" class="labelText">{{ $t('default.35') }}</a-col>
-								<a-col :span="9" class="selectSearch">
+								<a-col :span="9">
 									<a-input v-model:value="setting.common.gameSetting.accumulationCT.credits" />
 								</a-col>
 								<a-col :span="3" class="labelText">{{ $t('default.36') }}</a-col>
-								<a-col :span="9" class="selectSearch">
+								<a-col :span="9">
 									<a-input v-model:value="setting.common.gameSetting.accumulationCT.round" />
 								</a-col>
 							</a-col>
@@ -186,11 +186,11 @@
 							/></a-col>
 							<a-col v-show="setting.common.gameSetting.stardardCUp.available" :span="8" class="showBox">
 								<a-col :span="3" class="labelText">{{ $t('default.35') }}</a-col>
-								<a-col :span="9" class="selectSearch">
+								<a-col :span="9">
 									<a-input v-model:value="setting.common.gameSetting.stardardCUp.credits" />
 								</a-col>
 								<a-col :span="3" class="labelText">{{ $t('default.36') }}</a-col>
-								<a-col :span="9" class="selectSearch">
+								<a-col :span="9">
 									<a-input v-model:value="setting.common.gameSetting.stardardCUp.round" />
 								</a-col>
 							</a-col>
@@ -202,11 +202,11 @@
 							/></a-col>
 							<a-col v-show="setting.common.gameSetting.timeLimitedCUp.available" :span="8" class="showBox">
 								<a-col :span="3" class="labelText">{{ $t('default.35') }}</a-col>
-								<a-col :span="9" class="selectSearch">
+								<a-col :span="9">
 									<a-input v-model:value="setting.common.gameSetting.timeLimitedCUp.credits" />
 								</a-col>
 								<a-col :span="3" class="labelText">{{ $t('default.46') }}</a-col>
-								<a-col :span="9" class="selectSearch">
+								<a-col :span="9">
 									<a-input v-model:value="setting.common.gameSetting.timeLimitedCUp.second" allow-clear />
 								</a-col>
 							</a-col>
@@ -221,7 +221,7 @@
 							/></a-col>
 							<a-col v-show="setting.common.gameSetting.halving.available" :span="8" class="showBox">
 								<a-col :span="3" class="labelText">{{ $t('default.35') }}</a-col>
-								<a-col :span="9" class="selectSearch">
+								<a-col :span="9">
 									<a-input v-model:value="setting.common.gameSetting.halving.credits" />
 								</a-col>
 							</a-col>
@@ -233,7 +233,7 @@
 							/></a-col>
 							<a-col v-show="setting.common.gameSetting.drink.available" :span="8" class="showBox">
 								<a-col :span="3" class="labelText">{{ $t('default.35') }}</a-col>
-								<a-col :span="9" class="selectSearch">
+								<a-col :span="9">
 									<a-input v-model:value="setting.common.gameSetting.drink.credits" />
 								</a-col>
 							</a-col>
@@ -245,12 +245,12 @@
 							/></a-col>
 							<a-col v-show="setting.common.gameSetting.eagleEye.available" :span="8" class="showBox">
 								<a-col :span="3" class="labelText">{{ $t('default.35') }}</a-col>
-								<a-col :span="9" class="selectSearch">
+								<a-col :span="9">
 									<a-input v-model:value="setting.common.gameSetting.eagleEye.credits" />
 								</a-col>
 								<a-col :span="3" class="labelText">{{ $t('default.36') }}</a-col>
-								<a-col :span="9" class="selectSearch">
-									<a-select v-model:value="setting.common.gameSetting.eagleEye.round">
+								<a-col :span="9">
+									<a-select class="selectBox" v-model:value="setting.common.gameSetting.eagleEye.round">
 										<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
@@ -263,12 +263,12 @@
 							/></a-col>
 							<a-col v-show="setting.common.gameSetting.bigbull.available" :span="8" class="showBox">
 								<a-col :span="3" class="labelText">{{ $t('default.35') }}</a-col>
-								<a-col :span="9" class="selectSearch">
+								<a-col :span="9">
 									<a-input v-model:value="setting.common.gameSetting.bigbull.credits" />
 								</a-col>
 								<a-col :span="3" class="labelText">{{ $t('default.36') }}</a-col>
-								<a-col :span="9" class="selectSearch">
-									<a-select v-model:value="setting.common.gameSetting.bigbull.round">
+								<a-col :span="9">
+									<a-select class="selectBox" v-model:value="setting.common.gameSetting.bigbull.round">
 										<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
 									</a-select>
 								</a-col>
@@ -281,7 +281,7 @@
 							/></a-col>
 							<a-col v-show="setting.common.gameSetting.crcup.available" :span="8" class="showBox">
 								<a-col :span="3" class="labelText">{{ $t('default.35') }}</a-col>
-								<a-col :span="9" class="selectSearch">
+								<a-col :span="9">
 									<a-input v-model:value="setting.common.gameSetting.crcup.credits" />
 								</a-col>
 							</a-col>
@@ -292,13 +292,13 @@
 						<a-row class="rowStyle">
 							<a-col :span="2" class="labelText">{{ $t('default.56') }}</a-col>
 							<a-col :span="2" class="labelText">{{ $t('default.35') }}</a-col>
-							<a-col :span="4" class="selectSearch">
+							<a-col :span="4">
 								<a-input v-model:value="setting.common.gameSetting.online501.credits" />
 							</a-col>
 							<a-col :span="2" class="labelText">{{ $t('default.57') }}</a-col>
 							<a-col :span="2" class="labelText">{{ $t('default.35') }}</a-col>
-							<a-col :span="4" class="selectSearch">
-								<a-select v-model:value="setting.common.gameSetting.online701.credits">
+							<a-col :span="4">
+								<a-select class="selectBox" v-model:value="setting.common.gameSetting.online701.credits">
 									<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
 								</a-select>
 							</a-col>
@@ -306,19 +306,19 @@
 						<a-row class="rowStyle">
 							<a-col :span="2" class="labelText">{{ $t('default.58') }}</a-col>
 							<a-col :span="2" class="labelText">{{ $t('default.35') }}</a-col>
-							<a-col :span="4" class="selectSearch">
+							<a-col :span="4">
 								<a-input v-model:value="setting.common.gameSetting.online501DO.credits" />
 							</a-col>
 							<a-col :span="2" class="labelText">{{ $t('default.59') }}</a-col>
 							<a-col :span="2" class="labelText">{{ $t('default.35') }}</a-col>
-							<a-col :span="4" class="selectSearch">
+							<a-col :span="4">
 								<a-input v-model:value="setting.common.gameSetting.online701MO.credits" />
 							</a-col>
 						</a-row>
 						<a-row>
 							<a-col :span="2" class="labelText">{{ $t('default.41') }}</a-col>
 							<a-col :span="2" class="labelText">{{ $t('default.35') }}</a-col>
-							<a-col :span="4" class="selectSearch">
+							<a-col :span="4">
 								<a-input v-model:value="setting.common.gameSetting.onlinesdCrcket.credits" />
 							</a-col>
 						</a-row>
@@ -330,18 +330,18 @@
 						<a-col :span="2" class="switchBox"><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.screenSaverSwitch"/></a-col>
 						<a-col v-show="setting.common.screenSaverSwitch" :span="8" class="showBox">
 							<a-col :span="10" class="labelText">{{ $t('default.62') }}</a-col>
-							<a-col :span="10" class="selectSearch">
+							<a-col :span="10">
 								<a-input v-model:value="setting.common.screenSaverTime" />
 							</a-col>
 						</a-col>
 						<!-- <a-col :span="4" class="labelText">{{ $t('default.129') }}</a-col>
-						<a-col :span="2" class="selectSearch">
+						<a-col :span="2">
 							<a-select v-model:value="setting.common.systemSetting.others.shopRatio" @change="shopRatioChange">
 								<a-select-option v-for="option in shopRatioList" :key="option.id">{{ option.label }}</a-select-option>
 							</a-select>
 						</a-col>
 						<a-col :span="4" class="labelText">{{ $t('default.130') }}</a-col>
-						<a-col :span="2" class="selectSearch">
+						<a-col :span="2">
 							<a-input v-model:value="setting.common.systemSetting.others.agentRatio" :disabled="true" />
 						</a-col> -->
 					</a-row>
@@ -351,7 +351,7 @@
 						<a-col :span="2" class="switchBox"><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.showTimedSwitch"/></a-col>
 						<a-col v-show="setting.common.showTimedSwitch" :span="8" class="showBox">
 							<a-col :span="10" class="labelText">{{ $t('default.66') }}</a-col>
-							<a-col :span="10" class="selectSearch">
+							<a-col :span="10">
 								<a-input v-model:value="setting.common.showTimed" />
 							</a-col>
 						</a-col>
@@ -362,8 +362,8 @@
 						<a-col :span="2" class="switchBox"><a-switch :checked-children="$t('default.47')" :un-checked-children="$t('default.48')" v-model:checked="setting.common.autoChange"/></a-col>
 						<a-col v-show="setting.common.autoChange" :span="8" class="showBox">
 							<a-col :span="10" class="labelText">{{ $t('default.64') }}</a-col>
-							<a-col :span="10" class="selectSearch">
-								<a-select v-model:value="setting.common.changingOver">
+							<a-col :span="10">
+								<a-select class="selectBox" v-model:value="setting.common.changingOver">
 									<a-select-option v-for="option in options" :key="option.id">{{ option.label }}</a-select-option>
 								</a-select>
 							</a-col>
@@ -397,7 +397,7 @@
 						/></a-col>
 						<a-col v-show="setting.common.systemSetting.others.isFree" :span="4" class="showBox">
 							<a-col :span="10" class="labelText">{{ $t('default.78') }}</a-col>
-							<a-col :span="14" class="selectSearch">
+							<a-col :span="14">
 								<a-input v-model:value="setting.common.systemSetting.others.freeCoins" allow-clear />
 							</a-col>
 						</a-col>

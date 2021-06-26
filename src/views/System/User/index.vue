@@ -12,7 +12,7 @@
 				<a-col :span="2" class="labelText">
 					{{ $t('default.104') }}
 				</a-col>
-				<a-col :span="4" class="selectSearch">
+				<a-col :span="4">
 					<a-input v-model:value="infoVO.nickname" allowClear />
 				</a-col>
 				<a-col :span="2" class="labelText">
@@ -128,7 +128,7 @@
 					<a-input v-model:value="otherObj.nickname" allowClear />
 				</a-form-item>
 				<a-form-item :label="$t('default.23')" name="countryId">
-					<a-select v-model:value="otherObj.countryId">
+					<a-select class="selectBox" v-model:value="otherObj.countryId">
 						<a-select-option v-for="item in countryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
 					</a-select>
 				</a-form-item>
@@ -151,6 +151,7 @@
 				</a-form-item>
 				<a-form-item :label="$t('default.192')" v-if="handleTypeDisplay(otherObj.type)" name="superUserId">
 					<a-select
+					class="selectBox"
 						show-search
 						v-model:value="otherObj.superUserId"
 						:disabled="superDisabled"

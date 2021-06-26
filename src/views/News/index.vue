@@ -24,11 +24,11 @@
 			<a-col :span="4">
 				<a-input v-model:value="infoVO.title" allowClear />
 			</a-col>
-			<a-col :span="2" class="labelText">
+			<a-col v-if="status === 1" :span="2" class="labelText">
 				{{ $t('default.202') }}
 			</a-col>
-			<a-col :span="4" class="selectSearch">
-				<a-select show-search v-model:value="infoVO.opeatorIdName" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="userSearch">
+			<a-col v-if="status === 1" :span="4">
+				<a-select class="selectBox" show-search v-model:value="infoVO.opeatorIdName" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="userSearch">
 					<a-select-option v-for="user in userList" :key="user.id">
 						<div :title="user.username">{{ user.username }}</div>
 					</a-select-option>
@@ -83,19 +83,21 @@
 		</a-table>
 	</a-row>
 	<div class="paginationStyle">
-		<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" @change="pageChange" />
+		<a-pagination show-quick-jumper v-model:current="infoVO.pageNum" :total="total" @change="pageChange" />
 	</div>
 	<DeleteDialog :visible="visible" @afterClose="afterClose" @handleOk="handleDeleteOk" />
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-import { newsListHttp, countryListHttp, systemUserListHttp, deleteShopHttp, newEditorHttp } from '@/api/api';
+import { newsListHttp, countryListHttp, systemUserListHttp, newsDeleteHttp, newsEditorHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
 import { handleSelectEvent, i18n } from '@/components/common/tools';
+import { useStore } from 'vuex';
+// import qs from 'qs'
 export default defineComponent({
 	name: 'News',
 	components: {
@@ -104,9 +106,18 @@ export default defineComponent({
 	},
 	setup() {
 		const ROUTER = useRouter();
+		const STORE = useStore();
 		let selectList: number[] = [];
 		const data = reactive({
 			visible: false,
+			total: 1,
+			userList: [],
+			countryList: [],
+			agentList: [],
+			ownerList: [],
+			shopList: [],
+			tableList: [],
+			status:0,
 			infoVO: {
 				countryId: '',
 				title: '',
@@ -115,17 +126,9 @@ export default defineComponent({
 				opeatorIdName:'',
 				registerEndDate:"",
 				registerStartDate:"",
-				pageIndex: 1,
+				pageNum: 1,
 				pageSize: 10
 			},
-			img: require('@/assets/logo.png'),
-			total: 1,
-			userList: [],
-			countryList: [],
-			agentList: [],
-			ownerList: [],
-			shopList: [],
-			tableList: [],
 			columns: [
 				{
 					title: i18n('default.23'),
@@ -213,7 +216,7 @@ export default defineComponent({
 				data.visible = value;
 			},
 			handleDeleteOk: () => {
-				deleteShopHttp(selectList).then((res: any) => {
+				newsDeleteHttp(selectList).then((res: any) => {
 					message.warning(res.data.msg);
 					data.search();
 				});
@@ -254,7 +257,7 @@ export default defineComponent({
 					registerDate:row.registerDate,
 					display:Number(row.display),
 				}
-				newEditorHttp(flagData).then((res: any) =>{
+				newsEditorHttp(flagData).then((res: any) =>{
 					message.info(res.data.msg)
 				})
 			}
@@ -266,13 +269,15 @@ export default defineComponent({
 		};
 		const init = () => {
 			data.search();
+			data.userSearch('');
 			getCountryList();
+			data.status = STORE.state.role
 		};
 		onMounted(() => {
 			init();
 		});
 		return {
-			...toRefs(data),
+			...toRefs(data)
 		};
 	}
 });

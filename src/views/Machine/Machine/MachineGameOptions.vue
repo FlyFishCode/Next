@@ -26,7 +26,7 @@
 				<a-col :span="3" class="labelText">
 					{{ $t('default.21') }}
 				</a-col>
-				<a-col :span="8" class="selectSearch">
+				<a-col :span="8">
 					<a-input v-model:value="searchVO.serial" allowClear />
 				</a-col>
 				<a-col :span="2" class="labelText">

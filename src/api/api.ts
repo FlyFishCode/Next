@@ -41,9 +41,9 @@ import { UserCardList, UserCreate, UserUpdate, UserInfo, UserCardDelete, UserCar
 import { CountryList, CountryCreate, CountryUpdate, CountryInfo, AreaList, AreaCreate, AreaUpdate, AreaInfo } from '@/api/Country/index';
 
 // News
-import { newsList , newsInfo, newsImgUpload, newEditor } from '@/api/News/index'
+import { newsList , newsInfo, newsImgUpload, newsEditor, newsDelete } from '@/api/News/index'
 
-const baseURL = '/apw';
+const baseURL = '/apr';
 const Axios = axios.create({
 	baseURL: baseURL,
 	timeout: 10000
@@ -361,8 +361,11 @@ const newsInfoHttp = (data: any) =>{
 const newsImgUploadHttp = (data: any) =>{
 	return Axios.post(newsImgUpload, data);
 }
-const newEditorHttp = (data: any) =>{
-	return Axios.post(newEditor, data);
+const newsEditorHttp = (data: any) =>{
+	return Axios.post(newsEditor, data);
+}
+const newsDeleteHttp = (data: any) =>{
+	return Axios.post(newsDelete, data);
 }
 export {
 	loginHttp,
@@ -430,5 +433,6 @@ export {
 	newsListHttp,
 	newsInfoHttp,
 	newsImgUploadHttp,
-	newEditorHttp
+	newsEditorHttp,
+	newsDeleteHttp
 };

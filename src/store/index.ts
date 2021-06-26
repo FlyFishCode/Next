@@ -12,7 +12,7 @@ export default createStore({
 	},
 	mutations: {
 		setRole(state, value) {
-			state.role = value;
+			state.role = Number(value);
 		}
 	},
 	actions: {},

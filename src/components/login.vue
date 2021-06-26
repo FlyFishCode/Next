@@ -24,7 +24,7 @@ import { defineComponent, reactive, toRefs } from 'vue';
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue';
 import { message } from 'ant-design-vue';
 import { useRouter } from 'vue-router';
-import { useStore } from 'vuex';
+// import { useStore } from 'vuex';
 import { loginHttp } from '@/api/api';
 import { MD5 } from '@/components/common/tools';
 export default defineComponent({
@@ -34,7 +34,7 @@ export default defineComponent({
 		LockOutlined
 	},
 	setup() {
-		const STORE = useStore();
+		// const STORE = useStore();
 		const ROUTER = useRouter();
 		const data = reactive({
 			userName: '',
@@ -53,7 +53,7 @@ export default defineComponent({
 						sessionStorage.setItem('NextGender', data.gender);
 						sessionStorage.setItem('NextMobile', data.mobile);
 						sessionStorage.setItem('NextRoleType', data.type);
-						STORE.commit('setRole', data.type);
+						// STORE.commit('setRole', data.type);
 						message.info(res.data.msg);
 						ROUTER.push('index');
 					} else {

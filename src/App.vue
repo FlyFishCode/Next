@@ -48,10 +48,7 @@
 	text-align: center;
 	line-height: 32px;
 }
-/* 带搜索得下拉框 */
-.selectSearch div {
-	width: 100%;
-}
+
 /* 时间组件 */
 .datePicker:first-child(span) {
 	width: 100%;

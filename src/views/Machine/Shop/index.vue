@@ -41,8 +41,8 @@
 			<a-col v-if="isAdmin" :span="2" class="labelText">
 				{{ $t('default.26') }}
 			</a-col>
-			<a-col v-if="isAdmin" :span="4" class="selectSearch">
-				<a-select show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
+			<a-col v-if="isAdmin" :span="4">
+				<a-select class="selectBox" show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
 					<a-select-option v-for="d in agentList" :key="d.id">
 						<div :title="d.name">{{ d.name }}</div>
 					</a-select-option>

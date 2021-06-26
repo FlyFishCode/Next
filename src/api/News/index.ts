@@ -1,9 +1,11 @@
-const newsList = 'news/getLeagueNewsList';
+const newsList = 'news/getAdartsNewsList';
 
 const newsInfo = 'news/getleaguenewsbyid'
 
 const newsImgUpload = 'news/uploadAbsolutelyPictures'
 
-const newEditor = 'news/addnews'
+const newsEditor = 'news/addnews'
 
-export { newsList ,newsInfo, newsImgUpload, newEditor}
+const newsDelete = 'news/delleaguenewsbyid'
+
+export { newsList ,newsInfo, newsImgUpload, newsEditor, newsDelete}
