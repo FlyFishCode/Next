@@ -41,7 +41,7 @@ import { UserCardList, UserCreate, UserUpdate, UserInfo, UserCardDelete, UserCar
 import { CountryList, CountryCreate, CountryUpdate, CountryInfo, AreaList, AreaCreate, AreaUpdate, AreaInfo } from '@/api/Country/index';
 
 // News
-import { newsList , newsInfo, newsImgUpload, newsEditor, newsDelete, carouselList, carouselEditor, carouseAdd, carouselInfo, carouseDelete } from '@/api/News/index'
+import { newsList , newsInfo, newsImgUpload, newsEditor, newsDelete, carouselList, carouselEditor, carouseAdd, carouselInfo, carouseDelete, carouselAdminEditor } from '@/api/News/index'
 
 const baseURL = '/apr';
 const Axios = axios.create({
@@ -72,6 +72,7 @@ Axios.interceptors.request.use(
 Axios.interceptors.response.use(
 	(response) => {
 		if (response.data.code === 193) {
+			debugger
 			message.error(response.data.msg);
 			window.location.href = window.location.href.split('#')[0];
 		}
@@ -378,6 +379,9 @@ const carouseAddHttp = (data: any) =>{
 const carouselEditorHttp = (data: any) =>{
 	return Axios.post(carouselEditor, data)
 }
+const carouselAdminEditorHttp = (data: any) =>{
+	return Axios.post(getNewUrl(carouselAdminEditor, data))
+}
 const carouselInfoHttp = (data: any) =>{
 	return Axios.post(getNewUrl(carouselInfo, data));
 }
@@ -456,5 +460,6 @@ export {
 	carouselEditorHttp,
 	carouseAddHttp,
 	carouselInfoHttp,
-	carouseDeleteHttp
+	carouseDeleteHttp,
+	carouselAdminEditorHttp
 };

@@ -109,6 +109,10 @@ export default defineComponent({
 			total: 1,
 			columns: [
 				{
+					title: i18n('default.181'),
+					dataIndex: 'sort'
+				},
+				{
 					title: 'ID',
 					dataIndex: 'id'
 				},
@@ -119,10 +123,6 @@ export default defineComponent({
 				{
 					title: i18n('default.180'),
 					dataIndex: 'code'
-				},
-				{
-					title: i18n('default.181'),
-					dataIndex: 'sort'
 				}
 			],
 			tableList: [],

@@ -15,7 +15,10 @@ const carouseAdd ='banner/addBanner'
 
 const carouselEditor = 'banner/updateBanner'
 
+// 管理远批准
+const carouselAdminEditor = 'banner/approvalBanner'
+
 const carouselInfo = 'banner/getbannerbyid'
 
 const carouseDelete = 'banner/delbannerbyid'
-export { newsList ,newsInfo, newsImgUpload, newsEditor, newsDelete, carouselList, carouseAdd, carouselEditor, carouselInfo, carouseDelete}
+export { newsList ,newsInfo, newsImgUpload, newsEditor, newsDelete, carouselList, carouseAdd, carouselEditor, carouselInfo, carouseDelete, carouselAdminEditor}

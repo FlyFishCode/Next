@@ -70,7 +70,7 @@ import E from 'wangeditor'
 
 
 export default defineComponent({
-	name: 'Shop',
+	name: 'CarouselEdit',
 	components: {
 		showUrlDialog,
 		PlusOutlined,

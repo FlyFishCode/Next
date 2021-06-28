@@ -47,10 +47,10 @@
 				<a-button type="link" @click="handleTitleClick(record.id)">{{ record.name }}</a-button>
 			</template>
 			<template #display="{ record }">
-				<a-checkbox v-model:checked="record.status" @change="checkboxChange(record)"></a-checkbox>
+				<a-checkbox v-model:checked="record.status" @change="checkboxChange(record,1)"></a-checkbox>
 			</template>
 			<template #approval="{ record }">
-				<a-checkbox v-model:checked="record.approval" @change="checkboxChange(record)"></a-checkbox>
+				<a-checkbox v-model:checked="record.approval" @change="checkboxChange(record,0)"></a-checkbox>
 			</template>
 		</a-table>
 	</a-row>
@@ -63,7 +63,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-import { countryListHttp, carouselListHttp, carouselEditorHttp, carouseDeleteHttp } from '@/api/api'
+import { countryListHttp, carouselListHttp, carouselEditorHttp, carouseDeleteHttp, carouselAdminEditorHttp } from '@/api/api'
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import labelTitle from '@/components/labelTitle.vue';
 import { message } from 'ant-design-vue';
@@ -126,10 +126,6 @@ export default defineComponent({
 				{
 					title: i18n('default.203'),
 					slots: { customRender: 'display' }
-				},
-				{
-					title: i18n('default.211'),
-					slots: { customRender: 'approval' }
 				}
 			],
       rowSelection: {
@@ -167,8 +163,9 @@ export default defineComponent({
 				});
 				data.visible = false;
 			},
-			checkboxChange:(row: any) =>{
-				const flagData = {
+			checkboxChange:(row: any,type: number) =>{
+				if(type){
+					const flagData = {
 					cdateInt: row.cdateInt,
 					countryId: row.countryId,
 					id: row.id,
@@ -181,11 +178,22 @@ export default defineComponent({
 					status: Number(row.status),
 					approval: Number(row.approval),
 				}
-				carouselEditorHttp(flagData).then((res: any) =>{
-					if(res.data.code === 100){
-						message.info(res.data.msg)
-					}
+					carouselEditorHttp(flagData).then((res: any) =>{
+						if(res.data.code === 100){
+							message.info(res.data.msg)
+						}
 				})
+				}else{
+					const flagData = {
+						id:row.id,
+						approval: Number(row.approval)
+					}
+					carouselAdminEditorHttp(flagData).then((res: any) =>{
+						if(res.data.code === 100){
+							message.info(res.data.msg)
+						}
+				})
+				}
 			},
       pageChange: () => {
 				data.search();
@@ -210,6 +218,12 @@ export default defineComponent({
       getCountryList();
       data.search(),
       data.status = STORE.state.role
+			if(data.status === 1){
+				data.columns.push({
+					title: i18n('default.211'),
+					slots: { customRender: 'approval' }
+				})
+			}
     }
     onMounted(() =>{
       init()
