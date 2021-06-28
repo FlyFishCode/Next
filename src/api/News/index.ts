@@ -8,4 +8,14 @@ const newsEditor = 'news/addnews'
 
 const newsDelete = 'news/delleaguenewsbyid'
 
-export { newsList ,newsInfo, newsImgUpload, newsEditor, newsDelete}
+// 走马灯
+const carouselList = 'banner/getBannerList';
+
+const carouseAdd ='banner/addBanner'
+
+const carouselEditor = 'banner/updateBanner'
+
+const carouselInfo = 'banner/getbannerbyid'
+
+const carouseDelete = 'banner/delbannerbyid'
+export { newsList ,newsInfo, newsImgUpload, newsEditor, newsDelete, carouselList, carouseAdd, carouselEditor, carouselInfo, carouseDelete}

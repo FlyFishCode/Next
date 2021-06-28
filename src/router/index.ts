@@ -196,16 +196,31 @@ const routes = [
 			{
 				path: '/News',
 				name: 'News',
-				component: () => import(/* webpackChunkName: "News" */ '../views/News/index.vue'),
+				component: () => import(/* webpackChunkName: "News" */ '../views/News/News/index.vue'),
 				meta: [{ label: 'default.193', path: 'News' }]
 			},
 			{
 				path: '/NewsEdit',
 				name: 'NewsEdit',
-				component: () => import(/* webpackChunkName: "NewsEdit" */ '../views/News/NewsEdit.vue'),
+				component: () => import(/* webpackChunkName: "NewsEdit" */ '../views/News/News/NewsEdit.vue'),
 				meta: [
 					{ label: 'default.193', path: 'News' },
 					{ label: 'default.195', path: 'NewsEdit' }
+				]
+			},
+			{
+				path: '/Carousel',
+				name: 'Carousel',
+				component: () => import(/* webpackChunkName: "Carousel" */ '../views/News/Carousel/index.vue'),
+				meta: [{ label: 'default.194', path: 'Carousel' }]
+			},
+			{
+				path: '/CarouselEdit',
+				name: 'CarouselEdit',
+				component: () => import(/* webpackChunkName: "CarouselEdit" */ '../views/News/Carousel/CarouselEdit.vue'),
+				meta: [
+					{ label: 'default.194', path: 'Carousel' },
+					{ label: 'default.209', path: 'CarouselEdit' }
 				]
 			},
 		]
