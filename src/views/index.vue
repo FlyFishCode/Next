@@ -37,7 +37,7 @@
 							><UserOutlined /><span>{{ $t('default.154') }}</span></span
 						>
 					</template>
-					<a-menu-item key="Player">{{ $t('default.154') }}</a-menu-item>
+					<a-menu-item key="User">{{ $t('default.154') }}</a-menu-item>
 					<a-menu-item key="UserCard">{{ $t('default.172') }}</a-menu-item>
 				</a-sub-menu>
 				<a-sub-menu key="sub5">
@@ -58,6 +58,14 @@
 					<a-menu-item key="News">{{ $t('default.193') }}</a-menu-item>
 					<a-menu-item key="Carousel">{{ $t('default.194') }}</a-menu-item>
 				</a-sub-menu>
+				<a-sub-menu key="sub7">
+					<template #title>
+						<span
+							><TeamOutlined /><span>{{ $t('default.212') }}</span></span
+						>
+					</template>
+					<a-menu-item key="Player">{{ $t('default.212') }}</a-menu-item>
+				</a-sub-menu>
 				<a-sub-menu v-if="RoleType !== '5'" key="sub100">
 					<template #title>
 						<span
@@ -77,7 +85,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue';
-import { MailOutlined, AppstoreOutlined, SettingOutlined, CreditCardOutlined, UserOutlined, EnvironmentOutlined, ProfileOutlined } from '@ant-design/icons-vue';
+import { MailOutlined, AppstoreOutlined, SettingOutlined, CreditCardOutlined, UserOutlined, EnvironmentOutlined, ProfileOutlined,TeamOutlined } from '@ant-design/icons-vue';
 import hearder from '@/components/hearder.vue';
 import { useRouter } from 'vue-router';
 
@@ -96,6 +104,7 @@ export default defineComponent({
 		EnvironmentOutlined,
 		UserOutlined,
 		ProfileOutlined,
+		TeamOutlined,
 		hearder
 	},
 	setup() {

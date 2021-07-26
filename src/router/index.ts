@@ -157,27 +157,27 @@ const routes = [
 				component: () => import(/* webpackChunkName: "HistoryLog" */ '../views/System/HistoryLog/index.vue'),
 				meta: [{ label: 'default.184', path: 'HistoryLog' }]
 			},
-			// Player
+			// User
 			{
-				path: '/Player',
-				name: 'Player',
-				component: () => import(/* webpackChunkName: "Player" */ '../views/Player/Player/index.vue'),
-				meta: [{ label: 'default.154', path: 'Player' }]
+				path: '/User',
+				name: 'User',
+				component: () => import(/* webpackChunkName: "User" */ '../views/User/User/index.vue'),
+				meta: [{ label: 'default.154', path: 'User' }]
 			},
 			{
-				path: '/PlayerInfo',
-				name: 'PlayerInfo',
-				component: () => import(/* webpackChunkName: "PlayerInfo" */ '../views/Player/Player/PlayerInfo.vue'),
+				path: '/UserInfo',
+				name: 'UserInfo',
+				component: () => import(/* webpackChunkName: "PlayerInfo" */ '../views/User/User/UserInfo.vue'),
 				meta: [
-					{ label: 'default.154', path: 'Player' },
-					{ label: 'default.163', path: 'PlayerInfo' }
+					{ label: 'default.154', path: 'User' },
+					{ label: 'default.163', path: 'UserInfo' }
 				]
 			},
 			// UserCard
 			{
 				path: '/UserCard',
 				name: 'UserCard',
-				component: () => import(/* webpackChunkName: "UserCard" */ '../views/Player/UserCard/index.vue'),
+				component: () => import(/* webpackChunkName: "UserCard" */ '../views/User/UserCard/index.vue'),
 				meta: [{ label: 'default.172', path: 'UserCard' }]
 			},
 			// Country
@@ -221,6 +221,24 @@ const routes = [
 				meta: [
 					{ label: 'default.194', path: 'Carousel' },
 					{ label: 'default.209', path: 'CarouselEdit' }
+				]
+			},
+			// Player
+			{
+				path: '/Player',
+				name: 'Player',
+				component: () => import(/* webpackChunkName: "Player" */ '../views/Player/Player.vue'),
+				meta: [
+					{ label: 'default.212', path: 'Player' },
+				]
+			},
+			{
+				path: '/PlayerInfo',
+				name: 'PlayerInfo',
+				component: () => import(/* webpackChunkName: "PlayerInfo" */ '../views/Player/PlayerInfo.vue'),
+				meta: [
+					{ label: 'default.212', path: 'Player' },
+					{ label: 'default.213', path: 'PlayerInfo' },
 				]
 			},
 		]

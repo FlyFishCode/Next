@@ -1,285 +1,348 @@
 <template>
-	<labelTitle :value="$t('default.163')" :btn="id ? update : create" />
-	<div class="searchBox">
+	<labelTitle :value="$t('default.213')" :btn="ROUTE.query.id ? update : create"/>
+	<div>
 		<a-row class="rowStyle">
-			<a-col :span="3" class="labelText">
-				{{ $t('default.148') }}
-			</a-col>
-			<a-col :span="9">
-				<a-input v-model:value="infoVO.username" :disabled="disabled" />
-			</a-col>
-			<a-col :span="3" class="labelText">
-				{{ $t('default.160') }}
-			</a-col>
-			<a-col :span="9">
-				<a-input v-model:value="infoVO.registerTime" :disabled="disabled" />
-			</a-col>
-		</a-row>
-		<a-row class="rowStyle">
-			<a-col :span="3" class="labelText">
-				{{ $t('default.104') }}
-			</a-col>
-			<a-col :span="9">
-				<a-input v-model:value="infoVO.nickname" allow-clear />
-			</a-col>
-			<a-col :span="3" class="labelText">
-				{{ $t('default.164') }}
-			</a-col>
-			<a-col :span="9">
-				<a-input v-model:value="infoVO.img" allow-clear />
-			</a-col>
-		</a-row>
-		<a-row class="rowStyle">
-			<a-col :span="3" class="labelText">
-				{{ $t('default.90') }}
-			</a-col>
-			<a-col :span="9">
-				<a-input v-model:value="infoVO.mobile" allow-clear />
-			</a-col>
-			<a-col :span="3" class="labelText">
-				{{ $t('default.91') }}
-			</a-col>
-			<a-col :span="9">
-				<a-input v-model:value="infoVO.email" allow-clear />
-			</a-col>
-		</a-row>
-		<a-row class="rowStyle">
-			<a-col :span="3" class="labelText">
-				{{ $t('default.161') }}
-			</a-col>
-			<a-col :span="9" class="selectSearch">
-				<a-select
-					show-search
-					v-model:value="infoVO.mainCardNo"
-					:default-active-first-option="false"
-					:show-arrow="false"
-					:filter-option="false"
-					:not-found-content="null"
-					allow-clear
-					@search="shopSearch"
-				>
-					<a-select-option v-for="d in shopList" :key="d.id">
-						<div :title="d.name">{{ d.name }}</div>
-					</a-select-option>
-				</a-select>
-			</a-col>
-			<a-col :span="3" class="labelText">
-				{{ $t('default.5') }}
-			</a-col>
-			<a-col :span="9" class="selectSearch">
-				<a-select show-search v-model:value="infoVO.shopId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allow-clear @search="shopSearch">
-					<a-select-option v-for="d in shopList" :key="d.id">
-						<div :title="d.name">{{ d.name }}</div>
-					</a-select-option>
-				</a-select>
-			</a-col>
-		</a-row>
-		<a-row class="rowStyle">
-			<a-col :span="3" class="labelText">
-				{{ $t('default.105') }}
-			</a-col>
-			<a-col :span="9" class="selectSearch">
-				<a-select v-model:value="infoVO.gender" allow-clear>
-					<a-select-option :value="1">{{ $t('default.106') }}</a-select-option>
-					<a-select-option :value="2">{{ $t('default.107') }}</a-select-option>
-				</a-select>
-			</a-col>
-			<a-col :span="3" class="labelText">
-				{{ $t('default.108') }}
-			</a-col>
-			<a-col :span="9" class="datePicker">
-				<a-date-picker v-model:value="infoVO.birthday" valueFormat="yyyy-MM-DD" />
-			</a-col>
-		</a-row>
-		<a-row class="rowStyle">
-			<a-col :span="3" class="labelText">
+			<a-col :span="2" class="labelText">
 				{{ $t('default.23') }}
 			</a-col>
-			<a-col :span="9">
-				<a-select v-model:value="infoVO.countryId" class="selectBox" @change="countryChange" allowClear>
+			<a-col :span="4">
+				<a-select v-model:value="infoVO.countryId" class="selectBox" allowClear>
 					<a-select-option v-for="item in countryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
 				</a-select>
 			</a-col>
-			<a-col :span="3" class="labelText">
-				{{ $t('default.24') }}
+			<a-col :span="2" class="labelText">
+				{{ $t('default.207') }}
 			</a-col>
-			<a-col :span="9">
-				<a-select v-model:value="infoVO.areaId" class="selectBox" allowClear>
-					<a-select-option v-for="item in areaList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+			<a-col :span="4" class="datePicker">
+				<a-date-picker v-model:value="infoVO.registerDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
+			</a-col>
+			<a-col :span="2" class="labelText">
+				{{ $t('default.196') }}
+			</a-col>
+			<a-col :span="4">
+				<a-select v-model:value="infoVO.category" class="selectBox">
+					<a-select-option v-for="item in categoryList" :key="item.id" :value="item.id">{{ $t(item.label) }}</a-select-option>
+				</a-select>
+			</a-col>
+			<a-col :span="2" class="labelText">
+				{{ $t('default.203') }}
+			</a-col>
+			<a-col :span="4">
+				<a-select v-model:value="infoVO.display" class="selectBox">
+					<a-select-option :value="1">{{ $t('default.204') }}</a-select-option>
+					<a-select-option :value="0">{{ $t('default.205') }}</a-select-option>
 				</a-select>
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
-			<a-col :span="3" class="labelText">
-				{{ $t('default.0') }}
+			<a-col :span="2" class="labelText">
+				{{ $t('default.201') }}
 			</a-col>
-			<a-col :span="9" class="selectSearch">
-				<a-select v-model:value="infoVO.Language">
-					<a-select-option :value="1">{{ $t('default.165') }}</a-select-option>
-					<a-select-option :value="2">{{ $t('default.166') }}</a-select-option>
-					<a-select-option :value="3">{{ $t('default.167') }}</a-select-option>
-				</a-select>
-			</a-col>
-			<a-col v-if="!id" :span="3" class="labelText">
-				{{ $t('default.156') }}
-			</a-col>
-			<a-col v-if="!id" :span="9" class="selectSearch">
-				<a-input-password v-model:value="infoVO.password" type="password" />
+			<a-col :span="22">
+				<a-input v-model:value="infoVO.title" allowClear />
 			</a-col>
 		</a-row>
+    <div class="contentBox">
+      <a-row >
+        <a-col :span="2" class="labelText">
+          {{ $t('default.216') }}
+        </a-col>
+        <a-col :span="22" class="searchButton">
+				<div class="clearfix">
+					<a-upload
+						:customRequest='handlePlayerImgRequest'
+						list-type="picture-card"
+						v-model:file-list="palyerImgList"
+						@preview="handlePreview"
+					>
+						<div v-if="palyerImgList.length < 8">
+							<plus-outlined />
+							<div class="ant-upload-text">Upload</div>
+						</div>
+					</a-upload>
+					<a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+						<img alt="example" style="width: 100%" :src="previewImage" />
+					</a-modal>
+				</div>
+			</a-col>
+      </a-row>
+    </div>
+    <div class="contentBox">
+      <a-row class="rowBox">
+        <a-col :span="2" class="labelText">
+          {{ $t('default.214') }}
+        </a-col>
+      </a-row>
+		<a-row class="rowStyle">
+			<a-col :span="2" class="labelText">
+				{{ $t('default.215') }}
+			</a-col>
+			<a-col :span="4" class="searchButton">
+				<div class="clearfix">
+					<a-upload
+						:customRequest='handleImgRequest'
+						list-type="picture-card"
+						v-model:file-list="fileList"
+						@preview="handlePreview"
+					>
+						<div v-if="fileList.length < 1">
+							<plus-outlined />
+							<div class="ant-upload-text">Upload</div>
+						</div>
+					</a-upload>
+					<a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+						<img alt="example" style="width: 100%" :src="previewImage" />
+					</a-modal>
+				</div>
+			</a-col>
+		</a-row>
+    <a-row>
+      <a-col :span="2" class="labelText">
+				{{ 'TIP' }}
+			</a-col>
+			<a-col :span="4">
+				<a-input v-model:value="infoVO.title" allowClear />
+			</a-col>
+      <a-col :span="2" class="labelText">
+				{{ 'BARREL' }}
+			</a-col>
+			<a-col :span="4">
+				<a-input v-model:value="infoVO.title" allowClear />
+			</a-col>
+      <a-col :span="2" class="labelText">
+				{{ 'SHAFT' }}
+			</a-col>
+			<a-col :span="4">
+				<a-input v-model:value="infoVO.title" allowClear />
+			</a-col>
+      <a-col :span="2" class="labelText">
+				{{ 'FLIGHT' }}
+			</a-col>
+			<a-col :span="4">
+				<a-input v-model:value="infoVO.title" allowClear />
+			</a-col>
+    </a-row>
+    </div>
+		<div class="contentBox">
+			<a-row class="rowBox">
+        <a-col :span="2" class="labelText">
+          {{ $t('default.217') }}
+        </a-col>
+      </a-row>
+			<a-row class="rowStyle">
+				<a-col span='1'>
+					<a-button @click="handleDelete" type="danger" size='small'>{{ $t('default.10') }}</a-button>
+				</a-col>
+				<a-col span='1'>
+					<a-button @click="handleAdd" type="primary" size='small'>{{ $t('default.185') }}</a-button>
+				</a-col>
+			</a-row>
+			<a-table bordered :data-source="dataSource" :columns="columns" rowKey='id'>
+				<template #label="{ record }">
+					<a-input v-model:value="record.label" @pressEnter="handleChangeTitle(record)" allowClear/>
+				</template>
+				<template #content="{ record }">
+					<a-input v-model:value="record.content" @pressEnter="handleChangeContent(record)" allowClear/>
+				</template>
+				<template #handle>
+					<a-button type="primary" size='small'>{{$t('default.15')}}</a-button>
+				</template>
+			</a-table>
+		</div>
+		<!-- 广告链接的预览 -->
+	<showUrlDialog :visible="showUrlDialog" :src="infoVO.thumbnail" @showBoxCancel="showBoxCancel" />
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue';
+import { defineComponent, onMounted, reactive, toRefs } from 'vue';
+import { countryListHttp, newsEditorHttp, newsInfoHttp, newsImgUploadHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
-import { shopListHttp, PlayerUpdateHttp, countryListHttp, areaListHttp, PlayerInfoHttp, PlayerCreateHttp } from '@/api/api';
+import showUrlDialog from '@/components/common/showUrlDialog.vue';
+import { PlusOutlined } from '@ant-design/icons-vue';
 import { useRoute } from 'vue-router';
+import { message } from 'ant-design-vue';
+import { i18n } from '@/components/common/tools';
+
+
 export default defineComponent({
-	name: 'PlayerInfo',
+	name: 'Shop',
 	components: {
-		labelTitle
+		showUrlDialog,
+		PlusOutlined,
+		labelTitle,
 	},
 	setup() {
-		const ROUTE = useRoute();
-		const id: any = ROUTE.query.id;
-		const options: any = ref(null);
+    const ROUTE = useRoute();
+		const getBase64 = (file: File) => {
+			return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      })
+		}
 		const data = reactive({
-			disabled: false,
+			visible: false,
+			showUrlDialog: false,
+			previewVisible:false,
+			previewImage:"",
+			fileList:[],
+      palyerImgList:[],
 			infoVO: {
-				id: '',
-				username: '',
-				nickname: '',
-				img: '',
-				gender: '',
-				shopId: '',
-				password: '',
-				mainCardNo: '',
-				birthday: '',
-				areaId: '',
+				id:'',
+				thumbnail:'',
+				title:'',
+				contents:'',
+				category:'',
 				countryId: '',
-				registerTime: '',
-				pageIndex: 1,
-				pageSize: 10
+				display:1,
+				registerDate: '',
 			},
-			currentPage: 1,
-			totalSize: 100,
-			shopList: [],
-			areaList: [],
-			countryList: [],
-			columns: [
+			columns:[
 				{
-					title: 'ID',
-					dataIndex: 'age',
-					key: 'ID'
-				},
+					width:'20%',
+          title: 'label',
+          dataIndex: 'label',
+          slots: { customRender: 'label' },
+        },
+        {
+					width:'70%',
+          title: 'content',
+          dataIndex: 'content',
+          slots: { customRender: 'content' },
+        },
+        {
+					width:'10%',
+          title: i18n('default.169'),
+          slots: { customRender: 'handle' },
+        },
+			],
+      countryList: [{id:'',name:''}],
+			categoryList:[
+				{ id: 3, label: 'default.198' },
+				{ id: 4, label: 'default.197' },
+				{ id: 6, label: 'default.199' },
+			],
+			dataSource:[
 				{
-					title: 'Operator',
-					dataIndex: 'age',
-					key: 'Operator'
-				},
-				{
-					title: 'Operator Time',
-					dataIndex: 'age',
-					key: 'OperatorTime'
-				},
-				{
-					title: 'Cash',
-					dataIndex: 'age',
-					key: 'Cash'
-				},
-				{
-					title: 'Credits',
-					dataIndex: 'age',
-					key: 'Credits'
-				},
-				{
-					title: 'Coins',
-					dataIndex: 'age',
-					key: 'Coins'
-				},
-				{
-					title: 'Name',
-					dataIndex: 'age',
-					key: 'Name'
-				},
-				{
-					title: 'Machine',
-					dataIndex: 'age',
-					key: 'Machine'
-				},
-				{
-					title: 'Amout(cent)',
-					dataIndex: 'age',
-					key: 'Amout(cent)'
-				},
-				{
-					title: 'All Credits',
-					dataIndex: 'age',
-					key: 'All Credits'
-				},
-				{
-					title: 'Free Credits',
-					dataIndex: 'age',
-					key: 'Free Credits'
+					id:1,
+					label:'AAAAAAAAAAAAAA',
+					content:'BBBBBBBBBBBBBB'
 				}
 			],
-			tableList: [{}],
-			shopSearch: (value: string) => {
-				shopListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
-					data.shopList = res.data.data.list;
-				});
+			showBoxCancel: (value: boolean) => {
+				data.showUrlDialog = value;
 			},
-			countryChange: () => {
-				data.infoVO.areaId = '';
-				// eslint-disable-next-line @typescript-eslint/no-use-before-define
-				getAreaList();
+			handlePreview:(file: any) =>{
+				if (!file.url && !file.preview) {
+        file.preview = getBase64(file.originFileObj);
+      }
+      data.previewImage = file.url || file.preview;
+      data.previewVisible = true;
 			},
-			sizeChange: () => {
-				console.log(1);
+			handleCancel:() =>{
+				data.previewVisible = false
 			},
 			create: () => {
-				return PlayerCreateHttp(data.infoVO);
+				if(!data.infoVO.title){
+					message.warning('请输入新闻标题');
+					return false;
+				}
+				return newsEditorHttp(data.infoVO)
 			},
-			update: () => {
-				data.infoVO.id = id;
-				return PlayerUpdateHttp(data.infoVO);
+      update: () => {
+				if(!data.infoVO.title){
+					message.warning('请输入新闻标题');
+					return false;
+				}
+				return newsEditorHttp(data.infoVO)
+			},
+      getInfo:(id: any) =>{
+        newsInfoHttp({id}).then((res: any) =>{
+					const response = res.data.data
+					data.infoVO.id = response.id
+					data.infoVO.title = response.title
+					data.infoVO.contents = response.contents
+					data.infoVO.display = response.display
+					data.infoVO.category = response.category
+					data.infoVO.countryId = response.countryId
+					data.infoVO.thumbnail = response.thumbnail
+					data.infoVO.registerDate = response.registerDate
+					data.fileList = [{ uid: '1', url: response.thumbnail }] as any;
+				})
+      },
+			handleImgRequest:({file}: any) =>{
+				const formData = new FormData();
+				formData.append("image", file);
+				newsImgUploadHttp(formData).then((res: any) =>{
+					data.infoVO.thumbnail = res.data.data
+					data.fileList = [{ uid: '1', url: res.data.data }] as any;
+				})
+			},
+      handlePlayerImgRequest:({file}: any) =>{
+        const formData = new FormData();
+				formData.append("image", file);
+				newsImgUploadHttp(formData).then((res: any) =>{
+					const obj = {uid:file.lastModified,url:res.data.data} as never;
+					data.palyerImgList.push(obj);
+					data.palyerImgList = data.palyerImgList.filter((i: any) => i.url)
+					console.log(data.palyerImgList)
+				})
+      },
+			handleDelete:() =>{
+				console.log(1)
+			},
+			handleAdd:() =>{
+				let index = 0
+				data.dataSource.push({
+					id:index++,
+					label:'',
+					content:''
+				})
+			},
+			handleChangeTitle:(row: any) =>{
+				console.log(row)
+			},
+			handleChangeContent:(row: any) =>{
+				console.log(row)
 			}
-		});
-		const getPlayerInfo = (id: number) => {
-			PlayerInfoHttp({ memberId: id }).then((res: any) => {
-				data.infoVO = res.data.data;
-			});
-		};
+		})
 		const getCountryList = () => {
-			countryListHttp({}).then((res: any) => {
+			countryListHttp({pageSize:999}).then((res: any) => {
 				data.countryList = res.data.data.list;
 			});
 		};
-		const getAreaList = () => {
-			areaListHttp({ countryId: data.infoVO.countryId }).then((res: any) => {
-				data.areaList = res.data.data.list;
-			});
-		};
-		const init = (id: any) => {
-			data.shopSearch('');
+		const init = () => {
 			getCountryList();
-			getAreaList();
-			if (id) {
-				data.disabled = true;
-				getPlayerInfo(id);
-			}
 		};
 		onMounted(() => {
-			init(id);
+			init();
+			if(ROUTE.query.id){
+				data.getInfo(ROUTE.query.id);
+			}
 		});
 		return {
 			...toRefs(data),
-			id,
-			options
+      ROUTE
 		};
 	}
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+#editorElem{
+	width: 100%;
+}
+#editorElem>>>.w-e-text-container{
+	height: 400px!important;
+}
+.rowBox{
+  background: #eee;
+}
+.contentBox{
+  border: 1px solid #999;
+  margin: 10px 0;
+  padding: 10px;
+}
+</style>

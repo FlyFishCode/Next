@@ -87,7 +87,7 @@ export default defineComponent({
       status:0,
       userList:[],
       tableList:[],
-      countryList:[],
+      countryList:[{id:0,name:''}],
       infoVO:{
         countryId: '',
 				status:' ',

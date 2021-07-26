@@ -48,6 +48,7 @@
 					</a-modal>
 				</div>
 			</a-col>
+			<a-col :span="4">{{ '图片长宽比例为：2.4:1' }}</a-col>
 		</a-row>
 		<a-row class="rowStyle">
 			<div id="editorElem"></div>
