@@ -241,6 +241,24 @@ const routes = [
 					{ label: 'default.213', path: 'PlayerInfo' },
 				]
 			},
+			// Darts
+			{
+				path: '/Darts',
+				name: 'Darts',
+				component: () => import(/* webpackChunkName: "Darts" */ '../views/Darts/Darts.vue'),
+				meta: [
+					{ label: 'default.222', path: 'Darts' },
+				]
+			},
+			{
+				path: '/DartsEdit',
+				name: 'DartsEdit',
+				component: () => import(/* webpackChunkName: "DartsEdit" */ '../views/Darts/DartsEdit.vue'),
+				meta: [
+					{ label: 'default.222', path: 'Darts' },
+					{ label: 'default.209', path: 'DartsEdit' },
+				]
+			},
 		]
 	},
 	{ path: '/:pathMatch(.*)*', redirect: '/' }

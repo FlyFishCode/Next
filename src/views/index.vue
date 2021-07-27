@@ -66,6 +66,14 @@
 					</template>
 					<a-menu-item key="Player">{{ $t('default.212') }}</a-menu-item>
 				</a-sub-menu>
+				<a-sub-menu key="sub8">
+					<template #title>
+						<span
+							><PushpinOutlined /><span>{{ $t('default.222') }}</span></span
+						>
+					</template>
+					<a-menu-item key="Darts">{{ $t('default.222') }}</a-menu-item>
+				</a-sub-menu>
 				<a-sub-menu v-if="RoleType !== '5'" key="sub100">
 					<template #title>
 						<span
@@ -85,7 +93,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue';
-import { MailOutlined, AppstoreOutlined, SettingOutlined, CreditCardOutlined, UserOutlined, EnvironmentOutlined, ProfileOutlined,TeamOutlined } from '@ant-design/icons-vue';
+import { MailOutlined, AppstoreOutlined, SettingOutlined, CreditCardOutlined, UserOutlined, EnvironmentOutlined, ProfileOutlined,TeamOutlined,PushpinOutlined } from '@ant-design/icons-vue';
 import hearder from '@/components/hearder.vue';
 import { useRouter } from 'vue-router';
 
@@ -104,6 +112,7 @@ export default defineComponent({
 		EnvironmentOutlined,
 		UserOutlined,
 		ProfileOutlined,
+		PushpinOutlined,
 		TeamOutlined,
 		hearder
 	},

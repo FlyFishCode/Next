@@ -6,7 +6,7 @@
 					<video :src="src" controls></video>
 				</div>
 				<div v-else>
-					<img :src="src" alt="图片地址不正确" />
+					<img :src="src" alt="地址不正确" />
 				</div>
 			</div>
 		</a-modal>

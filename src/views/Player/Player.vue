@@ -3,6 +3,16 @@
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
+				{{ $t('default.221') }}
+			</a-col>
+			<a-col :span="4">
+				<a-select class="selectBox" show-search v-model:value="infoVO.opeatorIdName" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="userSearch">
+					<a-select-option v-for="user in userList" :key="user.id">
+						<div :title="user.username">{{ user.username }}</div>
+					</a-select-option>
+				</a-select>
+			</a-col>
+			<a-col :span="2" class="labelText">
 				{{ $t('default.23') }}
 			</a-col>
 			<a-col :span="4">
@@ -11,31 +21,6 @@
 				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ $t('default.196') }}
-			</a-col>
-			<a-col :span="4">
-				<a-select v-model:value="infoVO.category" class="selectBox">
-					<a-select-option v-for="item in categoryList" :key="item.id" :value="item.id">{{ $t(item.label) }}</a-select-option>
-				</a-select>
-			</a-col>
-			<a-col :span="2" class="labelText">
-				{{ $t('default.46') }}
-			</a-col>
-			<a-col :span="2" class="datePicker">
-				<a-date-picker v-model:value="infoVO.registerStartDate" :disabled-date="disabledMinRegisterTime" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
-			</a-col>
-			<a-col :span="2" class="datePicker">
-				<a-date-picker v-model:value="infoVO.registerEndDate" :disabled-date="disabledMaxRegisterTime" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
-			</a-col>
-			<a-col :span="2" class="labelText">
-				{{ $t('default.201') }}
-			</a-col>
-			<a-col :span="4">
-				<a-input v-model:value="infoVO.title" allowClear />
-			</a-col>
-		</a-row>
-		<a-row class="rowStyle">
-			<a-col :span="2" class="labelText">
 				{{ $t('default.203') }}
 			</a-col>
 			<a-col :span="4">
@@ -43,16 +28,6 @@
 					<a-select-option value=" ">{{ $t('default.200') }}</a-select-option>
 					<a-select-option :value="1">{{ $t('default.204') }}</a-select-option>
 					<a-select-option :value="0">{{ $t('default.205') }}</a-select-option>
-				</a-select>
-			</a-col>
-			<a-col v-if="status === 1" :span="2" class="labelText">
-				{{ $t('default.202') }}
-			</a-col>
-			<a-col v-if="status === 1" :span="4">
-				<a-select class="selectBox" show-search v-model:value="infoVO.opeatorIdName" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="userSearch">
-					<a-select-option v-for="user in userList" :key="user.id">
-						<div :title="user.username">{{ user.username }}</div>
-					</a-select-option>
 				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
@@ -72,10 +47,7 @@
 				<div class="imgBox"><img :src="record.thumbnail" alt=""></div>
 			</template>
 			<template #name="{ record }">
-				<a-button type="link" @click="handleTitleClick(record.id)">{{ record.title }}</a-button>
-			</template>
-			<template #type="{ record }">
-				<div>{{ getTypeName(record.category) }}</div>
+				<a-button type="link" @click="handleNameClick(record.id)">{{ record.opeatorName }}</a-button>
 			</template>
 			<template #handle="{ record }">
 				<a-checkbox v-model:checked="record.display" @change="checkboxChange(record)"></a-checkbox>
@@ -99,7 +71,7 @@ import { handleSelectEvent, i18n } from '@/components/common/tools';
 import { useStore } from 'vuex';
 // import qs from 'qs'
 export default defineComponent({
-	name: 'News',
+	name: 'Player',
 	components: {
 		labelTitle,
 		DeleteDialog
@@ -124,8 +96,6 @@ export default defineComponent({
 				display:' ',
 				category: 0,
 				opeatorIdName:'',
-				registerEndDate:"",
-				registerStartDate:"",
 				pageNum: 1,
 				pageSize: 10
 			},
@@ -140,20 +110,8 @@ export default defineComponent({
 					slots: { customRender: 'img' }
 				},
 				{
-					title: i18n('default.201'),
+					title: i18n('default.221'),
 					slots: { customRender: 'name' }
-				},
-				{
-					title: i18n('default.46'),
-					dataIndex: 'cdateInt',
-				},
-				{
-					title: i18n('default.196'),
-					slots: { customRender: 'type' }
-				},
-				{
-					title: i18n('default.202'),
-					dataIndex: 'opeatorName',
 				},
 				{
 					title: i18n('default.203'),
@@ -166,39 +124,12 @@ export default defineComponent({
 				{ id: 4, label: 'default.197' },
 				{ id: 6, label: 'default.199' },
 			],
-			disabledMinRegisterTime: (startValue: any) => {
-				if (!startValue || !data.infoVO.registerEndDate) {
-					return false;
-				}
-				return startValue.valueOf() > new Date(data.infoVO.registerEndDate).valueOf();
-			},
-			disabledMaxRegisterTime: (endValue: any) => {
-				if (!endValue || !data.infoVO.registerStartDate) {
-					return false;
-				}
-				return new Date(data.infoVO.registerStartDate).valueOf() >= endValue.valueOf();
-			},
 			rowSelection: {
 				columnWidth: 50,
 				// columnTitle: '全选',
 				onChange: (selectedRowKeys: number[]) => {
 					selectList = selectedRowKeys;
 				}
-			},
-			getTypeName:(id: number) =>{
-				let str = '';
-				switch(id){
-					case 3:
-						str = 'default.198'
-						break;
-					case 4:
-						str = 'default.197'
-						break;
-					default :
-						str = 'default.199';
-						break;
-				}
-				return i18n(str)
 			},
 			userSearch: (value: string) => {
 				systemUserListHttp({ username: value, pageSize: 999 }).then((res: any) => {
@@ -239,7 +170,7 @@ export default defineComponent({
 					path: 'PlayerInfo'
 				});
 			},
-			handleTitleClick: (id: number) => {
+			handleNameClick: (id: number) => {
 				ROUTER.push({
 					path: 'PlayerInfo',
 					query: {
