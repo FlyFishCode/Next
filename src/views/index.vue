@@ -56,7 +56,7 @@
 						>
 					</template>
 					<a-menu-item key="News">{{ $t('default.193') }}</a-menu-item>
-					<a-menu-item key="Carousel">{{ $t('default.194') }}</a-menu-item>
+					<a-menu-item key="NewsCarousel">{{ $t('default.194') }}</a-menu-item>
 				</a-sub-menu>
 				<a-sub-menu key="sub7">
 					<template #title>
@@ -73,6 +73,7 @@
 						>
 					</template>
 					<a-menu-item key="Darts">{{ $t('default.222') }}</a-menu-item>
+					<a-menu-item key="DartsCarousel">{{ $t('default.194') }}</a-menu-item>
 				</a-sub-menu>
 				<a-sub-menu v-if="RoleType !== '5'" key="sub100">
 					<template #title>

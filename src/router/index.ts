@@ -209,10 +209,10 @@ const routes = [
 				]
 			},
 			{
-				path: '/Carousel',
-				name: 'Carousel',
+				path: '/NewsCarousel',
+				name: 'NewsCarousel',
 				component: () => import(/* webpackChunkName: "Carousel" */ '../views/News/Carousel/index.vue'),
-				meta: [{ label: 'default.194', path: 'Carousel' }]
+				meta: [{ label: 'default.194', path: 'NewsCarousel' }]
 			},
 			{
 				path: '/CarouselEdit',
@@ -245,7 +245,7 @@ const routes = [
 			{
 				path: '/Darts',
 				name: 'Darts',
-				component: () => import(/* webpackChunkName: "Darts" */ '../views/Darts/Darts.vue'),
+				component: () => import(/* webpackChunkName: "Darts" */ '../views/Darts/Darts/index.vue'),
 				meta: [
 					{ label: 'default.222', path: 'Darts' },
 				]
@@ -253,10 +253,27 @@ const routes = [
 			{
 				path: '/DartsEdit',
 				name: 'DartsEdit',
-				component: () => import(/* webpackChunkName: "DartsEdit" */ '../views/Darts/DartsEdit.vue'),
+				component: () => import(/* webpackChunkName: "DartsEdit" */ '../views/Darts/Darts/DartsEdit.vue'),
 				meta: [
 					{ label: 'default.222', path: 'Darts' },
 					{ label: 'default.209', path: 'DartsEdit' },
+				]
+			},
+			{
+				path: '/DartsCarousel',
+				name: 'DartsCarousel',
+				component: () => import(/* webpackChunkName: "DartsCarousel" */ '../views/Darts/Carosel/index.vue'),
+				meta: [
+					{ label: 'default.194', path: 'DartsCarousel' },
+				]
+			},
+			{
+				path: '/CarouselEdit',
+				name: 'CarouselEdit',
+				component: () => import(/* webpackChunkName: "CarouselEdit" */ '../views/Darts/Carosel/CaroselEdit.vue'),
+				meta: [
+					{ label: 'default.194', path: 'DartsCarousel' },
+					{ label: 'default.209', path: 'CarouselEdit' },
 				]
 			},
 		]
