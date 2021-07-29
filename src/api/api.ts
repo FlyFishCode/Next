@@ -31,8 +31,8 @@ import { settlementList, settlementInfo, machineSettlementList, final, rechargeR
 // System
 import { systemUserList, addUser, searchUser, modifyUser, HistoryLogList, HistoryLogDelete, deleteUser, resetUserPassword } from '@/api/System/index';
 
-// Player
-import { playerList, PlayerInfo, PlayerCreate, PlayerUpdate, PlayerDelete, PlayerRestorePassword } from '@/api/Player/index';
+// GameUser
+import { GameUserList, GameUserInfo, GameUserCreate, GameUserUpdate, GameUserDelete, GameUserRestorePassword } from '@/api/GameUser/index';
 
 // UserCard
 import { UserCardList, UserCreate, UserUpdate, UserInfo, UserCardDelete, UserCardDownload } from '@/api/UserCard/index';
@@ -45,6 +45,9 @@ import { newsList , newsInfo, newsImgUpload, newsEditor, newsDelete, carouselLis
 
 // Darts
 import { dartsList,dartsEdit,dartsInfo,dartsDelete } from '@/api/Darts/index';
+
+// Player
+import { PlayerList,PlayerAdd }  from '@/api/Player/index';
 
 const baseURL = '/apr';
 const Axios = axios.create({
@@ -271,30 +274,30 @@ const HistoryLogDeleteHttp = (data: any) => {
 	return Axios.post(HistoryLogDelete, data);
 };
 
-// Player
+// GameUser
 // 玩家列表
-const playerListHttp = (data: any) => {
-	return Axios.post(playerList, data);
+const GameUserListHttp = (data: any) => {
+	return Axios.post(GameUserList, data);
 };
 // 查询玩家
-const PlayerInfoHttp = (data: any) => {
-	return Axios.get(getNewUrl(PlayerInfo, data));
+const GameUserInfoHttp = (data: any) => {
+	return Axios.get(getNewUrl(GameUserInfo, data));
 };
 // 创建玩家
-const PlayerCreateHttp = (data: any) => {
-	return Axios.post(PlayerCreate, data);
+const GameUserCreateHttp = (data: any) => {
+	return Axios.post(GameUserCreate, data);
 };
 // 修改玩家
-const PlayerUpdateHttp = (data: any) => {
-	return Axios.post(PlayerUpdate, data);
+const GameUserUpdateHttp = (data: any) => {
+	return Axios.post(GameUserUpdate, data);
 };
 // 删除玩家
-const PlayerDeleteHttp = (data: any) => {
-	return Axios.post(PlayerDelete, data);
+const GameUserDeleteHttp = (data: any) => {
+	return Axios.post(GameUserDelete, data);
 };
 // 重置密码
-const PlayerRestorePasswordHttp = (data: any) => {
-	return Axios.post(PlayerRestorePassword, data);
+const GameUserRestorePasswordHttp = (data: any) => {
+	return Axios.post(GameUserRestorePassword, data);
 };
 // UserCard
 // 卡列表
@@ -406,7 +409,13 @@ const dartsDeleteHttp = (data: any) =>{
 	return Axios.post(dartsDelete, data);
 }
 
-
+// 选手
+const PlayerListHttp = (data: any) =>{
+	return Axios.post(PlayerList, data);
+}
+const PlayerAddtHttp = (data: any) =>{
+	return Axios.post(PlayerAdd, data);
+}
 export {
 	loginHttp,
 	changePasswordHttp,
@@ -446,12 +455,12 @@ export {
 	addUserHttp,
 	searchUserHttp,
 	modifyUserHttp,
-	playerListHttp,
-	PlayerInfoHttp,
-	PlayerCreateHttp,
-	PlayerUpdateHttp,
-	PlayerDeleteHttp,
-	PlayerRestorePasswordHttp,
+	GameUserListHttp,
+	GameUserInfoHttp,
+	GameUserCreateHttp,
+	GameUserUpdateHttp,
+	GameUserDeleteHttp,
+	GameUserRestorePasswordHttp,
 	UserCardListHttp,
 	UserCreateHttp,
 	UserUpdateHttp,
@@ -484,5 +493,7 @@ export {
 	dartsListHttp,
 	dartsEditHttp,
 	dartsInfoHttp,
-	dartsDeleteHttp
+	dartsDeleteHttp,
+	PlayerListHttp,
+	PlayerAddtHttp
 };

@@ -16,13 +16,24 @@
 					<a-select-option v-for="item in countryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
 				</a-select>
 			</a-col>
-			<a-col :span="2" class="labelText">
-				{{ $t('default.203') }}
+			<a-col v-if="RoleType =='1'" :span="2" class="labelText">
+				{{ $t('default.26') }}
 			</a-col>
-			<a-col :span="4">
-				<a-select v-model:value="infoVO.display" class="selectBox">
-					<a-select-option :value="1">{{ $t('default.204') }}</a-select-option>
-					<a-select-option :value="0">{{ $t('default.205') }}</a-select-option>
+			<a-col v-if="RoleType =='1'" :span="4">
+				<a-select
+					class="selectBox"
+						show-search
+						v-model:value="infoVO.agentId"
+						:default-active-first-option="false"
+						:show-arrow="false"
+						:filter-option="false"
+						:not-found-content="null"
+						allowClear
+						@search="agentSearch"
+				>
+					<a-select-option v-for="d in agentList" :key="d.id">
+						<div :title="d.name">{{ d.name }}</div>
+					</a-select-option>
 				</a-select>
 			</a-col>
 		</a-row>
@@ -31,7 +42,7 @@
 				{{ 'Facebook Link' }}
 			</a-col>
 			<a-col :span="16">
-				<a-input v-model:value="infoVO.facebook" allowClear />
+				<a-input v-model:value="infoVO.facebookLink" allowClear />
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
@@ -39,7 +50,7 @@
 				{{ 'Twitter Link' }}
 			</a-col>
 			<a-col :span="16">
-				<a-input v-model:value="infoVO.twitter" allowClear />
+				<a-input v-model:value="infoVO.twitterLink" allowClear />
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
@@ -47,7 +58,7 @@
 				{{ 'Other Link' }}
 			</a-col>
 			<a-col :span="16">
-				<a-input v-model:value="infoVO.other" allowClear />
+				<a-input v-model:value="infoVO.otherLink" allowClear />
 			</a-col>
 		</a-row>
     <div class="contentBox">
@@ -63,7 +74,7 @@
 							v-model:file-list="palyerImgList"
 							@preview="handlePreview"
 						>
-							<div v-if="palyerImgList.length < 8">
+							<div v-if="palyerImgList.length < 7">
 								<plus-outlined />
 								<div class="ant-upload-text">Upload</div>
 							</div>
@@ -90,10 +101,10 @@
 					<a-upload
 						:customRequest='handleImgRequest'
 						list-type="picture-card"
-						v-model:file-list="fileList"
+						v-model:file-list="dartsList"
 						@preview="handlePreview"
 					>
-						<div v-if="fileList.length < 1">
+						<div v-if="dartsList.length < 1">
 							<plus-outlined />
 							<div class="ant-upload-text">Upload</div>
 						</div>
@@ -109,25 +120,25 @@
 				{{ 'TIP' }}
 			</a-col>
 			<a-col :span="4">
-				<a-input v-model:value="infoVO.tip" allowClear />
+				<a-input v-model:value="infoVO.dartTip	" allowClear />
 			</a-col>
       <a-col :span="2" class="labelText">
 				{{ 'BARREL' }}
 			</a-col>
 			<a-col :span="4">
-				<a-input v-model:value="infoVO.barrel" allowClear />
+				<a-input v-model:value="infoVO.dartBarrel" allowClear />
 			</a-col>
       <a-col :span="2" class="labelText">
 				{{ 'SHAFT' }}
 			</a-col>
 			<a-col :span="4">
-				<a-input v-model:value="infoVO.shaft" allowClear />
+				<a-input v-model:value="infoVO.dartShaft" allowClear />
 			</a-col>
       <a-col :span="2" class="labelText">
 				{{ 'FLIGHT' }}
 			</a-col>
 			<a-col :span="4">
-				<a-input v-model:value="infoVO.flight" allowClear />
+				<a-input v-model:value="infoVO.dartFlight" allowClear />
 			</a-col>
     </a-row>
     </div>
@@ -165,7 +176,7 @@
 					{{ $t('default.219') }}
 				</a-col>
 				<a-col :span="18">
-					<a-input v-model:value="infoVO.videoLink" allowClear/>
+					<a-input v-model:value="infoVO.videoUrl" allowClear/>
 				</a-col>
 				<a-col span='1' class="searchButton">
 					<a-button @click="handleVidoePreview" type="danger" size='small'>{{ $t('default.206') }}</a-button>
@@ -198,13 +209,13 @@
 			</a-row>
 		</div>
 		<!-- 广告链接的预览 -->
-	<showUrlDialog :visible="showUrlDialog" :src="infoVO.videoLink" @showBoxCancel="showBoxCancel" />
+	<showUrlDialog :visible="showUrlDialog" :src="infoVO.videoUrl" @showBoxCancel="showBoxCancel" />
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-import { countryListHttp, newsEditorHttp, newsInfoHttp, newsImgUploadHttp } from '@/api/api';
+import { countryListHttp,agentListHttp, PlayerAddtHttp, newsInfoHttp, newsImgUploadHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
 import showUrlDialog from '@/components/common/showUrlDialog.vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
@@ -222,6 +233,7 @@ export default defineComponent({
 	},
 	setup() {
     const ROUTE = useRoute();
+		const RoleType: any = sessionStorage.getItem('NextRoleType');
 		const getBase64 = (file: File) => {
 			return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -236,24 +248,29 @@ export default defineComponent({
 			showUrlDialog: false,
 			previewVisible:false,
 			previewImage:"",
-			fileList:[],
+			dartsList:[],
+			agentList:[],
       palyerImgList:[],
 			shopImgList:[],
 			selectList:[],
 			infoVO: {
 				id:'',
-				thumbnail:'',
-				videoLink:'',
 				name:'',
+				goods:"",
+				picture:'',
+				dartImg:'',
+				agentId: '',
 				countryId: '',
-				facebook:"",
-				twitter:"",
-				other:"",
-				tip:'',
-				barrel:'',
-				shaft:'',
-				flight:'',
 				display:1,
+				facebookLink:"",
+				twitterLink:"",
+				otherLink:"",
+				achievement:"",
+				dartTip:'',
+				dartShaft:'',
+				dartBarrel:'',
+				dartFlight:'',
+				videoUrl:'',
 			},
 			columns:[
 				{
@@ -288,6 +305,11 @@ export default defineComponent({
       data.previewImage = file.url || file.preview;
       data.previewVisible = true;
 			},
+			agentSearch: (value: any) => {
+				agentListHttp({ agentName: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
+					data.agentList = res.data.data;
+				});
+			},
 			handleCancel:() =>{
 				data.previewVisible = false
 			},
@@ -296,32 +318,33 @@ export default defineComponent({
 					message.warning('请输入选手姓名');
 					return false;
 				}
-				return newsEditorHttp(data.infoVO)
+				data.infoVO.picture = data.palyerImgList.map((i: any) => i.url).join(',');
+				data.infoVO.dartImg = data.dartsList.map((i: any) => i.url).join(',');
+				data.infoVO.goods = data.shopImgList.map((i: any) => i.url).join(',');
+				data.infoVO.achievement = JSON.stringify(data.dartsList);
+				return PlayerAddtHttp(data.infoVO)
 			},
       update: () => {
 				if(!data.infoVO.name){
 					message.warning('请输入选手姓名');
 					return false;
 				}
-				return newsEditorHttp(data.infoVO)
+				return PlayerAddtHttp(data.infoVO)
 			},
       getInfo:(id: any) =>{
         newsInfoHttp({id}).then((res: any) =>{
 					const response = res.data.data
 					data.infoVO.id = response.id
 					data.infoVO.name = response.name
-					data.infoVO.display = response.display
 					data.infoVO.countryId = response.countryId
-					data.infoVO.thumbnail = response.thumbnail
-					data.fileList = [{ uid: '1', url: response.thumbnail }] as any;
+					data.dartsList = [{ uid: '1', url: response.thumbnail }] as any;
 				})
       },
 			handleImgRequest:({file}: any) =>{
 				const formData = new FormData();
 				formData.append("image", file);
 				newsImgUploadHttp(formData).then((res: any) =>{
-					data.infoVO.thumbnail = res.data.data
-					data.fileList = [{ uid: '1', url: res.data.data }] as any;
+					data.dartsList = [{ uid: '1', url: res.data.data }] as any;
 				})
 			},
       handlePlayerImgRequest:({file}: any) =>{
@@ -331,7 +354,6 @@ export default defineComponent({
 					const obj = {uid:file.lastModified,url:res.data.data} as never;
 					data.palyerImgList.push(obj);
 					data.palyerImgList = data.palyerImgList.filter((i: any) => i.url)
-					console.log(data.palyerImgList)
 				})
       },
       handleShopImgRequest:({file}: any) =>{
@@ -367,6 +389,7 @@ export default defineComponent({
 		};
 		const init = () => {
 			getCountryList();
+			data.agentSearch('');
 		};
 		onMounted(() => {
 			init();
@@ -376,6 +399,7 @@ export default defineComponent({
 		});
 		return {
 			...toRefs(data),
+			RoleType,
       ROUTE
 		};
 	}

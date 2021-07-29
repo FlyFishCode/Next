@@ -21,4 +21,7 @@ const carouselAdminEditor = 'banner/approvalBanner'
 const carouselInfo = 'banner/getbannerbyid'
 
 const carouseDelete = 'banner/delbannerbyid'
+
+
+
 export { newsList ,newsInfo, newsImgUpload, newsEditor, newsDelete, carouselList, carouseAdd, carouselEditor, carouselInfo, carouseDelete, carouselAdminEditor}

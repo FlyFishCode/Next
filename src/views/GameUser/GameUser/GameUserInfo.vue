@@ -134,7 +134,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { shopListHttp, PlayerUpdateHttp, countryListHttp, areaListHttp, PlayerInfoHttp, PlayerCreateHttp, UserCardListHttp } from '@/api/api';
+import { shopListHttp, GameUserUpdateHttp, countryListHttp, areaListHttp, GameUserInfoHttp, GameUserCreateHttp, UserCardListHttp } from '@/api/api';
 import { useRoute } from 'vue-router';
 export default defineComponent({
 	name: 'PlayerInfo',
@@ -248,15 +248,15 @@ export default defineComponent({
 				console.log(1);
 			},
 			create: () => {
-				return PlayerCreateHttp(data.infoVO);
+				return GameUserCreateHttp(data.infoVO);
 			},
 			update: () => {
 				data.infoVO.id = id;
-				return PlayerUpdateHttp(data.infoVO);
+				return GameUserUpdateHttp(data.infoVO);
 			}
 		});
 		const getPlayerInfo = (id: number) => {
-			PlayerInfoHttp({ memberId: id }).then((res: any) => {
+			GameUserInfoHttp({ memberId: id }).then((res: any) => {
 				data.infoVO = res.data.data;
 			});
 		};

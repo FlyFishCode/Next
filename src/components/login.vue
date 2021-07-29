@@ -53,6 +53,7 @@ export default defineComponent({
 						sessionStorage.setItem('NextGender', data.gender);
 						sessionStorage.setItem('NextMobile', data.mobile);
 						sessionStorage.setItem('NextRoleType', data.type);
+						sessionStorage.setItem('NextAgentId', data.agentId);
 						// STORE.commit('setRole', data.type);
 						message.info(res.data.msg);
 						ROUTER.push('index');

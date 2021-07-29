@@ -186,7 +186,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { UserCardListHttp, playerListHttp, UserCreateHttp, UserUpdateHttp, UserInfoHttp, UserCardDeleteHttp, UserCardDownloadHttp } from '@/api/api';
+import { UserCardListHttp, GameUserListHttp, UserCreateHttp, UserUpdateHttp, UserInfoHttp, UserCardDeleteHttp, UserCardDownloadHttp } from '@/api/api';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { i18n, uploadObj } from '@/components/common/tools';
 import { useRouter } from 'vue-router';
@@ -295,7 +295,7 @@ export default defineComponent({
 				}
 			},
 			MemberSearch(value: any) {
-				playerListHttp({ nickname: value.split("'").join(''), pageSize: 999 }).then((res) => {
+				GameUserListHttp({ nickname: value.split("'").join(''), pageSize: 999 }).then((res) => {
 					data.memberList = res.data.data.list;
 				});
 			},

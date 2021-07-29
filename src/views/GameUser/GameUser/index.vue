@@ -190,7 +190,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { playerListHttp, countryListHttp, areaListHttp, shopListHttp, PlayerDeleteHttp, PlayerRestorePasswordHttp, UserCardListHttp } from '@/api/api';
+import { GameUserListHttp, countryListHttp, areaListHttp, shopListHttp, GameUserDeleteHttp, GameUserRestorePasswordHttp, UserCardListHttp } from '@/api/api';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { i18n, MD5 } from '@/components/common/tools';
 import { useRouter } from 'vue-router';
@@ -343,7 +343,7 @@ export default defineComponent({
 				data.dialogVisible = value;
 			},
 			handledialogOK: () => {
-				PlayerDeleteHttp([data.playerId]).then((res: any) => {
+				GameUserDeleteHttp([data.playerId]).then((res: any) => {
 					if (res.data.code === 100) {
 						message.success(res.data.msg);
 						data.dialogVisible = false;
@@ -361,7 +361,7 @@ export default defineComponent({
 					memberId: data.playerId,
 					newPassword: MD5(data.password)
 				};
-				PlayerRestorePasswordHttp(qs.stringify(obj)).then((res: any) => {
+				GameUserRestorePasswordHttp(qs.stringify(obj)).then((res: any) => {
 					if (res.data.code === 100) {
 						message.success(res.data.msg);
 						data.visible = false;
@@ -404,7 +404,7 @@ export default defineComponent({
 				data.search();
 			},
 			search: () => {
-				playerListHttp(data.infoVO).then((res: any) => {
+				GameUserListHttp(data.infoVO).then((res: any) => {
 					if (res.data.data) {
 						data.tableList = res.data.data.list;
 						data.total = res.data.data.totalCount;

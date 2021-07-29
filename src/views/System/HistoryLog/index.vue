@@ -144,7 +144,8 @@ export default defineComponent({
 				{ id: 6, label: i18n('default.3') },
 				{ id: 7, label: i18n('default.11') },
 				{ id: 8, label: i18n('default.154') },
-				{ id: 9, label: i18n('default.172') }
+				{ id: 9, label: i18n('default.172') },
+				{ id: 10, label: i18n('default.212') }
 			],
 			userList: [],
 			tableList: [],
