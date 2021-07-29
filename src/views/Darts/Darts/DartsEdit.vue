@@ -60,7 +60,7 @@
 
 <script lang="ts">
 import { defineComponent, nextTick, onMounted, reactive, toRefs } from 'vue';
-import { countryListHttp, dartsAddHttp, carouselEditorHttp, dartsInfoHttp, newsImgUploadHttp } from '@/api/api';
+import { countryListHttp, dartsEditHttp, dartsInfoHttp, newsImgUploadHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
 // import showUrlDialog from '@/components/common/showUrlDialog.vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
@@ -120,14 +120,14 @@ export default defineComponent({
 					message.warning('请输入新闻标题');
 					return false;
 				}
-				return dartsAddHttp(data.infoVO)
+				return dartsEditHttp(data.infoVO)
 			},
       update: () => {
 				if(!data.infoVO.title){
 					message.warning('请输入新闻标题');
 					return false;
 				}
-				return carouselEditorHttp(data.infoVO)
+				return dartsEditHttp(data.infoVO)
 			},
       getInfo:(id: any) =>{
         dartsInfoHttp({id}).then((res: any) =>{
@@ -135,6 +135,7 @@ export default defineComponent({
 					data.infoVO.id = response.id
 					data.infoVO.title = response.title
 					data.infoVO.display = response.display
+					data.infoVO.contents = response.contents
 					data.infoVO.countryId = response.countryId
 					data.fileList = [{ uid: '1', url: response.thumbnail }] as any;
 					// eslint-disable-next-line @typescript-eslint/no-use-before-define

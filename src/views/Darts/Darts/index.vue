@@ -1,5 +1,5 @@
 <template>
-	<labelTitle :value="$t('default.193')" />
+	<labelTitle :value="$t('default.222')" />
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
@@ -58,7 +58,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-import { dartsListHttp, countryListHttp,dartsDeleteHttp, newsEditorHttp } from '@/api/api';
+import { dartsListHttp, countryListHttp,dartsDeleteHttp, dartsEditHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { useRouter } from 'vue-router';
@@ -170,10 +170,10 @@ export default defineComponent({
 					title:row.title,
 					contents:row.contents,
 					countryId:row.countryId,
-					registerDate:row.registerDate,
+					thumbnail:row.thumbnail,
 					display:Number(row.display),
 				}
-				newsEditorHttp(flagData).then((res: any) =>{
+				dartsEditHttp(flagData).then((res: any) =>{
 					message.info(res.data.msg)
 				})
 			}

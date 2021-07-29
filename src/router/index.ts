@@ -157,27 +157,27 @@ const routes = [
 				component: () => import(/* webpackChunkName: "HistoryLog" */ '../views/System/HistoryLog/index.vue'),
 				meta: [{ label: 'default.184', path: 'HistoryLog' }]
 			},
-			// User
+			// 玩家
 			{
-				path: '/User',
-				name: 'User',
-				component: () => import(/* webpackChunkName: "User" */ '../views/User/User/index.vue'),
-				meta: [{ label: 'default.154', path: 'User' }]
+				path: '/GameUser',
+				name: 'GameUser',
+				component: () => import(/* webpackChunkName: "GameUser" */ '../views/GameUser/GameUser/index.vue'),
+				meta: [{ label: 'default.154', path: 'GameUser' }]
 			},
 			{
-				path: '/UserInfo',
-				name: 'UserInfo',
-				component: () => import(/* webpackChunkName: "PlayerInfo" */ '../views/User/User/UserInfo.vue'),
+				path: '/GameUserInfo',
+				name: 'GameUserInfo',
+				component: () => import(/* webpackChunkName: "PlayerInfo" */ '../views/GameUser/GameUser/GameUserInfo.vue'),
 				meta: [
-					{ label: 'default.154', path: 'User' },
+					{ label: 'default.154', path: 'GameUser' },
 					{ label: 'default.163', path: 'UserInfo' }
 				]
 			},
-			// UserCard
+			// GameUserCard
 			{
-				path: '/UserCard',
-				name: 'UserCard',
-				component: () => import(/* webpackChunkName: "UserCard" */ '../views/User/UserCard/index.vue'),
+				path: '/GameUserCard',
+				name: 'GameUserCard',
+				component: () => import(/* webpackChunkName: "GameUserCard" */ '../views/GameUser/GameUserCard/index.vue'),
 				meta: [{ label: 'default.172', path: 'UserCard' }]
 			},
 			// Country
