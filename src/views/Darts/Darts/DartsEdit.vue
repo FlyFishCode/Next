@@ -48,13 +48,13 @@
 					</a-modal>
 				</div>
 			</a-col>
-			<a-col :span="4">{{ '图片长宽比例为：2.4:1' }}</a-col>
+			<!-- <a-col :span="4">{{ '图片长宽比例为：2.4:1' }}</a-col> -->
 		</a-row>
 		<a-row class="rowStyle">
 			<div id="editorElem"></div>
 		</a-row>
 		<!-- 广告链接的预览 -->
-	<showUrlDialog :visible="showUrlDialog" :src="infoVO.thumbnail" @showBoxCancel="showBoxCancel" />
+	<!-- <showUrlDialog :visible="showUrlDialog" :src="infoVO.thumbnail" @showBoxCancel="showBoxCancel" /> -->
 	</div>
 </template>
 
@@ -62,7 +62,7 @@
 import { defineComponent, nextTick, onMounted, reactive, toRefs } from 'vue';
 import { countryListHttp, carouseAddHttp, carouselEditorHttp, carouselInfoHttp, newsImgUploadHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
-import showUrlDialog from '@/components/common/showUrlDialog.vue';
+// import showUrlDialog from '@/components/common/showUrlDialog.vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { useRoute } from 'vue-router';
 import { message } from 'ant-design-vue';
@@ -73,7 +73,7 @@ import E from 'wangeditor'
 export default defineComponent({
 	name: 'CarouselEdit',
 	components: {
-		showUrlDialog,
+		// showUrlDialog,
 		PlusOutlined,
 		labelTitle,
 	},

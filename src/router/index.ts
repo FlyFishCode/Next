@@ -256,7 +256,7 @@ const routes = [
 				component: () => import(/* webpackChunkName: "DartsEdit" */ '../views/Darts/Darts/DartsEdit.vue'),
 				meta: [
 					{ label: 'default.222', path: 'Darts' },
-					{ label: 'default.209', path: 'DartsEdit' },
+					{ label: 'default.223', path: 'DartsEdit' },
 				]
 			},
 			{
@@ -268,12 +268,12 @@ const routes = [
 				]
 			},
 			{
-				path: '/CarouselEdit',
-				name: 'CarouselEdit',
-				component: () => import(/* webpackChunkName: "CarouselEdit" */ '../views/Darts/Carosel/CaroselEdit.vue'),
+				path: '/DartsCarouselEdit',
+				name: 'DartsCarouselEdit',
+				component: () => import(/* webpackChunkName: "DartsCarouselEdit" */ '../views/Darts/Carosel/CaroselEdit.vue'),
 				meta: [
 					{ label: 'default.194', path: 'DartsCarousel' },
-					{ label: 'default.209', path: 'CarouselEdit' },
+					{ label: 'default.209', path: 'DartsCarouselEdit' },
 				]
 			},
 		]

@@ -142,12 +142,12 @@ export default defineComponent({
 			},
       handleCreate: () => {
 				ROUTER.push({
-					path: 'DartsEdit'
+					path: 'DartsCarouselEdit'
 				});
 			},
 			handleTitleClick: (id: number) => {
 				ROUTER.push({
-					path: 'DartsEdit',
+					path: 'DartsCarouselEdit',
 					query: {
 						id
 					}

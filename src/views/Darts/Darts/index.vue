@@ -11,30 +11,11 @@
 				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ $t('default.196') }}
-			</a-col>
-			<a-col :span="4">
-				<a-select v-model:value="infoVO.category" class="selectBox">
-					<a-select-option v-for="item in categoryList" :key="item.id" :value="item.id">{{ $t(item.label) }}</a-select-option>
-				</a-select>
-			</a-col>
-			<a-col :span="2" class="labelText">
-				{{ $t('default.46') }}
-			</a-col>
-			<a-col :span="2" class="datePicker">
-				<a-date-picker v-model:value="infoVO.registerStartDate" :disabled-date="disabledMinRegisterTime" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
-			</a-col>
-			<a-col :span="2" class="datePicker">
-				<a-date-picker v-model:value="infoVO.registerEndDate" :disabled-date="disabledMaxRegisterTime" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
-			</a-col>
-			<a-col :span="2" class="labelText">
 				{{ $t('default.201') }}
 			</a-col>
-			<a-col :span="4">
+			<a-col :span="6">
 				<a-input v-model:value="infoVO.title" allowClear />
 			</a-col>
-		</a-row>
-		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
 				{{ $t('default.203') }}
 			</a-col>
@@ -43,16 +24,6 @@
 					<a-select-option value=" ">{{ $t('default.200') }}</a-select-option>
 					<a-select-option :value="1">{{ $t('default.204') }}</a-select-option>
 					<a-select-option :value="0">{{ $t('default.205') }}</a-select-option>
-				</a-select>
-			</a-col>
-			<a-col v-if="status === 1" :span="2" class="labelText">
-				{{ $t('default.202') }}
-			</a-col>
-			<a-col v-if="status === 1" :span="4">
-				<a-select class="selectBox" show-search v-model:value="infoVO.opeatorIdName" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="userSearch">
-					<a-select-option v-for="user in userList" :key="user.id">
-						<div :title="user.username">{{ user.username }}</div>
-					</a-select-option>
 				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
@@ -74,9 +45,6 @@
 			<template #name="{ record }">
 				<a-button type="link" @click="handleTitleClick(record.id)">{{ record.title }}</a-button>
 			</template>
-			<template #type="{ record }">
-				<div>{{ getTypeName(record.category) }}</div>
-			</template>
 			<template #handle="{ record }">
 				<a-checkbox v-model:checked="record.display" @change="checkboxChange(record)"></a-checkbox>
 			</template>
@@ -90,7 +58,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-import { newsListHttp, countryListHttp, systemUserListHttp, newsDeleteHttp, newsEditorHttp } from '@/api/api';
+import { newsListHttp, countryListHttp, newsDeleteHttp, newsEditorHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { useRouter } from 'vue-router';
@@ -98,6 +66,11 @@ import { message } from 'ant-design-vue';
 import { handleSelectEvent, i18n } from '@/components/common/tools';
 import { useStore } from 'vuex';
 // import qs from 'qs'
+
+interface DataProps{
+	countryList: [{id: any;name: any}];
+}
+
 export default defineComponent({
 	name: 'News',
 	components: {
@@ -111,7 +84,6 @@ export default defineComponent({
 		const data = reactive({
 			visible: false,
 			total: 0,
-			userList: [],
 			countryList: [],
 			agentList: [],
 			ownerList: [],
@@ -122,10 +94,7 @@ export default defineComponent({
 				countryId: '',
 				title: '',
 				display:' ',
-				category: 0,
 				opeatorIdName:'',
-				registerEndDate:"",
-				registerStartDate:"",
 				pageNum: 1,
 				pageSize: 10
 			},
@@ -144,68 +113,16 @@ export default defineComponent({
 					slots: { customRender: 'name' }
 				},
 				{
-					title: i18n('default.46'),
-					dataIndex: 'cdateInt',
-				},
-				{
-					title: i18n('default.196'),
-					slots: { customRender: 'type' }
-				},
-				{
-					title: i18n('default.202'),
-					dataIndex: 'opeatorName',
-				},
-				{
 					title: i18n('default.203'),
 					slots: { customRender: 'handle' }
 				}
 			],
-			categoryList:[
-				{ id: 0, label: 'default.200' },
-				{ id: 3, label: 'default.198' },
-				{ id: 4, label: 'default.197' },
-				{ id: 6, label: 'default.199' },
-			],
-			disabledMinRegisterTime: (startValue: any) => {
-				if (!startValue || !data.infoVO.registerEndDate) {
-					return false;
-				}
-				return startValue.valueOf() > new Date(data.infoVO.registerEndDate).valueOf();
-			},
-			disabledMaxRegisterTime: (endValue: any) => {
-				if (!endValue || !data.infoVO.registerStartDate) {
-					return false;
-				}
-				return new Date(data.infoVO.registerStartDate).valueOf() >= endValue.valueOf();
-			},
 			rowSelection: {
 				columnWidth: 50,
 				// columnTitle: '全选',
 				onChange: (selectedRowKeys: number[]) => {
 					selectList = selectedRowKeys;
 				}
-			},
-			getTypeName:(id: number) =>{
-				let str = '';
-				switch(id){
-					case 3:
-						str = 'default.198'
-						break;
-					case 4:
-						str = 'default.197'
-						break;
-					default :
-						str = 'default.199';
-						break;
-				}
-				return i18n(str)
-			},
-			userSearch: (value: string) => {
-				systemUserListHttp({ username: value, pageSize: 999 }).then((res: any) => {
-					if (data.userList) {
-						data.userList = res.data.data.list;
-					}
-				});
 			},
 			handleDelete: () => {
 				if (handleSelectEvent(selectList, '').length) {
@@ -236,12 +153,12 @@ export default defineComponent({
 			},
 			handleCreate: () => {
 				ROUTER.push({
-					path: 'NewsEdit'
+					path: 'DartsEdit'
 				});
 			},
 			handleTitleClick: (id: number) => {
 				ROUTER.push({
-					path: 'NewsEdit',
+					path: 'DartsEdit',
 					query: {
 						id
 					}
@@ -252,7 +169,6 @@ export default defineComponent({
 					id:row.id,
 					title:row.title,
 					contents:row.contents,
-					category:row.category,
 					countryId:row.countryId,
 					registerDate:row.registerDate,
 					display:Number(row.display),
@@ -269,7 +185,6 @@ export default defineComponent({
 		};
 		const init = () => {
 			data.search();
-			data.userSearch('');
 			getCountryList();
 			data.status = STORE.state.role
 		};
