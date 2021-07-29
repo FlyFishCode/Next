@@ -43,6 +43,9 @@ import { CountryList, CountryCreate, CountryUpdate, CountryInfo, AreaList, AreaC
 // News
 import { newsList , newsInfo, newsImgUpload, newsEditor, newsDelete, carouselList, carouselEditor, carouseAdd, carouselInfo, carouseDelete, carouselAdminEditor } from '@/api/News/index'
 
+// Darts
+import { dartsList,dartsAdd,dartsInfo,dartsDelete } from '@/api/Darts/index';
+
 const baseURL = '/apr';
 const Axios = axios.create({
 	baseURL: baseURL,
@@ -388,6 +391,22 @@ const carouselInfoHttp = (data: any) =>{
 const carouseDeleteHttp = (data: any) =>{
 	return Axios.post(carouseDelete, data)
 }
+
+// DartsAdd
+const dartsListHttp = (data: any) =>{
+	return Axios.post(dartsList, data);
+}
+const dartsAddHttp = (data: any) =>{
+	return Axios.post(dartsAdd, data);
+}
+const dartsInfoHttp = (data: any) =>{
+	return Axios.post(getNewUrl(dartsInfo, data));
+}
+const dartsDeleteHttp = (data: any) =>{
+	return Axios.post(dartsDelete, data);
+}
+
+
 export {
 	loginHttp,
 	changePasswordHttp,
@@ -461,5 +480,9 @@ export {
 	carouseAddHttp,
 	carouselInfoHttp,
 	carouseDeleteHttp,
-	carouselAdminEditorHttp
+	carouselAdminEditorHttp,
+	dartsListHttp,
+	dartsAddHttp,
+	dartsInfoHttp,
+	dartsDeleteHttp
 };

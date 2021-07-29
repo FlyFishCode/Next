@@ -58,7 +58,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-import { newsListHttp, countryListHttp, newsDeleteHttp, newsEditorHttp } from '@/api/api';
+import { dartsListHttp, countryListHttp,dartsDeleteHttp, newsEditorHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { useRouter } from 'vue-router';
@@ -94,7 +94,6 @@ export default defineComponent({
 				countryId: '',
 				title: '',
 				display:' ',
-				opeatorIdName:'',
 				pageNum: 1,
 				pageSize: 10
 			},
@@ -133,14 +132,15 @@ export default defineComponent({
 				data.visible = value;
 			},
 			handleDeleteOk: () => {
-				newsDeleteHttp(selectList).then((res: any) => {
+				dartsDeleteHttp(selectList).then((res: any) => {
 					message.warning(res.data.msg);
 					data.search();
+					selectList = []
 				});
 				data.visible = false;
 			},
 			search: () => {
-				newsListHttp(data.infoVO).then((res: any) => {
+				dartsListHttp(data.infoVO).then((res: any) => {
 					res.data.data.list.forEach((i: any) => {
 						i.display = Boolean(i.display)
 					});

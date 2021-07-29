@@ -1,5 +1,5 @@
 <template>
-	<labelTitle :value="$t('default.209')" :btn="ROUTE.query.id ? update : create"/>
+	<labelTitle :value="$t('default.223')" :btn="ROUTE.query.id ? update : create"/>
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
@@ -14,13 +14,13 @@
 				{{ $t('default.201') }}
 			</a-col>
 			<a-col :span="10">
-				<a-input v-model:value="infoVO.name" allowClear />
+				<a-input v-model:value="infoVO.title" allowClear />
 			</a-col>
 			<a-col :span="2" class="labelText">
 				{{ $t('default.203') }}
 			</a-col>
 			<a-col :span="4">
-				<a-select v-model:value="infoVO.status" class="selectBox">
+				<a-select v-model:value="infoVO.display" class="selectBox">
 					<a-select-option :value="1">{{ $t('default.204') }}</a-select-option>
 					<a-select-option :value="0">{{ $t('default.205') }}</a-select-option>
 				</a-select>
@@ -60,7 +60,7 @@
 
 <script lang="ts">
 import { defineComponent, nextTick, onMounted, reactive, toRefs } from 'vue';
-import { countryListHttp, carouseAddHttp, carouselEditorHttp, carouselInfoHttp, newsImgUploadHttp } from '@/api/api';
+import { countryListHttp, dartsAddHttp, carouselEditorHttp, dartsInfoHttp, newsImgUploadHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
 // import showUrlDialog from '@/components/common/showUrlDialog.vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
@@ -94,13 +94,11 @@ export default defineComponent({
 			previewImage:"",
 			infoVO: {
 				id:'',
-				link:'',
-				name:'',
-				image:"",
-				target:0,
+				title:'',
+				thumbnail:"",
 				contents:'',
 				countryId: '',
-				status:1,
+				display:1,
 			},
 			fileList:[],
       countryList: [],
@@ -118,27 +116,27 @@ export default defineComponent({
 				data.previewVisible = false
 			},
 			create: () => {
-				if(!data.infoVO.name){
+				if(!data.infoVO.title){
 					message.warning('请输入新闻标题');
 					return false;
 				}
-				return carouseAddHttp(data.infoVO)
+				return dartsAddHttp(data.infoVO)
 			},
       update: () => {
-				if(!data.infoVO.name){
+				if(!data.infoVO.title){
 					message.warning('请输入新闻标题');
 					return false;
 				}
 				return carouselEditorHttp(data.infoVO)
 			},
       getInfo:(id: any) =>{
-        carouselInfoHttp({id}).then((res: any) =>{
+        dartsInfoHttp({id}).then((res: any) =>{
 					const response = res.data.data
 					data.infoVO.id = response.id
-					data.infoVO.name = response.name
-					data.infoVO.status = response.status
+					data.infoVO.title = response.title
+					data.infoVO.display = response.display
 					data.infoVO.countryId = response.countryId
-					data.fileList = [{ uid: '1', url: response.image }] as any;
+					data.fileList = [{ uid: '1', url: response.thumbnail }] as any;
 					// eslint-disable-next-line @typescript-eslint/no-use-before-define
 					getEditor(true)
 				})
@@ -147,7 +145,7 @@ export default defineComponent({
 				const formData = new FormData();
 				formData.append("image", file);
 				newsImgUploadHttp(formData).then((res: any) =>{
-					data.infoVO.image = res.data.data
+					data.infoVO.thumbnail = res.data.data
 					data.fileList = [{ uid: '1', url: res.data.data }] as any;
 				})
 			},
