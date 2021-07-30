@@ -101,7 +101,7 @@ export default defineComponent({
 				display:1,
 			},
 			fileList:[],
-      countryList: [],
+      countryList: [{id:'',name:''}],
 			showBoxCancel: (value: boolean) => {
 				data.showUrlDialog = value;
 			},

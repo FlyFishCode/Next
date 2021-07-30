@@ -96,7 +96,7 @@
 			<a-col :span="2" class="labelText">
 				{{ $t('default.215') }}
 			</a-col>
-			<a-col :span="4" class="searchButton">
+			<a-col :span="2" class="searchButton">
 				<div class="clearfix">
 					<a-upload
 						:customRequest='handleImgRequest'
@@ -114,6 +114,7 @@
 					</a-modal>
 				</div>
 			</a-col>
+			<a-col :span="4">{{ '图片大小建议为：1200px X 250px' }}</a-col>
 		</a-row>
     <a-row>
       <a-col :span="2" class="labelText">

@@ -111,8 +111,8 @@ export default defineComponent({
 		const data = reactive({
 			visible: false,
 			total: 0,
-			userList: [],
-			countryList: [],
+			userList: [{id:'',username:''}],
+			countryList: [{id:'',name:''}],
 			agentList: [],
 			ownerList: [],
 			shopList: [],

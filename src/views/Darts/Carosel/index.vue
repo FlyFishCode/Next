@@ -12,19 +12,17 @@
 				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
+				{{ $t('default.201') }}
+			</a-col>
+			<a-col :span="4">
+				<a-input v-model:value="infoVO.name" allowClear />
+			</a-col>
+			<a-col :span="2" class="labelText">
 				{{ $t('default.203') }}
 			</a-col>
 			<a-col :span="4">
 				<a-select v-model:value="infoVO.status" class="selectBox">
           <a-select-option v-for="item in displayList" :key="item.id" :value="item.id">{{ $t(item.label) }}</a-select-option>
-				</a-select>
-			</a-col>
-			<a-col :span="2" class="labelText">
-				{{ $t('default.211') }}
-			</a-col>
-			<a-col :span="4">
-				<a-select v-model:value="infoVO.approval" class="selectBox">
-          <a-select-option v-for="item in states" :key="item.id" :value="item.id">{{ $t(item.label) }}</a-select-option>
 				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
@@ -49,9 +47,6 @@
 			<template #display="{ record }">
 				<a-checkbox v-model:checked="record.status" @change="checkboxChange(record,1)"></a-checkbox>
 			</template>
-			<template #approval="{ record }">
-				<a-checkbox v-model:checked="record.approval" @change="checkboxChange(record,0)"></a-checkbox>
-			</template>
 		</a-table>
 	</a-row>
 	<div class="paginationStyle">
@@ -63,11 +58,11 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-import { countryListHttp, carouselListHttp, carouselEditorHttp, carouseDeleteHttp, carouselAdminEditorHttp } from '@/api/api'
+import { countryListHttp, carouselListHttp, carouseDeleteHttp,carouselEditorHttp } from '@/api/api'
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import labelTitle from '@/components/labelTitle.vue';
 import { message } from 'ant-design-vue';
-import { useStore } from 'vuex';
+// import { useStore } from 'vuex';
 import { i18n, handleSelectEvent } from '@/components/common/tools'
 import { useRouter } from 'vue-router';
 // import { SettingFilled} from '@ant-design/icons-vue';
@@ -78,20 +73,18 @@ export default defineComponent({
     labelTitle
   },
 	setup() {
-    const STORE = useStore();
+    // const STORE = useStore();
     const ROUTER = useRouter()
     let selectList: number[] = [];
 		const data = reactive({
       visible:false,
       total:0,
-      status:0,
-      userList:[],
       tableList:[],
-      countryList:[{id:0,name:''}],
+      countryList:[{id:'',name:''}],
       infoVO:{
         countryId: '',
 				status:' ',
-				approval:' ',
+				name:'',
 				pageNum: 1,
 				pageSize: 10
       },
@@ -135,6 +128,25 @@ export default defineComponent({
 					selectList = selectedRowKeys;
 				}
 			},
+			checkboxChange:(row: any,type: number) =>{
+				if(type){
+					const flagData = {
+							cdateInt: row.cdateInt,
+							countryId: row.countryId,
+							id: row.id,
+							link: row.link,
+							name: row.name,
+							image: row.image,
+							orderNo: row.orderNo,
+							status: Number(row.status),
+					}
+					carouselEditorHttp(flagData).then((res: any) =>{
+						if(res.data.code === 100){
+							message.info(res.data.msg)
+						}
+				})
+				}
+			},
       handleDelete: () => {
 				if (handleSelectEvent(selectList, '').length) {
 					data.visible = true;
@@ -148,9 +160,7 @@ export default defineComponent({
 			handleTitleClick: (id: number) => {
 				ROUTER.push({
 					path: 'DartsCarouselEdit',
-					query: {
-						id
-					}
+					query: { id }
 				});
 			},
       afterClose: (value: boolean) => {
@@ -163,38 +173,6 @@ export default defineComponent({
 				});
 				data.visible = false;
 			},
-			checkboxChange:(row: any,type: number) =>{
-				if(type){
-					const flagData = {
-					cdateInt: row.cdateInt,
-					countryId: row.countryId,
-					id: row.id,
-					link: row.link,
-					name: row.name,
-					image: row.image,
-					target: row.target,
-					userId: row.userId,
-					orderNo: row.orderNo,
-					status: Number(row.status),
-					approval: Number(row.approval),
-				}
-					carouselEditorHttp(flagData).then((res: any) =>{
-						if(res.data.code === 100){
-							message.info(res.data.msg)
-						}
-				})
-				}else{
-					const flagData = {
-						id:row.id,
-						approval: Number(row.approval)
-					}
-					carouselAdminEditorHttp(flagData).then((res: any) =>{
-						if(res.data.code === 100){
-							message.info(res.data.msg)
-						}
-				})
-				}
-			},
       pageChange: () => {
 				data.search();
 			},
@@ -202,7 +180,6 @@ export default defineComponent({
         carouselListHttp(data.infoVO).then((res: any) =>{
           res.data.data.list.forEach((i: any) => {
 						i.status = Boolean(i.status)
-						i.approval = Boolean(i.approval)
 					});
 					data.tableList = res.data.data.list;
 					data.total = res.data.data.total;
@@ -216,15 +193,8 @@ export default defineComponent({
 		};
     const init = ()=>{
       getCountryList();
-      data.search(),
-      data.status = STORE.state.role
-			if(data.status === 1){
-				data.columns.push({
-					title: i18n('default.211'),
-					slots: { customRender: 'approval' }
-				})
-			}
-    }
+      data.search()
+    };
     onMounted(() =>{
       init()
     })
