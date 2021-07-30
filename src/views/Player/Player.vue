@@ -50,7 +50,7 @@
 		</a-col>
 		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
 			<template #picture="{ record }">
-				<div class="imgBox"><img :src="record.picture.split(',')[0]" alt=""></div>
+				<div class="imgBox"><img :src="JSON.parse(record.picture)[0].url"></div>
 			</template>
 			<template #name="{ record }">
 				<a-button type="link" @click="handleNameClick(record.id)">{{ record.name }}</a-button>
@@ -65,7 +65,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-import { PlayerListHttp, countryListHttp, newsDeleteHttp, newsEditorHttp,agentListHttp } from '@/api/api';
+import { PlayerListHttp, countryListHttp, PlayerDeleteHttp, newsEditorHttp,agentListHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { useRouter } from 'vue-router';
@@ -139,7 +139,7 @@ export default defineComponent({
 				data.visible = value;
 			},
 			handleDeleteOk: () => {
-				newsDeleteHttp(selectList).then((res: any) => {
+				PlayerDeleteHttp(selectList).then((res: any) => {
 					message.warning(res.data.msg);
 					data.search();
 				});

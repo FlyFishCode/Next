@@ -47,7 +47,7 @@ import { newsList , newsInfo, newsImgUpload, newsEditor, newsDelete, carouselLis
 import { dartsList,dartsEdit,dartsInfo,dartsDelete } from '@/api/Darts/index';
 
 // Player
-import { PlayerList,PlayerAdd }  from '@/api/Player/index';
+import { PlayerList,PlayerAdd,PlayerInfo ,PlayerUpdate,PlayerDelete}  from '@/api/Player/index';
 
 const baseURL = '/apr';
 const Axios = axios.create({
@@ -416,6 +416,15 @@ const PlayerListHttp = (data: any) =>{
 const PlayerAddtHttp = (data: any) =>{
 	return Axios.post(PlayerAdd, data);
 }
+const PlayerInfoHttp = (data: any) =>{
+	return Axios.get(getNewUrl(PlayerInfo, data));
+}
+const PlayerUpdateHttp = (data: any) =>{
+	return Axios.post(PlayerUpdate, data);
+}
+const PlayerDeleteHttp = (data: any) =>{
+	return Axios.post(PlayerDelete, data);
+}
 export {
 	loginHttp,
 	changePasswordHttp,
@@ -495,5 +504,8 @@ export {
 	dartsInfoHttp,
 	dartsDeleteHttp,
 	PlayerListHttp,
-	PlayerAddtHttp
+	PlayerAddtHttp,
+	PlayerInfoHttp,
+	PlayerUpdateHttp,
+	PlayerDeleteHttp
 };

@@ -158,10 +158,10 @@
 			</a-row>
 			<a-table bordered :row-selection='rowSelection' :data-source="dataSource" :columns="columns" rowKey='id'>
 				<template #label="{ record }">
-					<a-input v-model:value="record.label" @pressEnter="handleChangeTitle(record)" allowClear/>
+					<a-input v-model:value="record.label" allowClear/>
 				</template>
 				<template #content="{ record }">
-					<a-input v-model:value="record.content" @pressEnter="handleChangeContent(record)" allowClear/>
+					<a-input v-model:value="record.content" allowClear/>
 				</template>
 			</a-table>
 		</div>
@@ -210,18 +210,20 @@
 		</div>
 		<!-- 广告链接的预览 -->
 	<showUrlDialog :visible="showUrlDialog" :src="infoVO.videoUrl" @showBoxCancel="showBoxCancel" />
+	<DeleteDialog :visible="visible" @afterClose="afterClose" @handleOk="handleDeleteOk" />
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-import { countryListHttp,agentListHttp, PlayerAddtHttp, newsInfoHttp, newsImgUploadHttp } from '@/api/api';
+import { countryListHttp,agentListHttp, PlayerAddtHttp,PlayerUpdateHttp, PlayerInfoHttp, newsImgUploadHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
 import showUrlDialog from '@/components/common/showUrlDialog.vue';
+import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { useRoute } from 'vue-router';
 import { message } from 'ant-design-vue';
-// import { i18n } from '@/components/common/tools';
+import { handleSelectEvent } from '@/components/common/tools';
 
 
 export default defineComponent({
@@ -229,11 +231,13 @@ export default defineComponent({
 	components: {
 		showUrlDialog,
 		PlusOutlined,
+		DeleteDialog,
 		labelTitle,
 	},
 	setup() {
     const ROUTE = useRoute();
 		const RoleType: any = sessionStorage.getItem('NextRoleType');
+		let selectList: number[] = [];
 		const getBase64 = (file: File) => {
 			return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -243,7 +247,6 @@ export default defineComponent({
       })
 		}
 		const data = reactive({
-			index:0,
 			visible: false,
 			showUrlDialog: false,
 			previewVisible:false,
@@ -252,7 +255,7 @@ export default defineComponent({
 			agentList:[],
       palyerImgList:[],
 			shopImgList:[],
-			selectList:[],
+			index:0,
 			infoVO: {
 				id:'',
 				name:'',
@@ -292,7 +295,7 @@ export default defineComponent({
 				columnWidth: 50,
 				// columnTitle: '全选',
 				onChange: (selectedRowKeys: number[], selectedRows: any) => {
-					data.selectList = selectedRows.map((i: any) => i.id);
+					selectList = selectedRows.map((i: any) => i.id);
 				}
 			},
 			showBoxCancel: (value: boolean) => {
@@ -318,10 +321,10 @@ export default defineComponent({
 					message.warning('请输入选手姓名');
 					return false;
 				}
-				data.infoVO.picture = data.palyerImgList.map((i: any) => i.url).join(',');
-				data.infoVO.dartImg = data.dartsList.map((i: any) => i.url).join(',');
-				data.infoVO.goods = data.shopImgList.map((i: any) => i.url).join(',');
-				data.infoVO.achievement = JSON.stringify(data.dartsList);
+				data.infoVO.picture = JSON.stringify(data.palyerImgList);
+				data.infoVO.dartImg = JSON.stringify(data.dartsList);
+				data.infoVO.goods = JSON.stringify(data.shopImgList);
+				data.infoVO.achievement = JSON.stringify(data.dataSource);
 				return PlayerAddtHttp(data.infoVO)
 			},
       update: () => {
@@ -329,15 +332,20 @@ export default defineComponent({
 					message.warning('请输入选手姓名');
 					return false;
 				}
-				return PlayerAddtHttp(data.infoVO)
+				data.infoVO.picture = JSON.stringify(data.palyerImgList);
+				data.infoVO.dartImg = JSON.stringify(data.dartsList);
+				data.infoVO.goods = JSON.stringify(data.shopImgList);
+				data.infoVO.achievement = JSON.stringify(data.dataSource);
+				return PlayerUpdateHttp(data.infoVO)
 			},
-      getInfo:(id: any) =>{
-        newsInfoHttp({id}).then((res: any) =>{
-					const response = res.data.data
-					data.infoVO.id = response.id
-					data.infoVO.name = response.name
-					data.infoVO.countryId = response.countryId
-					data.dartsList = [{ uid: '1', url: response.thumbnail }] as any;
+      getInfo:(playerId: any) =>{
+        PlayerInfoHttp({playerId}).then((res: any) =>{
+					const response = res.data.data;
+					data.infoVO = response;
+					data.palyerImgList = JSON.parse(response.picture);
+					data.dartsList = JSON.parse(response.dartImg);
+					data.shopImgList = JSON.parse(response.goods);
+					data.dataSource = JSON.parse(response.achievement);
 				})
       },
 			handleImgRequest:({file}: any) =>{
@@ -351,7 +359,7 @@ export default defineComponent({
         const formData = new FormData();
 				formData.append("image", file);
 				newsImgUploadHttp(formData).then((res: any) =>{
-					const obj = {uid:file.lastModified,url:res.data.data} as never;
+					const obj = {uid:file.lastModified + new Date().getTime(), url:res.data.data} as never;
 					data.palyerImgList.push(obj);
 					data.palyerImgList = data.palyerImgList.filter((i: any) => i.url)
 				})
@@ -360,23 +368,29 @@ export default defineComponent({
         const formData = new FormData();
 				formData.append("image", file);
 				newsImgUploadHttp(formData).then((res: any) =>{
-					const obj = {uid:file.lastModified,url:res.data.data} as never;
+					const obj = {uid:file.lastModified + new Date().getTime(),url:res.data.data} as never;
 					data.shopImgList.push(obj);
 					data.shopImgList = data.shopImgList.filter((i: any) => i.url)
 				})
       },
+			afterClose: (value: boolean) => {
+				data.visible = value;
+			},
+			handleDeleteOk: () => {
+				selectList.forEach((i: number) =>{
+					data.dataSource.splice(data.dataSource.findIndex((j: any) => i === j.id),1)
+				})
+				data.visible = false;
+			},
 			handleDelete:() =>{
-				console.log(data.selectList);
+				if (handleSelectEvent(selectList, '').length) {
+					data.visible = true;
+				}
 			},
 			handleAdd:() =>{
-				const obj = {id:data.index+=1,label:"",content:""} as never;
+				const obj = {id:Math.max(...data.dataSource.map((i: any) => i.id)) > 0 ? Math.max(...data.dataSource.map((i: any) => i.id)) + 1 : data.index+1 ,label:"",content:""} as never;
 				data.dataSource.push(obj)
-			},
-			handleChangeTitle:(row: any) =>{
-				console.log(row)
-			},
-			handleChangeContent:(row: any) =>{
-				console.log(row)
+				console.log(data.dataSource)
 			},
 			handleVidoePreview:() =>{
 				data.showUrlDialog = true
