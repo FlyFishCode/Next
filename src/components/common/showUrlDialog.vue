@@ -36,10 +36,10 @@ export default defineComponent({
 				data.isShow = visiVal;
 				if (srcVal) {
 					data.src = srcVal;
-					if (data.src.includes('.mp4')) {
-						data.isVideo = true;
-					} else {
+					if (data.src.includes('.jpg')) {
 						data.isVideo = false;
+					} else {
+						data.isVideo = true;
 					}
 				}
 			}

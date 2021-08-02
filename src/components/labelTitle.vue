@@ -18,13 +18,15 @@ export default defineComponent({
 	setup(props: any) {
 		const data = reactive({
 			handleBtn: () => {
-				props.btn().then((res: any) => {
+				if(props.btn()){
+					props.btn().then((res: any) => {
 					if (res.data.code === 100) {
 						message.success(res.data.msg);
 					} else {
 						message.warning(res.data.data);
 					}
 				});
+				}
 			}
 		});
 		return {

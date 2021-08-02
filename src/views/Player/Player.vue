@@ -50,7 +50,7 @@
 		</a-col>
 		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
 			<template #picture="{ record }">
-				<div class="imgBox"><img :src="JSON.parse(record.picture)[0].url"></div>
+				<div class="imgBox"><img :src="JSON.parse(record.picture)[0] ? JSON.parse(record.picture)[0].url :''"></div>
 			</template>
 			<template #name="{ record }">
 				<a-button type="link" @click="handleNameClick(record.id)">{{ record.name }}</a-button>

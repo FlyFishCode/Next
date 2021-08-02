@@ -322,6 +322,18 @@ export default defineComponent({
 					message.warning('请输入选手姓名');
 					return false;
 				}
+				if(!data.palyerImgList.length){
+					message.warning('请添加选手图片');
+					return false;
+				}
+				if(!data.dartsList.length){
+					message.warning('请添加飞镖图片');
+					return false;
+				}
+				if(!data.shopImgList.length){
+					message.warning('请添加商品图片');
+					return false;
+				}
 				data.infoVO.picture = JSON.stringify(data.palyerImgList);
 				data.infoVO.dartImg = JSON.stringify(data.dartsList);
 				data.infoVO.goods = JSON.stringify(data.shopImgList);
@@ -331,6 +343,18 @@ export default defineComponent({
       update: () => {
 				if(!data.infoVO.name){
 					message.warning('请输入选手姓名');
+					return false;
+				}
+				if(!data.palyerImgList.length){
+					message.warning('请添加选手图片');
+					return false;
+				}
+				if(!data.dartsList.length){
+					message.warning('请添加飞镖图片');
+					return false;
+				}
+				if(!data.shopImgList.length){
+					message.warning('请添加商品图片');
 					return false;
 				}
 				data.infoVO.picture = JSON.stringify(data.palyerImgList);
