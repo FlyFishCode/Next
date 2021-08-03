@@ -110,7 +110,7 @@ export default defineComponent({
 				data.previewVisible = false
 			},
 			create: () => {
-				if(!data.infoVO.name){
+				if(data.infoVO.name){
 					message.warning('请输入新闻标题');
 					return false;
 				}

@@ -84,7 +84,6 @@ export default defineComponent({
 		const data = reactive({
       visible:false,
       total:0,
-      status:0,
       userList:[],
       tableList:[],
       countryList:[{id:0,name:''}],
@@ -216,9 +215,8 @@ export default defineComponent({
 		};
     const init = ()=>{
       getCountryList();
-      data.search(),
-      data.status = STORE.state.role
-			if(data.status === 1){
+      data.search();
+			if(STORE.state.role === 1){
 				data.columns.push({
 					title: i18n('default.211'),
 					slots: { customRender: 'approval' }

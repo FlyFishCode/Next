@@ -47,6 +47,9 @@
 			<template #display="{ record }">
 				<a-checkbox v-model:checked="record.status" @change="checkboxChange(record,1)"></a-checkbox>
 			</template>
+			<template #approval="{ record }">
+				<a-checkbox v-model:checked="record.approval" @change="checkboxChange(record,0)"></a-checkbox>
+			</template>
 		</a-table>
 	</a-row>
 	<div class="paginationStyle">
@@ -58,12 +61,12 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-import { countryListHttp, carouselListHttp, carouseDeleteHttp,carouselEditorHttp } from '@/api/api'
+import { countryListHttp, carouselListHttp, carouseDeleteHttp,carouselEditorHttp,carouselAdminEditorHttp } from '@/api/api'
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import labelTitle from '@/components/labelTitle.vue';
 import { message } from 'ant-design-vue';
-// import { useStore } from 'vuex';
-import { i18n, handleSelectEvent } from '@/components/common/tools'
+import { useStore } from 'vuex';
+import { i18n, handleSelectEvent } from '@/components/common/tools';
 import { useRouter } from 'vue-router';
 // import { SettingFilled} from '@ant-design/icons-vue';
 export default defineComponent({
@@ -73,7 +76,7 @@ export default defineComponent({
     labelTitle
   },
 	setup() {
-    // const STORE = useStore();
+    const STORE = useStore();
     const ROUTER = useRouter()
     let selectList: number[] = [];
 		const data = reactive({
@@ -85,6 +88,7 @@ export default defineComponent({
         countryId: '',
 				status:' ',
 				name:'',
+				type:1,
 				pageNum: 1,
 				pageSize: 10
       },
@@ -145,6 +149,16 @@ export default defineComponent({
 							message.info(res.data.msg)
 						}
 				})
+				}else{
+					const flagData = {
+						id:row.id,
+						approval: Number(row.approval)
+					}
+					carouselAdminEditorHttp(flagData).then((res: any) =>{
+						if(res.data.code === 100){
+							message.info(res.data.msg)
+						}
+				})
 				}
 			},
       handleDelete: () => {
@@ -180,6 +194,7 @@ export default defineComponent({
         carouselListHttp(data.infoVO).then((res: any) =>{
           res.data.data.list.forEach((i: any) => {
 						i.status = Boolean(i.status)
+						i.approval = Boolean(i.approval)
 					});
 					data.tableList = res.data.data.list;
 					data.total = res.data.data.total;
@@ -194,6 +209,12 @@ export default defineComponent({
     const init = ()=>{
       getCountryList();
       data.search()
+			if(STORE.state.role === 1){
+				data.columns.push({
+					title: i18n('default.211'),
+					slots: { customRender: 'approval' }
+				})
+			}
     };
     onMounted(() =>{
       init()

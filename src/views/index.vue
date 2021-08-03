@@ -3,13 +3,13 @@
 	<a-row class="div">
 		<a-col :span="4">
 			<a-menu mode="inline" theme="dark" :openKeys="openKeys" v-model:selectedKeys="selectedKeys" style="width:100%;height:100%" @click="handleClick" @openChange="onOpenChange">
-				<a-sub-menu key="sub1">
+				<!-- <a-sub-menu key="sub1">
 					<template #title>
 						<span
 							><MailOutlined /><span>{{ $t('default.1') }}</span></span
 						>
 					</template>
-					<!-- <a-menu-item key="Bulletin">Bulletin</a-menu-item> -->
+					<a-menu-item key="Bulletin">Bulletin</a-menu-item>
 					<a-menu-item key="Advert">{{ $t('default.11') }}</a-menu-item>
 				</a-sub-menu>
 				<a-sub-menu key="sub2">
@@ -48,7 +48,7 @@
 					</template>
 					<a-menu-item key="Country">{{ $t('default.23') }}</a-menu-item>
 					<a-menu-item key="Area">{{ $t('default.24') }}</a-menu-item>
-				</a-sub-menu>
+				</a-sub-menu> -->
 				<a-sub-menu key="sub6">
 					<template #title>
 						<span
@@ -75,7 +75,7 @@
 					<a-menu-item key="Darts">{{ $t('default.222') }}</a-menu-item>
 					<a-menu-item key="DartsCarousel">{{ $t('default.194') }}</a-menu-item>
 				</a-sub-menu>
-				<a-sub-menu v-if="RoleType !== '5'" key="sub100">
+				<!-- <a-sub-menu v-if="RoleType !== '5'" key="sub100">
 					<template #title>
 						<span
 							><SettingOutlined /><span>{{ $t('default.146') }}</span></span
@@ -83,7 +83,7 @@
 					</template>
 					<a-menu-item key="User">{{ $t('default.147') }}</a-menu-item>
 					<a-menu-item key="HistoryLog">{{ $t('default.184') }}</a-menu-item>
-				</a-sub-menu>
+				</a-sub-menu> -->
 			</a-menu>
 		</a-col>
 		<a-col :span="20" class="centent">
@@ -94,7 +94,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue';
-import { MailOutlined, AppstoreOutlined, SettingOutlined, CreditCardOutlined, UserOutlined, EnvironmentOutlined, ProfileOutlined,TeamOutlined,PushpinOutlined } from '@ant-design/icons-vue';
+import { ProfileOutlined,TeamOutlined,PushpinOutlined } from '@ant-design/icons-vue';
 import hearder from '@/components/hearder.vue';
 import { useRouter } from 'vue-router';
 
@@ -106,12 +106,12 @@ interface DataProps {
 export default defineComponent({
 	name: 'index',
 	components: {
-		MailOutlined,
-		AppstoreOutlined,
-		SettingOutlined,
-		CreditCardOutlined,
-		EnvironmentOutlined,
-		UserOutlined,
+		// MailOutlined,
+		// AppstoreOutlined,
+		// SettingOutlined,
+		// CreditCardOutlined,
+		// EnvironmentOutlined,
+		// UserOutlined,
 		ProfileOutlined,
 		PushpinOutlined,
 		TeamOutlined,
