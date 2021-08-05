@@ -75,15 +75,15 @@
 					<a-menu-item key="Darts">{{ $t('default.222') }}</a-menu-item>
 					<a-menu-item key="DartsCarousel">{{ $t('default.194') }}</a-menu-item>
 				</a-sub-menu>
-				<!-- <a-sub-menu v-if="RoleType !== '5'" key="sub100">
+				<a-sub-menu v-if="RoleType == '1'" key="sub100">
 					<template #title>
 						<span
 							><SettingOutlined /><span>{{ $t('default.146') }}</span></span
 						>
 					</template>
 					<a-menu-item key="User">{{ $t('default.147') }}</a-menu-item>
-					<a-menu-item key="HistoryLog">{{ $t('default.184') }}</a-menu-item>
-				</a-sub-menu> -->
+					<!-- <a-menu-item key="HistoryLog">{{ $t('default.184') }}</a-menu-item> -->
+				</a-sub-menu>
 			</a-menu>
 		</a-col>
 		<a-col :span="20" class="centent">
@@ -94,7 +94,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue';
-import { ProfileOutlined,TeamOutlined,PushpinOutlined } from '@ant-design/icons-vue';
+import { ProfileOutlined,TeamOutlined,PushpinOutlined,SettingOutlined } from '@ant-design/icons-vue';
 import hearder from '@/components/hearder.vue';
 import { useRouter } from 'vue-router';
 
@@ -108,7 +108,7 @@ export default defineComponent({
 	components: {
 		// MailOutlined,
 		// AppstoreOutlined,
-		// SettingOutlined,
+		SettingOutlined,
 		// CreditCardOutlined,
 		// EnvironmentOutlined,
 		// UserOutlined,

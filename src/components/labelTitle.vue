@@ -18,6 +18,7 @@ export default defineComponent({
 	setup(props: any) {
 		const data = reactive({
 			handleBtn: () => {
+				try {
 					props.btn().then((res: any) => {
 					if (res.data.code === 100) {
 						message.success(res.data.msg);
@@ -25,6 +26,9 @@ export default defineComponent({
 						message.warning(res.data.data);
 					}
 				});
+				} catch (error) {
+					console.log(error);
+				}
 			}
 		});
 		return {
