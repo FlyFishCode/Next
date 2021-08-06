@@ -219,7 +219,7 @@ const routes = [
 				name: 'CarouselEdit',
 				component: () => import(/* webpackChunkName: "CarouselEdit" */ '../views/News/Carousel/CarouselEdit.vue'),
 				meta: [
-					{ label: 'default.194', path: 'Carousel' },
+					{ label: 'default.194', path: 'NewsCarousel' },
 					{ label: 'default.209', path: 'CarouselEdit' }
 				]
 			},

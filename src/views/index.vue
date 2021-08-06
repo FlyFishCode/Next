@@ -3,6 +3,7 @@
 	<a-row class="div">
 		<a-col :span="4">
 			<a-menu mode="inline" theme="dark" :openKeys="openKeys" v-model:selectedKeys="selectedKeys" style="width:100%;height:100%" @click="handleClick" @openChange="onOpenChange">
+
 				<!-- <a-sub-menu key="sub1">
 					<template #title>
 						<span
@@ -11,8 +12,8 @@
 					</template>
 					<a-menu-item key="Bulletin">Bulletin</a-menu-item>
 					<a-menu-item key="Advert">{{ $t('default.11') }}</a-menu-item>
-				</a-sub-menu>
-				<a-sub-menu key="sub2">
+				</a-sub-menu> -->
+				<!-- <a-sub-menu key="sub2">
 					<template #title>
 						<span
 							><AppstoreOutlined /><span>{{ $t('default.3') }}</span></span
@@ -20,8 +21,8 @@
 					</template>
 					<a-menu-item key="Shop">{{ $t('default.2') }}</a-menu-item>
 					<a-menu-item key="Machine">{{ $t('default.3') }}</a-menu-item>
-				</a-sub-menu>
-				<a-sub-menu key="sub3">
+				</a-sub-menu> -->
+				<!-- <a-sub-menu key="sub3">
 					<template #title>
 						<span
 							><CreditCardOutlined /><span>{{ $t('default.116') }}</span></span
@@ -30,8 +31,9 @@
 					<a-menu-item key="Settlement">{{ $t('default.117') }}</a-menu-item>
 					<a-menu-item key="SettlementInfo">{{ $t('default.116') }}</a-menu-item>
 					<a-menu-item key="RechargeRecord">{{ $t('default.143') }}</a-menu-item>
-				</a-sub-menu>
-				<a-sub-menu key="sub4">
+				</a-sub-menu> -->
+
+				<!-- <a-sub-menu key="sub4">
 					<template #title>
 						<span
 							><UserOutlined /><span>{{ $t('default.154') }}</span></span
@@ -39,8 +41,9 @@
 					</template>
 					<a-menu-item key="GameUser">{{ $t('default.154') }}</a-menu-item>
 					<a-menu-item key="GameUserCard">{{ $t('default.172') }}</a-menu-item>
-				</a-sub-menu>
-				<a-sub-menu key="sub5">
+				</a-sub-menu> -->
+
+				<!-- <a-sub-menu key="sub5">
 					<template #title>
 						<span
 							><EnvironmentOutlined /><span>{{ $t('default.23') }}</span></span
@@ -49,6 +52,7 @@
 					<a-menu-item key="Country">{{ $t('default.23') }}</a-menu-item>
 					<a-menu-item key="Area">{{ $t('default.24') }}</a-menu-item>
 				</a-sub-menu> -->
+
 				<a-sub-menu key="sub6">
 					<template #title>
 						<span
@@ -94,7 +98,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue';
-import { ProfileOutlined,TeamOutlined,PushpinOutlined,SettingOutlined } from '@ant-design/icons-vue';
+import { ProfileOutlined,TeamOutlined,PushpinOutlined,SettingOutlined, } from '@ant-design/icons-vue';
 import hearder from '@/components/hearder.vue';
 import { useRouter } from 'vue-router';
 

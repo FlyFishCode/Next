@@ -74,7 +74,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, nextTick, onMounted, reactive, toRefs } from 'vue';
+import { defineComponent, nextTick, onMounted, reactive, toRefs,onUnmounted } from 'vue';
 import { countryListHttp, newsEditorHttp, newsInfoHttp, newsImgUploadHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
 import showUrlDialog from '@/components/common/showUrlDialog.vue';
@@ -102,6 +102,7 @@ export default defineComponent({
         reader.onerror = error => reject(error);
       })
 		}
+		let editor: { config: { onchange: (html: any) => void; height: number; menus: string[]; zIndex: number; pasteFilterStyle: boolean; linkCheck: (text: any, link: any) => boolean; colors: string[]; fontNames: string[]; showLinkImg: boolean; customUploadImg: (resultFiles: any, insertImgFn: any) => void }; create: () => void; txt: { html: (arg0: string) => void } } | any = null;
 		const data = reactive({
 			visible: false,
 			showUrlDialog: false,
@@ -182,7 +183,7 @@ export default defineComponent({
 			});
 		};
 		const getEditor = (flag: boolean) =>{
-			const editor = new E("#editorElem");
+			editor = new E("#editorElem") as any;
 			nextTick(() => {
         editor.config.onchange = (html: any) => {
           data.infoVO.contents = html;
@@ -264,6 +265,7 @@ export default defineComponent({
         if (flag) {
           editor.txt.html(data.infoVO.contents);
         }
+				return editor;
       });
 		}
 		const init = () => {
@@ -277,6 +279,10 @@ export default defineComponent({
 				getEditor(false);
 			}
 		});
+		onUnmounted(() =>{
+			editor.destroy()
+			editor = null;
+		})
 		return {
 			...toRefs(data),
       ROUTE
