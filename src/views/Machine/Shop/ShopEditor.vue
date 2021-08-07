@@ -1,5 +1,5 @@
 <template>
-	<labelTitle :value="$t('default.2')" :btn="id ? update : create"  @afterHttp='afterHttp'/>
+	<labelTitle :value="$t('default.2')" :btn="id || infoVO.id  ? update : create"  @afterHttp='afterHttp'/>
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
@@ -310,7 +310,7 @@
 	</a-modal>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
 import showUrlDialog from '@/components/common/showUrlDialog.vue';
@@ -331,7 +331,7 @@ export default defineComponent({
 		const ROUTE = useRoute();
 		const isAdmin = true;
 		const id = ROUTE.query.id;
-		const options = ref(null);
+		const options = ref({});
 		let currentMachineId = '';
 		const data = reactive({
 			map: false,
@@ -383,9 +383,9 @@ export default defineComponent({
 				latitude: ''
 			},
 			mapName: '',
-			countryList: [],
-			areaList: [],
-			agentList: [],
+			countryList: [{ id:'',name:'' }],
+			areaList: [{ id:'',name:'' }],
+			agentList: [{ id:'',name:'' }],
 			currentPage: 1,
 			total: 1,
 			columns: [
@@ -503,7 +503,7 @@ export default defineComponent({
 				data.infoVO.agentRate = data.infoVO.agentRate.split('%')[0]
 				return editShopHttp(data.infoVO);
 			},
-			afterHttp:(id: string) =>{
+			afterHttp:(id) =>{
 				data.infoVO.id = id
 			},
 			setGameSetting: (id) => {

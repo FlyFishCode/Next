@@ -22,7 +22,9 @@ export default defineComponent({
 					props.btn().then((res: any) => {
 					if (res.data.code === 100) {
 						message.success(res.data.msg);
-						ctx.emit('afterHttp',res.data.data)
+						if(res.data.data){
+							ctx.emit('afterHttp',res.data.data)
+						}
 					} else {
 						message.warning(res.data.data);
 					}

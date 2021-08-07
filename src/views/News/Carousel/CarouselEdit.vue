@@ -1,5 +1,5 @@
 <template>
-	<labelTitle :value="$t('default.209')" :btn="ROUTE.query.id ? update : create" @afterHttp='afterHttp'/>
+	<labelTitle :value="$t('default.209')" :btn="ROUTE.query.id || infoVO.id  ? update : create" @afterHttp='afterHttp'/>
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
