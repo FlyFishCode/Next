@@ -147,7 +147,7 @@ export default defineComponent({
 				const formData = new FormData();
 				formData.append("image", file);
 				newsImgUploadHttp(formData).then((res: any) =>{
-					data.infoVO.image = res.data.data
+					data.infoVO.image = res.data.data;
 					data.fileList = [{ uid: '1', url: res.data.data }] as any;
 				})
 			},

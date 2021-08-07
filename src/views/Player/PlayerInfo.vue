@@ -162,7 +162,7 @@
 					<a-input v-model:value="record.label" allowClear/>
 				</template>
 				<template #content="{ record }">
-					<a-input v-model:value="record.content" allowClear/>
+					<a-textarea v-model:value="record.content" allowClear/>
 				</template>
 			</a-table>
 		</div>
