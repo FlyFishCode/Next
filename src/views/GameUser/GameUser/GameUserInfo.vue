@@ -1,5 +1,5 @@
 <template>
-	<labelTitle :value="$t('default.163')" :btn="id ? update : create" />
+	<labelTitle :value="$t('default.163')" :btn="id ? update : create"  @afterHttp='afterHttp'/>
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
@@ -253,7 +253,10 @@ export default defineComponent({
 			update: () => {
 				data.infoVO.id = id;
 				return GameUserUpdateHttp(data.infoVO);
-			}
+			},
+			afterHttp:(id: string) =>{
+				data.infoVO.id = id
+			},
 		});
 		const getPlayerInfo = (id: number) => {
 			GameUserInfoHttp({ memberId: id }).then((res: any) => {

@@ -1,5 +1,5 @@
 <template>
-	<labelTitle :value="$t('default.209')" :btn="ROUTE.query.id ? update : create"/>
+	<labelTitle :value="$t('default.209')" :btn="ROUTE.query.id ? update : create" @afterHttp='afterHttp'/>
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
@@ -129,6 +129,9 @@ export default defineComponent({
 					return false;
 				}
 				return carouselEditorHttp(data.infoVO)
+			},
+			afterHttp:(id: string) =>{
+				data.infoVO.id = id
 			},
       getInfo:(id: any) =>{
         carouselInfoHttp({id}).then((res: any) =>{

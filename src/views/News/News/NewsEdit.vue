@@ -1,5 +1,5 @@
 <template>
-	<labelTitle :value="$t('default.195')" :btn="ROUTE.query.id ? update : create"/>
+	<labelTitle :value="$t('default.195')" :btn="ROUTE.query.id ? update : create" @afterHttp='afterHttp'/>
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
@@ -119,7 +119,7 @@ export default defineComponent({
 				registerDate: '',
 			},
 			fileList:[],
-      countryList: [],
+      countryList: [{ id:'',name:'' }],
 			categoryList:[
 				{ id: 3, label: 'default.198' },
 				{ id: 4, label: 'default.197' },
@@ -151,6 +151,9 @@ export default defineComponent({
 					return false;
 				}
 				return newsEditorHttp(data.infoVO)
+			},
+			afterHttp:(id: string) =>{
+				data.infoVO.id = id
 			},
       getInfo:(id: any) =>{
         newsInfoHttp({id}).then((res: any) =>{

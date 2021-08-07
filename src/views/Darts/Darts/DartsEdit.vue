@@ -1,5 +1,5 @@
 <template>
-	<labelTitle :value="$t('default.223')" :btn="ROUTE.query.id ? update : create"/>
+	<labelTitle :value="$t('default.223')" :btn="ROUTE.query.id ? update : create" @afterHttp='afterHttp'/>
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
@@ -128,6 +128,9 @@ export default defineComponent({
 					return false;
 				}
 				return dartsEditHttp(data.infoVO)
+			},
+			afterHttp:(id: string) =>{
+				data.infoVO.id = id
 			},
       getInfo:(id: any) =>{
         dartsInfoHttp({id}).then((res: any) =>{

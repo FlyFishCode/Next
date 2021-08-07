@@ -1,5 +1,5 @@
 <template>
-	<labelTitle :value="$t('default.213')" :btn="ROUTE.query.id ? update : create"/>
+	<labelTitle :value="$t('default.213')" :btn="ROUTE.query.id ? update : create"  @afterHttp='afterHttp'/>
 	<div>
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
@@ -362,6 +362,9 @@ export default defineComponent({
 				data.infoVO.goods = JSON.stringify(data.shopImgList);
 				data.infoVO.achievement = JSON.stringify(data.dataSource);
 				return PlayerUpdateHttp(data.infoVO)
+			},
+			afterHttp:(id: string) =>{
+				data.infoVO.id = id
 			},
       getInfo:(playerId: any) =>{
         PlayerInfoHttp({playerId}).then((res: any) =>{

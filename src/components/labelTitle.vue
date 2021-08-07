@@ -15,13 +15,14 @@ export default defineComponent({
 	props: ['value', 'btn'],
 	name: 'templete',
 	components: {},
-	setup(props: any) {
+	setup(props: any,ctx: any) {
 		const data = reactive({
 			handleBtn: () => {
 				try {
 					props.btn().then((res: any) => {
 					if (res.data.code === 100) {
 						message.success(res.data.msg);
+						ctx.emit('afterHttp',res.data.data)
 					} else {
 						message.warning(res.data.data);
 					}

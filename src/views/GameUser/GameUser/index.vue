@@ -130,11 +130,11 @@
 				</a-col>
 			</a-row>
 		</div>
-		<a-row class="rowStyle">
+		<!-- <a-row class="rowStyle">
 			<a-col :span="1">
 				<a-button type="primary" size="small" @click="handleCreate">{{ $t('default.9') }}</a-button>
 			</a-col>
-		</a-row>
+		</a-row> -->
 		<a-row class="rowStyle">
 			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
 				<template #cardList="{ record }">
@@ -211,6 +211,7 @@ export default defineComponent({
 			playerId: 0,
 			password: '',
 			infoVO: {
+				id:"",
 				username: '',
 				nickname: '',
 				mobile: '',
@@ -243,7 +244,8 @@ export default defineComponent({
 				},
 				{
 					title: i18n('default.104'),
-					slots: { customRender: 'nickname' }
+					dataIndex: 'nickname',
+					// slots: { customRender: 'nickname' }
 				},
 				{
 					title: i18n('default.90'),
@@ -267,7 +269,8 @@ export default defineComponent({
 				},
 				{
 					title: i18n('default.2'),
-					slots: { customRender: 'shopName' }
+					dataIndex: 'shopName',
+					// slots: { customRender: 'shopName' }
 				},
 				{
 					title: i18n('default.105'),
@@ -277,10 +280,10 @@ export default defineComponent({
 					title: i18n('default.162'),
 					slots: { customRender: 'type' }
 				},
-				{
-					title: i18n('default.169'),
-					slots: { customRender: 'handle' }
-				}
+				// {
+				// 	title: i18n('default.169'),
+				// 	slots: { customRender: 'handle' }
+				// }
 			],
 			typeList: [
 				{ id: 1, label: i18n('default.150') },
@@ -290,11 +293,11 @@ export default defineComponent({
 				{ id: 5, label: i18n('default.153') }
 			],
 			total: 1,
-			shopList: [],
-			cardList: [],
+			shopList: [{name:""}],
+			cardList: [{cardNo:""}],
 			tableList: [],
-			countryList: [],
-			areaList: [],
+			countryList: [{id:'',name:""}],
+			areaList: [{id:'',name:""}],
 			disabledStartDate: (startValue: any) => {
 				if (!startValue || !data.infoVO.maxBirthday) {
 					return false;

@@ -33,15 +33,15 @@
 					<a-menu-item key="RechargeRecord">{{ $t('default.143') }}</a-menu-item>
 				</a-sub-menu> -->
 
-				<!-- <a-sub-menu key="sub4">
+				<a-sub-menu key="sub4">
 					<template #title>
 						<span
 							><UserOutlined /><span>{{ $t('default.154') }}</span></span
 						>
 					</template>
 					<a-menu-item key="GameUser">{{ $t('default.154') }}</a-menu-item>
-					<a-menu-item key="GameUserCard">{{ $t('default.172') }}</a-menu-item>
-				</a-sub-menu> -->
+					<!-- <a-menu-item key="GameUserCard">{{ $t('default.172') }}</a-menu-item> -->
+				</a-sub-menu>
 
 				<!-- <a-sub-menu key="sub5">
 					<template #title>
@@ -98,7 +98,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue';
-import { ProfileOutlined,TeamOutlined,PushpinOutlined,SettingOutlined, } from '@ant-design/icons-vue';
+import { ProfileOutlined,TeamOutlined,PushpinOutlined,SettingOutlined,UserOutlined } from '@ant-design/icons-vue';
 import hearder from '@/components/hearder.vue';
 import { useRouter } from 'vue-router';
 
@@ -115,7 +115,7 @@ export default defineComponent({
 		SettingOutlined,
 		// CreditCardOutlined,
 		// EnvironmentOutlined,
-		// UserOutlined,
+		UserOutlined,
 		ProfileOutlined,
 		PushpinOutlined,
 		TeamOutlined,
