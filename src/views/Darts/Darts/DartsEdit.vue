@@ -59,7 +59,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, nextTick, onMounted, reactive, toRefs } from 'vue';
+import { defineComponent, nextTick, onMounted, reactive, toRefs,onUnmounted } from 'vue';
 import { countryListHttp, dartsEditHttp, dartsInfoHttp, newsImgUploadHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
 // import showUrlDialog from '@/components/common/showUrlDialog.vue';
@@ -77,6 +77,7 @@ export default defineComponent({
 		PlusOutlined,
 		labelTitle,
 	},
+	emits:['afterHttp'],
 	setup() {
     const ROUTE = useRoute();
 		const getBase64 = (file: File) => {
@@ -87,6 +88,7 @@ export default defineComponent({
         reader.onerror = error => reject(error);
       })
 		}
+		let editor = {} as any;
 		const data = reactive({
 			visible: false,
 			showUrlDialog: false,
@@ -160,7 +162,7 @@ export default defineComponent({
 			});
 		};
 		const getEditor = (flag: boolean) =>{
-			const editor = new E("#editorElem");
+			editor = new E("#editorElem");
 			nextTick(() => {
         editor.config.onchange = (html: any) => {
           data.infoVO.contents = html;
@@ -241,6 +243,10 @@ export default defineComponent({
 				getEditor(false);
 			}
 		});
+		onUnmounted(() =>{
+			editor.destroy()
+			editor = null;
+		})
 		return {
 			...toRefs(data),
       ROUTE

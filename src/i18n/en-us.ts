@@ -207,7 +207,7 @@ export default {
 '205':'Hide',
 '206':'Preview',
 '207':'Effective time',
-'208':'Image',
+'208':'video',
 '209':'Scrolling text edit',
 '210':'Approved',
 '211':'Approve?',

@@ -114,4 +114,16 @@ video {
 	display: flex;
 	justify-content: center;
 }
+/* 提示 */
+.tipsBox{
+	display: flex;
+	align-items: center;
+}
+.tipsBox div{
+	width: 20px;
+	height: 20px;
+	border-radius: 50%;
+	text-align: center;
+	background: yellow;
+}
 </style>

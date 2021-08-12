@@ -79,6 +79,14 @@
 					<a-menu-item key="Darts">{{ $t('default.222') }}</a-menu-item>
 					<a-menu-item key="DartsCarousel">{{ $t('default.194') }}</a-menu-item>
 				</a-sub-menu>
+				<a-sub-menu key="sub9">
+					<template #title>
+						<span
+							><ShopOutlined /><span>{{ $t('default.224') }}</span></span
+						>
+					</template>
+					<a-menu-item key="Shop">{{ $t('default.224') }}</a-menu-item>
+				</a-sub-menu>
 				<a-sub-menu v-if="RoleType == '1'" key="sub100">
 					<template #title>
 						<span
@@ -98,13 +106,16 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue';
-import { ProfileOutlined,TeamOutlined,PushpinOutlined,SettingOutlined,UserOutlined } from '@ant-design/icons-vue';
+import { ProfileOutlined,TeamOutlined,PushpinOutlined,SettingOutlined,UserOutlined,ShopOutlined } from '@ant-design/icons-vue';
 import hearder from '@/components/hearder.vue';
 import { useRouter } from 'vue-router';
 
 interface DataProps {
 	rootSubmenuKeys: any;
 	openKeys: Array<any>;
+	selectedKeys: Array<any>;
+	handleClick: (e: any) => void;
+	onOpenChange: (e: any) => void;
 }
 
 export default defineComponent({
@@ -115,6 +126,7 @@ export default defineComponent({
 		SettingOutlined,
 		// CreditCardOutlined,
 		// EnvironmentOutlined,
+		ShopOutlined,
 		UserOutlined,
 		ProfileOutlined,
 		PushpinOutlined,

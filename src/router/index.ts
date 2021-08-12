@@ -276,6 +276,24 @@ const routes = [
 					{ label: 'default.209', path: 'DartsCarouselEdit' },
 				]
 			},
+			// Prop
+			{
+				path: '/Shop',
+				name: 'Shop',
+				component: () => import(/* webpackChunkName: "Shop" */ '../views/Shop/Shop.vue'),
+				meta: [
+					{ label: 'default.224', path: 'Shop' },
+				]
+			},
+			{
+				path: '/ShopEdit',
+				name: 'ShopEdit',
+				component: () => import(/* webpackChunkName: "ShopEdit" */ '../views/Shop/ShopEdit.vue'),
+				meta: [
+					{ label: 'default.224', path: 'Shop' },
+					{ label: 'default.225', path: 'ShopEdit' },
+				]
+			}
 		]
 	},
 	{ path: '/:pathMatch(.*)*', redirect: '/' }

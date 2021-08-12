@@ -56,7 +56,7 @@
 					</a-modal>
 				</div>
 			</a-col>
-			<a-col :span="4">{{ '图片长宽比例为：2.4:1' }}</a-col>
+			<a-col :span="4">{{ '图片大小建议为：1200px X 450px' }}</a-col>
 		</a-row>
 		<!-- 广告链接的预览 -->
 	<showUrlDialog :visible="showUrlDialog" :src="infoVO.thumbnail" @showBoxCancel="showBoxCancel" />
@@ -81,6 +81,7 @@ export default defineComponent({
 		PlusOutlined,
 		labelTitle,
 	},
+	emits:['afterHttp'],
 	setup() {
     const ROUTE = useRoute();
 		const getBase64 = (file: File) => {

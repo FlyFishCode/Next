@@ -12,7 +12,7 @@ import { defineComponent, reactive, toRefs } from 'vue';
 import { message } from 'ant-design-vue';
 // import { SettingFilled} from '@ant-design/icons-vue';
 export default defineComponent({
-	props: ['value', 'btn'],
+	props: ['value', 'btn','afterHttp'],
 	name: 'templete',
 	components: {},
 	setup(props: any,ctx: any) {
