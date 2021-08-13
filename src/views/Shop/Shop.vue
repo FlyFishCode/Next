@@ -116,6 +116,9 @@ export default defineComponent({
 			infoVO: {
 				name: '',
 				cost:'',
+				type:1,
+				display:1,
+				category:1,
 				pageIndex: 1,
 				pageSize: 10
 			},
@@ -165,8 +168,8 @@ export default defineComponent({
 				}
 			},
 			getTypeName:(id: any) =>{
-				const list = data.typeList.find((i => i === id)) as any;
-				return list[0].name ?? ''
+				const list = data.typeList.find((i => i === id))
+				return list?.name
 			},
 			handleDelete: () => {
 				if (handleSelectEvent(selectList, '').length) {
@@ -186,6 +189,9 @@ export default defineComponent({
 			search: () => {
 				PlayerListHttp(data.infoVO).then((res: any) => {
 					if(res.data.code === 100){
+						res.data.data.list.forEach((i: any) => {
+							i.display = Boolean(i.display)
+						});
 						data.tableList = res.data.data.list;
 						data.total = res.data.data.totalCount;
 					}

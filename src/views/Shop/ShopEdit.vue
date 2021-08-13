@@ -51,7 +51,7 @@
 		</a-row>
 		<a-row class="rowStyle">
 		<a-col :span="2" class="labelText">
-			{{ $t('default.177') }}
+			{{ $t('default.230') }}
 		</a-col>
 		<a-col :span="2" class="searchButton">
 			<div class="clearfix">
@@ -66,55 +66,78 @@
 						<div class="ant-upload-text">Upload</div>
 					</div>
 				</a-upload>
-				<a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-					<img alt="example" style="width: 100%" :src="previewImage" />
+				<a-modal :visible="previewVisible" :footer="null" centered @cancel="handleCancel">
+					<div v-if="previewType === 1">
+						<img alt="example" style="width: 100%" :src="previewUrl" />
+					</div>
+					<div v-if="previewType === 2">
+						<video controls style='width: 100%;'>
+							<source :src="previewUrl" type="video/mp4">
+							<source :src="previewUrl" type="video/webm">
+						</video>
+					</div>
+					<div v-if="previewType === 3">
+						<audio controls style='width: 100%;'>
+							<source :src="previewUrl" type="audio/mp3">
+							<source :src="previewUrl" type="audio/ogg">
+							<source :src="previewUrl" type="audio/mpeg">
+						</audio>
+					</div>
 				</a-modal>
 			</div>
 		</a-col>
+		<a-col :span="6" class="Tooltip">
+			<div>上传图片格式为：【jpg、jpeg、png】</div>
+			<div>上传视频格式为：【mp4、webm】</div>
+			<div>上传音频格式为：【mp3、ogg、mpeg】</div>
+		</a-col>
 	</a-row>
 	</div>
-	<!-- 广告链接的预览 -->
-	<showUrlDialog :visible="showUrlDialog" :src="infoVO.videoUrl" @showBoxCancel="showBoxCancel" />
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
 import { PlayerAddtHttp,PlayerUpdateHttp, PlayerInfoHttp, newsImgUploadHttp } from '@/api/api';
-import { PlusOutlined  } from '@ant-design/icons-vue';
-import showUrlDialog from '@/components/common/showUrlDialog.vue';
+import { PlusOutlined } from '@ant-design/icons-vue';
 import labelTitle from '@/components/labelTitle.vue';
 // import goodTable  from '@/components/common/goodTable.vue';
 import { useRoute } from 'vue-router';
-import { message } from 'ant-design-vue';
 import { i18n } from '@/components/common/tools';
 
+// interface DataProps {
+// 	visible: boolean;
+// 	showUrlDialog: boolean;
+// 	previewVisible: boolean;
+// 	infoVO: {[x: string]: any};
+// 	fileList: any[];
+// 	typeList: any[];
+// 	categoryList: any[];
+// 	getInfo: (x: any) => {};
+// 	afterHttp: (x: any) => {};
+// 	showUrlBox: (x: any) => boolean;
+// 	create: () => {};
+// 	update: () => {};
+// 	handleCancel: () => {};
+// 	handlePreview: () => {};
+// 	handleImgRequest: () => {};
+// 	previewUrl: string;
+// }
 
 export default defineComponent({
 	name: 'PlayerInfo',
 	components: {
-		showUrlDialog,
 		PlusOutlined,
 		labelTitle,
 	},
 	setup() {
     const ROUTE = useRoute();
-		const RoleType: any = sessionStorage.getItem('NextRoleType');
-		const getBase64 = (file: File) => {
-			return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-      })
-		}
+		// const RoleType: any = sessionStorage.getItem('NextRoleType');
 		const data = reactive({
 			visible: false,
-			showUrlDialog: false,
 			previewVisible:false,
+			previewType: 1,
 			fileList:[],
-			previewImage:"",
-			shopImgList:[],
-			index:0,
+			previewUrl:"",
 			infoVO: {
 				id:'',
 				cost: 1,
@@ -137,23 +160,30 @@ export default defineComponent({
 				{ id: 2 ,name: i18n('default.208') },
 				{ id: 3 ,name: i18n('default.226') },
 			],
-			showBoxCancel: (value: boolean) => {
-				data.showUrlDialog = value;
-			},
 			handleImgRequest:({file}: any) =>{
 				const formData = new FormData();
 				formData.append("image", file);
 				newsImgUploadHttp(formData).then((res: any) =>{
-					data.infoVO.thumbnail = res.data.data
-					data.fileList = [{ uid: '1', url: res.data.data }] as any;
+					// thumbUrl: 'http://adartstest.adarts-cn.com/leagueimage/4318780786a6.jpg'
+					data.infoVO.thumbnail = res.data.data;
+					data.fileList = [{ uid: file.lastModified + new Date().getTime(),type:file.type.split('/')[1], url: res.data.data }] as any;
 				})
 			},
 			handlePreview:(file: any) =>{
-				if (!file.url && !file.preview) {
-        file.preview = getBase64(file.originFileObj);
-      }
-      data.previewImage = file.url || file.preview;
-      data.previewVisible = true;
+				const imgList = ['jpg','png','jpeg'];
+				const videoList = ['mp4'];
+				const audioList = ['mp3','ogg','mpeg'];
+				if(imgList.includes(file.type)){
+					data.previewType = 1
+				}
+				if(videoList.includes(file.type)){
+					data.previewType = 2
+				}
+				if(audioList.includes(file.type)){
+					data.previewType = 3
+				}
+				data.previewUrl = file.url;
+				data.previewVisible = true;
 			},
 			handleCancel:() =>{
 				data.previewVisible = false
@@ -183,9 +213,6 @@ export default defineComponent({
       },
 			afterClose: (value: boolean) => {
 				data.visible = value;
-			},
-			handleVidoePreview:() =>{
-				data.showUrlDialog = true
 			}
 		})
 		onMounted(() => {
@@ -195,7 +222,6 @@ export default defineComponent({
 		});
 		return {
 			...toRefs(data),
-			RoleType,
       ROUTE
 		};
 	}
