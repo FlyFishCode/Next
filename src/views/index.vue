@@ -86,6 +86,7 @@
 						>
 					</template>
 					<a-menu-item key="Shop">{{ $t('default.224') }}</a-menu-item>
+					<a-menu-item key="ShopCarousel">{{ $t('default.194') }}</a-menu-item>
 				</a-sub-menu>
 				<a-sub-menu v-if="RoleType == '1'" key="sub100">
 					<template #title>

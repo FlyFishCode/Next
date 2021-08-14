@@ -280,7 +280,7 @@ const routes = [
 			{
 				path: '/Shop',
 				name: 'Shop',
-				component: () => import(/* webpackChunkName: "Shop" */ '../views/Shop/Shop.vue'),
+				component: () => import(/* webpackChunkName: "Shop" */ '../views/Shop/Shop/Shop.vue'),
 				meta: [
 					{ label: 'default.224', path: 'Shop' },
 				]
@@ -288,10 +288,27 @@ const routes = [
 			{
 				path: '/ShopEdit',
 				name: 'ShopEdit',
-				component: () => import(/* webpackChunkName: "ShopEdit" */ '../views/Shop/ShopEdit.vue'),
+				component: () => import(/* webpackChunkName: "ShopEdit" */ '../views/Shop/Shop/ShopEdit.vue'),
 				meta: [
 					{ label: 'default.224', path: 'Shop' },
 					{ label: 'default.225', path: 'ShopEdit' },
+				]
+			},
+			{
+				path: '/ShopCarousel',
+				name: 'ShopCarousel',
+				component: () => import(/* webpackChunkName: "ShopCarousel" */ '../views/Shop/Carosel/index.vue'),
+				meta: [
+					{ label: 'default.194', path: 'ShopCarousel' },
+				]
+			},
+			{
+				path: '/ShopCarouselEdit',
+				name: 'ShopCarouselEdit',
+				component: () => import(/* webpackChunkName: "ShopCarouselEdit" */ '../views/Shop/Carosel/CaroselEdit.vue'),
+				meta: [
+					{ label: 'default.194', path: 'ShopCarousel' },
+					{ label: 'default.209', path: 'CaroselEdit' },
 				]
 			}
 		]
