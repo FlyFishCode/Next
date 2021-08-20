@@ -100,6 +100,7 @@ export default defineComponent({
 			visible: false,
 			total: 0,
 			typeList: [
+				{ id: 0 ,name: 'All' },
 				{ id: 1 ,name: 'Style' },
 				{ id: 2 ,name: 'Mark' },
 				{ id: 3 ,name: 'Effect' },
@@ -116,7 +117,7 @@ export default defineComponent({
 			infoVO: {
 				name: '',
 				cost:'',
-				type:1,
+				type:0,
 				display:1,
 				category:1,
 				pageIndex: 1,

@@ -230,4 +230,11 @@ export default {
 	'228': '金币',
 	'229': '游戏币',
 	'230': '特效',
+	'231': 'Style 可以上传（Video/ Image）文件',
+	'232': 'Mark 可以上传（Image）文件',
+	'233': 'Effect 可以上传（Video）文件',
+	'234': 'Sound 可以上传（Audio）文件',
+	'235': 'Bull 可以上传（Audio）文件',
+	'236': 'Bull Sound可以上传（Video/Image）文件',
+	'237': 'Award 可以上传（Video）文件',
 };

@@ -10,14 +10,13 @@
 					<a-select-option v-for="item in typeList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
 				</a-select>
 			</a-col>
-			<a-col :span="2" class="labelText">
-				{{ $t('default.196') }}
-			</a-col>
-			<a-col :span="4">
-				<a-select v-model:value="infoVO.category" class="selectBox">
-					<a-select-option v-for="item in categoryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+			<a-col v-if="showOtherList()" :span="4">
+				<a-select v-model:value="infoVO.other" class="selectBox">
+					<a-select-option v-for="item in otherList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
 				</a-select>
 			</a-col>
+		</a-row>
+		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
 				{{ $t('default.179') }}
 			</a-col>
@@ -33,8 +32,6 @@
 					<a-select-option :value="0">{{ $t('default.205') }}</a-select-option>
 				</a-select>
 			</a-col>
-		</a-row>
-		<a-row>
 			<a-col :span="2" class="labelText">
 				{{ $t('default.227') }}
 			</a-col>
@@ -49,14 +46,16 @@
 				<a-input v-model:value="infoVO.coins" allowClear />
 			</a-col>
 		</a-row>
-		<a-row class="rowStyle">
-		<a-col :span="2" class="labelText">
-			{{ $t('default.230') }}
-		</a-col>
-		<a-col :span="2" class="searchButton">
-			<div class="clearfix">
-				<a-upload
+		<!-- Mark -->
+		<a-row v-if="infoVO.type === 2" class="rowStyle">
+			<a-col :span="2" class="labelText">
+				{{ '1 Mark' }}
+			</a-col>
+			<a-col :span="4" class="searchButton">
+				<div class="clearfix">
+					<a-upload
 					:customRequest='handleImgRequest'
+					:beforeUpload='beforeUpload'
 					list-type="picture-card"
 					v-model:file-list="fileList"
 					@preview="handlePreview"
@@ -65,33 +64,240 @@
 						<plus-outlined />
 						<div class="ant-upload-text">Upload</div>
 					</div>
-				</a-upload>
-				<a-modal :visible="previewVisible" :footer="null" centered @cancel="handleCancel">
-					<div v-if="previewType === 1">
-						<img alt="example" style="width: 100%" :src="previewUrl" />
+					</a-upload>
+					<a-modal :visible="previewVisible" :footer="null" centered @cancel="handleCancel">
+						<div v-if="previewType === 1">
+							<img alt="example" style="width: 100%" :src="previewUrl" />
+						</div>
+						<div v-if="previewType === 2">
+							<video controls style='width: 100%;'>
+								<source :src="previewUrl" type="video/mp4">
+								<source :src="previewUrl" type="video/webm">
+							</video>
+						</div>
+						<div v-if="previewType === 3">
+							<audio controls style='width: 100%;'>
+								<source :src="previewUrl" type="audio/mp3">
+								<source :src="previewUrl" type="audio/ogg">
+								<source :src="previewUrl" type="audio/mpeg">
+							</audio>
+						</div>
+					</a-modal>
+				</div>
+			</a-col>
+
+			<a-col :span="2" class="labelText">
+				{{ '2 Mark' }}
+			</a-col>
+			<a-col :span="4" class="searchButton">
+				<div class="clearfix">
+					<a-upload
+					:customRequest='handleImgRequest'
+					:beforeUpload='beforeUpload'
+					list-type="picture-card"
+					v-model:file-list="fileList"
+					@preview="handlePreview"
+				>
+					<div v-if="fileList.length < 1">
+						<plus-outlined />
+						<div class="ant-upload-text">Upload</div>
 					</div>
-					<div v-if="previewType === 2">
-						<video controls style='width: 100%;'>
-							<source :src="previewUrl" type="video/mp4">
-							<source :src="previewUrl" type="video/webm">
-						</video>
+					</a-upload>
+					<a-modal :visible="previewVisible" :footer="null" centered @cancel="handleCancel">
+						<div v-if="previewType === 1">
+							<img alt="example" style="width: 100%" :src="previewUrl" />
+						</div>
+						<div v-if="previewType === 2">
+							<video controls style='width: 100%;'>
+								<source :src="previewUrl" type="video/mp4">
+								<source :src="previewUrl" type="video/webm">
+							</video>
+						</div>
+						<div v-if="previewType === 3">
+							<audio controls style='width: 100%;'>
+								<source :src="previewUrl" type="audio/mp3">
+								<source :src="previewUrl" type="audio/ogg">
+								<source :src="previewUrl" type="audio/mpeg">
+							</audio>
+						</div>
+					</a-modal>
+				</div>
+			</a-col>
+
+			<a-col :span="2" class="labelText">
+				{{ '3 Mark' }}
+			</a-col>
+			<a-col :span="4" class="searchButton">
+				<div class="clearfix">
+					<a-upload
+					:customRequest='handleImgRequest'
+					:beforeUpload='beforeUpload'
+					list-type="picture-card"
+					v-model:file-list="fileList"
+					@preview="handlePreview"
+				>
+					<div v-if="fileList.length < 1">
+						<plus-outlined />
+						<div class="ant-upload-text">Upload</div>
 					</div>
-					<div v-if="previewType === 3">
-						<audio controls style='width: 100%;'>
-							<source :src="previewUrl" type="audio/mp3">
-							<source :src="previewUrl" type="audio/ogg">
-							<source :src="previewUrl" type="audio/mpeg">
-						</audio>
+					</a-upload>
+					<a-modal :visible="previewVisible" :footer="null" centered @cancel="handleCancel">
+						<div v-if="previewType === 1">
+							<img alt="example" style="width: 100%" :src="previewUrl" />
+						</div>
+						<div v-if="previewType === 2">
+							<video controls style='width: 100%;'>
+								<source :src="previewUrl" type="video/mp4">
+								<source :src="previewUrl" type="video/webm">
+							</video>
+						</div>
+						<div v-if="previewType === 3">
+							<audio controls style='width: 100%;'>
+								<source :src="previewUrl" type="audio/mp3">
+								<source :src="previewUrl" type="audio/ogg">
+								<source :src="previewUrl" type="audio/mpeg">
+							</audio>
+						</div>
+					</a-modal>
+				</div>
+			</a-col>
+
+		</a-row>
+
+		<!-- Bull -->
+		<a-row v-else-if="infoVO.type === 5 || infoVO.type === 6" class="rowStyle">
+			<a-col :span="2" class="labelText">
+				{{ 'S-Bull' }}
+			</a-col>
+			<a-col :span="4" class="searchButton">
+				<div class="clearfix">
+					<a-upload
+					:customRequest='handleImgRequest'
+					:beforeUpload='beforeUpload'
+					list-type="picture-card"
+					v-model:file-list="fileList"
+					@preview="handlePreview"
+				>
+					<div v-if="fileList.length < 1">
+						<plus-outlined />
+						<div class="ant-upload-text">Upload</div>
 					</div>
-				</a-modal>
-			</div>
-		</a-col>
-		<a-col :span="6" class="Tooltip">
-			<div>上传图片格式为：【jpg、jpeg、png】</div>
-			<div>上传视频格式为：【mp4、webm】</div>
-			<div>上传音频格式为：【mp3、ogg、mpeg】</div>
-		</a-col>
-	</a-row>
+					</a-upload>
+					<a-modal :visible="previewVisible" :footer="null" centered @cancel="handleCancel">
+						<div v-if="previewType === 1">
+							<img alt="example" style="width: 100%" :src="previewUrl" />
+						</div>
+						<div v-if="previewType === 2">
+							<video controls style='width: 100%;'>
+								<source :src="previewUrl" type="video/mp4">
+								<source :src="previewUrl" type="video/webm">
+							</video>
+						</div>
+						<div v-if="previewType === 3">
+							<audio controls style='width: 100%;'>
+								<source :src="previewUrl" type="audio/mp3">
+								<source :src="previewUrl" type="audio/ogg">
+								<source :src="previewUrl" type="audio/mpeg">
+							</audio>
+						</div>
+					</a-modal>
+				</div>
+			</a-col>
+			<a-col :span="2" class="labelText">
+				{{ 'D-Bull' }}
+			</a-col>
+			<a-col :span="4" class="searchButton">
+				<div class="clearfix">
+					<a-upload
+					:customRequest='handleImgRequest'
+					:beforeUpload='beforeUpload'
+					list-type="picture-card"
+					v-model:file-list="fileList"
+					@preview="handlePreview"
+				>
+					<div v-if="fileList.length < 1">
+						<plus-outlined />
+						<div class="ant-upload-text">Upload</div>
+					</div>
+					</a-upload>
+					<a-modal :visible="previewVisible" :footer="null" centered @cancel="handleCancel">
+						<div v-if="previewType === 1">
+							<img alt="example" style="width: 100%" :src="previewUrl" />
+						</div>
+						<div v-if="previewType === 2">
+							<video controls style='width: 100%;'>
+								<source :src="previewUrl" type="video/mp4">
+								<source :src="previewUrl" type="video/webm">
+							</video>
+						</div>
+						<div v-if="previewType === 3">
+							<audio controls style='width: 100%;'>
+								<source :src="previewUrl" type="audio/mp3">
+								<source :src="previewUrl" type="audio/ogg">
+								<source :src="previewUrl" type="audio/mpeg">
+							</audio>
+						</div>
+					</a-modal>
+				</div>
+			</a-col>
+		</a-row>
+		<a-row v-else class="rowStyle">
+			<a-col :span="2" class="labelText">
+				{{ $t('default.230') }}
+			</a-col>
+			<a-col :span="4" class="searchButton">
+				<div class="clearfix">
+					<a-upload
+					:customRequest='handleImgRequest'
+					:beforeUpload='beforeUpload'
+					list-type="picture-card"
+					v-model:file-list="fileList"
+					@preview="handlePreview"
+				>
+					<div v-if="fileList.length < 1">
+						<plus-outlined />
+						<div class="ant-upload-text">Upload</div>
+					</div>
+					</a-upload>
+					<a-modal :visible="previewVisible" :footer="null" centered @cancel="handleCancel">
+						<div v-if="previewType === 1">
+							<img alt="example" style="width: 100%" :src="previewUrl" />
+						</div>
+						<div v-if="previewType === 2">
+							<video controls style='width: 100%;'>
+								<source :src="previewUrl" type="video/mp4">
+								<source :src="previewUrl" type="video/webm">
+							</video>
+						</div>
+						<div v-if="previewType === 3">
+							<audio controls style='width: 100%;'>
+								<source :src="previewUrl" type="audio/mp3">
+								<source :src="previewUrl" type="audio/ogg">
+								<source :src="previewUrl" type="audio/mpeg">
+							</audio>
+						</div>
+					</a-modal>
+				</div>
+			</a-col>
+		</a-row>
+		<a-row>
+			<a-col :span='8' :offset='2'>
+				<div v-if="infoVO.type === 1" class="TipsTitle">{{ $t('default.231') }}</div>
+				<div v-if="infoVO.type === 2" class="TipsTitle">{{ $t('default.232') }}</div>
+				<div v-if="infoVO.type === 3" class="TipsTitle">{{ $t('default.233') }}</div>
+				<div v-if="infoVO.type === 4" class="TipsTitle">{{ $t('default.234') }}</div>
+				<div v-if="infoVO.type === 5" class="TipsTitle">{{ $t('default.235') }}</div>
+				<div v-if="infoVO.type === 6" class="TipsTitle">{{ $t('default.236') }}</div>
+				<div v-if="infoVO.type === 7" class="TipsTitle">{{ $t('default.237') }}</div>
+			</a-col>
+		</a-row>
+		<a-row>
+			<a-col :span="6" :offset='2' class="Tooltip">
+				<div>1：上传图片格式为：【jpg、jpeg、png】</div>
+				<div>2：上传视频格式为：【mp4、webm】</div>
+				<div>3：上传音频格式为：【mp3、ogg、mpeg】</div>
+			</a-col>
+		</a-row>
 	</div>
 </template>
 
@@ -102,7 +308,8 @@ import { PlusOutlined } from '@ant-design/icons-vue';
 import labelTitle from '@/components/labelTitle.vue';
 // import goodTable  from '@/components/common/goodTable.vue';
 import { useRoute } from 'vue-router';
-import { i18n } from '@/components/common/tools';
+import { message } from 'ant-design-vue';
+// import { i18n } from '@/components/common/tools';
 
 // interface DataProps {
 // 	visible: boolean;
@@ -132,6 +339,9 @@ export default defineComponent({
 	setup() {
     const ROUTE = useRoute();
 		// const RoleType: any = sessionStorage.getItem('NextRoleType');
+		const imgList = ['jpg','png','jpeg'];
+		const videoList = ['mp4'];
+		const audioList = ['mp3','ogg','mpeg'];
 		const data = reactive({
 			visible: false,
 			previewVisible:false,
@@ -142,24 +352,77 @@ export default defineComponent({
 				id:'',
 				cost: 1,
 				type: 1,
+				other:1,
 				coins:'',
 				display:1,
 				category: 1,
 				thumbnail:'',
 			},
       typeList: [
-				{ id: 1 ,name: 'Style' },
-				{ id: 2 ,name: 'Mark' },
-				{ id: 3 ,name: 'Effect' },
-				{ id: 4 ,name: 'Sound' },
-				{ id: 5 ,name: 'Bull' },
-				{ id: 6 ,name: 'Award' },
+				{ id: 1 , name: 'Style' },
+				{ id: 2 , name: 'Mark' },
+				{ id: 3 , name: 'Effect' },
+				{ id: 4 , name: 'Sound' },
+				{ id: 5 , name: 'Bull' },
+				{ id: 6 , name: 'Bull Sound' },
+				{ id: 7 , name: 'Award' },
 			],
-			categoryList:[
-				{ id: 1 ,name: i18n('default.93') },
-				{ id: 2 ,name: i18n('default.208') },
-				{ id: 3 ,name: i18n('default.226') },
+			otherList:[
+				{ id: 1 , name: 'Low Ton' },
+				{ id: 2 , name: 'High Ton' },
+				{ id: 3 , name: 'Hat Trick' },
+				{ id: 4 , name: '9Marks' },
+				{ id: 5 , name: 'Ton 80' },
+				{ id: 6 , name: 'White Horse' },
+				{ id: 7 , name: 'Three In A Bed' },
+				{ id: 8 , name: 'Three In The Black' },
 			],
+			showOtherList:() =>{
+				switch(data.infoVO.type){
+					case 7:
+						return true;
+						default :
+						return false;
+				}
+			},
+			// Mark upLoad
+			beforeUpload:(file: any) =>{
+				const type = file.type.split('/')[1];
+				let flag = false;
+				switch(data.infoVO.type){
+					case 1:
+					case 6:
+						if(!(imgList.includes(type) || videoList.includes(type))){
+							flag = true;
+						}
+						break;
+					case 2:
+						if(!imgList.includes(type)){
+							flag = true;
+						}
+						break;
+					case 3:
+						if(!videoList.includes(type)){
+							flag = true;
+						}
+						break;
+					case 4:
+					case 5:
+						if(!audioList.includes(type)){
+							flag = true;
+						}
+						break;
+					default :
+					if(!videoList.includes(type)){
+							flag = true;
+						}
+					break;
+				}
+				if(flag){
+					message.error(`[${file.name}] Wrong file format`)
+					return Promise.reject('')
+				}
+			},
 			handleImgRequest:({file}: any) =>{
 				const formData = new FormData();
 				formData.append("image", file);
@@ -170,9 +433,6 @@ export default defineComponent({
 				})
 			},
 			handlePreview:(file: any) =>{
-				const imgList = ['jpg','png','jpeg'];
-				const videoList = ['mp4'];
-				const audioList = ['mp3','ogg','mpeg'];
 				if(imgList.includes(file.type)){
 					data.previewType = 1
 				}
@@ -247,5 +507,9 @@ export default defineComponent({
 	height: 30px;
 	line-height: 30px;
 	border-bottom: 2px solid #1890ff;
+}
+.TipsTitle{
+	font-size: 20px;
+	font-weight: bold;
 }
 </style>
