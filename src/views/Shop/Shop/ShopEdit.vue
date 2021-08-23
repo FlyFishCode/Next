@@ -6,7 +6,7 @@
 				{{ $t('default.149') }}
 			</a-col>
 			<a-col :span="4">
-				<a-select v-model:value="infoVO.type" class="selectBox">
+				<a-select v-model:value="infoVO.type" class="selectBox" @change="onChange">
 					<a-select-option v-for="item in typeList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
 				</a-select>
 			</a-col>
@@ -161,7 +161,6 @@
 					</a-modal>
 				</div>
 			</a-col>
-
 		</a-row>
 
 		<!-- Bull -->
@@ -385,13 +384,16 @@ export default defineComponent({
 						return false;
 				}
 			},
+			onChange:() =>{
+				data.fileList = [];
+			},
 			// Mark upLoad
 			beforeUpload:(file: any) =>{
 				const type = file.type.split('/')[1];
 				let flag = false;
 				switch(data.infoVO.type){
 					case 1:
-					case 6:
+					case 5:
 						if(!(imgList.includes(type) || videoList.includes(type))){
 							flag = true;
 						}
@@ -407,7 +409,7 @@ export default defineComponent({
 						}
 						break;
 					case 4:
-					case 5:
+					case 6:
 						if(!audioList.includes(type)){
 							flag = true;
 						}

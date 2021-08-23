@@ -293,7 +293,7 @@ export default defineComponent({
 				{ id: 5, label: i18n('default.153') }
 			],
 			total: 1,
-			shopList: [{name:""}],
+			shopList: [],
 			cardList: [{cardNo:""}],
 			tableList: [],
 			countryList: [{id:'',name:""}],

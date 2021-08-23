@@ -310,6 +310,24 @@ const routes = [
 					{ label: 'default.194', path: 'ShopCarousel' },
 					{ label: 'default.209', path: 'CaroselEdit' },
 				]
+			},
+			// 比赛、活动
+			{
+				path: '/Match',
+				name: 'Match',
+				component: () => import(/* webpackChunkName: "Match" */ '../views/Match/Match/index.vue'),
+				meta: [
+					{ label: 'default.197', path: 'Match' },
+				]
+			},
+			{
+				path: '/MatchEdit',
+				name: 'MatchEdit',
+				component: () => import(/* webpackChunkName: "MatchEdit" */ '../views/Match/Match/MatchEdit.vue'),
+				meta: [
+					{ label: 'default.197', path: 'Match' },
+					{ label: 'default.239', path: 'MatchEdit' },
+				]
 			}
 		]
 	},
