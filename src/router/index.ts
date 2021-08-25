@@ -191,7 +191,7 @@ const routes = [
 				path: '/Area',
 				name: 'Area',
 				component: () => import(/* webpackChunkName: "Area" */ '../views/Country/Area/index.vue'),
-				meta: [{ label: 'default.24', path: 'Area' }]
+				meta: [{ label: 'default.23', path: 'Area' }]
 			},
 			{
 				path: '/News',

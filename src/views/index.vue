@@ -50,7 +50,7 @@
 						>
 					</template>
 					<a-menu-item key="Country">{{ $t('default.23') }}</a-menu-item>
-					<a-menu-item key="Area">{{ $t('default.24') }}</a-menu-item>
+					<a-menu-item key="Area">{{ $t('default.23') }}</a-menu-item>
 				</a-sub-menu> -->
 
 				<a-sub-menu key="sub6">

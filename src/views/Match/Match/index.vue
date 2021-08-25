@@ -9,7 +9,7 @@
 				<a-input v-model:value="infoVO.id" allowClear />
 			</a-col>
       <a-col :span="2" class="labelText">
-				{{ $t('default.24') }}
+				{{ $t('default.23') }}
 			</a-col>
 			<a-col :span="4">
 				<a-select v-model:value="infoVO.countryId" class="selectBox" allowClear>
@@ -33,13 +33,13 @@
 		</a-row>
 		<a-row>
       <a-col :span="2" class="labelText">
-				{{ $t('default.6') }}
+				{{ $t('default.46') }}
 			</a-col>
 			<a-col :span="2" class="datePicker">
 				<a-date-picker v-model:value="infoVO.minRegisterTime" :disabled-date="disabledMinRegisterTime" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
 			</a-col>
 			<a-col :span="2" class="datePicker">
-				<a-date-picker v-model:value="infoVO.maxRegisterTime" :disabled-date="disabledMaxRegisterTime" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
+				<a-date-picker v-model:value="infoVO.maxRegisterTime" :disabled-date="disabledMaxRegisterTime" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 			</a-col>
 			<a-col :span="2" class="labelText">
 				{{ $t('default.2') }}
@@ -92,7 +92,7 @@ import { handleSelectEvent, i18n } from '@/components/common/tools';
 // import { useStore } from 'vuex';
 // import qs from 'qs'
 export default defineComponent({
-	name: 'Player',
+	name: 'Match',
 	components: {
 		labelTitle,
 		DeleteDialog
@@ -131,7 +131,7 @@ export default defineComponent({
 					slots: { customRender: 'img' }
 				},
 				{
-					title: i18n('default.24'),
+					title: i18n('default.23'),
 					slots: { customRender: 'type' }
 				},
 				{

@@ -330,7 +330,7 @@ import { message } from 'ant-design-vue';
 // }
 
 export default defineComponent({
-	name: 'PlayerInfo',
+	name: 'ShopEdit',
 	components: {
 		PlusOutlined,
 		labelTitle,

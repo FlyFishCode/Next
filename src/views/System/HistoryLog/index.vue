@@ -139,7 +139,7 @@ export default defineComponent({
 				{ id: 1, label: i18n('default.98') },
 				{ id: 2, label: i18n('default.147') },
 				{ id: 3, label: i18n('default.23') },
-				{ id: 4, label: i18n('default.24') },
+				{ id: 4, label: i18n('default.23') },
 				{ id: 5, label: i18n('default.2') },
 				{ id: 6, label: i18n('default.3') },
 				{ id: 7, label: i18n('default.11') },
@@ -177,7 +177,7 @@ export default defineComponent({
 						str = i18n('default.23');
 						break;
 					case 4:
-						str = i18n('default.24');
+						str = i18n('default.23');
 						break;
 					case 5:
 						str = i18n('default.2');

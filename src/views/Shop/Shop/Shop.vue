@@ -86,7 +86,7 @@ import { handleSelectEvent, i18n } from '@/components/common/tools';
 // import { useStore } from 'vuex';
 // import qs from 'qs'
 export default defineComponent({
-	name: 'Player',
+	name: 'Shop',
 	components: {
 		labelTitle,
 		DeleteDialog

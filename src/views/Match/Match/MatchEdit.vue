@@ -21,7 +21,7 @@
 				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ $t('default.6') }}
+				{{ $t('default.46') }}
 			</a-col>
 			<a-col :span="2" class="datePicker">
 				<a-date-picker v-model:value="infoVO.minRegisterTime" :disabled-date="disabledMinRegisterTime" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
@@ -40,7 +40,7 @@
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
-				{{ $t('default.93') }}
+				{{ $t('default.24') }}
 			</a-col>
 			<a-col :span="4">
 				<a-select v-model:value="infoVO.img" class="selectBox">
@@ -122,7 +122,7 @@
 		</a-row>
 		<a-row v-if="infoVO.img === 1" class="rowStyle">
 			<a-col :span="2" class="labelText">
-				{{ $t('default.93') }}
+				{{ $t('default.24') }}
 			</a-col>
 			<a-col :span="4" class="searchButton">
 				<div class="clearfix">
@@ -183,7 +183,7 @@ import { message } from 'ant-design-vue';
 
 
 export default defineComponent({
-	name: 'Shop',
+	name: 'MatchEdit',
 	components: {
 		showUrlDialog,
 		PlusOutlined,

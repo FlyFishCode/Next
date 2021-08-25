@@ -102,7 +102,7 @@
 				</a-select>
 			</a-col>
 			<a-col :span="3" class="labelText">
-				{{ $t('default.24') }}
+				{{ $t('default.23') }}
 			</a-col>
 			<a-col :span="9">
 				<a-select v-model:value="infoVO.areaId" class="selectBox" allowClear>
