@@ -155,7 +155,7 @@
 						v-model:file-list="otherImgList"
 						@preview="handlePreview"
 					>
-						<div v-if="otherImgList.length < 5">
+						<div v-if="otherImgList.length < 4">
 							<plus-outlined />
 							<div class="ant-upload-text">Upload</div>
 						</div>
@@ -277,6 +277,7 @@ export default defineComponent({
 				return newsEditorHttp(data.infoVO)
 			},
       update: () => {
+				console.log(data.infoVO.title)
 				if(!data.infoVO.title){
 					message.warning('请输入新闻标题');
 					return false;
