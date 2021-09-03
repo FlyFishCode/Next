@@ -52,6 +52,9 @@ import { PlayerList,PlayerAdd,PlayerInfo ,PlayerUpdate,PlayerDelete}  from '@/ap
 // Shop
 import { shopPropsList,shopPropsAdd,shopPropsUpdate,shopPropsInfo,shopPropsDelete } from '@/api/Shop/index';
 
+// Match
+import { matchList } from '@/api/Match/index';
+
 const baseURL = '/apr';
 const Axios = axios.create({
 	baseURL: baseURL,
@@ -450,6 +453,11 @@ const shopPropsDeleteHttp = (data: any) =>{
 	return Axios.post(shopPropsDelete, data);
 }
 
+// 活动
+const matchListHttp = (data: any) =>{
+	return Axios.post(matchList, data);
+}
+
 export {
 	loginHttp,
 	changePasswordHttp,
@@ -537,5 +545,6 @@ export {
 	shopPropsAddHttp,
 	shopPropsUpdateHttp,
 	shopPropsInfoHttp,
-	shopPropsDeleteHttp
+	shopPropsDeleteHttp,
+	matchListHttp
 };

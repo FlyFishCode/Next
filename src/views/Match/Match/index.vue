@@ -6,7 +6,7 @@
 				{{ 'ID' }}
 			</a-col>
 			<a-col :span="4">
-				<a-input v-model:value="infoVO.id" allowClear />
+				<a-input v-model:value="infoVO.activityId" allowClear />
 			</a-col>
       <a-col :span="2" class="labelText">
 				{{ $t('default.23') }}
@@ -26,7 +26,7 @@
 				{{ $t('default.238') }}
 			</a-col>
 			<a-col :span="4">
-				<a-select v-model:value="infoVO.creator" class="selectBox" allowClear>
+				<a-select v-model:value="infoVO.creatorName" class="selectBox" allowClear>
 					<a-select-option v-for="item in creatorList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
 				</a-select>
 			</a-col>
@@ -36,10 +36,10 @@
 				{{ $t('default.46') }}
 			</a-col>
 			<a-col :span="2" class="datePicker">
-				<a-date-picker v-model:value="infoVO.minRegisterTime" :disabled-date="disabledMinRegisterTime" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
+				<a-date-picker v-model:value="infoVO.startDate" :disabled-date="disabledMinRegisterTime" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
 			</a-col>
 			<a-col :span="2" class="datePicker">
-				<a-date-picker v-model:value="infoVO.maxRegisterTime" :disabled-date="disabledMaxRegisterTime" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
+				<a-date-picker v-model:value="infoVO.endDate" :disabled-date="disabledMaxRegisterTime" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 			</a-col>
 			<a-col :span="2" class="labelText">
 				{{ $t('default.2') }}
@@ -63,27 +63,30 @@
 		<a-col :span="1">
 			<a-button type="primary" size="small" @click="handleCreate">{{ $t('default.9') }}</a-button>
 		</a-col>
-		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
+		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" rowKey="activityId" class="tableStyle">
       <template #img="{ record }">
-        <div class="imgBox"><img :src='record.img' alt=""></div>
+        <div class="imgBox"><img :src='record.thumbnail' alt=""></div>
 			</template>
       <template #name="{ record }">
-				<a-button type="link" @click="handleNameClick(record.id)">{{ record.name }}</a-button>
+				<a-button type="link" @click="handleNameClick(record.id)">{{ record.title }}</a-button>
+			</template>
+      <template #Date="{ record }">
+				<div>{{ `${record.startDate} ${record.endDate}` }}</div>
 			</template>
 			<template #handle="{ record }">
-				<a-checkbox v-model:checked="record.display" @change="checkboxChange(record)"></a-checkbox>
+				<a-checkbox v-model:checked="record.state" @change="checkboxChange(record)"></a-checkbox>
 			</template>
 		</a-table>
 	</a-row>
 	<div class="paginationStyle">
-		<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" @change="pageChange" />
+		<a-pagination show-quick-jumper v-model:current="infoVO.pageNum" :total="total" @change="pageChange" />
 	</div>
 	<DeleteDialog :visible="visible" @afterClose="afterClose" @handleOk="handleDeleteOk" />
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-import { PlayerListHttp, PlayerDeleteHttp, newsEditorHttp,countryListHttp,shopListHttp } from '@/api/api';
+import { matchListHttp, PlayerDeleteHttp, newsEditorHttp,countryListHttp,shopListHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { useRouter } from 'vue-router';
@@ -111,20 +114,20 @@ export default defineComponent({
       creatorList:[],
       countryList: [],
 			infoVO: {
-				id: '',
+				activityId: '',
         title:'',
         shopId:"",
-        creator:"",
+        creatorName:"",
 				countryId:'',
-        minRegisterTime:'',
-        maxRegisterTime:"",
-				pageIndex: 1,
+        startDate:'',
+        endDate:"",
+				pageNum: 1,
 				pageSize: 10
 			},
 			columns: [
 				{
 					title: 'ID',
-					dataIndex: 'id',
+					dataIndex: 'activityId',
 				},
         {
 					title: i18n('default.93'),
@@ -132,7 +135,7 @@ export default defineComponent({
 				},
 				{
 					title: i18n('default.23'),
-					slots: { customRender: 'type' }
+					dataIndex: 'countryName',
 				},
 				{
 					title: i18n('default.201'),
@@ -140,15 +143,15 @@ export default defineComponent({
 				},
 				{
 					title: i18n('default.238'),
-          dataIndex: 'name',
+          dataIndex: 'activityId',
 				},
         {
 					title: i18n('default.6'),
-          dataIndex: 'name',
+          slots: { customRender: 'Date' }
 				},
         {
 					title: i18n('default.2'),
-          dataIndex: 'name',
+          dataIndex: 'activityId',
 				},
         {
 					title: i18n('default.204'),
@@ -163,22 +166,22 @@ export default defineComponent({
 				}
 			},
       disabledMinRegisterTime: (startValue: any) => {
-				if (!startValue || !data.infoVO.maxRegisterTime) {
+				if (!startValue || !data.infoVO.endDate) {
 					return false;
 				}
-				return startValue.valueOf() > new Date(data.infoVO.maxRegisterTime).valueOf();
+				return startValue.valueOf() > new Date(data.infoVO.endDate).valueOf();
 			},
 			disabledMaxRegisterTime: (endValue: any) => {
-				if (!endValue || !data.infoVO.minRegisterTime) {
+				if (!endValue || !data.infoVO.startDate) {
 					return false;
 				}
-				return new Date(data.infoVO.minRegisterTime).valueOf() >= endValue.valueOf();
+				return new Date(data.infoVO.startDate).valueOf() >= endValue.valueOf();
 			},
       shopSearch(value: any) {
         const fn = () =>{
           shopListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res) => {
-              data.shopList = res.data.data.list;
-            });
+            data.shopList = res.data.data.list;
+          });
         }
         if(data.time){
           clearTimeout(data.time)
@@ -203,13 +206,13 @@ export default defineComponent({
 				data.visible = false;
 			},
 			search: () => {
-				PlayerListHttp(data.infoVO).then((res: any) => {
+				matchListHttp(data.infoVO).then((res: any) => {
 					if(res.data.code === 100){
 						res.data.data.list.forEach((i: any) => {
-							i.display = Boolean(i.display)
+							i.state = Boolean(i.state)
 						});
 						data.tableList = res.data.data.list;
-						data.total = res.data.data.totalCount;
+						data.total = res.data.data.total;
 					}
 				});
 			},
