@@ -6,12 +6,12 @@
 				{{ $t('default.149') }}
 			</a-col>
 			<a-col :span="4">
-				<a-select v-model:value="infoVO.type" class="selectBox" @change="onChange">
+				<a-select v-model:value="defaultType" class="selectBox" @change="onChange">
 					<a-select-option v-for="item in typeList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
 				</a-select>
 			</a-col>
-			<a-col v-if="showOtherList()" :span="4">
-				<a-select v-model:value="infoVO.other" class="selectBox">
+			<a-col v-if="defaultType === 7" :span="4">
+				<a-select v-model:value="defaultAward" class="selectBox">
 					<a-select-option v-for="item in otherList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
 				</a-select>
 			</a-col>
@@ -21,13 +21,22 @@
 				{{ $t('default.179') }}
 			</a-col>
 			<a-col :span="4">
-				<a-input v-model:value="infoVO.name" allowClear />
+				<a-input v-model:value="infoVO.title" allowClear />
+			</a-col>
+			<a-col :span="2" class="labelText">
+				{{ $t('default.247') }}
+			</a-col>
+			<a-col :span="4">
+				<a-select v-model:value="infoVO.recommend" class="selectBox">
+					<a-select-option :value="1">{{ $t('default.170') }}</a-select-option>
+					<a-select-option :value="0">{{ $t('default.171') }}</a-select-option>
+				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
 				{{ $t('default.203') }}
 			</a-col>
 			<a-col :span="4">
-				<a-select v-model:value="infoVO.display" class="selectBox">
+				<a-select v-model:value="infoVO.status" class="selectBox">
 					<a-select-option :value="1">{{ $t('default.204') }}</a-select-option>
 					<a-select-option :value="0">{{ $t('default.205') }}</a-select-option>
 				</a-select>
@@ -36,215 +45,20 @@
 				{{ $t('default.227') }}
 			</a-col>
 			<a-col :span="2">
-				<a-select v-model:value="infoVO.cost" class="selectBox">
-					<a-select-option :value="1">{{ $t('default.86') }}</a-select-option>
-					<a-select-option :value="2">{{ $t('default.228') }}</a-select-option>
-					<a-select-option :value="3">{{ $t('default.229') }}</a-select-option>
+				<a-select v-model:value="infoVO.priceType" class="selectBox">
+					<a-select-option :value="1">{{ $t('default.228') }}</a-select-option>
+					<a-select-option :value="2">{{ $t('default.229') }}</a-select-option>
 				</a-select>
 			</a-col>
-			<a-col v-if="infoVO.cost !== 1" :span="2">
-				<a-input v-model:value="infoVO.coins" allowClear />
+			<a-col :span="2">
+				<a-input v-model:value="infoVO.price" allowClear />
 			</a-col>
 		</a-row>
-		<!-- Mark -->
-		<a-row v-if="infoVO.type === 2" class="rowStyle">
-			<a-col :span="2" class="labelText">
-				{{ '1 Mark' }}
-			</a-col>
-			<a-col :span="4" class="searchButton">
-				<div class="clearfix">
-					<a-upload
-					:customRequest='handleImgRequest'
-					:beforeUpload='beforeUpload'
-					list-type="picture-card"
-					v-model:file-list="fileList"
-					@preview="handlePreview"
-				>
-					<div v-if="fileList.length < 1">
-						<plus-outlined />
-						<div class="ant-upload-text">Upload</div>
-					</div>
-					</a-upload>
-					<a-modal :visible="previewVisible" :footer="null" centered @cancel="handleCancel">
-						<div v-if="previewType === 1">
-							<img alt="example" style="width: 100%" :src="previewUrl" />
-						</div>
-						<div v-if="previewType === 2">
-							<video controls style='width: 100%;'>
-								<source :src="previewUrl" type="video/mp4">
-								<source :src="previewUrl" type="video/webm">
-							</video>
-						</div>
-						<div v-if="previewType === 3">
-							<audio controls style='width: 100%;'>
-								<source :src="previewUrl" type="audio/mp3">
-								<source :src="previewUrl" type="audio/ogg">
-								<source :src="previewUrl" type="audio/mpeg">
-							</audio>
-						</div>
-					</a-modal>
-				</div>
-			</a-col>
-
-			<a-col :span="2" class="labelText">
-				{{ '2 Mark' }}
-			</a-col>
-			<a-col :span="4" class="searchButton">
-				<div class="clearfix">
-					<a-upload
-					:customRequest='handleImgRequest'
-					:beforeUpload='beforeUpload'
-					list-type="picture-card"
-					v-model:file-list="fileList"
-					@preview="handlePreview"
-				>
-					<div v-if="fileList.length < 1">
-						<plus-outlined />
-						<div class="ant-upload-text">Upload</div>
-					</div>
-					</a-upload>
-					<a-modal :visible="previewVisible" :footer="null" centered @cancel="handleCancel">
-						<div v-if="previewType === 1">
-							<img alt="example" style="width: 100%" :src="previewUrl" />
-						</div>
-						<div v-if="previewType === 2">
-							<video controls style='width: 100%;'>
-								<source :src="previewUrl" type="video/mp4">
-								<source :src="previewUrl" type="video/webm">
-							</video>
-						</div>
-						<div v-if="previewType === 3">
-							<audio controls style='width: 100%;'>
-								<source :src="previewUrl" type="audio/mp3">
-								<source :src="previewUrl" type="audio/ogg">
-								<source :src="previewUrl" type="audio/mpeg">
-							</audio>
-						</div>
-					</a-modal>
-				</div>
-			</a-col>
-
-			<a-col :span="2" class="labelText">
-				{{ '3 Mark' }}
-			</a-col>
-			<a-col :span="4" class="searchButton">
-				<div class="clearfix">
-					<a-upload
-					:customRequest='handleImgRequest'
-					:beforeUpload='beforeUpload'
-					list-type="picture-card"
-					v-model:file-list="fileList"
-					@preview="handlePreview"
-				>
-					<div v-if="fileList.length < 1">
-						<plus-outlined />
-						<div class="ant-upload-text">Upload</div>
-					</div>
-					</a-upload>
-					<a-modal :visible="previewVisible" :footer="null" centered @cancel="handleCancel">
-						<div v-if="previewType === 1">
-							<img alt="example" style="width: 100%" :src="previewUrl" />
-						</div>
-						<div v-if="previewType === 2">
-							<video controls style='width: 100%;'>
-								<source :src="previewUrl" type="video/mp4">
-								<source :src="previewUrl" type="video/webm">
-							</video>
-						</div>
-						<div v-if="previewType === 3">
-							<audio controls style='width: 100%;'>
-								<source :src="previewUrl" type="audio/mp3">
-								<source :src="previewUrl" type="audio/ogg">
-								<source :src="previewUrl" type="audio/mpeg">
-							</audio>
-						</div>
-					</a-modal>
-				</div>
-			</a-col>
-		</a-row>
-
-		<!-- Bull -->
-		<a-row v-else-if="infoVO.type === 5 || infoVO.type === 6" class="rowStyle">
-			<a-col :span="2" class="labelText">
-				{{ 'S-Bull' }}
-			</a-col>
-			<a-col :span="4" class="searchButton">
-				<div class="clearfix">
-					<a-upload
-					:customRequest='handleImgRequest'
-					:beforeUpload='beforeUpload'
-					list-type="picture-card"
-					v-model:file-list="fileList"
-					@preview="handlePreview"
-				>
-					<div v-if="fileList.length < 1">
-						<plus-outlined />
-						<div class="ant-upload-text">Upload</div>
-					</div>
-					</a-upload>
-					<a-modal :visible="previewVisible" :footer="null" centered @cancel="handleCancel">
-						<div v-if="previewType === 1">
-							<img alt="example" style="width: 100%" :src="previewUrl" />
-						</div>
-						<div v-if="previewType === 2">
-							<video controls style='width: 100%;'>
-								<source :src="previewUrl" type="video/mp4">
-								<source :src="previewUrl" type="video/webm">
-							</video>
-						</div>
-						<div v-if="previewType === 3">
-							<audio controls style='width: 100%;'>
-								<source :src="previewUrl" type="audio/mp3">
-								<source :src="previewUrl" type="audio/ogg">
-								<source :src="previewUrl" type="audio/mpeg">
-							</audio>
-						</div>
-					</a-modal>
-				</div>
-			</a-col>
-			<a-col :span="2" class="labelText">
-				{{ 'D-Bull' }}
-			</a-col>
-			<a-col :span="4" class="searchButton">
-				<div class="clearfix">
-					<a-upload
-					:customRequest='handleImgRequest'
-					:beforeUpload='beforeUpload'
-					list-type="picture-card"
-					v-model:file-list="fileList"
-					@preview="handlePreview"
-				>
-					<div v-if="fileList.length < 1">
-						<plus-outlined />
-						<div class="ant-upload-text">Upload</div>
-					</div>
-					</a-upload>
-					<a-modal :visible="previewVisible" :footer="null" centered @cancel="handleCancel">
-						<div v-if="previewType === 1">
-							<img alt="example" style="width: 100%" :src="previewUrl" />
-						</div>
-						<div v-if="previewType === 2">
-							<video controls style='width: 100%;'>
-								<source :src="previewUrl" type="video/mp4">
-								<source :src="previewUrl" type="video/webm">
-							</video>
-						</div>
-						<div v-if="previewType === 3">
-							<audio controls style='width: 100%;'>
-								<source :src="previewUrl" type="audio/mp3">
-								<source :src="previewUrl" type="audio/ogg">
-								<source :src="previewUrl" type="audio/mpeg">
-							</audio>
-						</div>
-					</a-modal>
-				</div>
-			</a-col>
-		</a-row>
-		<a-row v-else class="rowStyle">
+		<a-row  class="rowStyle">
 			<a-col :span="2" class="labelText">
 				{{ $t('default.230') }}
 			</a-col>
-			<a-col :span="4" class="searchButton">
+			<a-col :span="6" class="searchButton">
 				<div class="clearfix">
 					<a-upload
 					:customRequest='handleImgRequest'
@@ -252,8 +66,9 @@
 					list-type="picture-card"
 					v-model:file-list="fileList"
 					@preview="handlePreview"
+					:remove='handleRemove'
 				>
-					<div v-if="fileList.length < 1">
+					<div v-if="fileList.length < fileListLength">
 						<plus-outlined />
 						<div class="ant-upload-text">Upload</div>
 					</div>
@@ -279,15 +94,16 @@
 				</div>
 			</a-col>
 		</a-row>
+
 		<a-row>
 			<a-col :span='8' :offset='2'>
-				<div v-if="infoVO.type === 1" class="TipsTitle">{{ $t('default.231') }}</div>
-				<div v-if="infoVO.type === 2" class="TipsTitle">{{ $t('default.232') }}</div>
-				<div v-if="infoVO.type === 3" class="TipsTitle">{{ $t('default.233') }}</div>
-				<div v-if="infoVO.type === 4" class="TipsTitle">{{ $t('default.234') }}</div>
-				<div v-if="infoVO.type === 5" class="TipsTitle">{{ $t('default.235') }}</div>
-				<div v-if="infoVO.type === 6" class="TipsTitle">{{ $t('default.236') }}</div>
-				<div v-if="infoVO.type === 7" class="TipsTitle">{{ $t('default.237') }}</div>
+				<div v-if="defaultType === 1" class="TipsTitle">{{ $t('default.231') }}</div>
+				<div v-if="defaultType === 2" class="TipsTitle">{{ $t('default.232') }}</div>
+				<div v-if="defaultType === 3" class="TipsTitle">{{ $t('default.233') }}</div>
+				<div v-if="defaultType === 4" class="TipsTitle">{{ $t('default.234') }}</div>
+				<div v-if="defaultType === 5" class="TipsTitle">{{ $t('default.235') }}</div>
+				<div v-if="defaultType === 6" class="TipsTitle">{{ $t('default.236') }}</div>
+				<div v-if="defaultType === 7" class="TipsTitle">{{ $t('default.237') }}</div>
 			</a-col>
 		</a-row>
 		<a-row>
@@ -302,7 +118,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-import { PlayerAddtHttp,PlayerUpdateHttp, PlayerInfoHttp, newsImgUploadHttp } from '@/api/api';
+import { shopPropsAddHttp,shopPropsUpdateHttp, shopPropsInfoHttp, newsImgUploadHttp } from '@/api/api';
 import { PlusOutlined } from '@ant-design/icons-vue';
 import labelTitle from '@/components/labelTitle.vue';
 // import goodTable  from '@/components/common/goodTable.vue';
@@ -346,16 +162,19 @@ export default defineComponent({
 			previewVisible:false,
 			previewType: 1,
 			fileList:[],
+			fileListLength:1,
 			previewUrl:"",
+			defaultType:1,
+			defaultAward:'',
 			infoVO: {
 				id:'',
-				cost: 1,
-				type: 1,
-				other:1,
-				coins:'',
-				display:1,
-				category: 1,
-				thumbnail:'',
+				type: 0,
+				title:'',
+				price:'',
+				status:1,
+				recommend:0,
+				priceType: 1,
+				url:'',
 			},
       typeList: [
 				{ id: 1 , name: 'Style' },
@@ -367,31 +186,35 @@ export default defineComponent({
 				{ id: 7 , name: 'Award' },
 			],
 			otherList:[
-				{ id: 1 , name: 'Low Ton' },
-				{ id: 2 , name: 'High Ton' },
-				{ id: 3 , name: 'Hat Trick' },
-				{ id: 4 , name: '9Marks' },
-				{ id: 5 , name: 'Ton 80' },
-				{ id: 6 , name: 'White Horse' },
-				{ id: 7 , name: 'Three In A Bed' },
-				{ id: 8 , name: 'Three In The Black' },
+				{ id: 71 , name: 'Low Ton' },
+				{ id: 72 , name: 'High Ton' },
+				{ id: 73 , name: 'Hat Trick' },
+				{ id: 78 , name: '9Marks' },
+				{ id: 76 , name: 'Ton 80' },
+				{ id: 77 , name: 'White Horse' },
+				{ id: 74 , name: 'Three In A Bed' },
+				{ id: 75 , name: 'Three In The Black' },
 			],
-			showOtherList:() =>{
-				switch(data.infoVO.type){
-					case 7:
-						return true;
-						default :
-						return false;
+			onChange:(value: number) =>{
+				switch (value) {
+					case 2:
+						data.fileListLength = 3
+						break;
+					case 5:
+					case 6:
+						data.fileListLength = 2
+						break;
+					default:
+						data.fileListLength = 1;
+						break;
 				}
-			},
-			onChange:() =>{
 				data.fileList = [];
 			},
 			// Mark upLoad
 			beforeUpload:(file: any) =>{
 				const type = file.type.split('/')[1];
 				let flag = false;
-				switch(data.infoVO.type){
+				switch(data.defaultType){
 					case 1:
 					case 5:
 						if(!(imgList.includes(type) || videoList.includes(type))){
@@ -429,9 +252,12 @@ export default defineComponent({
 				const formData = new FormData();
 				formData.append("image", file);
 				newsImgUploadHttp(formData).then((res: any) =>{
+					// 设置默认预览图
 					// thumbUrl: 'http://adartstest.adarts-cn.com/leagueimage/4318780786a6.jpg'
-					data.infoVO.thumbnail = res.data.data;
-					data.fileList = [{ uid: file.lastModified + new Date().getTime(),type:file.type.split('/')[1], url: res.data.data }] as any;
+					const obj = { uid: file.lastModified + new Date().getTime(),type:file.type.split('/')[1], url: res.data.data } as never;
+					data.fileList.push(obj);
+					data.fileList = data.fileList.filter((i: any) => i.url);
+					data.infoVO.url = data.fileList.map((i: any) => i.url).join(',');
 				})
 			},
 			handlePreview:(file: any) =>{
@@ -447,30 +273,89 @@ export default defineComponent({
 				data.previewUrl = file.url;
 				data.previewVisible = true;
 			},
+			handleRemove:(file: any) =>{
+				data.infoVO.url = data.fileList.filter((i: any) => i.url !== file.url).map((i: any) => i.url).join(',');
+			},
 			handleCancel:() =>{
 				data.previewVisible = false
 			},
 			create: () => {
-				// if(!data.infoVO.name){
-				// 	message.warning('请输入选手姓名');
-				// 	return false;
-				// }
-				return PlayerAddtHttp(data.infoVO)
+				if(data.defaultAward){
+					data.infoVO.type = data.defaultAward as any;
+				}else{
+					data.infoVO.type = data.defaultType;
+				}
+				if(!data.infoVO.title){
+					message.warning('请输入道具名称');
+					return false;
+				}
+				return shopPropsAddHttp(data.infoVO)
 			},
       update: () => {
-				// if(!data.infoVO.name){
-				// 	message.warning('请输入选手姓名');
-				// 	return false;
-				// }
-				return PlayerUpdateHttp(data.infoVO)
+				if(data.defaultAward){
+					data.infoVO.type = data.defaultAward as any;
+				}else{
+					data.infoVO.type = data.defaultType;
+				}
+				if(!data.infoVO.title){
+					message.warning('请输入道具名称');
+					return false;
+				}
+				return shopPropsUpdateHttp(data.infoVO)
 			},
 			afterHttp:(id: string) =>{
 				data.infoVO.id = id
 			},
-      getInfo:(playerId: any) =>{
-        PlayerInfoHttp({playerId}).then((res: any) =>{
+      getInfo:(itemId: any) =>{
+        shopPropsInfoHttp({itemId}).then((res: any) =>{
 					const response = res.data.data;
-					console.log(response)
+					data.infoVO = response;
+					if(response.url.split(',')){
+						response.url.split(',').forEach((i: any,index: number) => {
+						const obj = { uid: index + new Date().getTime(),type:response.url.substr(-10).split('.')[1], url: i } as never;
+						data.fileList.push(obj)
+					});
+					}else{
+						data.fileList = [{ uid: new Date().getTime(),type:response.url.substr(-10).split('.')[1], url: response.url }] as any;
+					}
+					if(response.type < 7){
+						data.defaultType = response.type;
+					}else{
+						switch (response.type) {
+						case 71:
+							data.defaultType = 7;
+							data.defaultAward = 71 as any;
+							break;
+						case 72:
+							data.defaultType = 7;
+							data.defaultAward = 72 as any;
+							break;
+						case 73:
+							data.defaultType = 7;
+							data.defaultAward = 73 as any;
+							break;
+						case 74:
+							data.defaultType = 7;
+							data.defaultAward = 74 as any;
+							break;
+						case 75:
+							data.defaultType = 7;
+							data.defaultAward = 75 as any;
+							break;
+						case 76:
+							data.defaultType = 7;
+							data.defaultAward = 76 as any;
+							break;
+						case 77:
+							data.defaultType = 7;
+							data.defaultAward = 77 as any;
+							break;
+						default:
+							data.defaultType = 7;
+							data.defaultAward = 78 as any;
+							break;
+					}
+					}
 				})
       },
 			afterClose: (value: boolean) => {

@@ -22,7 +22,7 @@ export default defineComponent({
 					props.btn().then((res: any) => {
 					if (res.data.code === 100) {
 						message.success(res.data.msg);
-						if(res.data.data){
+						if(typeof res.data.data === 'number'){
 							ctx.emit('afterHttp',res.data.data)
 						}
 					} else {

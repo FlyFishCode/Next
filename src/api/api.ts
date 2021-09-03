@@ -49,6 +49,9 @@ import { dartsList,dartsEdit,dartsInfo,dartsDelete } from '@/api/Darts/index';
 // Player
 import { PlayerList,PlayerAdd,PlayerInfo ,PlayerUpdate,PlayerDelete}  from '@/api/Player/index';
 
+// Shop
+import { shopPropsList,shopPropsAdd,shopPropsUpdate,shopPropsInfo,shopPropsDelete } from '@/api/Shop/index';
+
 const baseURL = '/apr';
 const Axios = axios.create({
 	baseURL: baseURL,
@@ -425,6 +428,28 @@ const PlayerUpdateHttp = (data: any) =>{
 const PlayerDeleteHttp = (data: any) =>{
 	return Axios.post(PlayerDelete, data);
 }
+
+// 道具商店
+const shopPropsListHttp = (data: any) =>{
+	return Axios.post(shopPropsList, data);
+}
+//  道具添加
+const shopPropsAddHttp = (data: any) =>{
+	return Axios.post(shopPropsAdd, data);
+}
+// 道具修改
+const shopPropsUpdateHttp = (data: any) =>{
+	return Axios.post(shopPropsUpdate, data);
+}
+// 道具查询
+const shopPropsInfoHttp = (data: any) =>{
+	return Axios.get(getNewUrl(shopPropsInfo, data));
+}
+// 道具删除
+const shopPropsDeleteHttp = (data: any) =>{
+	return Axios.post(shopPropsDelete, data);
+}
+
 export {
 	loginHttp,
 	changePasswordHttp,
@@ -507,5 +532,10 @@ export {
 	PlayerAddtHttp,
 	PlayerInfoHttp,
 	PlayerUpdateHttp,
-	PlayerDeleteHttp
+	PlayerDeleteHttp,
+	shopPropsListHttp,
+	shopPropsAddHttp,
+	shopPropsUpdateHttp,
+	shopPropsInfoHttp,
+	shopPropsDeleteHttp
 };
