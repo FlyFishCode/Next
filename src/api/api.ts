@@ -53,7 +53,7 @@ import { PlayerList,PlayerAdd,PlayerInfo ,PlayerUpdate,PlayerDelete}  from '@/ap
 import { shopPropsList,shopPropsAdd,shopPropsUpdate,shopPropsInfo,shopPropsDelete } from '@/api/Shop/index';
 
 // Match
-import { matchList } from '@/api/Match/index';
+import { matchList,matchAdd,matchInfo,matchUpdate,matchDelete } from '@/api/Match/index';
 
 const baseURL = '/apr';
 const Axios = axios.create({
@@ -453,9 +453,25 @@ const shopPropsDeleteHttp = (data: any) =>{
 	return Axios.post(shopPropsDelete, data);
 }
 
-// 活动
+// 活动列表
 const matchListHttp = (data: any) =>{
 	return Axios.post(matchList, data);
+}
+// 活动添加
+const matchAddHttp = (data: any) =>{
+	return Axios.post(matchAdd, data);
+}
+// 活动详情
+const matchInfoHttp = (data: any) =>{
+	return Axios.post(getNewUrl(matchInfo, data));
+}
+// 活动详情
+const matchUpdateHttp = (data: any) =>{
+	return Axios.post(matchUpdate, data);
+}
+// 活动删除
+const matchDeleteHttp = (data: any) =>{
+	return Axios.post(matchDelete, data);
 }
 
 export {
@@ -546,5 +562,9 @@ export {
 	shopPropsUpdateHttp,
 	shopPropsInfoHttp,
 	shopPropsDeleteHttp,
-	matchListHttp
+	matchListHttp,
+	matchAddHttp,
+	matchInfoHttp,
+	matchUpdateHttp,
+	matchDeleteHttp
 };

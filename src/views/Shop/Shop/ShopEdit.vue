@@ -312,9 +312,9 @@ export default defineComponent({
 					data.infoVO = response;
 					if(response.url.split(',')){
 						response.url.split(',').forEach((i: any,index: number) => {
-						const obj = { uid: index + new Date().getTime(),type:response.url.substr(-10).split('.')[1], url: i } as never;
-						data.fileList.push(obj)
-					});
+							const obj = { uid: index + new Date().getTime(),type:response.url.substr(-10).split('.')[1], url: i } as never;
+							data.fileList.push(obj)
+						});
 					}else{
 						data.fileList = [{ uid: new Date().getTime(),type:response.url.substr(-10).split('.')[1], url: response.url }] as any;
 					}

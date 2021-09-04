@@ -26,8 +26,10 @@
 				{{ $t('default.238') }}
 			</a-col>
 			<a-col :span="4">
-				<a-select v-model:value="infoVO.creatorName" class="selectBox" allowClear>
-					<a-select-option v-for="item in creatorList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+				<a-select class="selectBox" show-search v-model:value="infoVO.creatorId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="creatorSearch">
+					<a-select-option v-for="creator in creatorList" :key="creator.id">
+						<div :title="creator.nickname">{{ creator.nickname }}</div>
+					</a-select-option>
 				</a-select>
 			</a-col>
 		</a-row>
@@ -46,9 +48,19 @@
 			</a-col>
 			<a-col :span="4">
 				<a-select class="selectBox" show-search v-model:value="infoVO.shopId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="shopSearch">
-					<a-select-option v-for="shop in shopList" :key="shop.name">
+					<a-select-option v-for="shop in shopList" :value='shop.id' :key="shop.name">
 						<div :title="shop.name">{{ shop.name }}</div>
 					</a-select-option>
+				</a-select>
+			</a-col>
+			<a-col :span="2" class="labelText">
+				{{ $t('default.203') }}
+			</a-col>
+			<a-col :span="4">
+				<a-select v-model:value="infoVO.state" class="selectBox">
+					<a-select-option value="">{{ 'All' }}</a-select-option>
+					<a-select-option :value="1">{{ $t('default.204') }}</a-select-option>
+					<a-select-option :value="0">{{ $t('default.205') }}</a-select-option>
 				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
@@ -68,7 +80,12 @@
         <div class="imgBox"><img :src='record.thumbnail' alt=""></div>
 			</template>
       <template #name="{ record }">
-				<a-button type="link" @click="handleNameClick(record.id)">{{ record.title }}</a-button>
+				<a-button type="link" @click="handleNameClick(record.activityId)">{{ record.title }}</a-button>
+			</template>
+			<template #shop="{ record }">
+				<div v-for="shop in record.shopList" :key="shop.shopId">
+					<div>{{ shop.shopName }}</div>
+				</div>
 			</template>
       <template #Date="{ record }">
 				<div>{{ `${record.startDate} ${record.endDate}` }}</div>
@@ -86,7 +103,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-import { matchListHttp, PlayerDeleteHttp, newsEditorHttp,countryListHttp,shopListHttp } from '@/api/api';
+import { countryListHttp,shopListHttp,matchListHttp, matchDeleteHttp, matchUpdateHttp,systemUserListHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { useRouter } from 'vue-router';
@@ -114,10 +131,11 @@ export default defineComponent({
       creatorList:[],
       countryList: [],
 			infoVO: {
+				state:'',
 				activityId: '',
         title:'',
         shopId:"",
-        creatorName:"",
+        creatorId:"",
 				countryId:'',
         startDate:'',
         endDate:"",
@@ -142,16 +160,16 @@ export default defineComponent({
 					slots: { customRender: 'name' }
 				},
 				{
-					title: i18n('default.238'),
-          dataIndex: 'activityId',
-				},
-        {
-					title: i18n('default.6'),
-          slots: { customRender: 'Date' }
-				},
-        {
 					title: i18n('default.2'),
-          dataIndex: 'activityId',
+          slots: { customRender: 'shop' }
+				},
+				{
+					title: i18n('default.238'),
+          dataIndex: 'creatorName',
+				},
+        {
+					title: i18n('default.46'),
+          slots: { customRender: 'Date' }
 				},
         {
 					title: i18n('default.204'),
@@ -190,6 +208,19 @@ export default defineComponent({
           data.time = setTimeout(fn,500)
         }
 			},
+			creatorSearch:(value: any) =>{
+				const fn = () =>{
+          systemUserListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res) => {
+            data.creatorList = res.data.data.list;
+          });
+        }
+        if(data.time){
+          clearTimeout(data.time)
+          data.time = setTimeout(fn,500)
+        }else{
+          data.time = setTimeout(fn,500)
+        }
+			},
 			handleDelete: () => {
 				if (handleSelectEvent(selectList, '').length) {
 					data.visible = true;
@@ -199,7 +230,7 @@ export default defineComponent({
 				data.visible = value;
 			},
 			handleDeleteOk: () => {
-				PlayerDeleteHttp(selectList).then((res: any) => {
+				matchDeleteHttp(selectList).then((res: any) => {
 					message.warning(res.data.msg);
 					data.search();
 				});
@@ -240,9 +271,9 @@ export default defineComponent({
 					category:row.category,
 					countryId:row.countryId,
 					registerDate:row.registerDate,
-					display:Number(row.display),
+					state:Number(!row.state),
 				}
-				newsEditorHttp(flagData).then((res: any) =>{
+				matchUpdateHttp(flagData).then((res: any) =>{
 					message.info(res.data.msg)
 				})
 			}
@@ -255,6 +286,10 @@ export default defineComponent({
 		const init = () => {
       getCountryList();
 			data.search();
+			data.creatorSearch('');
+			shopListHttp({ name: '', pageSize: 999 }).then((res) => {
+        data.shopList = res.data.data.list;
+      });
 		};
 		onMounted(() => {
 			init();

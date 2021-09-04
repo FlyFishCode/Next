@@ -11,30 +11,29 @@
 				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ $t('default.2') }}
+				{{ $t('default.196') }}
 			</a-col>
 			<a-col :span="4">
-				<a-select class="selectBox" show-search v-model:value="infoVO.shopId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="shopSearch">
-					<a-select-option v-for="shop in shopList" :key="shop.name">
-						<div :title="shop.name">{{ shop.name }}</div>
-					</a-select-option>
+				<a-select v-model:value="infoVO.type" class="selectBox">
+					<a-select-option v-for="item in typeList" :key="item.id" :value="item.id">{{ $t(item.label) }}</a-select-option>
 				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
 				{{ $t('default.46') }}
 			</a-col>
 			<a-col :span="2" class="datePicker">
-				<a-date-picker v-model:value="infoVO.minRegisterTime" :disabled-date="disabledMinRegisterTime" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
+				<a-date-picker v-model:value="infoVO.startDate" :disabled-date="disabledMinRegisterTime" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
 			</a-col>
 			<a-col :span="2" class="datePicker">
-				<a-date-picker v-model:value="infoVO.maxRegisterTime" :disabled-date="disabledMaxRegisterTime" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
+				<a-date-picker v-model:value="infoVO.endDate" :disabled-date="disabledMaxRegisterTime" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ $t('default.196') }}
+				{{ $t('default.203') }}
 			</a-col>
 			<a-col :span="4">
-				<a-select v-model:value="infoVO.type" class="selectBox">
-					<a-select-option v-for="item in typeList" :key="item.id" :value="item.id">{{ $t(item.label) }}</a-select-option>
+				<a-select v-model:value="infoVO.state" class="selectBox">
+					<a-select-option :value="1">{{ $t('default.204') }}</a-select-option>
+					<a-select-option :value="0">{{ $t('default.205') }}</a-select-option>
 				</a-select>
 			</a-col>
 		</a-row>
@@ -43,17 +42,31 @@
 				{{ $t('default.24') }}
 			</a-col>
 			<a-col :span="4">
-				<a-select v-model:value="infoVO.img" class="selectBox">
+				<a-select v-model:value="imgType" class="selectBox">
 					<a-select-option v-for="item in imgList" :key="item.id" :value="item.id">{{ $t(item.label) }}</a-select-option>
 				</a-select>
 			</a-col>
+		</a-row>
+
+		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
-				{{ $t('default.203') }}
+				{{ $t('default.2') }}
 			</a-col>
-			<a-col :span="4">
-				<a-select v-model:value="infoVO.display" class="selectBox">
-					<a-select-option :value="1">{{ $t('default.204') }}</a-select-option>
-					<a-select-option :value="0">{{ $t('default.205') }}</a-select-option>
+			<a-col :span="22">
+				<a-select class="selectBox"
+				show-search
+				allowClear
+				mode="multiple"
+				v-model:value="infoVO.shopIdList"
+				:default-active-first-option="false"
+				:show-arrow="false"
+				:filter-option="false"
+				:not-found-content="null"
+				@search="shopSearch"
+				>
+					<a-select-option v-for="shop in shopList" :value='shop.id' :key="shop.id">
+						<div :title="shop.name">{{ shop.name }}</div>
+					</a-select-option>
 				</a-select>
 			</a-col>
 		</a-row>
@@ -72,7 +85,7 @@
 				{{ $t('default.242') }}
 			</a-col>
 			<a-col :span="22">
-				<a-textarea :rows="3" v-model:value="infoVO.title"  allowClear />
+				<a-textarea :rows="3" v-model:value="infoVO.content"  allowClear />
 			</a-col>
 		</a-row>
 
@@ -81,7 +94,7 @@
 				{{ $t('default.243') }}
 			</a-col>
 			<a-col :span="22">
-				<a-textarea :rows="3" v-model:value="infoVO.title" allowClear />
+				<a-textarea :rows="3" v-model:value="infoVO.joinMethod" allowClear />
 			</a-col>
 		</a-row>
 
@@ -90,7 +103,7 @@
 				{{ $t('default.244') }}
 			</a-col>
 			<a-col :span="22">
-				<a-textarea :rows="3" v-model:value="infoVO.title" allowClear />
+				<a-textarea :rows="3" v-model:value="infoVO.cost" allowClear />
 			</a-col>
 		</a-row>
 
@@ -99,7 +112,7 @@
 				{{ $t('default.245') }}
 			</a-col>
 			<a-col :span="22">
-				<a-textarea :rows="3" v-model:value="infoVO.title" allowClear />
+				<a-textarea :rows="3" v-model:value="infoVO.reward" allowClear />
 			</a-col>
 		</a-row>
 
@@ -108,7 +121,7 @@
 				{{ $t('default.246') }}
 			</a-col>
 			<a-col :span="22">
-				<a-textarea :rows="3" v-model:value="infoVO.title" allowClear />
+				<a-textarea :rows="3" v-model:value="infoVO.contact" allowClear />
 			</a-col>
 		</a-row>
 
@@ -117,10 +130,10 @@
 				{{ $t('default.188') }}
 			</a-col>
 			<a-col :span="22">
-				<a-textarea :rows="3" v-model:value="infoVO.title" allowClear />
+				<a-textarea :rows="3" v-model:value="infoVO.other" allowClear />
 			</a-col>
 		</a-row>
-		<a-row v-if="infoVO.img === 1" class="rowStyle">
+		<a-row v-if="imgType === 1" class="rowStyle">
 			<a-col :span="2" class="labelText">
 				{{ $t('default.24') }}
 			</a-col>
@@ -154,6 +167,7 @@
 						list-type="picture-card"
 						v-model:file-list="otherImgList"
 						@preview="handlePreview"
+						:remove='handleRemove'
 					>
 						<div v-if="otherImgList.length < 4">
 							<plus-outlined />
@@ -173,7 +187,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-import { countryListHttp, newsEditorHttp, newsInfoHttp, newsImgUploadHttp,shopListHttp } from '@/api/api';
+import { countryListHttp,newsImgUploadHttp,shopListHttp, matchAddHttp, matchInfoHttp,matchUpdateHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
 import showUrlDialog from '@/components/common/showUrlDialog.vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
@@ -191,57 +205,59 @@ export default defineComponent({
 	},
 	setup() {
     const ROUTE = useRoute();
-		const getBase64 = (file: File) => {
-			return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-      })
+		const handleImgUrl = (data: any) =>{
+			const arr: any = data.infoVO.shopIdList;
+			const obj: any = data.shopList.filter((i: any) => i.id === arr[0])[0];
+			data.infoVO.thumbnail = obj.img;
 		}
 		const data = reactive({
 			time: 0,
+			imgType:1,
 			visible: false,
 			showUrlDialog: false,
 			previewVisible:false,
 			previewImage:"",
-			infoVO: {
-				id:'',
-				img: 1,
-				type:1,
-				minRegisterTime:'',
-        maxRegisterTime:"",
-				thumbnail:'',
-				title:'',
-				contents:'',
-				category:'',
-				countryId: '',
-				display:1,
-				registerDate: '',
-			},
 			fileList:[],
 			otherImgList:[],
 			shopList: [],
+			infoVO: {
+				id:'',
+				type:0,
+				shopIdList:undefined,
+				startDate:'',
+        endDate:"",
+				picture:'',
+				thumbnail:"",
+				title:'',
+				countryId: '',
+				state:1,
+				content:"",
+				joinMethod:"",
+				cost:"",
+				reward:"",
+				contact:"",
+				other:""
+			},
       countryList: [{ id:'',name:'' }],
 			imgList:[
 				{ id: 1, label: 'default.177' },
 				{ id: 2, label: 'default.240' },
 			],
 			typeList:[
-				{ id: 1, label: 'default.197' },
-				{ id: 2, label: 'default.198' },
+				{ id: 0, label: 'default.197' },
+				{ id: 1, label: 'default.198' },
 			],
 			disabledMinRegisterTime: (startValue: any) => {
-				if (!startValue || !data.infoVO.maxRegisterTime) {
+				if (!startValue || !data.infoVO.endDate) {
 					return false;
 				}
-				return startValue.valueOf() > new Date(data.infoVO.maxRegisterTime).valueOf();
+				return startValue.valueOf() > new Date(data.infoVO.endDate).valueOf();
 			},
 			disabledMaxRegisterTime: (endValue: any) => {
-				if (!endValue || !data.infoVO.minRegisterTime) {
+				if (!endValue || !data.infoVO.startDate) {
 					return false;
 				}
-				return new Date(data.infoVO.minRegisterTime).valueOf() >= endValue.valueOf();
+				return new Date(data.infoVO.startDate).valueOf() >= endValue.valueOf();
 			},
 			shopSearch(value: any) {
         const fn = () =>{
@@ -260,52 +276,67 @@ export default defineComponent({
 				data.showUrlDialog = value;
 			},
 			handlePreview:(file: any) =>{
-				if (!file.url && !file.preview) {
-        file.preview = getBase64(file.originFileObj);
-      }
-      data.previewImage = file.url || file.preview;
-      data.previewVisible = true;
+				data.previewImage = file.url || file.preview;
+				data.previewVisible = true;
 			},
 			handleCancel:() =>{
 				data.previewVisible = false
 			},
 			create: () => {
 				if(!data.infoVO.title){
-					message.warning('请输入新闻标题');
+					message.warning('请输入活动标题');
 					return false;
 				}
-				return newsEditorHttp(data.infoVO)
+				handleImgUrl(data);
+				return matchAddHttp(data.infoVO)
 			},
       update: () => {
-				console.log(data.infoVO.title)
 				if(!data.infoVO.title){
-					message.warning('请输入新闻标题');
+					message.warning('请输入活动标题');
 					return false;
 				}
-				return newsEditorHttp(data.infoVO)
+				handleImgUrl(data);
+				return matchUpdateHttp(data.infoVO)
+			},
+			handleRemove:(file: any) =>{
+				data.infoVO.picture = data.otherImgList.filter((i: any) => i.url !== file.url).map((i: any) => i.url).join(',');
 			},
 			afterHttp:(id: string) =>{
 				data.infoVO.id = id
 			},
-      getInfo:(id: any) =>{
-        newsInfoHttp({id}).then((res: any) =>{
-					const response = res.data.data
-					data.infoVO.id = response.id
-					data.infoVO.title = response.title
-					data.infoVO.contents = response.contents
-					data.infoVO.display = response.display
-					data.infoVO.category = response.category
-					data.infoVO.countryId = response.countryId
-					data.infoVO.thumbnail = response.thumbnail
-					data.infoVO.registerDate = response.registerDate
+      getInfo:(activityId: any) =>{
+        matchInfoHttp({activityId}).then((res: any) =>{
+					const response = res.data.data;
+					data.infoVO.id = String(ROUTE.query.id);
+					data.infoVO.title = response.title;
+					data.infoVO.state = response.state;
+					data.infoVO.startDate = response.startDate;
+					data.infoVO.endDate = response.endDate;
+					data.infoVO.content = response.content;
+					data.infoVO.joinMethod = response.joinMethod;
+					data.infoVO.cost = response.cost;
+					data.infoVO.reward = response.reward;
+					data.infoVO.contact = response.contact;
+					data.infoVO.other = response.other;
+					data.infoVO.picture = response.picture;
+					data.infoVO.countryId = response.countryId;
+					data.infoVO.shopIdList = response.shopList.map((i: any) => i.shopId);
 					data.fileList = [{ uid: '1', url: response.thumbnail }] as any;
+					if(response.picture.split(',')){
+						response.picture.split(',').forEach((i: any,index: number) => {
+							const obj = { uid: index + new Date().getTime(),type:response.picture.substr(-10).split('.')[1], url: i } as never;
+							data.otherImgList.push(obj);
+						});
+					}else{
+						data.otherImgList = [{ uid: new Date().getTime(),type:response.picture.substr(-10).split('.')[1], url: response.picture }] as any;
+					}
 				})
       },
 			handleImgRequest:({file}: any) =>{
 				const formData = new FormData();
 				formData.append("image", file);
 				newsImgUploadHttp(formData).then((res: any) =>{
-					data.infoVO.thumbnail = res.data.data
+					data.infoVO.thumbnail = res.data.data;
 					data.fileList = [{ uid: '1', url: res.data.data }] as any;
 				})
 			},
@@ -315,7 +346,8 @@ export default defineComponent({
 				newsImgUploadHttp(formData).then((res: any) =>{
 					const obj = {uid:file.lastModified + new Date().getTime(), url:res.data.data} as never;
 					data.otherImgList.push(obj);
-					data.otherImgList = data.otherImgList.filter((i: any) => i.url)
+					data.otherImgList = data.otherImgList.filter((i: any) => i.url);
+					data.infoVO.picture = data.otherImgList.map((i: any) => i.url).join(',');
 				})
 			},
 		});
