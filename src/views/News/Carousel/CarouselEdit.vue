@@ -56,7 +56,7 @@
 					</a-modal>
 				</div>
 			</a-col>
-			<a-col :span="4">{{ '图片大小建议为：1200px X 450px' }}</a-col>
+			<a-col :span="4">{{ `${$t('default.248')}：1200px X 450px` }}</a-col>
 		</a-row>
 		<!-- 广告链接的预览 -->
 	<showUrlDialog :visible="showUrlDialog" :src="infoVO.thumbnail" @showBoxCancel="showBoxCancel" />

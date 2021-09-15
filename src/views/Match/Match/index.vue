@@ -305,6 +305,7 @@ export default defineComponent({
 <style scoped>
 .imgBox{
 	height: 60px;
+	width: 60px;
 }
 .imgBox img{
 	width: 100%;

@@ -137,7 +137,7 @@
 			<a-col :span="2" class="labelText">
 				{{ $t('default.24') }}
 			</a-col>
-			<a-col :span="4" class="searchButton">
+			<a-col :span="8" class="searchButton">
 				<div class="clearfix">
 					<a-upload
 						:customRequest='handleImgRequest'
@@ -155,12 +155,13 @@
 					</a-modal>
 				</div>
 			</a-col>
+			<a-col>{{ `${$t('default.248')}：600px X 650px` }}</a-col>
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
 				{{ $t('default.241') }}
 			</a-col>
-			<a-col :span="20" class="searchButton">
+			<a-col :span="8" class="searchButton">
 				<div class="clearfix">
 					<a-upload
 						:customRequest='handleOtherImgRequest'
@@ -179,6 +180,7 @@
 					</a-modal>
 				</div>
 			</a-col>
+			<a-col>{{ `${$t('default.248')}：200px X 200px` }}</a-col>
 		</a-row>
 		<!-- 广告链接的预览 -->
 	<showUrlDialog :visible="showUrlDialog" :src="infoVO.thumbnail" @showBoxCancel="showBoxCancel" />
