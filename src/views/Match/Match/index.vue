@@ -244,6 +244,7 @@ export default defineComponent({
 						});
 						data.tableList = res.data.data.list;
 						data.total = res.data.data.total;
+						console.log(data.tableList)
 					}
 				});
 			},
@@ -265,13 +266,13 @@ export default defineComponent({
 			},
 			checkboxChange:(row: any) =>{
 				const flagData = {
-					id:row.id,
+					id:row.activityId,
+					startDate:row.startDate,
+					endDate:row.endDate,
 					title:row.title,
-					contents:row.contents,
-					category:row.category,
-					countryId:row.countryId,
-					registerDate:row.registerDate,
-					state:Number(!row.state),
+					thumbnail:row.thumbnail,
+					shopIdList:row.shopList.map((i: any) => i.shopId),
+					state:Number(row.state),
 				}
 				matchUpdateHttp(flagData).then((res: any) =>{
 					message.info(res.data.msg)
