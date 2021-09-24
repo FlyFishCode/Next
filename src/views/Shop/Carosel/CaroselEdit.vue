@@ -103,7 +103,7 @@ export default defineComponent({
 				countryId: '',
 				target:1,
 				status:1,
-				type:1,
+				type:2,
 			},
 			fileList:[],
       countryList: [{id:'',name:''}],

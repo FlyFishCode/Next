@@ -88,7 +88,7 @@ export default defineComponent({
         countryId: '',
 				status:' ',
 				name:'',
-				type:1,
+				type:2,
 				pageNum: 1,
 				pageSize: 10
       },
