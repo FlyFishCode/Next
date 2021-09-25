@@ -251,12 +251,12 @@ export default defineComponent({
 			},
 			handleCreate: () => {
 				ROUTER.push({
-					path: 'ShopEdit'
+					path: 'PropShopEdit'
 				});
 			},
 			handleNameClick: (id: number) => {
 				ROUTER.push({
-					path: 'ShopEdit',
+					path: 'PropShopEdit',
 					query: {
 						id
 					}

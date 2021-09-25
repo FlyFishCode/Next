@@ -278,16 +278,16 @@ const routes = [
 			},
 			// Prop
 			{
-				path: '/Shop',
-				name: 'Shop',
+				path: '/PropShop',
+				name: 'PropShop',
 				component: () => import(/* webpackChunkName: "Shop" */ '../views/Shop/Shop/Shop.vue'),
 				meta: [
 					{ label: 'default.224', path: 'Shop' },
 				]
 			},
 			{
-				path: '/ShopEdit',
-				name: 'ShopEdit',
+				path: '/PropShopEdit',
+				name: 'PropShopEdit',
 				component: () => import(/* webpackChunkName: "ShopEdit" */ '../views/Shop/Shop/ShopEdit.vue'),
 				meta: [
 					{ label: 'default.224', path: 'Shop' },
@@ -295,17 +295,17 @@ const routes = [
 				]
 			},
 			{
-				path: '/ShopCarousel',
-				name: 'ShopCarousel',
+				path: '/PropShopCarousel',
+				name: 'PropShopCarousel',
 				component: () => import(/* webpackChunkName: "ShopCarousel" */ '../views/Shop/Carosel/index.vue'),
 				meta: [
 					{ label: 'default.194', path: 'ShopCarousel' },
 				]
 			},
 			{
-				path: '/ShopCarouselEdit',
-				name: 'ShopCarouselEdit',
-				component: () => import(/* webpackChunkName: "ShopCarouselEdit" */ '../views/Shop/Carosel/CaroselEdit.vue'),
+				path: '/PropShopCarouselEdit',
+				name: 'PropShopCarouselEdit',
+				component: () => import(/* webpackChunkName: "PropShopCarouselEdit" */ '../views/Shop/Carosel/CaroselEdit.vue'),
 				meta: [
 					{ label: 'default.194', path: 'ShopCarousel' },
 					{ label: 'default.209', path: 'CaroselEdit' },

@@ -168,12 +168,12 @@ export default defineComponent({
 			},
       handleCreate: () => {
 				ROUTER.push({
-					path: 'ShopCarouselEdit'
+					path: 'PropShopCarouselEdit'
 				});
 			},
 			handleTitleClick: (id: number) => {
 				ROUTER.push({
-					path: 'ShopCarouselEdit',
+					path: 'PropShopCarouselEdit',
 					query: { id }
 				});
 			},

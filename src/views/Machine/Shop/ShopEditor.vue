@@ -418,10 +418,11 @@ export default defineComponent({
 					title: i18n('default.84'),
 					dataIndex: 'Placing Type',
 					slots: { customRender: 'PlacingType' }
-				},
-				{
-					slots: { customRender: 'gameSetting' }
 				}
+				// {
+				// 	title: i18n('default.29'),
+				// 	slots: { customRender: 'gameSetting' }
+				// }
 			],
 			tableList: [{ id: 1 }],
 			shopRateList: [

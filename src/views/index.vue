@@ -13,15 +13,15 @@
 					<a-menu-item key="Bulletin">Bulletin</a-menu-item>
 					<a-menu-item key="Advert">{{ $t('default.11') }}</a-menu-item>
 				</a-sub-menu> -->
-				<!-- <a-sub-menu key="sub2">
+				<a-sub-menu key="sub2">
 					<template #title>
 						<span
 							><AppstoreOutlined /><span>{{ $t('default.3') }}</span></span
 						>
 					</template>
 					<a-menu-item key="Shop">{{ $t('default.2') }}</a-menu-item>
-					<a-menu-item key="Machine">{{ $t('default.3') }}</a-menu-item>
-				</a-sub-menu> -->
+					<!-- <a-menu-item key="Machine">{{ $t('default.3') }}</a-menu-item> -->
+				</a-sub-menu>
 				<!-- <a-sub-menu key="sub3">
 					<template #title>
 						<span
@@ -85,8 +85,8 @@
 							><ShopOutlined /><span>{{ $t('default.224') }}</span></span
 						>
 					</template>
-					<a-menu-item key="Shop">{{ $t('default.224') }}</a-menu-item>
-					<a-menu-item key="ShopCarousel">{{ $t('default.194') }}</a-menu-item>
+					<a-menu-item key="PropShop">{{ $t('default.224') }}</a-menu-item>
+					<a-menu-item key="PropShopCarousel">{{ $t('default.194') }}</a-menu-item>
 				</a-sub-menu>
 				<a-sub-menu key="sub10">
 					<template #title>
@@ -115,7 +115,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue';
-import { ProfileOutlined,TeamOutlined,PushpinOutlined,SettingOutlined,UserOutlined,ShopOutlined,ScheduleOutlined } from '@ant-design/icons-vue';
+import { ProfileOutlined,TeamOutlined,PushpinOutlined,SettingOutlined,UserOutlined,ShopOutlined,ScheduleOutlined,AppstoreOutlined } from '@ant-design/icons-vue';
 import hearder from '@/components/hearder.vue';
 import { useRouter } from 'vue-router';
 
@@ -131,7 +131,7 @@ export default defineComponent({
 	name: 'index',
 	components: {
 		// MailOutlined,
-		// AppstoreOutlined,
+		AppstoreOutlined,
 		SettingOutlined,
 		// CreditCardOutlined,
 		// EnvironmentOutlined,

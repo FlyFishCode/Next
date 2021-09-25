@@ -270,7 +270,7 @@ export default defineComponent({
 				{
 					title: i18n('default.2'),
 					dataIndex: 'shopName',
-					// slots: { customRender: 'shopName' }
+					slots: { customRender: 'shopName' }
 				},
 				{
 					title: i18n('default.105'),
@@ -280,10 +280,10 @@ export default defineComponent({
 					title: i18n('default.162'),
 					slots: { customRender: 'type' }
 				},
-				// {
-				// 	title: i18n('default.169'),
-				// 	slots: { customRender: 'handle' }
-				// }
+				{
+					title: i18n('default.169'),
+					slots: { customRender: 'handle' }
+				}
 			],
 			typeList: [
 				{ id: 1, label: i18n('default.150') },
