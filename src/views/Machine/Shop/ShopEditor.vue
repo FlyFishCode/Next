@@ -65,7 +65,7 @@
 				<a-input v-model:value="infoVO.website" allow-clear />
 			</a-col>
 			<a-col :span="3" class="labelText">
-				{{ 'On Time' }}
+				{{ $t('default.249') }}
 			</a-col>
 			<a-col :span="9">
 				<a-input v-model:value="infoVO.businessHours" allow-clear />
@@ -160,36 +160,92 @@
 			</a-col>
 		</a-row>
 
-		<a-row v-if="isAdmin" class="rowStyle">
+		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
-				{{ $t('default.23') }}
+				{{ $t('default.252') }}
 			</a-col>
 			<a-col :span="9">
-				<a-select v-model:value="infoVO.countryId" @change="countryChange" class="selectBox" allowClear>
-					<a-select-option v-for="item in countryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
-				</a-select>
+				<a-input v-model:value="infoVO.budget" />
 			</a-col>
 			<a-col :span="3" class="labelText">
-				{{ $t('default.23') }}
+				{{ $t('default.253') }}
 			</a-col>
 			<a-col :span="9">
-				<a-select v-model:value="infoVO.areaId" class="selectBox" allowClear>
-					<a-select-option v-for="item in areaList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
-				</a-select>
+				<a-input v-model:value="infoVO.theme" />
 			</a-col>
 		</a-row>
-		<a-row v-if="isAdmin">
+		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
-				{{ $t('default.26') }}
+				{{ $t('default.250') }}
 			</a-col>
 			<a-col :span="9">
-				<a-select class="selectBox" show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
-					<a-select-option v-for="d in agentList" :key="d.id">
-						<div :title="d.name">{{ d.name }}</div>
-					</a-select-option>
-				</a-select>
+				<a-input v-model:value="infoVO.restDay" />
+			</a-col>
+			<a-col :span="3" class="labelText">
+				{{ $t('default.251') }}
+			</a-col>
+			<a-col :span="9">
+				<a-input v-model:value="infoVO.trafficInfo" />
 			</a-col>
 		</a-row>
+		<a-row class="rowStyle">
+			<a-col :span="3" class="labelText">
+				{{ $t('default.254') }}
+			</a-col>
+			<a-col :span="9">
+				<a-input v-model:value="infoVO.service" />
+			</a-col>
+			<a-col :span="3" class="labelText">
+				{{ $t('default.255') }}
+			</a-col>
+			<a-col :span="9">
+				<a-input v-model:value="infoVO.shopInfo" />
+			</a-col>
+		</a-row>
+		<a-row class="rowStyle">
+			<a-col :span="3" class="labelText">
+				{{ $t('default.256') }}
+			</a-col>
+			<a-col :span="9" class="radioStyle">
+				<a-radio-group name="radioGroup" v-model:value="infoVO.open">
+					<a-radio :value="1">{{ 'Yes' }}</a-radio>
+					<a-radio :value="0">{{ 'No' }}</a-radio>
+				</a-radio-group>
+			</a-col>
+		</a-row>
+
+		<div v-if="isAdmin">
+			<a-row class="rowStyle">
+				<a-col :span="3" class="labelText">
+					{{ $t('default.23') }}
+				</a-col>
+				<a-col :span="9">
+					<a-select v-model:value="infoVO.countryId" @change="countryChange" class="selectBox" allowClear>
+						<a-select-option v-for="item in countryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+					</a-select>
+				</a-col>
+				<a-col :span="3" class="labelText">
+					{{ $t('default.23') }}
+				</a-col>
+				<a-col :span="9">
+					<a-select v-model:value="infoVO.areaId" class="selectBox" allowClear>
+						<a-select-option v-for="item in areaList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+					</a-select>
+				</a-col>
+			</a-row>
+			<a-row>
+				<a-col :span="3" class="labelText">
+					{{ $t('default.26') }}
+				</a-col>
+				<a-col :span="9">
+					<a-select class="selectBox" show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
+						<a-select-option v-for="d in agentList" :key="d.id">
+							<div :title="d.name">{{ d.name }}</div>
+						</a-select-option>
+					</a-select>
+				</a-col>
+			</a-row>
+		</div>
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
 				{{ $t('default.85') }}
@@ -363,6 +419,13 @@ export default defineComponent({
 				averageCost: '',
 				memo: '',
 				shopRate: 0,
+				open:1,
+				budget:'',
+				restDay:'',
+				trafficInfo:'',
+				theme:'',
+				service:'',
+				shopInfo:'',
 				agentRate: '100%',
 				machineSetting: {}
 			},
@@ -571,8 +634,6 @@ export default defineComponent({
 					map.addControl(geolocation);
 					geolocation.getCurrentPosition();
 				});
-				// eslint-disable-next-line no-undef
-				auto = new AMap.Autocomplete({ input: 'placeName' });
 				const select = (ev) => {
 					const obj = ev.poi;
 					if (obj.location) {
@@ -591,6 +652,8 @@ export default defineComponent({
 						});
 					}
 				};
+				// eslint-disable-next-line no-undef
+				auto = new AMap.Autocomplete({ input: 'placeName' });
 				// eslint-disable-next-line no-undef
 				AMap.event.addListener(auto, 'select', select); //注册监听，当选中某条记录时会触发
 				map.on('click', function(e) {

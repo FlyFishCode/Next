@@ -89,7 +89,7 @@ export default {
 	'87': 'Rental',
 	'88': 'Sale',
 	'89': 'Connection time',
-	'90': 'Phone',
+	'90': 'TEL',
 	'91': 'Mailbox',
 	'92': 'URL',
 	'93': 'Picture',
