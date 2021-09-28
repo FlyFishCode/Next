@@ -144,6 +144,7 @@
 						list-type="picture-card"
 						v-model:file-list="fileList"
 						@preview="handlePreview"
+						:remove='handleImgRemove'
 					>
 						<div v-if="fileList.length < 1">
 							<plus-outlined />
@@ -289,7 +290,9 @@ export default defineComponent({
 					message.warning('请输入活动标题');
 					return false;
 				}
-				handleImgUrl(data);
+				if(data.imgType === 2){
+					handleImgUrl(data);
+				}
 				return matchAddHttp(data.infoVO)
 			},
       update: () => {
@@ -297,8 +300,13 @@ export default defineComponent({
 					message.warning('请输入活动标题');
 					return false;
 				}
-				handleImgUrl(data);
+				if(data.imgType === 2){
+					handleImgUrl(data);
+				}
 				return matchUpdateHttp(data.infoVO)
+			},
+			handleImgRemove:() =>{
+				data.infoVO.thumbnail = '';
 			},
 			handleRemove:(file: any) =>{
 				data.infoVO.picture = data.otherImgList.filter((i: any) => i.url !== file.url).map((i: any) => i.url).join(',');
