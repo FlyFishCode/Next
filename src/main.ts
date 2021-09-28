@@ -13,7 +13,8 @@ const i18n = createI18n({
 	messages: {
 		'zh-cn': require('@/i18n/zh-cn'),
 		'zh-ft': require('@/i18n/zh-ft'),
-		'en-us': require('@/i18n/en-us')
+		'en-us': require('@/i18n/en-us'),
+		'zh-jp': require('@/i18n/zh-jp')
 	}
 });
 

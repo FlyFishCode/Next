@@ -140,7 +140,8 @@ export default defineComponent({
 			languageList: [
 				{ key: 'zh-cn', label: '简体中文' },
 				{ key: 'zh-ft', label: '繁体中文' },
-				{ key: 'en-us', label: '英文' }
+				{ key: 'en-us', label: '英文' },
+				{ key: 'zh-jp', label: '日语' }
 			],
 			infoVisible: false,
 			passwordVisible: false,
