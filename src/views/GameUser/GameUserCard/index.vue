@@ -114,7 +114,7 @@
 				<template #type="{ record }">
 					<div v-if="record.type === 1">{{ 'home' }}</div>
 					<div v-if="record.type === 2">{{ 'business' }}</div>
-					<div v-if="record.type === 3">{{ 'league' }}</div>
+					<div v-if="record.type === 5">{{ 'league' }}</div>
 				</template>
 				<template #status="{ record }">
 					<div v-if="record.status === 1">{{ $t('default.174') }}</div>

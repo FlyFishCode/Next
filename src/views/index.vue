@@ -40,7 +40,7 @@
 						>
 					</template>
 					<a-menu-item key="GameUser">{{ $t('default.154') }}</a-menu-item>
-					<!-- <a-menu-item key="GameUserCard">{{ $t('default.172') }}</a-menu-item> -->
+					<a-menu-item key="GameUserCard">{{ $t('default.172') }}</a-menu-item>
 				</a-sub-menu>
 
 				<!-- <a-sub-menu key="sub5">
