@@ -26,7 +26,7 @@ export default defineComponent({
 							ctx.emit('afterHttp',res.data.data)
 						}
 					} else {
-						message.warning(res.data.data);
+						message.warning(res.data.msg);
 					}
 				});
 				} catch (error) {

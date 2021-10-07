@@ -51,7 +51,7 @@
 				<a-select
 					class="selectBox"
 					show-search
-					v-model:value="infoVO.mainCardNo"
+					v-model:value="infoVO.mainCardId"
 					:default-active-first-option="false"
 					:show-arrow="false"
 					:filter-option="false"
@@ -59,7 +59,7 @@
 					@search="UserCardSearch"
 					allowClear
 				>
-					<a-select-option v-for="card in cardList" :key="card.id">
+					<a-select-option v-for="card in cardList" :key="card.id" :value='card.id'>
 						<div :title="card.cardNo">{{ card.cardNo }}</div>
 					</a-select-option>
 				</a-select>
@@ -115,7 +115,7 @@
 				{{ $t('default.0') }}
 			</a-col>
 			<a-col :span="9">
-				<a-select class="selectBox" v-model:value="infoVO.Language">
+				<a-select class="selectBox" v-model:value="infoVO.language">
 					<a-select-option :value="1">{{ $t('default.165') }}</a-select-option>
 					<a-select-option :value="2">{{ $t('default.166') }}</a-select-option>
 					<a-select-option :value="3">{{ $t('default.167') }}</a-select-option>
@@ -155,7 +155,7 @@ export default defineComponent({
 				gender: '',
 				shopId: '',
 				password: '',
-				mainCardNo: '',
+				mainCardId: '',
 				birthday: '',
 				areaId: '',
 				countryId: '',
@@ -233,11 +233,11 @@ export default defineComponent({
 				});
 			},
 			UserCardSearch(value: any) {
-				if (value.length > 3) {
-					UserCardListHttp({ cardNo: value.split("'").join(''), pageSize: 99999 }).then((res) => {
+				// if (value.length > 3) {
+					UserCardListHttp({ cardNo: value.split("'").join(''), pageSize: 999 }).then((res) => {
 						data.cardList = res.data.data.list;
 					});
-				}
+				// }
 			},
 			countryChange: () => {
 				data.infoVO.areaId = '';
@@ -261,6 +261,7 @@ export default defineComponent({
 		const getPlayerInfo = (id: number) => {
 			GameUserInfoHttp({ memberId: id }).then((res: any) => {
 				data.infoVO = res.data.data;
+				data.UserCardSearch('');
 			});
 		};
 		const getCountryList = () => {

@@ -255,5 +255,4 @@ export default {
   '253': 'Theme',
   '254': 'Service',
   '255': 'Shop message',
-  '256': 'open',
 };

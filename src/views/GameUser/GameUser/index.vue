@@ -140,8 +140,8 @@
 				<template #cardList="{ record }">
 					<div class="tableRollBox">
 						<div v-for="card in record.cardList" :key="card.id">
-							{{ card.cardNo }}
-							<!-- <a-button type="link" size="small" @click="handleCardClick(record.id)">{{ card.cardNo }}</a-button> -->
+							<!-- {{ card.cardNo }} -->
+							<a-button type="link" size="small" @click="handleCardClick(record.id)">{{ card.cardNo }}</a-button>
 						</div>
 					</div>
 				</template>

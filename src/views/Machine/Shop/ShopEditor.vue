@@ -15,7 +15,7 @@
 				<a-input v-model:value="infoVO.type" allow-clear />
 			</a-col>
 		</a-row>
-		<a-row class="rowStyle">
+		<!-- <a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
 				{{ 'Attracts' }}
 			</a-col>
@@ -28,7 +28,7 @@
 			<a-col :span="9">
 				<a-input v-model:value="infoVO.averageCost" allow-clear />
 			</a-col>
-		</a-row>
+		</a-row> -->
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
 				{{ $t('default.17') }}
@@ -43,7 +43,7 @@
 				<a-input v-model:value="infoVO.phone" allow-clear />
 			</a-col>
 		</a-row>
-		<a-row class="rowStyle">
+		<!-- <a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
 				{{ 'Fax' }}
 			</a-col>
@@ -56,7 +56,7 @@
 			<a-col :span="9">
 				<a-input v-model:value="infoVO.email" allow-clear />
 			</a-col>
-		</a-row>
+		</a-row> -->
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
 				{{ $t('default.92') }}
@@ -72,20 +72,29 @@
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
-			<a-col :span="3" class="labelText">
-				{{ $t('default.93') }}
-			</a-col>
-			<a-col :span="7">
-				<a-input v-model:value="infoVO.img" allow-clear />
-			</a-col>
-			<a-col :span="2" class="searchButton">
-				<a-button size="small" type="primary" @click="preview">{{ $t('default.16') }}</a-button>
-			</a-col>
-			<a-col :span="3" class="labelText">
+			<!-- <a-col :span="3" class="labelText">
 				{{ 'Supplier' }}
 			</a-col>
 			<a-col :span="9" class="radioStyle">
 				<a-radio-group name="radioGroup" v-model:value="infoVO.supplier">
+					<a-radio :value="1">{{ 'Yes' }}</a-radio>
+					<a-radio :value="0">{{ 'No' }}</a-radio>
+				</a-radio-group>
+			</a-col> -->
+			<a-col :span="3" class="labelText">
+				{{ 'open' }}
+			</a-col>
+			<a-col :span="9" class="radioStyle">
+				<a-radio-group name="radioGroup" v-model:value="infoVO.open">
+					<a-radio :value="1">{{ 'Yes' }}</a-radio>
+					<a-radio :value="0">{{ 'No' }}</a-radio>
+				</a-radio-group>
+			</a-col>
+			<a-col :span="3" class="labelText">
+				{{ 'Valid' }}
+			</a-col>
+			<a-col :span="9" class="radioStyle">
+				<a-radio-group name="radioGroup" v-model:value="infoVO.isValid">
 					<a-radio :value="1">{{ 'Yes' }}</a-radio>
 					<a-radio :value="0">{{ 'No' }}</a-radio>
 				</a-radio-group>
@@ -107,47 +116,6 @@
 			<a-col :span="2" class="labelText">
 				<a-button size="small" type="primary" @click="getPositionMap">{{ $t('default.96') }}</a-button>
 			</a-col>
-			<a-col :span="3" class="labelText">
-				{{ 'Valid' }}
-			</a-col>
-			<a-col :span="9" class="radioStyle">
-				<a-radio-group name="radioGroup" v-model:value="infoVO.isValid">
-					<a-radio :value="1">{{ 'Yes' }}</a-radio>
-					<a-radio :value="0">{{ 'No' }}</a-radio>
-				</a-radio-group>
-			</a-col>
-		</a-row>
-		<a-row class="rowStyle">
-			<a-col :span="3" class="labelText">
-				{{ 'Room' }}
-			</a-col>
-			<a-col :span="9" class="radioStyle">
-				<a-radio-group name="radioGroup" v-model:value="infoVO.room">
-					<a-radio :value="1">{{ 'Yes' }}</a-radio>
-					<a-radio :value="0">{{ 'No' }}</a-radio>
-				</a-radio-group>
-			</a-col>
-			<a-col :span="3" class="labelText">
-				{{ 'Parking' }}
-			</a-col>
-			<a-col :span="9" class="radioStyle">
-				<a-radio-group name="radioGroup" v-model:value="infoVO.parking">
-					<a-radio :value="1">{{ 'Yes' }}</a-radio>
-					<a-radio :value="0">{{ 'No' }}</a-radio>
-				</a-radio-group>
-			</a-col>
-		</a-row>
-		<a-row class="rowStyle">
-			<a-col :span="3" class="labelText">
-				{{ 'Credit' }}
-			</a-col>
-			<a-col :span="9" class="radioStyle">
-				<a-radio-group name="radioGroup" v-model:value="infoVO.credit">
-					<a-radio :value="1">{{ 'Yes' }}</a-radio>
-					<a-radio :value="0">{{ 'No' }}</a-radio>
-				</a-radio-group>
-			</a-col>
-
 			<a-col :span="3" class="labelText">{{ $t('default.129') }}</a-col>
 			<a-col :span="3">
 				<a-select class="selectBox" v-model:value="infoVO.shopRate" @change="shopRatioChange">
@@ -159,7 +127,6 @@
 				<a-input v-model:value="infoVO.agentRate" :disabled="true" />
 			</a-col>
 		</a-row>
-
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
 				{{ $t('default.252') }}
@@ -202,18 +169,6 @@
 				<a-input v-model:value="infoVO.shopInfo" />
 			</a-col>
 		</a-row>
-		<a-row class="rowStyle">
-			<a-col :span="3" class="labelText">
-				{{ $t('default.256') }}
-			</a-col>
-			<a-col :span="9" class="radioStyle">
-				<a-radio-group name="radioGroup" v-model:value="infoVO.open">
-					<a-radio :value="1">{{ 'Yes' }}</a-radio>
-					<a-radio :value="0">{{ 'No' }}</a-radio>
-				</a-radio-group>
-			</a-col>
-		</a-row>
-
 		<div v-if="isAdmin">
 			<a-row class="rowStyle">
 				<a-col :span="3" class="labelText">
@@ -233,19 +188,37 @@
 					</a-select>
 				</a-col>
 			</a-row>
-			<a-row>
-				<a-col :span="3" class="labelText">
-					{{ $t('default.26') }}
-				</a-col>
-				<a-col :span="9">
-					<a-select class="selectBox" show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
-						<a-select-option v-for="d in agentList" :key="d.id">
-							<div :title="d.name">{{ d.name }}</div>
-						</a-select-option>
-					</a-select>
-				</a-col>
-			</a-row>
 		</div>
+		<a-row>
+			<a-col :span="3" class="labelText">
+				{{ $t('default.256') }}
+			</a-col>
+			<a-col :span="9">
+				<div class="clearfix">
+					<a-upload
+						:customRequest='handlePlayerImgRequest'
+						list-type="picture-card"
+						v-model:file-list="shopImgList"
+						:remove='handleRemove'
+						>
+						<div v-if="shopImgList.length < 1">
+							<plus-outlined />
+							<div class="ant-upload-text">Upload</div>
+						</div>
+					</a-upload>
+				</div>
+			</a-col>
+			<a-col :span="3" class="labelText">
+				{{ $t('default.26') }}
+			</a-col>
+			<a-col :span="9">
+				<a-select class="selectBox" show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
+					<a-select-option v-for="d in agentList" :key="d.id">
+						<div :title="d.name">{{ d.name }}</div>
+					</a-select-option>
+				</a-select>
+			</a-col>
+		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
 				{{ $t('default.85') }}
@@ -326,7 +299,6 @@
 	<div class="paginationStyle">
 		<a-pagination show-quick-jumper v-model:current="currentPage" :total="total" @change="pageChange" />
 	</div>
-	<showUrlDialog :visible="urlBox" :src="infoVO.img" @showBoxCancel="showBoxCancel" />
 	<a-modal v-model:visible="mapDialog" centered title="Map" width="50%">
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">{{ $t('default.5') }}</a-col>
@@ -369,9 +341,9 @@
 <script>
 import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import showUrlDialog from '@/components/common/showUrlDialog.vue';
 import { useRoute } from 'vue-router';
-import { shopSingleInfoHttp, agentListHttp, countryListHttp, areaListHttp, editShopHttp, createShopHttp, shopMachineListHttp, setMachineSettingHttp, getMachineInfoHttp } from '@/api/api';
+import { PlusOutlined } from '@ant-design/icons-vue';
+import { shopSingleInfoHttp, agentListHttp, countryListHttp, areaListHttp, editShopHttp, createShopHttp, shopMachineListHttp, setMachineSettingHttp, getMachineInfoHttp,newsImgUploadHttp } from '@/api/api';
 import { message } from 'ant-design-vue';
 import MachineOptions from '@/components/common/MachineOptions.vue';
 import { i18n } from '@/components/common/tools';
@@ -380,7 +352,7 @@ export default defineComponent({
 	name: 'ShopEditor',
 	components: {
 		labelTitle,
-		showUrlDialog,
+		PlusOutlined,
 		MachineOptions
 	},
 	setup() {
@@ -392,7 +364,6 @@ export default defineComponent({
 		const data = reactive({
 			map: false,
 			mapDialog: false,
-			urlBox: false,
 			MachineSettingDialog: false,
 			infoVO: {
 				id: id,
@@ -401,22 +372,14 @@ export default defineComponent({
 				agentId: '',
 				countryId: '',
 				areaId: '',
-				attracts: '',
 				address: '',
 				phone: '',
-				fax: '',
-				email: '',
 				website: '',
 				img: '',
 				businessHours: '',
 				longitude: '',
 				latitude: '',
-				room: 1,
-				parking: 1,
-				credit: 1,
-				supplier: 1,
 				isValid: 1,
-				averageCost: '',
 				memo: '',
 				shopRate: 0,
 				open:1,
@@ -446,6 +409,7 @@ export default defineComponent({
 				latitude: ''
 			},
 			mapName: '',
+			shopImgList:[],
 			countryList: [{ id:'',name:'' }],
 			areaList: [{ id:'',name:'' }],
 			agentList: [{ id:'',name:'' }],
@@ -501,6 +465,18 @@ export default defineComponent({
 				{ id: 90, label: '90%' },
 				{ id: 100, label: '100%' }
 			],
+			handlePlayerImgRequest:({file}) =>{
+        const formData = new FormData();
+				formData.append("image", file);
+				newsImgUploadHttp(formData).then((res) =>{
+					if(res.data.code === 100){
+						data.shopImgList = [{uid:file.lastModified + new Date().getTime(), url:res.data.data}];
+					}
+				})
+      },
+			handleRemove:() =>{
+				data.infoVO.img = '';
+			},
 			shopRatioChange: () => {
 				data.infoVO.agentRate = `${100 - data.infoVO.shopRate}%`;
 			},
@@ -516,13 +492,6 @@ export default defineComponent({
 				}
 				return new Date(data.machineVO.minLastOnlineTime).valueOf() >= endValue.valueOf();
 			},
-			preview: () => {
-				if (data.infoVO.img) {
-					data.urlBox = true;
-				} else {
-					message.warning('请添加广告链接');
-				}
-			},
 			handleCancel: () => {
 				data.mapDialog = false;
 			},
@@ -530,9 +499,6 @@ export default defineComponent({
 				data.infoVO.longitude = data.mapInfoObj.longitude;
 				data.infoVO.latitude = data.mapInfoObj.latitude;
 				data.mapDialog = false;
-			},
-			showBoxCancel: (value) => {
-				data.urlBox = value;
 			},
 			getPositionMap: () => {
 				data.mapDialog = true;
@@ -560,10 +526,12 @@ export default defineComponent({
 				});
 			},
 			create: () => {
+				data.infoVO.img = data.shopImgList[0].url;
 				data.infoVO.agentRate = data.infoVO.agentRate.split('%')[0]
 				return createShopHttp(data.infoVO);
 			},
 			update: () => {
+				data.infoVO.img = data.shopImgList[0].url;
 				data.infoVO.agentRate = data.infoVO.agentRate.split('%')[0]
 				return editShopHttp(data.infoVO);
 			},
@@ -665,6 +633,7 @@ export default defineComponent({
 		const setInfoData = (response) => {
 			data.infoVO = response;
 			data.infoVO.agentRate = `${response.agentRate}%`;
+			data.shopImgList = [{uid:new Date().getTime(), url:response.img}];
 			// data.infoVO.name = response.name;
 			// data.infoVO.type = response.type;
 			// data.infoVO.shopRate = response.shopRate;
