@@ -145,7 +145,7 @@ export default defineComponent({
 	},
 	setup() {
 		const ROUTER = useRouter();
-		const RoleType: any = sessionStorage.getItem('NextRoleType');
+		const RoleType: any = sessionStorage.getItem('NextUserType');
 		const data: DataProps = reactive({
 			logoImg: require('@/assets/logo.png'),
 			rootSubmenuKeys: ['sub1', 'sub2', 'sub3'],

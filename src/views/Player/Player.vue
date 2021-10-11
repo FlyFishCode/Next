@@ -82,7 +82,7 @@ export default defineComponent({
 	setup() {
 		const ROUTER = useRouter();
 		// const STORE = useStore();
-		const RoleType: any = sessionStorage.getItem('NextRoleType');
+		const RoleType: any = sessionStorage.getItem('NextUserType');
 		let selectList: number[] = [];
 		const data = reactive({
 			visible: false,

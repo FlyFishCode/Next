@@ -204,7 +204,7 @@ export default defineComponent({
 	setup() {
 		const formRef: any = ref(null);
 		const dialogFormRef: any = ref(null);
-		const RoleType: any = sessionStorage.getItem('NextRoleType');
+		const RoleType: any = sessionStorage.getItem('NextUserType');
 		const checkResetDialogPassword = async (rule: any, value: any) => {
 			// eslint-disable-next-line @typescript-eslint/no-use-before-define
 			if (data.resetDialogObj.password !== value) {

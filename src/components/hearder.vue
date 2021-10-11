@@ -191,12 +191,12 @@ export default defineComponent({
 				sessionStorage.removeItem('NextToken');
 				sessionStorage.removeItem('NextUserId');
 				sessionStorage.removeItem('NextNickname');
-				sessionStorage.removeItem('NextRoleType');
+				sessionStorage.removeItem('NextUserType');
 				ROUTER.push('/');
 			}
 		});
 		onMounted(() =>{
-			STORE.commit('setRole', sessionStorage.getItem('NextRoleType'));
+			STORE.commit('setRole', sessionStorage.getItem('NextUserType'));
 		})
 		return {
 			...toRefs(data),

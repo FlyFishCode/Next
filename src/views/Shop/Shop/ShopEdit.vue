@@ -153,7 +153,7 @@ export default defineComponent({
 	},
 	setup() {
     const ROUTE = useRoute();
-		// const RoleType: any = sessionStorage.getItem('NextRoleType');
+		// const RoleType: any = sessionStorage.getItem('NextUserType');
 		const imgList = ['jpg','png','jpeg'];
 		const videoList = ['mp4'];
 		const audioList = ['mp3','ogg','mpeg'];

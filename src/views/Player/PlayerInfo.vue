@@ -237,7 +237,7 @@ export default defineComponent({
 	},
 	setup() {
     const ROUTE = useRoute();
-		const RoleType: any = sessionStorage.getItem('NextRoleType');
+		const RoleType: any = sessionStorage.getItem('NextUserType');
 		let selectList: number[] = [];
 		const getBase64 = (file: File) => {
 			return new Promise((resolve, reject) => {

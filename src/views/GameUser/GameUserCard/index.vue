@@ -161,7 +161,7 @@
 					<a-form-item :label="$t('default.139')">
 						<a-select v-model:value="createUserCardObj.status" class="selectBox" allowClear>
 							<a-select-option :value="1">{{ $t('default.174') }}</a-select-option>
-							<a-select-option :value="0">{{ $t('default.175') }}</a-select-option>
+							<a-select-option :value="2">{{ $t('default.175') }}</a-select-option>
 						</a-select>
 					</a-form-item>
 					<a-form-item v-if="!userCardId" label="Secret Key" name="secretKey">
@@ -191,6 +191,17 @@ import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { i18n, uploadObj } from '@/components/common/tools';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
+
+interface ObjProp {
+	id?: string | number;
+	cardNo?: string | number;
+	memberId: string | number;
+	type: string | number;
+	status: string | number;
+	secretKey?: string | number;
+}
+
+
 export default defineComponent({
 	name: 'SettlementInfo',
 	components: {
@@ -343,14 +354,6 @@ export default defineComponent({
 				data.createUserCardObj.secretKey = '';
 			},
 			handleOk: () => {
-				interface ObjProp {
-					id?: string | number;
-					cardNo?: string | number;
-					memberId: string | number;
-					type: string | number;
-					status: string | number;
-					secretKey?: string | number;
-				}
 				let flag: any = null;
 				const obj: ObjProp = {
 					id: '',

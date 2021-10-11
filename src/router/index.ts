@@ -343,7 +343,7 @@ const router = createRouter({
 });
 
 router.beforeEach((guard: any) => {
-	const roleType = sessionStorage.getItem('NextRoleType');
+	const roleType = sessionStorage.getItem('NextUserType');
 	if (!roleType && guard.name !== 'login') {
 		message.error('身份验证失效，请重新登录!');
 		if (guard.path !== '/') {
