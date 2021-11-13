@@ -157,6 +157,50 @@ const routes = [
 				component: () => import(/* webpackChunkName: "HistoryLog" */ '../views/System/HistoryLog/index.vue'),
 				meta: [{ label: 'default.184', path: 'HistoryLog' }]
 			},
+			// 邮件
+			{
+				path: '/Email',
+				name: 'Email',
+				component: () => import(/* webpackChunkName: "Email" */ '../views/System/Email/index.vue'),
+				meta: [
+					{ label: 'default.257', path: 'Email' },
+				]
+			},
+			{
+				path: '/EmailEdit',
+				name: 'EmailEdit',
+				component: () => import(/* webpackChunkName: "EmailEdit" */ '../views/System/Email/EmailEdit.vue'),
+				meta: [
+					{ label: 'default.257', path: 'Email' },
+					{ label: 'default.258', path: 'EmailEdit' },
+				]
+			},
+			// 版本
+			{
+				path: '/Version',
+				name: 'Version',
+				component: () => import(/* webpackChunkName: "Version" */ '../views/System/Version/index.vue'),
+				meta: [
+					{ label: 'default.259', path: 'Version' },
+				]
+			},
+			{
+				path: '/VersionEdit',
+				name: 'VersionEdit',
+				component: () => import(/* webpackChunkName: "VersionEdit" */ '../views/System/Version/VersionEdit.vue'),
+				meta: [
+					{ label: 'default.259', path: 'Version' },
+					{ label: 'default.260', path: 'VersionEdit' },
+				]
+			},
+			{
+				path: '/Setting',
+				name: 'Setting',
+				component: () => import(/* webpackChunkName: "Setting" */ '../views/System/Setting.vue'),
+				meta: [
+					{ label: 'default.27', path: 'Setting' },
+				]
+			},
 			// 玩家
 			{
 				path: '/GameUser',

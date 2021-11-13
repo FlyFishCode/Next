@@ -103,6 +103,9 @@
 						>
 					</template>
 					<a-menu-item key="User">{{ $t('default.147') }}</a-menu-item>
+					<a-menu-item key="Email">{{ $t('default.257') }}</a-menu-item>
+					<a-menu-item key="Version">{{ $t('default.259') }}</a-menu-item>
+					<a-menu-item key="Setting">{{ $t('default.27') }}</a-menu-item>
 					<!-- <a-menu-item key="HistoryLog">{{ $t('default.184') }}</a-menu-item> -->
 				</a-sub-menu>
 			</a-menu>

@@ -29,7 +29,26 @@ import { agentList } from '@/api/Agent/index';
 import { settlementList, settlementInfo, machineSettlementList, final, rechargeRecord } from '@/api/Settlement/index';
 
 // System
-import { systemUserList, addUser, searchUser, modifyUser, HistoryLogList, HistoryLogDelete, deleteUser, resetUserPassword } from '@/api/System/index';
+import {
+	systemUserList,
+	addUser,
+	searchUser,
+	modifyUser,
+	HistoryLogList,
+	HistoryLogDelete,
+	deleteUser,
+	resetUserPassword,
+	EmailList,
+	EmailDelete,
+	EmailInfo,
+	EmailAdd,
+	EmailUpdate,
+	VersionList,
+  VersionAdd,
+  VersionDelete,
+  VersionUpdate,
+  VersionInfo,
+} from '@/api/System/index';
 
 // GameUser
 import { GameUserList, GameUserInfo, GameUserCreate, GameUserUpdate, GameUserDelete, GameUserRestorePassword } from '@/api/GameUser/index';
@@ -279,6 +298,46 @@ const HistoryLogListHttp = (data: any) => {
 const HistoryLogDeleteHttp = (data: any) => {
 	return Axios.post(HistoryLogDelete, data);
 };
+// 邮件列表
+const EmailListHttp = (data: any) =>{
+	return Axios.post(EmailList, data);
+}
+// 邮件删除
+const EmailDeleteHttp = (data: any) =>{
+	return Axios.post(EmailDelete, data);
+}
+// 邮件详情
+const EmailInfoHttp = (data: any) =>{
+	return Axios.get(getNewUrl(EmailInfo, data));
+}
+// 邮件添加
+const EmailAddHttp = (data: any) =>{
+	return Axios.post(EmailAdd, data);
+}
+// 邮件修改
+const EmailUpdateHttp = (data: any) =>{
+	return Axios.post(EmailUpdate, data);
+}
+// 版本列表
+const VersionListHttp = (data: any) =>{
+	return Axios.post(VersionList, data);
+}
+// 添加版本
+const VersionAddHttp = (data: any) =>{
+	return Axios.post(VersionAdd, data);
+}
+// 版本删除
+const VersionDeleteHttp = (data: any) =>{
+	return Axios.post(VersionDelete, data);
+}
+// 版本修改
+const VersionUpdateHttp = (data: any) =>{
+	return Axios.post(VersionUpdate, data);
+}
+// 版本详情
+const VersionInfoHttp = (data: any) =>{
+	return Axios.get(getNewUrl(VersionInfo, data));
+}
 
 // GameUser
 // 玩家列表
@@ -537,6 +596,16 @@ export {
 	HistoryLogDeleteHttp,
 	deleteUserHttp,
 	resetUserPasswordHttp,
+	EmailListHttp,
+	EmailDeleteHttp,
+	EmailInfoHttp,
+	EmailAddHttp,
+	EmailUpdateHttp,
+	VersionListHttp,
+	VersionAddHttp,
+	VersionDeleteHttp,
+	VersionUpdateHttp,
+	VersionInfoHttp,
 	newsListHttp,
 	newsInfoHttp,
 	newsImgUploadHttp,
