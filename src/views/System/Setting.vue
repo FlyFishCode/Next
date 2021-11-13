@@ -69,7 +69,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-// import { SettingInfoHttp, SettingUpdateHttp  } from '@/api/api';
+import { SettingInfoHttp, SettingUpdateHttp  } from '@/api/api';
 import { useRoute } from 'vue-router';
 // import Axios from 'axios';
 export default defineComponent({
@@ -93,13 +93,13 @@ export default defineComponent({
         username: ""
 			},
 			update: () => {
-				// return SettingUpdateHttp(data.infoVO);
+				return SettingUpdateHttp(data.infoVO);
 			}
 		});
 		const getInfo = () => {
-			// SettingInfoHttp().then((res: any) => {
-			// 	data.infoVO = res.data.data;
-			// });
+			SettingInfoHttp().then((res: any) => {
+				data.infoVO = res.data.data;
+			});
 		};
 		const init = () => {
 			getInfo()

@@ -48,6 +48,8 @@ import {
   VersionDelete,
   VersionUpdate,
   VersionInfo,
+	SettingInfo,
+  SettingUpdate
 } from '@/api/System/index';
 
 // GameUser
@@ -338,6 +340,14 @@ const VersionUpdateHttp = (data: any) =>{
 const VersionInfoHttp = (data: any) =>{
 	return Axios.get(getNewUrl(VersionInfo, data));
 }
+// 设置详情
+const SettingInfoHttp = () =>{
+	return Axios.get(getNewUrl(SettingInfo));
+}
+// 设置更新
+const SettingUpdateHttp = (data: any) =>{
+	return Axios.post(SettingUpdate, data);
+}
 
 // GameUser
 // 玩家列表
@@ -606,6 +616,8 @@ export {
 	VersionDeleteHttp,
 	VersionUpdateHttp,
 	VersionInfoHttp,
+	SettingInfoHttp,
+	SettingUpdateHttp,
 	newsListHttp,
 	newsInfoHttp,
 	newsImgUploadHttp,

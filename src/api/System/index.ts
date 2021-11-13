@@ -37,6 +37,12 @@ const VersionDelete = 'version/delete';
 const VersionUpdate = 'version/update';
 // 版本详情
 const VersionInfo = 'version/select';
+
+// 设置详情
+const SettingInfo = 'setting/select';
+// 设置修改
+const SettingUpdate = 'setting/update';
+
 export {
   systemUserList,
   addUser,
@@ -56,4 +62,6 @@ export {
   VersionDelete,
   VersionUpdate,
   VersionInfo,
+  SettingInfo,
+  SettingUpdate
 };
