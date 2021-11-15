@@ -53,15 +53,26 @@
 					<a-menu-item key="Area">{{ $t('default.23') }}</a-menu-item>
 				</a-sub-menu> -->
 
-				<a-sub-menu key="sub6">
+				<!-- <a-sub-menu key="sub5">
 					<template #title>
 						<span
-							><ProfileOutlined /><span>{{ $t('default.193') }}</span></span
+							><EnvironmentOutlined /><span>{{ $t('default.23') }}</span></span
 						>
 					</template>
-					<a-menu-item key="News">{{ $t('default.193') }}</a-menu-item>
-					<a-menu-item key="NewsCarousel">{{ $t('default.194') }}</a-menu-item>
+					<a-menu-item key="Country">{{ $t('default.23') }}</a-menu-item>
+					<a-menu-item key="Area">{{ $t('default.23') }}</a-menu-item>
+				</a-sub-menu> -->
+
+				<a-sub-menu key="sub11">
+					<template #title>
+						<span
+							><CreditCardOutlined /><span>{{ $t('default.137') }}</span></span
+						>
+					</template>
+					<a-menu-item key="CreditCard">{{ $t('default.137') }}</a-menu-item>
+					<!-- <a-menu-item key="NewsCarousel">{{ $t('default.194') }}</a-menu-item> -->
 				</a-sub-menu>
+
 				<a-sub-menu key="sub7">
 					<template #title>
 						<span
@@ -118,7 +129,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue';
-import { ProfileOutlined,TeamOutlined,PushpinOutlined,SettingOutlined,UserOutlined,ShopOutlined,ScheduleOutlined,AppstoreOutlined } from '@ant-design/icons-vue';
+import { TeamOutlined,PushpinOutlined,SettingOutlined,UserOutlined,ShopOutlined,ScheduleOutlined,AppstoreOutlined,CreditCardOutlined } from '@ant-design/icons-vue';
 import hearder from '@/components/hearder.vue';
 import { useRouter } from 'vue-router';
 
@@ -136,12 +147,12 @@ export default defineComponent({
 		// MailOutlined,
 		AppstoreOutlined,
 		SettingOutlined,
-		// CreditCardOutlined,
+		CreditCardOutlined,
 		// EnvironmentOutlined,
 		ScheduleOutlined,
 		ShopOutlined,
 		UserOutlined,
-		ProfileOutlined,
+		// ProfileOutlined,
 		PushpinOutlined,
 		TeamOutlined,
 		hearder

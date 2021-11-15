@@ -1,70 +1,76 @@
 <template>
-	<labelTitle :value="'Credit Card'" />
+	<labelTitle :value="$t('default.137')" />
 	<div class="searchBox">
 		<a-row class="rowStyle">
-			<a-col :span="2" class="labelText">
+			<a-col :span="2" class="labelText" >
 				{{ 'ID' }}
 			</a-col>
-			<a-col :span="3">
-				<a-input v-model:value="infoVO.id" />
+			<a-col :span="4">
+				<a-input v-model:value="infoVO.id" allow-clear/>
 			</a-col>
 			<a-col :span="2" class="labelText">
 				{{ 'Card No' }}
 			</a-col>
-			<a-col :span="3">
-				<a-input v-model:value="infoVO.label" />
+			<a-col :span="4">
+				<a-input v-model:value="infoVO.cardNo" allow-clear/>
 			</a-col>
 			<a-col :span="2" class="labelText">
 				{{ 'Member' }}
 			</a-col>
-			<a-col :span="3">
-				<a-select class="selectBox" show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
-					<a-select-option v-for="d in agentList" :key="d.id">
-						<div :title="d.name">{{ d.name }}</div>
-					</a-select-option>
-				</a-select>
-			</a-col>
-			<a-col :span="2" class="labelText">
-				{{ 'All Points' }}
-			</a-col>
-			<a-col :span="3">
-				<a-select class="selectBox" show-search v-model:value="infoVO.ownerId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="ownerSearch">
-					<a-select-option v-for="d in ownerList" :key="d.id">
+			<a-col :span="4">
+				<a-select class="selectBox" show-search v-model:value="infoVO.memberId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="memberSearch">
+					<a-select-option v-for="d in memberList" :key="d.id">
 						<div :title="d.username">{{ d.username }}</div>
 					</a-select-option>
 				</a-select>
 			</a-col>
+			<a-col :span="2" class="labelText">
+				{{ 'Secret Key' }}
+			</a-col>
+			<a-col :span="4">
+				<a-input v-model:value="infoVO.secretKey" allow-clear />
+			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
+				{{ 'All Points' }}
+			</a-col>
+			<a-col :span="2">
+				<a-input v-model:value="infoVO.minAllPoints" allow-clear/>
+			</a-col>
+			<a-col :span="2">
+				<a-input v-model:value="infoVO.maxAllPoints" allow-clear/>
+			</a-col>
+			<a-col :span="2" class="labelText">
 				{{ 'Points' }}
 			</a-col>
-			<a-col :span="3">
-				<a-select v-model:value="infoVO.countryId" @change="countryChange" class="selectBox" allowClear>
-					<a-select-option v-for="item in countryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
-				</a-select>
+			<a-col :span="2">
+				<a-input v-model:value="infoVO.minPoints" allow-clear/>
+			</a-col>
+			<a-col :span="2">
+				<a-input v-model:value="infoVO.maxPoints" allow-clear/>
 			</a-col>
 			<a-col :span="2" class="labelText">
 				{{ 'Status' }}
 			</a-col>
-			<a-col :span="3">
-				<a-select v-model:value="infoVO.areaId" class="selectBox" allowClear>
-					<a-select-option v-for="item in areaList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+			<a-col :span="4">
+				<a-select class="selectBox" v-model:value="infoVO.status" allow-clear>
+					<a-select-option :value="1">{{ 'Normal' }}</a-select-option>
+					<a-select-option :value="2">{{ 'Losted' }}</a-select-option>
 				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
 				{{ 'Type' }}
 			</a-col>
-			<a-col :span="3">
-				<a-input v-model:value="infoVO.type" />
+			<a-col :span="4">
+				<a-select class="selectBox" v-model:value="infoVO.type" allow-clear>
+					<a-select-option :value="1">{{ 'Normal' }}</a-select-option>
+					<a-select-option :value="2">{{ 'Losted' }}</a-select-option>
+				</a-select>
 			</a-col>
-			<!-- <a-col :span="2" class="labelText">
-				{{ 'Attracts' }}
-			</a-col>
-			<a-col :span="3">
-				<a-input v-model:value="infoVO.url" />
-			</a-col> -->
-			<a-col :span="3" class="labelText">
+		</a-row>
+		<a-row class="rowStyle" justify='center'>
+			<a-col :span="2" class="labelText">
 				<a-button type="primary" size="small" @click="search">{{ '搜索' }}</a-button>
 			</a-col>
 		</a-row>
@@ -74,46 +80,55 @@
 			<a-button type="danger" size="small" @click="handleDelete">{{ '删除' }}</a-button>
 		</a-col>
 		<a-col :span="1">
-			<a-button type="primary" size="small" @click="handleChange">{{ '修改' }}</a-button>
-		</a-col>
-		<a-col :span="1">
 			<a-button type="primary" size="small" @click="handleCreate">{{ '创建' }}</a-button>
 		</a-col>
 		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
-			<template #name="{ record }">
-				<a-button type="link" @click="handleShopClick(record.id)">{{ record.name }}</a-button>
+			<template #cardNo="{ record }">
+				<a-button type="link" @click="handleShopClick(record.id)">{{ record.cardNo }}</a-button>
 			</template>
+			<template #status="{ record }">{{ record.status === 1 ? 'Normal' :' Losted' }}</template>
+			<template #type="{ record }">{{ record.status === 1 ? 'Normal' :' Work' }}</template>
 		</a-table>
 	</a-row>
 	<div class="paginationStyle">
 		<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" @change="pageChange" />
 	</div>
+	<DeleteDialog :visible="visible" @afterClose="afterClose" @handleOk="handleDeleteOk" />
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-import { shopListHttp, countryListHttp, areaListHttp, agentListHttp, userListHttp } from '@/api/api';
+import { GameUserListHttp, CreditListHttp, CreditDeleteHttp  } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
 import { useRouter } from 'vue-router';
 import { handleSelectEvent } from '@/components/common/tools';
+import { message } from 'ant-design-vue';
+import DeleteDialog from '@/components/common/DeleteDialog.vue';
 export default defineComponent({
 	name: 'Credit Card',
 	components: {
-		labelTitle
+		labelTitle,
+		DeleteDialog
 	},
 	setup() {
 		const ROUTER = useRouter();
 		let selectList: number[] = [];
 		const data = reactive({
+			visible:false,
 			infoVO: {
-				id: '',
-				label: '',
-				agentId: '',
-				countryId: '',
-				areaId: '',
-				ownerId: '',
-				type: '',
-				time: '',
+				id:'',
+				cardNo:'',
+				password:'',
+				allPoints:'',
+				points:'',
+				status:'',
+				type:'',
+				memberId:'',
+				secretKey:'',
+				minPoints:'',
+				maxPoints:'',
+				minAllPoints:'',
+				maxAllPoints:'',
 				pageIndex: 1,
 				pageSize: 10
 			},
@@ -126,40 +141,30 @@ export default defineComponent({
 				},
 				{
 					title: 'Card No',
-					dataIndex: 'name',
-					key: 'Card No',
-					slots: { customRender: 'name' }
+					slots: { customRender: 'cardNo' }
 				},
 				{
 					title: 'Member',
-					dataIndex: 'Member',
-					key: 'Member'
+					dataIndex: 'memberName',
 				},
 				{
 					title: 'All Points',
-					dataIndex: 'ownerName',
-					key: 'All Points'
+					dataIndex: 'allPoints',
 				},
 				{
 					title: 'Points',
-					dataIndex: 'Points',
-					key: 'Points'
+					dataIndex: 'points',
 				},
 				{
 					title: 'Status',
-					dataIndex: 'areaName',
-					key: 'Status'
+					slots: { customRender: 'status' }
 				},
 				{
 					title: 'Type',
-					dataIndex: 'type',
-					key: 'Type'
+					slots: { customRender: 'type' }
 				}
 			],
-			countryList: [],
-			areaList: [],
-			agentList: [],
-			ownerList: [],
+			memberList: [],
 			tableList: [{ id: 1 }],
 			rowSelection: {
 				columnWidth: 50,
@@ -168,73 +173,49 @@ export default defineComponent({
 					selectList = selectedRows.map((i: any) => i.id);
 				}
 			},
-			shopList: [],
-			countryChange: () => {
-				data.infoVO.areaId = '';
-				// eslint-disable-next-line @typescript-eslint/no-use-before-define
-				getAreaList();
-			},
-			timeChange: () => {
-				console.log(2);
-			},
-			agentSearch: (value: any) => {
-				agentListHttp({ agentName: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
-					data.agentList = res.data.data;
-				});
-			},
-			ownerSearch: (value: any) => {
-				userListHttp({ username: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
-					data.ownerList = res.data.data.list;
-				});
+			memberSearch: (value: any) => {
+				GameUserListHttp({ username: value.split("'").join(''), pageSize: 999 }).then((res) => {
+						data.memberList = res.data.data.list;
+					});
 			},
 			search: () => {
-				shopListHttp(data.infoVO).then((res: any) => {
+				CreditListHttp(data.infoVO).then((res: any) => {
 					data.tableList = res.data.data.list;
 					data.total = res.data.data.totalCount;
 				});
 			},
 			handleDelete: () => {
 				if (handleSelectEvent(selectList, 'id')) {
-					console.log('1111111');
+					data.visible = true;
 				}
 			},
-			handleChange: () => {
-				console.log('handleChange');
+			afterClose: (value: boolean) => {
+				data.visible = value;
+			},
+			handleDeleteOk: () => {
+				CreditDeleteHttp(selectList).then(res =>{
+					if(res.data.code === 100){
+						message.info(res.data.msg);
+						data.search();
+					}
+				})
+				data.visible = false;
 			},
 			handleCreate: () => {
-				ROUTER.push({
-					path: 'entryShopPage',
-					query: {
-						isCreatePage: 1
-					}
-				});
+				ROUTER.push('/CreditCardEdit');
 			},
 			pageChange: () => {
 				data.search();
 			},
 			handleShopClick: (id: number) => {
 				ROUTER.push({
-					path: 'ShopEditor',
-					query: {
-						id
-					}
+					path: 'CreditCardEdit',
+					query: { id }
 				});
 			}
 		});
-		const getCountryList = () => {
-			countryListHttp({pageSize:999}).then((res: any) => {
-				data.countryList = res.data.data.list;
-			});
-		};
-		const getAreaList = () => {
-			areaListHttp({ countryId: data.infoVO.countryId }).then((res: any) => {
-				data.areaList = res.data.data.list;
-			});
-		};
 		const init = () => {
 			data.search();
-			getCountryList();
-			getAreaList();
 		};
 		onMounted(() => {
 			init();

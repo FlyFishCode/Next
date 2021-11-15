@@ -114,7 +114,17 @@ const routes = [
 			{
 				path: '/CreditCard',
 				name: 'CreditCard',
-				component: () => import(/* webpackChunkName: "CreditCard" */ '../views/Credit/CreditCard/index.vue')
+				component: () => import(/* webpackChunkName: "CreditCard" */ '../views/Credit/CreditCard/index.vue'),
+				meta: [{ label: 'default.137', path: 'CreditCard' }]
+			},
+			{
+				path: '/CreditCardEdit',
+				name: 'CreditCardEdit',
+				component: () => import(/* webpackChunkName: "CreditCardEdit" */ '../views/Credit/CreditCard/CreditCardEdit.vue'),
+				meta: [
+					{ label: 'default.137', path: 'CreditCard' },
+					{ label: 'default.261', path: 'CreditCardEdit' }
+				]
 			},
 			{
 				path: '/MachineOrder',

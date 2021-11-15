@@ -76,6 +76,9 @@ import { shopPropsList,shopPropsAdd,shopPropsUpdate,shopPropsInfo,shopPropsDelet
 // Match
 import { matchList,matchAdd,matchInfo,matchUpdate,matchDelete } from '@/api/Match/index';
 
+// Credit
+import { CreditList, CreditAdd, CreditDelete, CreditUpdate, CreditInfo } from '@/api/Credit/index';
+
 const baseURL = '/apr';
 const Axios = axios.create({
 	baseURL: baseURL,
@@ -543,6 +546,29 @@ const matchDeleteHttp = (data: any) =>{
 	return Axios.post(matchDelete, data);
 }
 
+// 点卡列表
+const CreditListHttp = (data: any) =>{
+	return Axios.post(CreditList, data);
+}
+// 点卡添加
+const CreditAddHttp = (data: any) =>{
+	return Axios.post(CreditAdd, data);
+}
+// 点卡删除
+const CreditDeleteHttp = (data: any) =>{
+	return Axios.post(CreditDelete, data);
+}
+// 点卡详情
+const CreditUpdateHttp = (data: any) =>{
+	return Axios.post(CreditUpdate, data);
+}
+// 点卡详情
+const CreditInfoHttp = (data: any) =>{
+	return Axios.get(getNewUrl(CreditInfo, data));
+}
+
+
+
 export {
 	loginHttp,
 	changePasswordHttp,
@@ -647,5 +673,10 @@ export {
 	matchAddHttp,
 	matchInfoHttp,
 	matchUpdateHttp,
-	matchDeleteHttp
+	matchDeleteHttp,
+	CreditListHttp,
+	CreditAddHttp,
+	CreditDeleteHttp,
+	CreditUpdateHttp,
+	CreditInfoHttp
 };
