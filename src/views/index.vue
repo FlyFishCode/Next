@@ -4,15 +4,15 @@
 		<a-col :span="4">
 			<a-menu mode="inline" theme="dark" :openKeys="openKeys" v-model:selectedKeys="selectedKeys" style="width:100%;height:100%" @click="handleClick" @openChange="onOpenChange">
 
-				<!-- <a-sub-menu key="sub1">
+				<a-sub-menu key="sub1">
 					<template #title>
 						<span
 							><MailOutlined /><span>{{ $t('default.1') }}</span></span
 						>
 					</template>
-					<a-menu-item key="Bulletin">Bulletin</a-menu-item>
-					<a-menu-item key="Advert">{{ $t('default.11') }}</a-menu-item>
-				</a-sub-menu> -->
+					<a-menu-item key="Bulletin">{{ $t('default.1') }}</a-menu-item>
+					<!-- <a-menu-item key="Advert">{{ $t('default.11') }}</a-menu-item> -->
+				</a-sub-menu>
 				<a-sub-menu key="sub2">
 					<template #title>
 						<span
@@ -129,7 +129,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue';
-import { TeamOutlined,PushpinOutlined,SettingOutlined,UserOutlined,ShopOutlined,ScheduleOutlined,AppstoreOutlined,CreditCardOutlined } from '@ant-design/icons-vue';
+import { TeamOutlined,PushpinOutlined,SettingOutlined,UserOutlined,ShopOutlined,ScheduleOutlined,AppstoreOutlined,CreditCardOutlined, MailOutlined } from '@ant-design/icons-vue';
 import hearder from '@/components/hearder.vue';
 import { useRouter } from 'vue-router';
 
@@ -144,7 +144,7 @@ interface DataProps {
 export default defineComponent({
 	name: 'index',
 	components: {
-		// MailOutlined,
+		MailOutlined,
 		AppstoreOutlined,
 		SettingOutlined,
 		CreditCardOutlined,

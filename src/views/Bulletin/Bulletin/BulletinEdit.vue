@@ -1,68 +1,91 @@
 <template>
-	<labelTitle :value="$t('default.223')" :btn="ROUTE.query.id || infoVO.id  ? update : create" @afterHttp='afterHttp'/>
+	<labelTitle :value="$t('default.258')" :btn="ROUTE.query.id || infoVO.id  ? update : create" @afterHttp='afterHttp'/>
 	<div class="searchBox">
+    <a-row class="rowStyle">
+      <a-col :span="2" class="labelText">
+				{{ 'Title' }}
+			</a-col>
+			<a-col :span="22">
+				<a-input v-model:value="infoVO.title" allowClear />
+			</a-col>
+    </a-row>
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
-				{{ $t('default.23') }}
+				{{ $t('default.262') }}
 			</a-col>
 			<a-col :span="4">
-				<a-select v-model:value="infoVO.countryId" class="selectBox" allowClear>
+				<a-select v-model:value="infoVO.countryId" class="selectBox" @change="countryChange" allowClear>
 					<a-select-option v-for="item in countryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
 				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ $t('default.201') }}
-			</a-col>
-			<a-col :span="10">
-				<a-input v-model:value="infoVO.title" allowClear />
-			</a-col>
-			<a-col :span="2" class="labelText">
-				{{ $t('default.203') }}
+				{{ $t('default.263') }}
 			</a-col>
 			<a-col :span="4">
-				<a-select v-model:value="infoVO.display" class="selectBox">
-					<a-select-option :value="1">{{ $t('default.204') }}</a-select-option>
-					<a-select-option :value="0">{{ $t('default.205') }}</a-select-option>
+				<a-select v-model:value="infoVO.areaId" class="selectBox" allowClear>
+					<a-select-option v-for="item in areaList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
 				</a-select>
 			</a-col>
-		</a-row>
-		<a-row class="rowStyle">
-			<a-col :span="2" class="labelText">
-				{{ $t('default.93') }}
+      <a-col :span="2" class="labelText">
+				{{ $t('default.264') }}
 			</a-col>
-			<a-col :span="2" class="searchButton">
+			<a-col :span="4">
+				<a-select v-model:value="infoVO.isPublish" class="selectBox">
+          <a-select-option v-for="item in publishList" :key="item.id" :value="item.id">{{ $t(item.label) }}</a-select-option>
+				</a-select>
+			</a-col>
+      <a-col :span="2" class="labelText">
+				{{ $t('default.265') }}
+			</a-col>
+			<a-col :span="4" class="datePicker">
+				<a-date-picker v-model:value="infoVO.publishDate"  valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
+			</a-col>
+		</a-row>
+    <a-row>
+      <a-col :span="2" class="labelText">
+				{{ $t('default.194') }}
+			</a-col>
+      <a-col :span="4" class="searchButton">
 				<div class="clearfix">
 					<a-upload
-						:customRequest='handleImgRequest'
-						list-type="picture-card"
-						v-model:file-list="fileList"
-						@preview="handlePreview"
-					>
-						<div v-if="fileList.length < 1">
-							<plus-outlined />
-							<div class="ant-upload-text">Upload</div>
-						</div>
+					:customRequest='handleImgRequest'
+					list-type="picture-card"
+					v-model:file-list="fileList"
+					@preview="handlePreview"
+					:remove='handleRemove'
+				>
+					<div v-if="fileList.length < 1">
+						<plus-outlined />
+						<div class="ant-upload-text">Upload</div>
+					</div>
 					</a-upload>
-					<a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
-						<img alt="example" style="width: 100%" :src="previewImage" />
+					<a-modal :visible="previewVisible" :footer="null" centered @cancel="handleCancel">
+						<img alt="example" style="width: 100%" :src="previewUrl" />
 					</a-modal>
 				</div>
 			</a-col>
-			<!-- <a-col :span="4">{{ '图片长宽比例为：2.4:1' }}</a-col> -->
-		</a-row>
+      <a-col :span="2" class="labelText">
+				{{ 'Url' }}
+			</a-col>
+			<a-col :span="4">
+				<a-input v-model:value="infoVO.url" allowClear />
+			</a-col>
+    </a-row>
 		<a-row class="rowStyle">
-			<div id="editorElem"></div>
+			<a-col :span="2" class="labelText">
+				{{ 'Announce' }}
+			</a-col>
+			<a-col :span="22">
+				<div id="editorElem"></div>
+			</a-col>
 		</a-row>
-		<!-- 广告链接的预览 -->
-	<!-- <showUrlDialog :visible="showUrlDialog" :src="infoVO.thumbnail" @showBoxCancel="showBoxCancel" /> -->
 	</div>
 </template>
 
 <script lang="ts">
-import { defineComponent, nextTick, onMounted, reactive, toRefs,onUnmounted } from 'vue';
-import { countryListHttp, dartsEditHttp, dartsInfoHttp, newsImgUploadHttp } from '@/api/api';
+import { defineComponent, onMounted, reactive, toRefs, nextTick } from 'vue';
+import { countryListHttp, areaListHttp, BulletinInfoHttp, BulletinAddHttp, BulletinUpdateHttp, newsImgUploadHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
-// import showUrlDialog from '@/components/common/showUrlDialog.vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { useRoute } from 'vue-router';
 import { message } from 'ant-design-vue';
@@ -71,103 +94,106 @@ import E from 'wangeditor';
 
 
 export default defineComponent({
-	name: 'CarouselEdit',
+	name: 'BulletinEdit',
 	components: {
-		// showUrlDialog,
-		PlusOutlined,
 		labelTitle,
+    PlusOutlined
 	},
-	emits:['afterHttp'],
 	setup() {
     const ROUTE = useRoute();
-		const getBase64 = (file: File) => {
-			return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-      })
-		}
-		let editor = {} as any;
+    let editor = {} as any;
 		const data = reactive({
-			visible: false,
-			showUrlDialog: false,
-			previewVisible:false,
-			previewImage:"",
+      previewUrl:"",
+      previewVisible:false,
+      countryList:[],
+			areaList:[],
+      fileList:[],
 			infoVO: {
 				id:'',
-				title:'',
-				thumbnail:"",
-				contents:'',
-				countryId: '',
-				display:1,
+        url:'',
+				title: "",
+        isPublish:1,
+        countryId: '',
+				areaId:'',
+        banner:"",
+        publishDate:"",
+				announce: "",
 			},
-			fileList:[],
-      countryList: [{id:'',name:''}],
-			showBoxCancel: (value: boolean) => {
-				data.showUrlDialog = value;
+      publishList:[
+				{ id: 1, label: 'default.170' },
+				{ id: 0, label: 'default.171' },
+      ],
+      countryChange: () => {
+				data.infoVO.areaId = '';
+				// eslint-disable-next-line @typescript-eslint/no-use-before-define
+				getAreaList();
 			},
-			handlePreview:(file: any) =>{
-				if (!file.url && !file.preview) {
-        file.preview = getBase64(file.originFileObj);
-      }
-      data.previewImage = file.url || file.preview;
-      data.previewVisible = true;
+      handleImgRequest:({file}: any) =>{
+				const formData = new FormData();
+				formData.append("image", file);
+				newsImgUploadHttp(formData).then((res: any) =>{
+					// 设置默认预览图
+					// thumbUrl: 'http://adartstest.adarts-cn.com/leagueimage/4318780786a6.jpg'
+					const obj = { uid: file.lastModified + new Date().getTime(), url: res.data.data } as never;
+					data.fileList.push(obj);
+          data.fileList = data.fileList.filter((i: any) => i.url);
+          data.infoVO.banner = res.data.data;
+				})
+			},
+      handlePreview:(file: any) =>{
+				data.previewUrl = file.url;
+				data.previewVisible = true;
+			},
+      handleRemove:() =>{
+        data.fileList = []
+				data.infoVO.banner = '';
 			},
 			handleCancel:() =>{
 				data.previewVisible = false
 			},
 			create: () => {
 				if(!data.infoVO.title){
-					message.warning('请输入新闻标题');
+					message.warning('请输入标题');
 					return false;
 				}
-				return dartsEditHttp(data.infoVO)
+				return BulletinAddHttp(data.infoVO)
 			},
       update: () => {
 				if(!data.infoVO.title){
-					message.warning('请输入新闻标题');
+					message.warning('请输入标题');
 					return false;
 				}
-				return dartsEditHttp(data.infoVO)
+				return BulletinUpdateHttp(data.infoVO)
 			},
 			afterHttp:(id: string) =>{
 				data.infoVO.id = id
 			},
       getInfo:(id: any) =>{
-        dartsInfoHttp({id}).then((res: any) =>{
-					const response = res.data.data
-					data.infoVO.id = response.id
-					data.infoVO.title = response.title
-					data.infoVO.display = response.display
-					data.infoVO.contents = response.contents
-					data.infoVO.countryId = response.countryId
-					data.fileList = [{ uid: '1', url: response.thumbnail }] as any;
-					// eslint-disable-next-line @typescript-eslint/no-use-before-define
+        BulletinInfoHttp({ bulletinId: id }).then((res: any) =>{
+					data.infoVO = res.data.data;
+					data.fileList.push({ uid: new Date().getTime(), url: res.data.data.banner } as never)
+          // eslint-disable-next-line @typescript-eslint/no-use-before-define
 					getEditor(true)
 				})
       },
-			handleImgRequest:({file}: any) =>{
-				const formData = new FormData();
-				formData.append("image", file);
-				newsImgUploadHttp(formData).then((res: any) =>{
-					data.infoVO.thumbnail = res.data.data
-					data.fileList = [{ uid: '1', url: res.data.data }] as any;
-				})
-			},
 		});
-		const getCountryList = () => {
-			countryListHttp({pageSize:999}).then((res: any) => {
+    const getCountryList = () => {
+			countryListHttp({ pageSize: 999 }).then((res: any) => {
 				data.countryList = res.data.data.list;
 			});
 		};
-		const getEditor = (flag: boolean) =>{
+		const getAreaList = () => {
+			areaListHttp({ countryId: data.infoVO.countryId }).then((res: any) => {
+				data.areaList = res.data.data.list;
+			});
+		};
+    const getEditor = (flag: boolean) =>{
 			editor = new E("#editorElem");
 			nextTick(() => {
         editor.config.onchange = (html: any) => {
-          data.infoVO.contents = html;
+          data.infoVO.announce = html;
         };
-        editor.config.height = 300;
+        editor.config.height = 200;
         editor.config.menus = [
           "head", // 标题
           "bold", // 粗体
@@ -228,25 +254,22 @@ export default defineComponent({
         };
         editor.create();
         if (flag) {
-          editor.txt.html(data.infoVO.contents);
+          editor.txt.html(data.infoVO.announce);
         }
       });
 		}
 		const init = () => {
-			getCountryList();
-		};
-		onMounted(() => {
-			init();
+      getCountryList();
+      getAreaList();
 			if(ROUTE.query.id){
 				data.getInfo(ROUTE.query.id);
 			}else{
 				getEditor(false);
 			}
+		};
+		onMounted(() => {
+			init();
 		});
-		onUnmounted(() =>{
-			editor.destroy()
-			editor = null;
-		})
 		return {
 			...toRefs(data),
       ROUTE

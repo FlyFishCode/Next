@@ -185,7 +185,7 @@ export default defineComponent({
 				});
 			},
 			handleDelete: () => {
-				if (handleSelectEvent(selectList, 'id')) {
+				if (handleSelectEvent(selectList, 'id').length) {
 					data.visible = true;
 				}
 			},

@@ -70,6 +70,15 @@ const routes = [
 				component: () => import(/* webpackChunkName: "Bulletin" */ '../views/Bulletin/Bulletin/index.vue')
 			},
 			{
+				path: '/BulletinEdit',
+				name: 'BulletinEdit',
+				component: () => import(/* webpackChunkName: "BulletinEdit" */ '../views/Bulletin/Bulletin/BulletinEdit.vue'),
+				meta: [
+					{ label: 'default.1', path: 'Bulletin' },
+					{ label: 'default.266', path: 'BulletinEdit' }
+				]
+			},
+			{
 				path: '/MachineEditor',
 				name: 'MachineEditor',
 				component: () => import(/* webpackChunkName: "MachineEditor" */ '../views/Machine/Machine/MachineEditor.vue'),

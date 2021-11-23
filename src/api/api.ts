@@ -2,8 +2,24 @@ import axios from 'axios';
 import { message } from 'ant-design-vue';
 
 import { loginUrl, changePassword, userList, countryList, areaList, changeInfo } from '@/api/index';
+
 // Advert
-import { AdvertTableList, AdvertTableAdd, AdvertSearch, AdvertChange, AdvertList, MachineInfo, deleteAdvertShop, deleteAdvert, MachineList } from '@/api/Advert/index';
+import {
+	AdvertTableList,
+	AdvertTableAdd,
+	AdvertSearch,
+	AdvertChange,
+	AdvertList,
+	MachineInfo,
+	deleteAdvertShop,
+	deleteAdvert,
+	MachineList,
+	BulletinList,
+	BulletinAdd,
+  BulletinDelete,
+  BulletinUpdate,
+  BulletinInfo
+} from '@/api/Bulletin/index';
 
 // Machine
 import {
@@ -195,6 +211,28 @@ const MachineInfoHttp = (data: any) => {
 const MachineListHttp = (data: any) => {
 	return Axios.post(MachineList, data);
 };
+
+// 公告列表
+const BulletinListHttp = (data: any) => {
+	return Axios.post(BulletinList, data);
+};
+// 公告创建
+const BulletinAddHttp = (data: any) => {
+	return Axios.post(BulletinAdd, data);
+};
+// 公告删除
+const BulletinDeleteHttp = (data: any) => {
+	return Axios.post(BulletinDelete, data);
+};
+// 公告修改
+const BulletinUpdateHttp = (data: any) => {
+	return Axios.post(BulletinUpdate, data);
+};
+// 公告查询
+const BulletinInfoHttp = (data: any) => {
+	return Axios.get(getNewUrl(BulletinInfo, data));
+};
+
 // Machine
 // 店铺列表
 const shopListHttp = (data: any) => {
@@ -678,5 +716,10 @@ export {
 	CreditAddHttp,
 	CreditDeleteHttp,
 	CreditUpdateHttp,
-	CreditInfoHttp
+	CreditInfoHttp,
+	BulletinListHttp,
+	BulletinAddHttp,
+	BulletinDeleteHttp,
+	BulletinUpdateHttp,
+	BulletinInfoHttp
 };
