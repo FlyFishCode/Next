@@ -138,14 +138,20 @@ export default defineComponent({
 			moduleList: [
 				{ id: 1, label: i18n('default.98') },
 				{ id: 2, label: i18n('default.147') },
-				{ id: 3, label: i18n('default.23') },
-				{ id: 4, label: i18n('default.23') },
+				{ id: 3, label: i18n('default.262') },
+				{ id: 4, label: i18n('default.263') },
 				{ id: 5, label: i18n('default.2') },
 				{ id: 6, label: i18n('default.3') },
 				{ id: 7, label: i18n('default.11') },
 				{ id: 8, label: i18n('default.154') },
 				{ id: 9, label: i18n('default.172') },
-				{ id: 10, label: i18n('default.212') }
+				{ id: 10, label: i18n('default.212') },
+				{ id: 11, label: i18n('default.267') },
+				{ id: 12, label: i18n('default.1') },
+				{ id: 13, label: i18n('default.137') },
+				{ id: 14, label: i18n('default.257') },
+				{ id: 15, label: i18n('default.259') },
+				{ id: 20, label: i18n('default.193') },
 			],
 			userList: [],
 			tableList: [],
@@ -191,8 +197,29 @@ export default defineComponent({
 					case 8:
 						str = i18n('default.154');
 						break;
-					default:
+					case 9:
 						str = i18n('default.172');
+						break;
+					case 10:
+						str = i18n('default.212');
+						break;
+					case 11:
+						str = i18n('default.267');
+						break;
+					case 12:
+						str = i18n('default.1');
+						break;
+					case 13:
+						str = i18n('default.137');
+						break;
+					case 14:
+						str = i18n('default.257');
+						break;
+					case 15:
+						str = i18n('default.259');
+						break;
+					default:
+						str = i18n('default.193');
 						break;
 				}
 				return str;

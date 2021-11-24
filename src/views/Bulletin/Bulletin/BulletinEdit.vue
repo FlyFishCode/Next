@@ -73,10 +73,18 @@
     </a-row>
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
-				{{ 'Announce' }}
+				{{ 'Content' }}
 			</a-col>
 			<a-col :span="22">
 				<div id="editorElem"></div>
+			</a-col>
+		</a-row>
+    <a-row class="rowStyle">
+			<a-col :span="2" class="labelText">
+				{{ 'Announce' }}
+			</a-col>
+			<a-col :span="22">
+				<a-textarea v-model:value="infoVO.announce" :rows="4" allowClear/>
 			</a-col>
 		</a-row>
 	</div>
@@ -117,6 +125,7 @@ export default defineComponent({
 				areaId:'',
         banner:"",
         publishDate:"",
+        content:"",
 				announce: "",
 			},
       publishList:[
@@ -191,7 +200,7 @@ export default defineComponent({
 			editor = new E("#editorElem");
 			nextTick(() => {
         editor.config.onchange = (html: any) => {
-          data.infoVO.announce = html;
+          data.infoVO.content = html;
         };
         editor.config.height = 200;
         editor.config.menus = [
@@ -254,7 +263,7 @@ export default defineComponent({
         };
         editor.create();
         if (flag) {
-          editor.txt.html(data.infoVO.announce);
+          editor.txt.html(data.infoVO.content);
         }
       });
 		}

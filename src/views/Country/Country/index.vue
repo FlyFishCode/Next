@@ -1,5 +1,5 @@
 <template>
-	<labelTitle :value="$t('default.23')" />
+	<labelTitle :value="$t('default.262')" />
 	<div class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">

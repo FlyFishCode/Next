@@ -70,7 +70,7 @@
 		</a-col>
 		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
 			<template #img="{ record }">
-				<div class="imgBox"><img :src="record.url" alt=""></div>
+				<div class="imgBox"><img :src="record.banner" alt=""></div>
 			</template>
 			<template #name="{ record }">
 				<a-button type="link" @click="handleTitleClick(record.id)">{{ record.title }}</a-button>
@@ -79,7 +79,7 @@
 				<div>{{ record.isPublish ? $t('default.170') : $t('default.171') }}</div>
 			</template>
 			<template #announce="{ record }">
-				<div class="AnnounceBox">{{ record.announce }}</div>
+				<div class="AnnounceBox" :title="record.announce">{{ record.announce }}</div>
 			</template>
 		</a-table>
 	</a-row>

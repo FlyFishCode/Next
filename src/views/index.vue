@@ -11,7 +11,7 @@
 						>
 					</template>
 					<a-menu-item key="Bulletin">{{ $t('default.1') }}</a-menu-item>
-					<!-- <a-menu-item key="Advert">{{ $t('default.11') }}</a-menu-item> -->
+					<a-menu-item key="Advert">{{ $t('default.11') }}</a-menu-item>
 				</a-sub-menu>
 				<a-sub-menu key="sub2">
 					<template #title>
@@ -20,8 +20,9 @@
 						>
 					</template>
 					<a-menu-item key="Shop">{{ $t('default.2') }}</a-menu-item>
-					<!-- <a-menu-item key="Machine">{{ $t('default.3') }}</a-menu-item> -->
+					<a-menu-item key="Machine">{{ $t('default.3') }}</a-menu-item>
 				</a-sub-menu>
+
 				<!-- <a-sub-menu key="sub3">
 					<template #title>
 						<span
@@ -43,25 +44,15 @@
 					<a-menu-item key="GameUserCard">{{ $t('default.172') }}</a-menu-item>
 				</a-sub-menu>
 
-				<!-- <a-sub-menu key="sub5">
+				<a-sub-menu key="sub5">
 					<template #title>
 						<span
-							><EnvironmentOutlined /><span>{{ $t('default.23') }}</span></span
+							><EnvironmentOutlined /><span>{{ $t('default.262') }}</span></span
 						>
 					</template>
-					<a-menu-item key="Country">{{ $t('default.23') }}</a-menu-item>
-					<a-menu-item key="Area">{{ $t('default.23') }}</a-menu-item>
-				</a-sub-menu> -->
-
-				<!-- <a-sub-menu key="sub5">
-					<template #title>
-						<span
-							><EnvironmentOutlined /><span>{{ $t('default.23') }}</span></span
-						>
-					</template>
-					<a-menu-item key="Country">{{ $t('default.23') }}</a-menu-item>
-					<a-menu-item key="Area">{{ $t('default.23') }}</a-menu-item>
-				</a-sub-menu> -->
+					<a-menu-item key="Country">{{ $t('default.262') }}</a-menu-item>
+					<a-menu-item key="Area">{{ $t('default.263') }}</a-menu-item>
+				</a-sub-menu>
 
 				<a-sub-menu key="sub11">
 					<template #title>
@@ -70,7 +61,7 @@
 						>
 					</template>
 					<a-menu-item key="CreditCard">{{ $t('default.137') }}</a-menu-item>
-					<!-- <a-menu-item key="NewsCarousel">{{ $t('default.194') }}</a-menu-item> -->
+					<a-menu-item key="NewsCarousel">{{ $t('default.194') }}</a-menu-item>
 				</a-sub-menu>
 
 				<a-sub-menu key="sub7">
@@ -117,7 +108,7 @@
 					<a-menu-item key="Email">{{ $t('default.257') }}</a-menu-item>
 					<a-menu-item key="Version">{{ $t('default.259') }}</a-menu-item>
 					<a-menu-item key="Setting">{{ $t('default.27') }}</a-menu-item>
-					<!-- <a-menu-item key="HistoryLog">{{ $t('default.184') }}</a-menu-item> -->
+					<a-menu-item key="HistoryLog">{{ $t('default.184') }}</a-menu-item>
 				</a-sub-menu>
 			</a-menu>
 		</a-col>
@@ -129,7 +120,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue';
-import { TeamOutlined,PushpinOutlined,SettingOutlined,UserOutlined,ShopOutlined,ScheduleOutlined,AppstoreOutlined,CreditCardOutlined, MailOutlined } from '@ant-design/icons-vue';
+import { TeamOutlined,PushpinOutlined,SettingOutlined,UserOutlined,ShopOutlined,ScheduleOutlined,AppstoreOutlined,CreditCardOutlined, MailOutlined, EnvironmentOutlined } from '@ant-design/icons-vue';
 import hearder from '@/components/hearder.vue';
 import { useRouter } from 'vue-router';
 
@@ -148,7 +139,7 @@ export default defineComponent({
 		AppstoreOutlined,
 		SettingOutlined,
 		CreditCardOutlined,
-		// EnvironmentOutlined,
+		EnvironmentOutlined,
 		ScheduleOutlined,
 		ShopOutlined,
 		UserOutlined,
