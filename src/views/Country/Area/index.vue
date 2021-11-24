@@ -9,13 +9,7 @@
 				<a-input v-model:value="infoVO.id" allowClear />
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ $t('default.179') }}
-			</a-col>
-			<a-col :span="4">
-				<a-input v-model:value="infoVO.name" allowClear />
-			</a-col>
-			<a-col :span="2" class="labelText">
-				{{ $t('default.23') }}
+				{{ $t('default.262') }}
 			</a-col>
 			<a-col :span="4">
 				<a-select
@@ -26,13 +20,18 @@
 					:show-arrow="false"
 					:filter-option="false"
 					:not-found-content="null"
-					allowClear
 					@search="CountrySearch"
 				>
-					<a-select-option v-for="shop in shopList" :key="shop.id">
+					<a-select-option v-for="shop in countryList" :key="shop.id">
 						<div :title="shop.name">{{ shop.name }}</div>
 					</a-select-option>
 				</a-select>
+			</a-col>
+			<a-col :span="2" class="labelText">
+				{{ $t('default.263') }}
+			</a-col>
+			<a-col :span="4">
+				<a-input v-model:value="infoVO.name" allowClear />
 			</a-col>
 			<a-col :span="2" class="labelText">
 				{{ $t('default.180') }}
@@ -89,7 +88,7 @@
 						allowClear
 						@search="CountrySearch"
 					>
-						<a-select-option v-for="shop in shopList" :key="shop.id">
+						<a-select-option v-for="shop in countryList" :key="shop.id">
 							<div :title="shop.name">{{ shop.name }}</div>
 						</a-select-option>
 					</a-select>
@@ -202,12 +201,12 @@ export default defineComponent({
 					dataIndex: 'id'
 				},
 				{
-					title: i18n('default.179'),
-					slots: { customRender: 'name' }
+					title: i18n('default.262'),
+					slots: { customRender: 'country' }
 				},
 				{
-					title: i18n('default.23'),
-					slots: { customRender: 'country' }
+					title: i18n('default.263'),
+					slots: { customRender: 'name' }
 				},
 				{
 					title: i18n('default.180'),
@@ -215,7 +214,7 @@ export default defineComponent({
 				}
 			],
 			total: 1,
-			shopList: [],
+			countryList: [],
 			tableList: [],
 			search: () => {
 				AreaListHttp(data.infoVO).then((res: any) => {
@@ -228,7 +227,9 @@ export default defineComponent({
 			CountrySearch: (value: string) => {
 				countryListHttp({ name: value, pageSize: 9999 }).then((res: any) => {
 					if (res.data.data) {
-						data.shopList = res.data.data.list;
+						data.countryList = res.data.data.list;
+						data.infoVO.countryId = data.countryList[0]['id'];
+						data.search();
 					}
 				});
 			},
@@ -319,7 +320,6 @@ export default defineComponent({
 			}
 		});
 		const init = () => {
-			data.search();
 			data.CountrySearch('');
 		};
 		onMounted(() => {

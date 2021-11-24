@@ -9,21 +9,21 @@
 				<a-input v-model:value="infoVO.id" allowClear />
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ $t('default.179') }}
+				{{ $t('default.262') }}
 			</a-col>
-			<a-col :span="3">
+			<a-col :span="4">
 				<a-input v-model:value="infoVO.name" allowClear />
 			</a-col>
 			<a-col :span="2" class="labelText">
 				{{ $t('default.180') }}
 			</a-col>
-			<a-col :span="3">
+			<a-col :span="4">
 				<a-input v-model:value="infoVO.code" allowClear />
 			</a-col>
 			<a-col :span="2" class="labelText">
 				{{ $t('default.181') }}
 			</a-col>
-			<a-col :span="3">
+			<a-col :span="4">
 				<a-input v-model:value="infoVO.sort" allowClear />
 			</a-col>
 			<a-col :span="1" class="labelText">
@@ -117,7 +117,7 @@ export default defineComponent({
 					dataIndex: 'id'
 				},
 				{
-					title: i18n('default.179'),
+					title: i18n('default.262'),
 					slots: { customRender: 'name' }
 				},
 				{
