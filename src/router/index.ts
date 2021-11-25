@@ -20,14 +20,14 @@ const routes = [
 				path: '/Advert',
 				name: 'Advert',
 				component: () => import(/* webpackChunkName: "Advert" */ '../views/Bulletin/Advert/index.vue'),
-				meta: [{ label: 'default.1', path: 'Advert' }]
+				meta: [{ label: 'default.11', path: 'Advert' }]
 			},
 			{
 				path: '/ShopEditor',
 				name: 'ShopEditor',
 				component: () => import(/* webpackChunkName: "ShopEditor" */ '../views/Bulletin/Advert/Shop/ShopEditor.vue'),
 				meta: [
-					{ label: 'default.1', path: 'Advert' },
+					{ label: 'default.11', path: 'Advert' },
 					{ label: 'default.109', path: 'ShopEditor' }
 				]
 			},
@@ -36,7 +36,7 @@ const routes = [
 				name: 'ShopInfo',
 				component: () => import(/* webpackChunkName: "ShopInfo" */ '../views/Bulletin/Advert/Shop/ShopInfo.vue'),
 				meta: [
-					{ label: 'default.1', path: 'Advert' },
+					{ label: 'default.11', path: 'Advert' },
 					{ label: 'default.110', path: 'ShopInfo' }
 				]
 			},
@@ -67,7 +67,8 @@ const routes = [
 			{
 				path: '/Bulletin',
 				name: 'Bulletin',
-				component: () => import(/* webpackChunkName: "Bulletin" */ '../views/Bulletin/Bulletin/index.vue')
+				component: () => import(/* webpackChunkName: "Bulletin" */ '../views/Bulletin/Bulletin/index.vue'),
+				meta: [ { label: 'default.1', path: 'Bulletin' } ]
 			},
 			{
 				path: '/BulletinEdit',

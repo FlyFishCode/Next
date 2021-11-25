@@ -161,6 +161,10 @@ export default defineComponent({
 			},
 			columns: [
 				{
+					title: 'ID',
+					dataIndex: 'shopId'
+				},
+				{
 					title: i18n('default.5'),
 					dataIndex: 'shopName'
 				},
@@ -179,6 +183,10 @@ export default defineComponent({
 				}
 			],
 			shopDialogColumns: [
+				{
+					title: 'ID',
+					dataIndex: 'id'
+				},
 				{
 					title: i18n('default.5'),
 					dataIndex: 'name'
@@ -217,6 +225,12 @@ export default defineComponent({
 						shopAddress: i.address
 					};
 				});
+				for(let i = 0; i < obj.addShopIds.length; i ++){
+					const index = obj.delShopIds.findIndex((item: any) => item === obj.addShopIds[i])
+					if(index !== undefined){
+						obj.delShopIds.splice(index,1)
+					}
+				}
 				data.tableList = allSelectList;
 				if (id) {
 					obj.addShopIds = allSelectList.map((i: any) => i.shopId);
@@ -272,8 +286,10 @@ export default defineComponent({
 			AdvertSearchHttp(objVO).then((res: any) => {
 				if (res.data.data) {
 					data.infoVO = res.data.data;
-					data.tableList = res.data.data.advertConfigListPage.list;
-					defaultSelectList.value = data.tableList.map((i: any) => i.shopId);
+					if (res.data.data.advertConfigListPage) {
+						data.tableList = res.data.data.advertConfigListPage.list;
+						defaultSelectList.value = data.tableList.map((i: any) => i.shopId);
+					}
 				}
 			});
 		};

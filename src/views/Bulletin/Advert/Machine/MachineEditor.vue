@@ -171,6 +171,10 @@ export default defineComponent({
 			tableListTotal: 1,
 			columns: [
 				{
+					title: 'ID',
+					dataIndex: 'machineId'
+				},
+				{
 					title: i18n('default.5'),
 					dataIndex: 'shopName'
 				},
@@ -193,6 +197,10 @@ export default defineComponent({
 			],
 			shopDialogColumns: [
 				{
+					title: 'ID',
+					dataIndex: 'id'
+				},
+				{
 					title: i18n('default.5'),
 					dataIndex: 'shopName'
 				},
@@ -212,6 +220,31 @@ export default defineComponent({
 			machineList: [],
 			allMachineList: [],
 			tableList: [],
+			showBoxCancel: (value: boolean) => {
+				data.showUrlDialog = value;
+			},
+			handleCancel: () => {
+				data.showShopDialog = false;
+			},
+			preview: () => {
+				if (data.infoVO.url) {
+					data.showUrlDialog = true;
+				} else {
+					message.warning('请添加广告链接');
+				}
+			},
+			shopDelete: (row: any) => {
+				const index = data.tableList.findIndex((i: any) => i.machineId === row.machineId)
+				data.tableList.splice(index,1);
+				const selectId = defaultSelectList.value.findIndex((i: number) => i === row.machineId);
+				if (selectId !== undefined) {
+					defaultSelectList.value.splice(selectId, 1);
+					allSelectList.splice(selectId, 1);
+				}
+				if (id) {
+					obj.delMachineIds.push(row.machineId);
+				}
+			},
 			handleOk: () => {
 				allSelectList = [];
 				defaultSelectList.value.forEach((i: any) => {
@@ -229,37 +262,16 @@ export default defineComponent({
 						machineType: i.type
 					};
 				});
-				obj.addMachineIds = allSelectList.map((i: any) => i.id);
+				obj.addMachineIds = allSelectList.map((i: any) => i.machineId);
+				for(let i = 0; i < obj.addMachineIds.length; i ++){
+					const index = obj.delMachineIds.findIndex((item: any) => item === obj.addMachineIds[i])
+					if(index !== undefined){
+						obj.delMachineIds.splice(index,1)
+					}
+				}
 				data.tableList = allSelectList.slice(0, 10);
 				data.tableListTotal = allSelectList.length;
 				data.showShopDialog = false;
-			},
-			showBoxCancel: (value: boolean) => {
-				data.showUrlDialog = value;
-			},
-			handleCancel: () => {
-				data.showShopDialog = false;
-			},
-			preview: () => {
-				if (data.infoVO.url) {
-					data.showUrlDialog = true;
-				} else {
-					message.warning('请添加广告链接');
-				}
-			},
-			shopDelete: (row: any) => {
-				data.tableList.splice(
-					data.tableList.findIndex((i: any) => i.machineId === row.machineId),
-					1
-				);
-				const selectId = defaultSelectList.value.findIndex((i: number) => i === row.machineId);
-				if (selectId >= 0) {
-					defaultSelectList.value.splice(selectId, 1);
-					allSelectList.splice(selectId, 1);
-				}
-				if (id) {
-					obj.delMachineIds.push(row.id || row.machineId);
-				}
 			},
 			addShop: () => {
 				data.showShopDialog = true;
