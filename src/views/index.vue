@@ -4,7 +4,7 @@
 		<a-col :span="4">
 			<a-menu mode="inline" theme="dark" :openKeys="openKeys" v-model:selectedKeys="selectedKeys" style="width:100%;height:100%" @click="handleClick" @openChange="onOpenChange">
 
-				<a-sub-menu key="sub1">
+				<a-sub-menu v-if="RoleType == '1'" key="1">
 					<template #title>
 						<span
 							><MailOutlined /><span>{{ $t('default.1') }}</span></span
@@ -13,7 +13,7 @@
 					<a-menu-item key="Bulletin">{{ $t('default.1') }}</a-menu-item>
 					<a-menu-item key="Advert">{{ $t('default.11') }}</a-menu-item>
 				</a-sub-menu>
-				<a-sub-menu key="sub2">
+				<a-sub-menu key="2">
 					<template #title>
 						<span
 							><AppstoreOutlined /><span>{{ $t('default.3') }}</span></span
@@ -23,7 +23,7 @@
 					<a-menu-item key="Machine">{{ $t('default.3') }}</a-menu-item>
 				</a-sub-menu>
 
-				<!-- <a-sub-menu key="sub3">
+				<!-- <a-sub-menu key="3">
 					<template #title>
 						<span
 							><CreditCardOutlined /><span>{{ $t('default.116') }}</span></span
@@ -34,7 +34,7 @@
 					<a-menu-item key="RechargeRecord">{{ $t('default.143') }}</a-menu-item>
 				</a-sub-menu> -->
 
-				<a-sub-menu key="sub4">
+				<a-sub-menu v-if="RoleType == '1'" key="4">
 					<template #title>
 						<span
 							><UserOutlined /><span>{{ $t('default.154') }}</span></span
@@ -44,7 +44,7 @@
 					<a-menu-item key="GameUserCard">{{ $t('default.172') }}</a-menu-item>
 				</a-sub-menu>
 
-				<a-sub-menu key="sub5">
+				<a-sub-menu v-if="RoleType == '1'" key="5">
 					<template #title>
 						<span
 							><EnvironmentOutlined /><span>{{ $t('default.262') }}</span></span
@@ -54,7 +54,7 @@
 					<a-menu-item key="Area">{{ $t('default.263') }}</a-menu-item>
 				</a-sub-menu>
 
-				<a-sub-menu key="sub11">
+				<a-sub-menu v-if="RoleType == '1'" key="6">
 					<template #title>
 						<span
 							><CreditCardOutlined /><span>{{ $t('default.137') }}</span></span
@@ -64,7 +64,7 @@
 					<a-menu-item key="NewsCarousel">{{ $t('default.194') }}</a-menu-item>
 				</a-sub-menu>
 
-				<a-sub-menu key="sub7">
+				<a-sub-menu key="7">
 					<template #title>
 						<span
 							><TeamOutlined /><span>{{ $t('default.212') }}</span></span
@@ -72,7 +72,7 @@
 					</template>
 					<a-menu-item key="Player">{{ $t('default.212') }}</a-menu-item>
 				</a-sub-menu>
-				<a-sub-menu key="sub8">
+				<a-sub-menu key="8">
 					<template #title>
 						<span
 							><PushpinOutlined /><span>{{ $t('default.222') }}</span></span
@@ -81,7 +81,7 @@
 					<a-menu-item key="Darts">{{ $t('default.222') }}</a-menu-item>
 					<a-menu-item key="DartsCarousel">{{ $t('default.194') }}</a-menu-item>
 				</a-sub-menu>
-				<a-sub-menu key="sub9">
+				<a-sub-menu v-if="RoleType == '1'" key="9">
 					<template #title>
 						<span
 							><ShopOutlined /><span>{{ $t('default.224') }}</span></span
@@ -90,7 +90,7 @@
 					<a-menu-item key="PropShop">{{ $t('default.224') }}</a-menu-item>
 					<a-menu-item key="PropShopCarousel">{{ $t('default.194') }}</a-menu-item>
 				</a-sub-menu>
-				<a-sub-menu key="sub10">
+				<a-sub-menu key="10">
 					<template #title>
 						<span
 							><ScheduleOutlined /><span>{{ $t('default.197') }}</span></span
@@ -98,7 +98,7 @@
 					</template>
 					<a-menu-item key="Match">{{ $t('default.197') + '/' + $t('default.198') }}</a-menu-item>
 				</a-sub-menu>
-				<a-sub-menu v-if="RoleType == '1'" key="sub100">
+				<a-sub-menu v-if="RoleType == '1'" key="11">
 					<template #title>
 						<span
 							><SettingOutlined /><span>{{ $t('default.146') }}</span></span
@@ -151,6 +151,7 @@ export default defineComponent({
 	setup() {
 		const ROUTER = useRouter();
 		const RoleType: any = sessionStorage.getItem('NextUserType');
+		// 1：管理员
 		const data: DataProps = reactive({
 			logoImg: require('@/assets/logo.png'),
 			rootSubmenuKeys: ['sub1', 'sub2', 'sub3'],
@@ -161,7 +162,7 @@ export default defineComponent({
 			},
 			onOpenChange(openKeys: any) {
 				const latestOpenKey = openKeys.find((key: any) => !data.openKeys.includes(key));
-				if (!data.rootSubmenuKeys.includes(latestOpenKey)) {
+				if (data.rootSubmenuKeys.includes(latestOpenKey)) {
 					data.openKeys = openKeys;
 				} else {
 					data.openKeys = latestOpenKey ? [latestOpenKey] : [];

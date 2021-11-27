@@ -60,9 +60,9 @@
 		<a-col :span="1">
 			<a-button type="primary" size="small" @click="handleCreate">{{ $t('default.9') }}</a-button>
 		</a-col>
-		<a-col :span="1">
+		<!-- <a-col :span="1">
 			<a-button type="primary" size="small" @click="handleSetting">{{ $t('default.27') }}</a-button>
-		</a-col>
+		</a-col> -->
 		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
 			<template #name="{ record }">
 				<a-button type="link" @click="handleShopClick(record.id)">{{ record.name }}</a-button>

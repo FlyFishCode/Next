@@ -266,5 +266,6 @@ export default {
 	'264':'Publish?',
 	'265':'Release date',
 	'266':'Announcement edit',
-	'267':'Item',
+	'267':'Item'
 };
+

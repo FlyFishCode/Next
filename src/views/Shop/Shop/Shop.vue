@@ -67,6 +67,9 @@
 			<template #aaa="{ record }">
 				<a-button type="link" @click="handleNameClick(record.id)">{{ record.title }}</a-button>
 			</template>
+			<template #img="{ record }">
+				<div class="imgBox"><img :src="record.previewImg" alt=""></div>
+			</template>
 			<template #recommend="{ record }">
 				<div>{{ record.recommend === 1?$t('default.170'):$t('default.171') }}</div>
 			</template>
@@ -135,6 +138,11 @@ export default defineComponent({
 				{
 					title: i18n('default.149'),
 					slots: { customRender: 'type' }
+				},
+				{
+					title: i18n('default.268'),
+					width: 100,
+					slots: { customRender: 'img' }
 				},
 				{
 					title: i18n('default.179'),

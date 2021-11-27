@@ -346,7 +346,7 @@ const routes = [
 				name: 'PropShop',
 				component: () => import(/* webpackChunkName: "Shop" */ '../views/Shop/Shop/Shop.vue'),
 				meta: [
-					{ label: 'default.224', path: 'Shop' },
+					{ label: 'default.224', path: 'PropShop' },
 				]
 			},
 			{
@@ -354,7 +354,7 @@ const routes = [
 				name: 'PropShopEdit',
 				component: () => import(/* webpackChunkName: "ShopEdit" */ '../views/Shop/Shop/ShopEdit.vue'),
 				meta: [
-					{ label: 'default.224', path: 'Shop' },
+					{ label: 'default.224', path: 'PropShop' },
 					{ label: 'default.225', path: 'ShopEdit' },
 				]
 			},

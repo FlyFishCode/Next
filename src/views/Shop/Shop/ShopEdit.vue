@@ -58,7 +58,7 @@
 			<a-col :span="2" class="labelText">
 				{{ $t('default.230') }}
 			</a-col>
-			<a-col :span="6" class="searchButton">
+			<a-col :span="4" class="searchButton">
 				<div class="clearfix">
 					<a-upload
 					:customRequest='handleImgRequest'
@@ -89,6 +89,30 @@
 								<source :src="previewUrl" type="audio/ogg">
 								<source :src="previewUrl" type="audio/mpeg">
 							</audio>
+						</div>
+					</a-modal>
+				</div>
+			</a-col>
+			<a-col :span="2" class="labelText">
+				{{ $t('default.268') }}
+			</a-col>
+			<a-col :span="6" class="searchButton">
+				<div class="clearfix">
+					<a-upload
+					:customRequest='handlePreviewImgRequest'
+					list-type="picture-card"
+					v-model:file-list="filePreviewList"
+					@preview="handlePreviewImg"
+					:remove='handlePreviewRemove'
+				>
+					<div v-if="filePreviewList.length < 1">
+						<plus-outlined />
+						<div class="ant-upload-text">Upload</div>
+					</div>
+					</a-upload>
+					<a-modal :visible="visible" :footer="null" centered @cancel="handlePreviewCancel">
+						<div>
+							<img alt="example" style="width: 100%" :src="previewUrlImg" />
 						</div>
 					</a-modal>
 				</div>
@@ -162,8 +186,10 @@ export default defineComponent({
 			previewVisible:false,
 			previewType: 1,
 			fileList:[],
+			filePreviewList:[],
 			fileListLength:1,
 			previewUrl:"",
+			previewUrlImg:"",
 			defaultType:1,
 			defaultAward:'',
 			infoVO: {
@@ -175,6 +201,7 @@ export default defineComponent({
 				recommend:0,
 				priceType: 1,
 				url:'',
+				previewImg:""
 			},
       typeList: [
 				{ id: 1 , name: 'Style' },
@@ -260,6 +287,18 @@ export default defineComponent({
 					data.infoVO.url = data.fileList.map((i: any) => i.url).join(',');
 				})
 			},
+			handlePreviewImgRequest:({file}: any) =>{
+				const formData = new FormData();
+				formData.append("image", file);
+				newsImgUploadHttp(formData).then((res: any) =>{
+					// 设置默认预览图
+					// thumbUrl: 'http://adartstest.adarts-cn.com/leagueimage/4318780786a6.jpg'
+					const obj = { uid: file.lastModified + new Date().getTime(),type:file.type.split('/')[1], url: res.data.data } as never;
+					data.filePreviewList.push(obj);
+					data.filePreviewList = data.filePreviewList.filter((i: any) => i.url);
+					data.infoVO.previewImg = data.filePreviewList.map((i: any) => i.url).join(',');
+				})
+			},
 			handlePreview:(file: any) =>{
 				if(imgList.includes(file.type)){
 					data.previewType = 1
@@ -273,11 +312,21 @@ export default defineComponent({
 				data.previewUrl = file.url;
 				data.previewVisible = true;
 			},
+			handlePreviewImg:(file: any) =>{
+				data.previewUrlImg = file.url;
+				data.visible = true;
+			},
 			handleRemove:(file: any) =>{
 				data.infoVO.url = data.fileList.filter((i: any) => i.url !== file.url).map((i: any) => i.url).join(',');
 			},
+			handlePreviewRemove:(file: any) =>{
+				data.infoVO.previewImg = data.filePreviewList.filter((i: any) => i.url !== file.url).map((i: any) => i.url).join(',');
+			},
 			handleCancel:() =>{
 				data.previewVisible = false
+			},
+			handlePreviewCancel:() =>{
+				data.visible = false
 			},
 			create: () => {
 				if(data.defaultAward){
@@ -318,6 +367,9 @@ export default defineComponent({
 					}else{
 						data.fileList = [{ uid: new Date().getTime(),type:response.url.substr(-10).split('.')[1], url: response.url }] as any;
 					}
+					if(data.infoVO.previewImg){
+						data.filePreviewList.push({ uid: new Date().getTime(), url: data.infoVO.previewImg } as never)
+					}
 					if(response.type < 7){
 						data.defaultType = response.type;
 					}else{
@@ -357,10 +409,7 @@ export default defineComponent({
 					}
 					}
 				})
-      },
-			afterClose: (value: boolean) => {
-				data.visible = value;
-			}
+      }
 		})
 		onMounted(() => {
 			if(ROUTE.query.id){

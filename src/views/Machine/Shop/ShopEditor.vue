@@ -228,8 +228,8 @@
 			</a-col>
 		</a-row>
 	</div>
-	<labelTitle :value="$t('default.3')" />
-	<div class="searchBox">
+	<labelTitle v-if="id" :value="$t('default.3')" />
+	<div v-if="id" class="searchBox">
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
 				{{ 'ID' }}
@@ -284,7 +284,7 @@
 			</a-col>
 		</a-row>
 	</div>
-	<a-row class="rowStyle">
+	<a-row v-if="id" class="rowStyle">
 		<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" class="tableStyle" rowKey="id">
 			<template #PlacingType="{ record }">
 				<div v-if="record.placingType === 1">{{ $t('default.86') }}</div>
@@ -510,7 +510,9 @@ export default defineComponent({
 			},
 			pageChange: (index) => {
 				data.machineVO.pageIndex = index;
-				data.search();
+				if(id){
+					data.search();
+				}
 			},
 			countryChange: () => {
 				data.infoVO.areaId = '';
@@ -690,9 +692,9 @@ export default defineComponent({
 			getCountryList();
 			getAreaList();
 			data.agentSearch('');
-			data.search();
 			if (id) {
 				getShopInfo(id);
+				data.search();
 			}
 		};
 		onMounted(() => {

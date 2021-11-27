@@ -57,21 +57,21 @@
 			</a-col>
 		</a-row>
 	</div>
-	<MachineOptions ref="options" :gameOptions="infoVO.setting" />
+	<!-- <MachineOptions ref="options" :gameOptions="infoVO.setting" /> -->
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue';
 // import { SettingFilled } from '@ant-design/icons-vue';
 import labelTitle from '@/components/labelTitle.vue';
-import MachineOptions from '@/components/common/MachineOptions.vue';
+// import MachineOptions from '@/components/common/MachineOptions.vue';
 import { shopListHttp, createMachineHttp, getMachineInfoHttp, editorMachineHttp } from '@/api/api';
 import { useRoute } from 'vue-router';
 export default defineComponent({
 	name: 'MachineEditor',
 	components: {
 		labelTitle,
-		MachineOptions
+		// MachineOptions
 	},
 	setup() {
 		const ROUTE = useRoute();
@@ -170,11 +170,11 @@ export default defineComponent({
 				console.log(value);
 			},
 			create: () => {
-				data.infoVO.setting = options.value.getData();
+				// data.infoVO.setting = options.value.getData();
 				return createMachineHttp(data.infoVO);
 			},
 			update: () => {
-				data.infoVO.setting = options.value.getData();
+				// data.infoVO.setting = options.value.getData();
 				return editorMachineHttp(data.infoVO);
 			},
 			afterHttp:(id: string) =>{
@@ -191,7 +191,7 @@ export default defineComponent({
 				data.infoVO.placingType = res.data.data.placingType;
 				data.infoVO.serial = res.data.data.serial;
 				data.infoVO.memo = res.data.data.memo;
-				options.value.setData(res.data.data.setting);
+				// options.value.setData(res.data.data.setting);
 			});
 		};
 		onMounted(() => {
