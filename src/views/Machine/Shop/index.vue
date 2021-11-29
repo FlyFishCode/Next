@@ -77,7 +77,7 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
-import { shopListHttp, countryListHttp, areaListHttp, agentListHttp, userListHttp, deleteShopHttp } from '@/api/api';
+import { shopListHttp, countryListHttp, areaListHttp, agentListHttp, deleteShopHttp } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { useRouter } from 'vue-router';
@@ -142,7 +142,6 @@ export default defineComponent({
 			countryList: [],
 			areaList: [],
 			agentList: [],
-			ownerList: [],
 			tableList: [{ id: 1 }],
 			rowSelection: {
 				columnWidth: 50,
@@ -151,7 +150,6 @@ export default defineComponent({
 					selectList = selectedRowKeys;
 				}
 			},
-			shopList: [],
 			countryChange: () => {
 				data.infoVO.areaId = '';
 				// eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -160,11 +158,6 @@ export default defineComponent({
 			agentSearch: (value: any) => {
 				agentListHttp({ agentName: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
 					data.agentList = res.data.data;
-				});
-			},
-			ownerSearch: (value: any) => {
-				userListHttp({ username: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
-					data.ownerList = res.data.data.list;
 				});
 			},
 			handleDelete: () => {

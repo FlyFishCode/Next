@@ -25,8 +25,7 @@
 			</a-col>
 			<a-col :span="4">
 				<a-select class="selectBox" v-model:value="infoVO.type" allowClear>
-					<a-select-option :value="1">{{ 'Game App Home' }}</a-select-option>
-					<a-select-option :value="2">{{ 'Member App' }}</a-select-option>
+					<a-select-option v-for="item in typeList" :key="item.id" :value="item.id">{{ item.label }}</a-select-option>
 				</a-select>
 			</a-col>
 		</a-row>
@@ -53,7 +52,7 @@
 	<a-row class="rowStyle">
 		<a-table :row-selection='rowSelection' bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
 			<template #type="{ record }">
-				<div class="link" @click="handleInfo(record.id)">{{ record.type == 1 ? 'Game App Home' : 'Member App' }}</div>
+				<div class="link" @click="handleInfo(record.id)">{{ getTypeStr(record.type) }}</div>
 			</template>
 		</a-table>
 	</a-row>
@@ -115,11 +114,19 @@ export default defineComponent({
 			],
 			total: 1,
 			tableList: [],
+			typeList:[
+				{ id:1, label:'GameAppHome' },
+				{ id:2, label:'GameAppBusiness' },
+				{ id:3, label:'MemberApp' }
+			],
 			rowSelection: {
 				columnWidth: 80,
 				onChange: (selectedRowKeys: number[]) => {
 						data.selectList = selectedRowKeys as any;
 				}
+			},
+			getTypeStr:(id: any) =>{
+				return data.typeList.find(item => item.id === id)?.label
 			},
 			search: () => {
 				VersionListHttp(data.infoVO).then((res: any) => {

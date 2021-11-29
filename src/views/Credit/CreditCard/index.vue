@@ -25,10 +25,13 @@
 				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Secret Key' }}
+				{{ 'Status' }}
 			</a-col>
 			<a-col :span="4">
-				<a-input v-model:value="infoVO.secretKey" allow-clear />
+				<a-select class="selectBox" v-model:value="infoVO.status" allow-clear>
+					<a-select-option :value="1">{{ 'Normal' }}</a-select-option>
+					<a-select-option :value="2">{{ 'Losted' }}</a-select-option>
+				</a-select>
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
@@ -51,25 +54,14 @@
 				<a-input v-model:value="infoVO.maxPoints" allow-clear/>
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Status' }}
-			</a-col>
-			<a-col :span="4">
-				<a-select class="selectBox" v-model:value="infoVO.status" allow-clear>
-					<a-select-option :value="1">{{ 'Normal' }}</a-select-option>
-					<a-select-option :value="2">{{ 'Losted' }}</a-select-option>
-				</a-select>
-			</a-col>
-			<a-col :span="2" class="labelText">
 				{{ 'Type' }}
 			</a-col>
 			<a-col :span="4">
 				<a-select class="selectBox" v-model:value="infoVO.type" allow-clear>
 					<a-select-option :value="1">{{ 'Normal' }}</a-select-option>
-					<a-select-option :value="2">{{ 'Losted' }}</a-select-option>
+					<a-select-option :value="2">{{ 'Work' }}</a-select-option>
 				</a-select>
 			</a-col>
-		</a-row>
-		<a-row class="rowStyle" justify='center'>
 			<a-col :span="2" class="labelText">
 				<a-button type="primary" size="small" @click="search">{{ '搜索' }}</a-button>
 			</a-col>
@@ -87,7 +79,7 @@
 				<a-button type="link" @click="handleShopClick(record.id)">{{ record.cardNo }}</a-button>
 			</template>
 			<template #status="{ record }">{{ record.status === 1 ? 'Normal' :' Losted' }}</template>
-			<template #type="{ record }">{{ record.status === 1 ? 'Normal' :' Work' }}</template>
+			<template #type="{ record }">{{ record.type === 1 ? 'Normal' :' Work' }}</template>
 		</a-table>
 	</a-row>
 	<div class="paginationStyle">
@@ -124,7 +116,6 @@ export default defineComponent({
 				status:'',
 				type:'',
 				memberId:'',
-				secretKey:'',
 				minPoints:'',
 				maxPoints:'',
 				minAllPoints:'',

@@ -61,7 +61,7 @@
 						>
 					</template>
 					<a-menu-item key="CreditCard">{{ $t('default.137') }}</a-menu-item>
-					<a-menu-item key="NewsCarousel">{{ $t('default.194') }}</a-menu-item>
+					<!-- <a-menu-item key="NewsCarousel">{{ $t('default.194') }}</a-menu-item> -->
 				</a-sub-menu>
 
 				<a-sub-menu key="7">

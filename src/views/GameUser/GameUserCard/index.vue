@@ -56,7 +56,7 @@
 						allowClear
 					>
 						<a-select-option v-for="member in memberList" :key="member.id">
-							<div :title="member.nickname">{{ member.nickname }}</div>
+							<div :title="member.username">{{ member.username }}</div>
 						</a-select-option>
 					</a-select>
 				</a-col>
@@ -70,7 +70,7 @@
 					<a-select v-model:value="infoVO.type" class="selectBox" allowClear>
 						<a-select-option :value="1">{{ 'home' }}</a-select-option>
 						<a-select-option :value="2">{{ 'business' }}</a-select-option>
-						<a-select-option :value="3">{{ 'league' }}</a-select-option>
+						<a-select-option :value="5">{{ 'league' }}</a-select-option>
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
@@ -79,7 +79,7 @@
 				<a-col :span="4">
 					<a-select v-model:value="infoVO.status" class="selectBox" allowClear>
 						<a-select-option :value="1">{{ $t('default.174') }}</a-select-option>
-						<a-select-option :value="0">{{ $t('default.175') }}</a-select-option>
+						<a-select-option :value="2">{{ $t('default.175') }}</a-select-option>
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
@@ -134,7 +134,7 @@
 					<a-form-item v-if="!userCardId" :label="$t('default.161')" name="cardNo">
 						<a-input v-model:value="createUserCardObj.cardNo" allowClear />
 					</a-form-item>
-					<a-form-item :label="$t('default.154')" name="memberId">
+					<a-form-item :label="$t('default.154')">
 						<a-select
 						class="selectBox"
 							show-search
@@ -147,7 +147,7 @@
 							allowClear
 						>
 							<a-select-option v-for="member in memberList" :key="member.id">
-								<div :title="member.nickname">{{ member.nickname }}</div>
+								<div :title="member.username">{{ member.username }}</div>
 							</a-select-option>
 						</a-select>
 					</a-form-item>
@@ -203,7 +203,7 @@ interface ObjProp {
 
 
 export default defineComponent({
-	name: 'SettlementInfo',
+	name: 'GameUserCard',
 	components: {
 		labelTitle,
 		DeleteDialog
@@ -212,11 +212,6 @@ export default defineComponent({
 		const formRef: any = ref(null);
 		const fileList: any = ref(null);
 		const ROUTER = useRouter();
-		const checkMember = async (rule: any, value: number) => {
-			if (!value) {
-				return Promise.reject(i18n('Please select member'));
-			}
-		};
 		const data = reactive({
 			uploadObj,
 			visible: false,
@@ -279,7 +274,6 @@ export default defineComponent({
 			],
 			rules: {
 				cardNo: [{ required: true, message: 'Please input card', trigger: 'blur' }],
-				memberId: [{ required: true, message: 'Please select member', validator: checkMember }],
 				secretKey: [{ required: true, message: 'Please input key', trigger: 'blur' }]
 			},
 			total: 1,
@@ -306,9 +300,11 @@ export default defineComponent({
 				}
 			},
 			MemberSearch(value: any) {
-				GameUserListHttp({ nickname: value.split("'").join(''), pageSize: 999 }).then((res) => {
-					data.memberList = res.data.data.list;
-				});
+				if(value){
+					GameUserListHttp({ username: value.split("'").join(''), pageSize: 999 }).then((res) => {
+						data.memberList = res.data.data.list;
+					});
+				}
 			},
 			handleCardClick: (id: number, memberName: string) => {
 				data.visible = true;

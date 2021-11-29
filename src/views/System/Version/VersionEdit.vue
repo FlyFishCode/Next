@@ -13,8 +13,7 @@
 			</a-col>
 			<a-col :span="9">
 				<a-select class="selectBox" v-model:value="infoVO.type" allowClear>
-					<a-select-option :value="1">{{ 'Game App Home' }}</a-select-option>
-					<a-select-option :value="2">{{ 'Member App' }}</a-select-option>
+					<a-select-option v-for="item in typeList" :key="item.id" :value="item.id">{{ item.label }}</a-select-option>
 				</a-select>
 			</a-col>
       <a-col :span="3" class="labelText">
@@ -47,7 +46,6 @@ export default defineComponent({
     const ROUTE = useRoute();
 		const id: any = ROUTE.query.id;
 		const data = reactive({
-			previewImage:"",
 			infoVO: {
 				id:'',
 				type: '',
@@ -55,6 +53,11 @@ export default defineComponent({
 				url: "",
 				label: ''
 			},
+			typeList:[
+				{ id: 1, label:'GameAppHome' },
+				{ id: 2, label:'GameAppBusiness' },
+				{ id: 3, label:'MemberApp' }
+			],
 			create: () => {
 				return VersionAddHttp(data.infoVO);
 			},

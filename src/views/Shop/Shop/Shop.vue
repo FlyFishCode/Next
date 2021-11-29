@@ -118,7 +118,8 @@ export default defineComponent({
 				{ id: 3 ,name: 'Effect' },
 				{ id: 4 ,name: 'Sound' },
 				{ id: 5 ,name: 'Bull' },
-				{ id: 6 ,name: 'Award' },
+				{ id: 6 ,name: 'Bull Sound' },
+				{ id: 7 ,name: 'Award' },
 			],
 			tableList: [],
 			infoVO: {
@@ -199,6 +200,9 @@ export default defineComponent({
 						str = 'Bull'
 						break;
 					case 6:
+						str = 'Bull Sound'
+						break;
+					case 7:
 						str = 'Award'
 						break;
 					case 71:
