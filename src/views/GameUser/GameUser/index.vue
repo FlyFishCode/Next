@@ -131,18 +131,18 @@
 				</a-col>
 			</a-row>
 		</div>
-		<!-- <a-row class="rowStyle">
+		<a-row class="rowStyle">
 			<a-col :span="1">
 				<a-button type="primary" size="small" @click="handleCreate">{{ $t('default.9') }}</a-button>
 			</a-col>
-		</a-row> -->
+		</a-row>
 		<a-row class="rowStyle">
 			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
 				<template #cardList="{ record }">
 					<div class="tableRollBox">
 						<div v-for="card in record.cardList" :key="card.id">
-							<!-- {{ card.cardNo }} -->
-							<a-button type="link" size="small" @click="handleCardClick(record.id)">{{ card.cardNo }}</a-button>
+							{{ card.cardNo }}
+							<!-- <a-button type="link" size="small" @click="handleCardClick(record.id)">{{ card.cardNo }}</a-button> -->
 						</div>
 					</div>
 				</template>
@@ -246,7 +246,7 @@ export default defineComponent({
 				{
 					title: i18n('default.104'),
 					dataIndex: 'nickname',
-					// slots: { customRender: 'nickname' }
+					slots: { customRender: 'nickname' }
 				},
 				{
 					title: i18n('default.90'),

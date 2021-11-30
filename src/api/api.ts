@@ -482,6 +482,7 @@ const newsInfoHttp = (data: any) =>{
 	return Axios.post(getNewUrl(newsInfo, data));
 }
 const newsImgUploadHttp = (data: any) =>{
+	data.append('path',1)
 	return Axios.post(newsImgUpload, data);
 }
 const newsEditorHttp = (data: any) =>{

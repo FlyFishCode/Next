@@ -10,4 +10,5 @@ const userList = '/user/list';
 const countryList = '/country/list';
 // 地区接口
 const areaList = '/area/list';
+
 export { loginUrl, changePassword, userList, countryList, areaList, changeInfo };

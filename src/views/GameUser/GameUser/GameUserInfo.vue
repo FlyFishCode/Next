@@ -12,7 +12,7 @@
 				{{ $t('default.160') }}
 			</a-col>
 			<a-col :span="9">
-				<a-input v-model:value="infoVO.registerTime" :disabled="disabled" />
+				<a-input v-model:value="infoVO.registerTime" disabled />
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
@@ -23,10 +23,13 @@
 				<a-input v-model:value="infoVO.nickname" allow-clear />
 			</a-col>
 			<a-col :span="3" class="labelText">
-				{{ $t('default.164') }}
+				{{ $t('default.139') }}
 			</a-col>
 			<a-col :span="9">
-				<a-input v-model:value="infoVO.img" allow-clear />
+				<a-select v-model:value="infoVO.status" class="selectBox" allowClear>
+					<a-select-option :value="0">{{ $t('default.175') }}</a-select-option>
+					<a-select-option :value="1">{{ $t('default.174') }}</a-select-option>
+				</a-select>
 			</a-col>
 		</a-row>
 		<a-row class="rowStyle">
@@ -116,9 +119,10 @@
 			</a-col>
 			<a-col :span="9">
 				<a-select class="selectBox" v-model:value="infoVO.language">
-					<a-select-option :value="1">{{ $t('default.165') }}</a-select-option>
-					<a-select-option :value="2">{{ $t('default.166') }}</a-select-option>
-					<a-select-option :value="3">{{ $t('default.167') }}</a-select-option>
+					<a-select-option :value="1">{{ $t('default.167') }}</a-select-option>
+					<a-select-option :value="2">{{ $t('default.165') }}</a-select-option>
+					<a-select-option :value="3">{{ $t('default.269') }}</a-select-option>
+					<a-select-option :value="4">{{ $t('default.270') }}</a-select-option>
 				</a-select>
 			</a-col>
 			<a-col v-if="!id" :span="3" class="labelText">
@@ -128,18 +132,43 @@
 				<a-input-password v-model:value="infoVO.password" type="password" />
 			</a-col>
 		</a-row>
+		<a-row class="rowStyle">
+			<a-col :span="3" class="labelText">
+        {{ $t('default.216') }}
+      </a-col>
+      <a-col :span="4" class="searchButton">
+				<div class="clearfix">
+					<a-upload
+						:customRequest='handlePlayerImgRequest'
+						list-type="picture-card"
+						v-model:file-list="imgList"
+						@preview="handlePreview"
+					>
+						<div v-if="imgList.length < 1">
+							<plus-outlined />
+							<div class="ant-upload-text">Upload</div>
+						</div>
+					</a-upload>
+					<a-modal :visible="previewVisible" :footer="null" @cancel="handleCancel">
+						<img alt="example" style="width: 100%" :src="previewImage" />
+					</a-modal>
+				</div>
+			</a-col>
+		</a-row>
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { shopListHttp, GameUserUpdateHttp, countryListHttp, areaListHttp, GameUserInfoHttp, GameUserCreateHttp, UserCardListHttp } from '@/api/api';
+import { shopListHttp, GameUserUpdateHttp, countryListHttp, areaListHttp, GameUserInfoHttp, GameUserCreateHttp, UserCardListHttp, newsImgUploadHttp } from '@/api/api';
 import { useRoute } from 'vue-router';
+import { PlusOutlined } from '@ant-design/icons-vue';
 export default defineComponent({
 	name: 'PlayerInfo',
 	components: {
-		labelTitle
+		labelTitle,
+		PlusOutlined
 	},
 	setup() {
 		const ROUTE = useRoute();
@@ -147,97 +176,56 @@ export default defineComponent({
 		const options: any = ref(null);
 		const data = reactive({
 			disabled: false,
+			previewVisible: false,
+			previewImage:"",
 			infoVO: {
 				id: '',
 				username: '',
 				nickname: '',
 				img: '',
 				gender: '',
+				status:"",
 				shopId: '',
 				password: '',
 				mainCardId: '',
 				birthday: '',
 				areaId: '',
 				countryId: '',
-				registerTime: '',
-				pageIndex: 1,
-				pageSize: 10
+				registerTime: ''
 			},
-			currentPage: 1,
-			totalSize: 100,
+			imgList:[],
 			shopList: [],
-			cardList: [{cardNo:''}],
 			areaList: [],
 			countryList: [],
-			columns: [
-				{
-					title: 'ID',
-					dataIndex: 'age',
-					key: 'ID'
-				},
-				{
-					title: 'Operator',
-					dataIndex: 'age',
-					key: 'Operator'
-				},
-				{
-					title: 'Operator Time',
-					dataIndex: 'age',
-					key: 'OperatorTime'
-				},
-				{
-					title: 'Cash',
-					dataIndex: 'age',
-					key: 'Cash'
-				},
-				{
-					title: 'Credits',
-					dataIndex: 'age',
-					key: 'Credits'
-				},
-				{
-					title: 'Coins',
-					dataIndex: 'age',
-					key: 'Coins'
-				},
-				{
-					title: 'Name',
-					dataIndex: 'age',
-					key: 'Name'
-				},
-				{
-					title: 'Machine',
-					dataIndex: 'age',
-					key: 'Machine'
-				},
-				{
-					title: 'Amout(cent)',
-					dataIndex: 'age',
-					key: 'Amout(cent)'
-				},
-				{
-					title: 'All Credits',
-					dataIndex: 'age',
-					key: 'All Credits'
-				},
-				{
-					title: 'Free Credits',
-					dataIndex: 'age',
-					key: 'Free Credits'
-				}
-			],
-			tableList: [{}],
+			cardList: [{cardNo:''}],
+			handlePlayerImgRequest:({file}: any) =>{
+        const formData = new FormData();
+				formData.append("image", file);
+				newsImgUploadHttp(formData).then((res: any) =>{
+					const obj = {uid:file.lastModified + new Date().getTime(), url:res.data.data } as never;
+					data.imgList.push(obj);
+					data.imgList = data.imgList.filter((i: any) => i.url)
+					data.infoVO.img = res.data.data;
+				})
+      },
+			handlePreview:(file: any) =>{
+      data.previewImage = file.url || file.preview;
+      data.previewVisible = true;
+			},
+			handleCancel:() =>{
+				data.previewVisible = false
+			},
 			shopSearch: (value: string) => {
 				shopListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
 					data.shopList = res.data.data.list;
 				});
 			},
 			UserCardSearch(value: any) {
-				// if (value.length > 3) {
+				if (value.length > 1) {
 					UserCardListHttp({ cardNo: value.split("'").join(''), pageSize: 999 }).then((res) => {
 						data.cardList = res.data.data.list;
 					});
-				// }
+				}
 			},
 			countryChange: () => {
 				data.infoVO.areaId = '';
@@ -261,11 +249,16 @@ export default defineComponent({
 		const getPlayerInfo = (id: number) => {
 			GameUserInfoHttp({ memberId: id }).then((res: any) => {
 				data.infoVO = res.data.data;
+				const obj = {uid: new Date().getTime(), url:res.data.data.img } as never;
+				data.imgList.push(obj);
+				data.infoVO.img = res.data.data.img;
 				data.UserCardSearch('');
+				// eslint-disable-next-line @typescript-eslint/no-use-before-define
+				getAreaList();
 			});
 		};
 		const getCountryList = () => {
-			countryListHttp({pageSize:999}).then((res: any) => {
+			countryListHttp({ pageSize: 999 }).then((res: any) => {
 				data.countryList = res.data.data.list;
 			});
 		};
@@ -277,7 +270,6 @@ export default defineComponent({
 		const init = (id: any) => {
 			data.shopSearch('');
 			getCountryList();
-			getAreaList();
 			if (id) {
 				data.disabled = true;
 				getPlayerInfo(id);

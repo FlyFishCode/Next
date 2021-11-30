@@ -267,4 +267,7 @@ export default {
     '265':'Release date',
     '266':'Announcement 編集',
     '267':'Item',
+    '268':'プレビュー図',
+	'269':'日本語',
+	'270':'ドイツ語'
 };
