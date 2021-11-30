@@ -19,7 +19,8 @@
 					{{ $t('default.161') }}
 				</a-col>
 				<a-col :span="4">
-					<a-select
+					<a-input v-model:value="infoVO.cardNo" allowClear />
+					<!-- <a-select
 					class="selectBox"
 						show-search
 						v-model:value="infoVO.cardNo"
@@ -34,7 +35,7 @@
 						<a-select-option v-for="card in cardList" :key="card.cardNo">
 							<div :title="card.cardNo">{{ card.cardNo }}</div>
 						</a-select-option>
-					</a-select>
+					</a-select> -->
 				</a-col>
 				<a-col :span="2" class="labelText">
 					{{ $t('default.104') }}
@@ -100,7 +101,7 @@
 				</a-col>
 				<a-col :span="4">
 					<a-select class="selectBox" show-search v-model:value="infoVO.shopId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="shopSearch">
-						<a-select-option v-for="shop in shopList" :key="shop.name">
+						<a-select-option v-for="shop in shopList" :key="shop.id">
 							<div :title="shop.name">{{ shop.name }}</div>
 						</a-select-option>
 					</a-select>
@@ -197,7 +198,7 @@ import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
 import qs from 'qs';
 export default defineComponent({
-	name: 'SettlementInfo',
+	name: 'GameUser',
 	components: {
 		labelTitle,
 		DeleteDialog
@@ -294,7 +295,7 @@ export default defineComponent({
 			],
 			total: 1,
 			shopList: [],
-			cardList: [{cardNo:""}],
+			// cardList: [{cardNo:""}],
 			tableList: [],
 			countryList: [{id:'',name:""}],
 			areaList: [{id:'',name:""}],
@@ -327,13 +328,13 @@ export default defineComponent({
 					data.shopList = res.data.data.list;
 				});
 			},
-			UserCardSearch(value: any) {
-				if (value.length > 3) {
-					UserCardListHttp({ cardNo: value.split("'").join(''), pageSize: 99999 }).then((res) => {
-						data.cardList = res.data.data.list;
-					});
-				}
-			},
+			// UserCardSearch(value: any) {
+			// 	if (value.length > 3) {
+			// 		UserCardListHttp({ cardNo: value.split("'").join(''), pageSize: 99999 }).then((res) => {
+			// 			data.cardList = res.data.data.list;
+			// 		});
+			// 	}
+			// },
 			handlePassword: (id: number) => {
 				data.visible = true;
 				data.playerId = id;

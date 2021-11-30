@@ -13,7 +13,8 @@
 					{{ $t('default.161') }}
 				</a-col>
 				<a-col :span="4">
-					<a-select
+					<a-input v-model:value="infoVO.cardNo" allowClear />
+					<!-- <a-select
 					class="selectBox"
 						show-search
 						v-model:value="infoVO.cardNo"
@@ -28,7 +29,7 @@
 						<a-select-option v-for="card in cardList" :key="card.cardNo">
 							<div :title="card.cardNo">{{ card.cardNo }}</div>
 						</a-select-option>
-					</a-select>
+					</a-select> -->
 				</a-col>
 				<a-col :span="2" class="labelText">
 					{{ $t('default.173') }}
@@ -292,13 +293,13 @@ export default defineComponent({
 				}
 				return new Date(data.infoVO.minBindTime).valueOf() >= endValue.valueOf();
 			},
-			UserCardSearch(value: any) {
-				if (value.length > 3) {
-					UserCardListHttp({ cardNo: value.split("'").join(''), pageSize: 9999 }).then((res) => {
-						data.cardList = res.data.data.list;
-					});
-				}
-			},
+			// UserCardSearch(value: any) {
+			// 	if (value.length > 3) {
+			// 		UserCardListHttp({ cardNo: value.split("'").join(''), pageSize: 9999 }).then((res) => {
+			// 			data.cardList = res.data.data.list;
+			// 		});
+			// 	}
+			// },
 			MemberSearch(value: any) {
 				if(value){
 					GameUserListHttp({ username: value.split("'").join(''), pageSize: 999 }).then((res) => {
