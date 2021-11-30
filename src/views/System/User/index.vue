@@ -193,7 +193,7 @@ import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { systemUserListHttp, addUserHttp, modifyUserHttp, searchUserHttp, countryListHttp, agentListHttp, deleteUserHttp, resetUserPasswordHttp } from '@/api/api';
 import { i18n } from '@/components/common/tools';
 import { message } from 'ant-design-vue';
-import { MD5 } from '@/components/common/tools';
+import { MD5, getRoleType } from '@/components/common/tools';
 import qs from 'qs';
 export default defineComponent({
 	name: 'UserIndex',
@@ -204,7 +204,7 @@ export default defineComponent({
 	setup() {
 		const formRef: any = ref(null);
 		const dialogFormRef: any = ref(null);
-		const RoleType: any = sessionStorage.getItem('NextUserType');
+		const RoleType: any = getRoleType();
 		const checkResetDialogPassword = async (rule: any, value: any) => {
 			// eslint-disable-next-line @typescript-eslint/no-use-before-define
 			if (data.resetDialogObj.password !== value) {
@@ -477,7 +477,7 @@ export default defineComponent({
 				}
 			},
 			showDeleteBtn: (value: number) => {
-				if (RoleType === '1' || (RoleType === '2' && value === 5)) {
+				if (RoleType === 1 || (RoleType === 2 && value === 5)) {
 					return true;
 				} else {
 					return false;

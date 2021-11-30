@@ -134,7 +134,7 @@
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="3" class="labelText">
-        {{ $t('default.216') }}
+        {{ $t('default.271') }}
       </a-col>
       <a-col :span="4" class="searchButton">
 				<div class="clearfix">
@@ -164,6 +164,7 @@ import labelTitle from '@/components/labelTitle.vue';
 import { shopListHttp, GameUserUpdateHttp, countryListHttp, areaListHttp, GameUserInfoHttp, GameUserCreateHttp, UserCardListHttp, newsImgUploadHttp } from '@/api/api';
 import { useRoute } from 'vue-router';
 import { PlusOutlined } from '@ant-design/icons-vue';
+import { MD5 } from '@/components/common/tools';
 export default defineComponent({
 	name: 'PlayerInfo',
 	components: {
@@ -232,14 +233,13 @@ export default defineComponent({
 				// eslint-disable-next-line @typescript-eslint/no-use-before-define
 				getAreaList();
 			},
-			sizeChange: () => {
-				console.log(1);
-			},
 			create: () => {
+				data.infoVO.password = MD5(data.infoVO.password)
 				return GameUserCreateHttp(data.infoVO);
 			},
 			update: () => {
 				data.infoVO.id = id;
+				data.infoVO.password = MD5(data.infoVO.password)
 				return GameUserUpdateHttp(data.infoVO);
 			},
 			afterHttp:(id: string) =>{

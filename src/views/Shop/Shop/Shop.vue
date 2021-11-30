@@ -94,7 +94,7 @@ import labelTitle from '@/components/labelTitle.vue';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
-import { handleSelectEvent, i18n } from '@/components/common/tools';
+import { handleSelectEvent, i18n, getRoleType } from '@/components/common/tools';
 // import { useStore } from 'vuex';
 // import qs from 'qs'
 export default defineComponent({
@@ -106,7 +106,7 @@ export default defineComponent({
 	setup() {
 		const ROUTER = useRouter();
 		// const STORE = useStore();
-		const RoleType: any = sessionStorage.getItem('NextUserType');
+		const RoleType: any = getRoleType();
 		let selectList: number[] = [];
 		const data = reactive({
 			visible: false,

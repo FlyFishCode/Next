@@ -150,13 +150,13 @@ const routes = [
 				path: '/SettlementInfo',
 				name: 'SettlementInfo',
 				component: () => import(/* webpackChunkName: "Settlement" */ '../views/Settlement/SettlementInfo.vue'),
-				meta: [{ label: 'default.116', path: 'Settlement' }]
+				meta: [{ label: 'default.116', path: 'SettlementInfo' }]
 			},
 			{
 				path: '/Settlement',
 				name: 'Settlement',
 				component: () => import(/* webpackChunkName: "SettlementInfo" */ '../views/Settlement/Settlement.vue'),
-				meta: [{ label: 'default.117', path: 'SettlementInfo' }]
+				meta: [{ label: 'default.117', path: 'Settlement' }]
 			},
 			{
 				path: '/RechargeRecord',
@@ -217,9 +217,7 @@ const routes = [
 				path: '/Setting',
 				name: 'Setting',
 				component: () => import(/* webpackChunkName: "Setting" */ '../views/System/Setting.vue'),
-				meta: [
-					{ label: 'default.27', path: 'Setting' },
-				]
+				meta: [ { label: 'default.27', path: 'Setting' } ]
 			},
 			// 玩家
 			{
@@ -234,7 +232,7 @@ const routes = [
 				component: () => import(/* webpackChunkName: "PlayerInfo" */ '../views/GameUser/GameUser/GameUserInfo.vue'),
 				meta: [
 					{ label: 'default.154', path: 'GameUser' },
-					{ label: 'default.163', path: 'UserInfo' }
+					{ label: 'default.163', path: 'GameUserInfo' }
 				]
 			},
 			// GameUserCard
@@ -242,7 +240,7 @@ const routes = [
 				path: '/GameUserCard',
 				name: 'GameUserCard',
 				component: () => import(/* webpackChunkName: "GameUserCard" */ '../views/GameUser/GameUserCard/index.vue'),
-				meta: [{ label: 'default.172', path: 'UserCard' }]
+				meta: [{ label: 'default.172', path: 'GameUserCard' }]
 			},
 			// Country
 			{
@@ -355,7 +353,7 @@ const routes = [
 				component: () => import(/* webpackChunkName: "ShopEdit" */ '../views/Shop/Shop/ShopEdit.vue'),
 				meta: [
 					{ label: 'default.224', path: 'PropShop' },
-					{ label: 'default.225', path: 'ShopEdit' },
+					{ label: 'default.225', path: 'PropShopEdit' },
 				]
 			},
 			{
@@ -363,7 +361,7 @@ const routes = [
 				name: 'PropShopCarousel',
 				component: () => import(/* webpackChunkName: "ShopCarousel" */ '../views/Shop/Carosel/index.vue'),
 				meta: [
-					{ label: 'default.194', path: 'ShopCarousel' },
+					{ label: 'default.194', path: 'PropShopCarousel' },
 				]
 			},
 			{
@@ -371,8 +369,8 @@ const routes = [
 				name: 'PropShopCarouselEdit',
 				component: () => import(/* webpackChunkName: "PropShopCarouselEdit" */ '../views/Shop/Carosel/CaroselEdit.vue'),
 				meta: [
-					{ label: 'default.194', path: 'ShopCarousel' },
-					{ label: 'default.209', path: 'CaroselEdit' },
+					{ label: 'default.194', path: 'PropShopCarousel' },
+					{ label: 'default.209', path: 'PropShopCarouselEdit' },
 				]
 			},
 			// 比赛、活动

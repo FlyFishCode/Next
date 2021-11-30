@@ -38,10 +38,10 @@
 			<a-col :span="4">
 				<a-input v-model:value="infoVO.type" allowClear />
 			</a-col>
-			<a-col v-if="isAdmin" :span="2" class="labelText">
+			<a-col v-if="RoleType === 1" :span="2" class="labelText">
 				{{ $t('default.26') }}
 			</a-col>
-			<a-col v-if="isAdmin" :span="4">
+			<a-col v-if="RoleType === 1" :span="4">
 				<a-select class="selectBox" show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
 					<a-select-option v-for="d in agentList" :key="d.id">
 						<div :title="d.name">{{ d.name }}</div>
@@ -82,7 +82,7 @@ import labelTitle from '@/components/labelTitle.vue';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
-import { handleSelectEvent, i18n } from '@/components/common/tools';
+import { handleSelectEvent, i18n, getRoleType } from '@/components/common/tools';
 export default defineComponent({
 	name: 'Shop',
 	components: {
@@ -92,7 +92,7 @@ export default defineComponent({
 	setup() {
 		const ROUTER = useRouter();
 		let selectList: number[] = [];
-		const isAdmin = sessionStorage.getItem('NextUserType');
+		const RoleType = getRoleType();
 		const data = reactive({
 			visible: false,
 			infoVO: {
@@ -117,11 +117,6 @@ export default defineComponent({
 					dataIndex: 'name',
 					key: 'Name',
 					slots: { customRender: 'name' }
-				},
-				{
-					title: i18n('default.26'),
-					dataIndex: 'agentName',
-					key: 'Agent'
 				},
 				{
 					title: i18n('default.23'),
@@ -157,7 +152,9 @@ export default defineComponent({
 			},
 			agentSearch: (value: any) => {
 				agentListHttp({ agentName: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
-					data.agentList = res.data.data;
+					if(res.data.code === 100){
+						data.agentList = res.data.data;
+					}
 				});
 			},
 			handleDelete: () => {
@@ -177,8 +174,10 @@ export default defineComponent({
 			},
 			search: () => {
 				shopListHttp(data.infoVO).then((res: any) => {
-					data.tableList = res.data.data.list;
-					data.total = res.data.data.totalCount;
+					if(res.data.code === 100){
+						data.tableList = res.data.data.list;
+						data.total = res.data.data.totalCount;
+					}
 				});
 			},
 			handleSetting: () => {
@@ -197,33 +196,47 @@ export default defineComponent({
 			handleShopClick: (id: number) => {
 				ROUTER.push({
 					path: 'EditorShop',
-					query: {
-						id
-					}
+					query: { id }
 				});
 			}
 		});
 		const getCountryList = () => {
 			countryListHttp({pageSize:999}).then((res: any) => {
-				data.countryList = res.data.data.list;
+				if(res.data.code === 100){
+					data.countryList = res.data.data.list;
+				}
 			});
 		};
 		const getAreaList = () => {
 			areaListHttp({ countryId: data.infoVO.countryId }).then((res: any) => {
-				data.areaList = res.data.data.list;
+				if(res.data.code === 100){
+					data.areaList = res.data.data.list;
+				}
 			});
 		};
+		const RoleTypeDeal = () =>{
+			if(RoleType === 1){
+				data.columns.push(
+					{
+						title: i18n('default.26'),
+						dataIndex: 'agentName',
+						key: 'Agent'
+					}
+				)
+			}
+		}
 		const init = () => {
 			data.search();
 			getCountryList();
 			getAreaList();
+			RoleTypeDeal();
 		};
 		onMounted(() => {
 			init();
 		});
 		return {
 			...toRefs(data),
-			isAdmin
+			RoleType
 		};
 	}
 });

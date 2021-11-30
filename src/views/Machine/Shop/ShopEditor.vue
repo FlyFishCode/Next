@@ -169,7 +169,7 @@
 				<a-input v-model:value="infoVO.shopInfo" />
 			</a-col>
 		</a-row>
-		<div v-if="isAdmin">
+		<div v-if="RoleType === 1">
 			<a-row class="rowStyle">
 				<a-col :span="3" class="labelText">
 					{{ $t('default.23') }}
@@ -208,10 +208,10 @@
 					</a-upload>
 				</div>
 			</a-col>
-			<a-col :span="3" class="labelText">
+			<a-col v-if="RoleType === 1" :span="3" class="labelText">
 				{{ $t('default.26') }}
 			</a-col>
-			<a-col :span="9">
+			<a-col v-if="RoleType === 1" :span="9">
 				<a-select class="selectBox" show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
 					<a-select-option v-for="d in agentList" :key="d.id">
 						<div :title="d.name">{{ d.name }}</div>
@@ -346,7 +346,7 @@ import { PlusOutlined } from '@ant-design/icons-vue';
 import { shopSingleInfoHttp, agentListHttp, countryListHttp, areaListHttp, editShopHttp, createShopHttp, shopMachineListHttp, setMachineSettingHttp, getMachineInfoHttp,newsImgUploadHttp } from '@/api/api';
 import { message } from 'ant-design-vue';
 import MachineOptions from '@/components/common/MachineOptions.vue';
-import { i18n } from '@/components/common/tools';
+import { i18n, getRoleType } from '@/components/common/tools';
 import Axios from 'axios';
 export default defineComponent({
 	name: 'ShopEditor',
@@ -357,7 +357,7 @@ export default defineComponent({
 	},
 	setup() {
 		const ROUTE = useRoute();
-		const isAdmin = true;
+		const RoleType = getRoleType();
 		const id = ROUTE.query.id;
 		const options = ref({});
 		let currentMachineId = '';
@@ -528,13 +528,13 @@ export default defineComponent({
 				});
 			},
 			create: () => {
-				data.infoVO.img = data.shopImgList[0].url;
-				data.infoVO.agentRate = data.infoVO.agentRate.split('%')[0]
+				// eslint-disable-next-line @typescript-eslint/no-use-before-define
+				beforAskServer()
 				return createShopHttp(data.infoVO);
 			},
 			update: () => {
-				data.infoVO.img = data.shopImgList[0].url;
-				data.infoVO.agentRate = data.infoVO.agentRate.split('%')[0]
+				// eslint-disable-next-line @typescript-eslint/no-use-before-define
+				beforAskServer()
 				return editShopHttp(data.infoVO);
 			},
 			afterHttp:(id) =>{
@@ -573,6 +573,13 @@ export default defineComponent({
 				});
 			}
 		});
+		const beforAskServer = () =>{
+			data.infoVO.img = data.shopImgList[0].url;
+			data.infoVO.agentRate = data.infoVO.agentRate.split('%')[0];
+			if(RoleType !== 1){
+				data.infoVO.agentId = sessionStorage.getItem('NextAgentId');
+			}
+		}
 		const showMap = () => {
 			const url = 'https://webapi.amap.com/maps?v=1.4.15&key=4288b5f8c829eba5d80f4664f7e40dcf&callback=load';
 			const jsapi = document.createElement('script');
@@ -636,30 +643,9 @@ export default defineComponent({
 			data.infoVO = response;
 			data.infoVO.agentRate = `${response.agentRate}%`;
 			data.shopImgList = [{uid:new Date().getTime(), url:response.img}];
-			// data.infoVO.name = response.name;
-			// data.infoVO.type = response.type;
-			// data.infoVO.shopRate = response.shopRate;
-			// data.infoVO.agentRate = `${response.agentRate}%`;
-			// data.infoVO.agentId = response.agentId;
-			// data.infoVO.attracts = response.attracts;
-			// data.infoVO.address = response.address;
-			// data.infoVO.phone = response.phone;
-			// data.infoVO.fax = response.fax;
-			// data.infoVO.email = response.email;
-			// data.infoVO.website = response.website;
-			// data.infoVO.website = response.website;
-			// data.infoVO.businessHours = response.businessHours;
-			// data.infoVO.img = response.img;
-			// data.infoVO.supplier = response.supplier;
-			// data.infoVO.longitude = response.longitude;
-			// data.infoVO.latitude = response.latitude;
-			// data.infoVO.isValid = response.isValid;
-			// data.infoVO.room = response.room;
-			// data.infoVO.parking = response.parking;
-			// data.infoVO.credit = response.credit;
-			// data.infoVO.averageCost = response.averageCost;
-			// data.infoVO.memo = response.memo;
-			if (isAdmin) {
+			// eslint-disable-next-line @typescript-eslint/no-use-before-define
+			getAreaList();
+			if (RoleType === 1) {
 				data.infoVO.countryId = response.countryId;
 				data.infoVO.areaId = response.areaId;
 				data.infoVO.agentId = response.agentId;
@@ -704,7 +690,7 @@ export default defineComponent({
 			...toRefs(data),
 			options,
 			id,
-			isAdmin
+			RoleType
 		};
 	}
 });

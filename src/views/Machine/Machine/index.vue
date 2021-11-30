@@ -60,10 +60,10 @@
 			<a-col :span="2">
 				<a-date-picker v-model:value="infoVO.maxLastOnlineTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 			</a-col>
-			<a-col v-if="isAdmin" :span="2" class="labelText">
+			<a-col v-if="RoleType === 1" :span="2" class="labelText">
 				{{ $t('default.26') }}
 			</a-col>
-			<a-col v-if="isAdmin" :span="4">
+			<a-col v-if="RoleType === 1" :span="4">
 				<a-select class="selectBox" show-search v-model:value="infoVO.agentId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="agentSearch">
 					<a-select-option v-for="d in agentList" :key="d.id">
 						<div :title="d.name">{{ d.name }}</div>
@@ -116,7 +116,7 @@ import labelTitle from '@/components/labelTitle.vue';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
-import { handleSelectEvent, i18n } from '@/components/common/tools';
+import { handleSelectEvent, i18n, getRoleType } from '@/components/common/tools';
 // import { SettingFilled} from '@ant-design/icons-vue';
 export default defineComponent({
 	name: 'Machine',
@@ -127,7 +127,7 @@ export default defineComponent({
 	setup() {
 		const ROUTER = useRouter();
 		let selectList: number[] = [];
-		const isAdmin = sessionStorage.getItem('NextUserType');
+		const RoleType = getRoleType();
 		const data = reactive({
 			visible: false,
 			infoVO: {
@@ -135,7 +135,7 @@ export default defineComponent({
 				name: '',
 				serial: '',
 				shopName: '',
-				type: 'A1',
+				type: '',
 				placingType: '',
 				maxLastOnlineTime: '',
 				minLastOnlineTime: '',
@@ -265,7 +265,7 @@ export default defineComponent({
 		});
 		return {
 			...toRefs(data),
-			isAdmin
+			RoleType
 		};
 	}
 });

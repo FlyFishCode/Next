@@ -10,4 +10,5 @@ const UserInfo = 'card/select';
 const UserCardDelete = 'card/delete';
 // 下载文件
 const UserCardDownload = 'card/export';
+
 export { UserCardList, UserCreate, UserUpdate, UserInfo, UserCardDelete, UserCardDownload };

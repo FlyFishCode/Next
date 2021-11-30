@@ -269,6 +269,7 @@ export default {
 	'267':'Item',
 	'268':'Preview',
 	'269':'Japanese',
-	'270':'German'
+	'270':'German',
+	'271':'Player image',
 };
 

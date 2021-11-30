@@ -14,22 +14,6 @@
 				</a-col>
 				<a-col :span="4">
 					<a-input v-model:value="infoVO.cardNo" allowClear />
-					<!-- <a-select
-					class="selectBox"
-						show-search
-						v-model:value="infoVO.cardNo"
-						:default-active-first-option="false"
-						:show-arrow="false"
-						:filter-option="false"
-						:not-found-content="null"
-						placeholder="Enter more than 4"
-						@search="UserCardSearch"
-						allowClear
-					>
-						<a-select-option v-for="card in cardList" :key="card.cardNo">
-							<div :title="card.cardNo">{{ card.cardNo }}</div>
-						</a-select-option>
-					</a-select> -->
 				</a-col>
 				<a-col :span="2" class="labelText">
 					{{ $t('default.173') }}
@@ -93,7 +77,12 @@
 				<a-button type="primary" size="small" @click="handleCreate">{{ $t('default.9') }}</a-button>
 			</a-col>
 			<a-col :span="1" id="file">
-				<a-upload v-model:file-list="fileList" name="file" :action="uploadObj.src" :headers="uploadObj.headers" @change="handleUploadChange">
+				<a-upload
+					v-model:file-list="fileList"
+					name="file"
+					:customRequest='handleUploadFile'
+					@change="handleUploadChange"
+				>
 					<a-button type="danger" size="small">{{ $t('default.177') }}</a-button>
 				</a-upload>
 			</a-col>
@@ -187,11 +176,11 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { UserCardListHttp, GameUserListHttp, UserCreateHttp, UserUpdateHttp, UserInfoHttp, UserCardDeleteHttp, UserCardDownloadHttp } from '@/api/api';
+import { UserCardListHttp, GameUserListHttp, UserCreateHttp, UserUpdateHttp, UserInfoHttp, UserCardDeleteHttp, UserCardDownloadHttp, UploadFileHttp } from '@/api/api';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
-import { i18n, uploadObj } from '@/components/common/tools';
+import { i18n } from '@/components/common/tools';
 import { useRouter } from 'vue-router';
-import { message } from 'ant-design-vue';
+import { message, notification } from 'ant-design-vue';
 
 interface ObjProp {
 	id?: string | number;
@@ -214,7 +203,6 @@ export default defineComponent({
 		const fileList: any = ref(null);
 		const ROUTER = useRouter();
 		const data = reactive({
-			uploadObj,
 			visible: false,
 			dialogVisible: false,
 			userCardId: 0,
@@ -278,7 +266,6 @@ export default defineComponent({
 				secretKey: [{ required: true, message: 'Please input key', trigger: 'blur' }]
 			},
 			total: 1,
-			cardList: [],
 			memberList: [],
 			tableList: [],
 			disabledStartDate: (startValue: any) => {
@@ -293,13 +280,6 @@ export default defineComponent({
 				}
 				return new Date(data.infoVO.minBindTime).valueOf() >= endValue.valueOf();
 			},
-			// UserCardSearch(value: any) {
-			// 	if (value.length > 3) {
-			// 		UserCardListHttp({ cardNo: value.split("'").join(''), pageSize: 9999 }).then((res) => {
-			// 			data.cardList = res.data.data.list;
-			// 		});
-			// 	}
-			// },
 			MemberSearch(value: any) {
 				if(value){
 					GameUserListHttp({ username: value.split("'").join(''), pageSize: 999 }).then((res) => {
@@ -412,6 +392,21 @@ export default defineComponent({
 						data.total = res.data.data.totalCount;
 					}
 				});
+			},
+			handleUploadFile:({file}: any) =>{
+				const formData = new FormData();
+				formData.append("file", file);
+				UploadFileHttp(formData).then(res =>{
+					if(res.data.code === 100){
+						message.info(res.data.msg)
+					}else{
+						notification.open({
+							message: 'Waring',
+							duration: 0,
+							description:res.data.msg
+						});
+					}
+				})
 			},
 			handleUploadChange: (info: any) => {
 				if (info.file.status === 'done' && info.file.response.code === 100) {

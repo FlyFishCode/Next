@@ -81,7 +81,7 @@
 
 			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
-					{{ $t('default.23') }}
+					{{ $t('default.262') }}
 				</a-col>
 				<a-col :span="4">
 					<a-select v-model:value="infoVO.countryId" class="selectBox" @change="countryChange" allowClear>
@@ -89,7 +89,7 @@
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ $t('default.23') }}
+					{{ $t('default.263') }}
 				</a-col>
 				<a-col :span="4">
 					<a-select v-model:value="infoVO.areaId" class="selectBox" allowClear>
@@ -191,7 +191,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, ref, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { GameUserListHttp, countryListHttp, areaListHttp, shopListHttp, GameUserDeleteHttp, GameUserRestorePasswordHttp, UserCardListHttp } from '@/api/api';
+import { GameUserListHttp, countryListHttp, areaListHttp, shopListHttp, GameUserDeleteHttp, GameUserRestorePasswordHttp } from '@/api/api';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { i18n, MD5 } from '@/components/common/tools';
 import { useRouter } from 'vue-router';

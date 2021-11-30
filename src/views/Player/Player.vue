@@ -16,10 +16,10 @@
 			<a-col :span="4">
 				<a-input v-model:value="infoVO.name" allowClear />
 			</a-col>
-			<a-col v-if="RoleType =='1'" :span="2" class="labelText">
+			<a-col v-if="RoleType === 1" :span="2" class="labelText">
 					{{ $t('default.26') }}
 				</a-col>
-			<a-col v-if="RoleType =='1'" :span="4">
+			<a-col v-if="RoleType === 1" :span="4">
 				<a-select
 					class="selectBox"
 						show-search
@@ -70,7 +70,7 @@ import labelTitle from '@/components/labelTitle.vue';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
-import { handleSelectEvent, i18n } from '@/components/common/tools';
+import { handleSelectEvent, i18n, getRoleType } from '@/components/common/tools';
 // import { useStore } from 'vuex';
 // import qs from 'qs'
 export default defineComponent({
@@ -82,7 +82,7 @@ export default defineComponent({
 	setup() {
 		const ROUTER = useRouter();
 		// const STORE = useStore();
-		const RoleType: any = sessionStorage.getItem('NextUserType');
+		const RoleType: any = getRoleType();
 		let selectList: number[] = [];
 		const data = reactive({
 			visible: false,
@@ -190,7 +190,7 @@ export default defineComponent({
 			});
 		};
 		const handleRole = () => {
-			if (RoleType == '1') {
+			if (RoleType === 1) {
 				data.columns.push(
 				{
 					title: i18n('default.26'),

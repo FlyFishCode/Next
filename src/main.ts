@@ -27,6 +27,9 @@ import '@/assets/css/animate.min.css';
 
 const app = createApp(App);
 
+
+
+
 // 不需要添加全局 需要使用的地方直接$i18n.locale
 app.config.globalProperties.$i18n = i18n;
 

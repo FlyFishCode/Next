@@ -16,10 +16,10 @@
 					<a-select-option v-for="item in countryList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
 				</a-select>
 			</a-col>
-			<a-col v-if="RoleType =='1'" :span="2" class="labelText">
+			<a-col v-if="RoleType === 1" :span="2" class="labelText">
 				{{ $t('default.26') }}
 			</a-col>
-			<a-col v-if="RoleType =='1'" :span="4">
+			<a-col v-if="RoleType === 1" :span="4">
 				<a-select
 					class="selectBox"
 						show-search
@@ -224,7 +224,7 @@ import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { useRoute } from 'vue-router';
 import { message } from 'ant-design-vue';
-import { handleSelectEvent } from '@/components/common/tools';
+import { handleSelectEvent, getRoleType } from '@/components/common/tools';
 
 
 export default defineComponent({
@@ -237,7 +237,7 @@ export default defineComponent({
 	},
 	setup() {
     const ROUTE = useRoute();
-		const RoleType: any = sessionStorage.getItem('NextUserType');
+		const RoleType: any = getRoleType();
 		let selectList: number[] = [];
 		const getBase64 = (file: File) => {
 			return new Promise((resolve, reject) => {

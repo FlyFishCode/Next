@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { message } from 'ant-design-vue';
 
-import { loginUrl, changePassword, userList, countryList, areaList, changeInfo } from '@/api/index';
+import { loginUrl, changePassword, userList, countryList, areaList, changeInfo, UploadFile } from '@/api/index';
 
 // Advert
 import {
@@ -157,7 +157,6 @@ const changePasswordHttp = (data: any) => {
 const changeInfoHttp = (data: any) => {
 	return Axios.post(changeInfo, data);
 };
-changeInfo;
 // 用户列表
 const userListHttp = (data: any) => {
 	return Axios.post(userList, data);
@@ -170,6 +169,11 @@ const countryListHttp = (data: any) => {
 const areaListHttp = (data: any) => {
 	return Axios.post(areaList, data);
 };
+// 上传文件接口
+const UploadFileHttp = (data: any) =>{
+	return Axios.post(UploadFile, data);
+}
+
 // Advert
 // 广告列表
 const AdvertTableListHttp = (data: any) => {
@@ -616,6 +620,7 @@ export {
 	AdvertTableAddHttp,
 	AdvertSearchHttp,
 	AdvertChangeHttp,
+	UploadFileHttp,
 	shopListHttp,
 	AdvertListHttp,
 	shopSingleInfoHttp,

@@ -108,7 +108,7 @@ import labelTitle from '@/components/labelTitle.vue';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
-import { handleSelectEvent, i18n } from '@/components/common/tools';
+import { handleSelectEvent, i18n, getRoleType } from '@/components/common/tools';
 // import { useStore } from 'vuex';
 // import qs from 'qs'
 export default defineComponent({
@@ -120,7 +120,7 @@ export default defineComponent({
 	setup() {
 		const ROUTER = useRouter();
 		// const STORE = useStore();
-		const RoleType: any = sessionStorage.getItem('NextUserType');
+		const RoleType: any = getRoleType();
 		let selectList: number[] = [];
 		const data = reactive({
       time: 0,
@@ -198,7 +198,9 @@ export default defineComponent({
       shopSearch(value: any) {
         const fn = () =>{
           shopListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res) => {
-            data.shopList = res.data.data.list;
+						if(res.data.code === 100){
+								data.shopList = res.data.data.list;
+							}
           });
         }
         if(data.time){
@@ -211,7 +213,9 @@ export default defineComponent({
 			creatorSearch:(value: any) =>{
 				const fn = () =>{
           systemUserListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res) => {
-            data.creatorList = res.data.data.list;
+						if(res.data.code === 100){
+							data.creatorList = res.data.data.list;
+						}
           });
         }
         if(data.time){
@@ -281,7 +285,9 @@ export default defineComponent({
 		});
     const getCountryList = () => {
 			countryListHttp({ pageSize : 999 }).then((res: any) => {
-				data.countryList = res.data.data.list;
+				if(res.data.code === 100){
+					data.countryList = res.data.data.list;
+				}
 			});
 		};
 		const init = () => {
