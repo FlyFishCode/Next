@@ -87,14 +87,14 @@
 		</a-col> -->
 		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
 			<template #label="{ record }">
-				<a-button type="link" @click="handleMachineClick(record.id)">{{ record.name }}</a-button>
+				<a-button v-if="record.name" type="link" @click="handleMachineClick(record.id)">{{ record.name }}</a-button>
 			</template>
 			<template #type="{ record }">
 				<div v-if="record.type === 'A1'">{{ 'A1' }}</div>
 				<div v-if="record.type === 'W1'">{{ 'W1' }}</div>
 			</template>
 			<template #shop="{ record }">
-				<a-button type="link" @click="handleShopClick(record.shopId)">{{ record.shopName }}</a-button>
+				<a-button v-if="record.shopName" type="link" @click="handleShopClick(record.shopId)">{{ record.shopName }}</a-button>
 			</template>
 			<template #placingType="{ record }">
 				<div v-if="record.placingType === 1">{{ $t('default.86') }}</div>

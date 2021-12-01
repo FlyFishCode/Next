@@ -150,7 +150,7 @@
 					<a-button type="link" size="small" @click="handleUserName(record.id)">{{ record.nickname }}</a-button>
 				</template>
 				<template #shopName="{ record }">
-					<a-button type="link" size="small" @click="handleShopClick(record.shopId)">{{ record.shopName }}</a-button>
+					<a-button v-if="record.shopName" type="link" size="small" @click="handleShopClick(record.shopId)">{{ record.shopName }}</a-button>
 				</template>
 				<template #gender="{ record }">
 					<div>{{ record.gender ? $t('default.106') : $t('default.107') }}</div>

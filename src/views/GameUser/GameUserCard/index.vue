@@ -96,7 +96,7 @@
 					<a-button type="link" size="small" @click="handleCardClick(record.id, record.memberName)">{{ record.cardNo }}</a-button>
 				</template>
 				<template #nickname="{ record }">
-					<a-button type="link" size="small" @click="handleMemberName(record.memberId)">{{ record.memberName }}</a-button>
+					<a-button v-if="record.memberName" type="link" size="small" @click="handleMemberName(record.memberId)">{{ record.memberName }}</a-button>
 				</template>
 				<template #gender="{ record }">
 					<div>{{ record.gender ? $t('default.106') : $t('default.107') }}</div>

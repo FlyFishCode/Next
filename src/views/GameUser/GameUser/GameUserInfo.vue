@@ -84,8 +84,8 @@
 			</a-col>
 			<a-col :span="9">
 				<a-select class="selectBox" v-model:value="infoVO.gender" allow-clear>
+					<a-select-option :value="0">{{ $t('default.107') }}</a-select-option>
 					<a-select-option :value="1">{{ $t('default.106') }}</a-select-option>
-					<a-select-option :value="2">{{ $t('default.107') }}</a-select-option>
 				</a-select>
 			</a-col>
 			<a-col :span="3" class="labelText">
