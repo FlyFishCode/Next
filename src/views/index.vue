@@ -63,8 +63,17 @@
 					<a-menu-item key="CreditCard">{{ $t('default.137') }}</a-menu-item>
 					<!-- <a-menu-item key="NewsCarousel">{{ $t('default.194') }}</a-menu-item> -->
 				</a-sub-menu>
-
 				<a-sub-menu key="7">
+					<template #title>
+						<span
+							><ProfileOutlined /><span>{{ $t('default.193') }}</span></span
+						>
+					</template>
+					<a-menu-item key="News">{{ $t('default.193') }}</a-menu-item>
+					<a-menu-item key="NewsCarousel">{{ $t('default.194') }}</a-menu-item>
+				</a-sub-menu>
+
+				<a-sub-menu key="8">
 					<template #title>
 						<span
 							><TeamOutlined /><span>{{ $t('default.212') }}</span></span
@@ -72,7 +81,7 @@
 					</template>
 					<a-menu-item key="Player">{{ $t('default.212') }}</a-menu-item>
 				</a-sub-menu>
-				<a-sub-menu key="8">
+				<a-sub-menu key="9">
 					<template #title>
 						<span
 							><PushpinOutlined /><span>{{ $t('default.222') }}</span></span
@@ -81,7 +90,7 @@
 					<a-menu-item key="Darts">{{ $t('default.222') }}</a-menu-item>
 					<a-menu-item key="DartsCarousel">{{ $t('default.194') }}</a-menu-item>
 				</a-sub-menu>
-				<a-sub-menu v-if="RoleType === 1" key="9">
+				<a-sub-menu v-if="RoleType === 1" key="10">
 					<template #title>
 						<span
 							><ShopOutlined /><span>{{ $t('default.224') }}</span></span
@@ -90,7 +99,7 @@
 					<a-menu-item key="PropShop">{{ $t('default.224') }}</a-menu-item>
 					<a-menu-item key="PropShopCarousel">{{ $t('default.194') }}</a-menu-item>
 				</a-sub-menu>
-				<a-sub-menu key="10">
+				<a-sub-menu key="11">
 					<template #title>
 						<span
 							><ScheduleOutlined /><span>{{ $t('default.197') }}</span></span
@@ -98,7 +107,7 @@
 					</template>
 					<a-menu-item key="Match">{{ $t('default.197') + '/' + $t('default.198') }}</a-menu-item>
 				</a-sub-menu>
-				<a-sub-menu v-if="RoleType === 1" key="11">
+				<a-sub-menu v-if="RoleType === 1" key="12">
 					<template #title>
 						<span
 							><SettingOutlined /><span>{{ $t('default.146') }}</span></span
@@ -120,7 +129,7 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue';
-import { TeamOutlined,PushpinOutlined,SettingOutlined,UserOutlined,ShopOutlined,ScheduleOutlined,AppstoreOutlined,CreditCardOutlined, MailOutlined, EnvironmentOutlined } from '@ant-design/icons-vue';
+import { TeamOutlined,PushpinOutlined,SettingOutlined,UserOutlined,ShopOutlined,ScheduleOutlined,AppstoreOutlined,CreditCardOutlined, MailOutlined, EnvironmentOutlined, ProfileOutlined } from '@ant-design/icons-vue';
 import hearder from '@/components/hearder.vue';
 import { getRoleType } from '@/components/common/tools';
 import { useRouter } from 'vue-router';
@@ -144,7 +153,7 @@ export default defineComponent({
 		ScheduleOutlined,
 		ShopOutlined,
 		UserOutlined,
-		// ProfileOutlined,
+		ProfileOutlined,
 		PushpinOutlined,
 		TeamOutlined,
 		hearder

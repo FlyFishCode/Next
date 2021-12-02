@@ -126,4 +126,12 @@ video {
 	text-align: center;
 	background: yellow;
 }
+@media screen and (max-width: 1000px) {
+	.ant-table-thead > tr > th, .ant-table-tbody > tr > td{
+		padding: 0 !important;
+	}
+	.userBox{
+		font-size: 14px !important;
+	}
+}
 </style>

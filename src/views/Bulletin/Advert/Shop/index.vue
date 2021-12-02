@@ -40,7 +40,7 @@
 		</a-row>
 	</div>
 	<a-row class="rowStyle">
-		<a-col :span="1" id="deleteBtnBox">
+		<a-col :span="1">
 			<a-button type="danger" size="small" @click="handleDelete">{{ $t('default.10') }}</a-button>
 			<!-- <a-button type="danger" size="small" @click="handleDeleteAll">{{ '删除所有数据' }}</a-button> -->
 		</a-col>
