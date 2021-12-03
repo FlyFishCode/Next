@@ -63,7 +63,7 @@
 		<!-- <a-col :span="1">
 			<a-button type="primary" size="small" @click="handleSetting">{{ $t('default.27') }}</a-button>
 		</a-col> -->
-		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
+		<a-table bordered :row-selection="rowSelection"  @change="handleChange" :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
 			<template #name="{ record }">
 				<a-button type="link" @click="handleShopClick(record.id)">{{ record.name }}</a-button>
 			</template>
@@ -97,6 +97,7 @@ export default defineComponent({
 			visible: false,
 			infoVO: {
 				id: '',
+				sort:1,
 				name: '',
 				countryId: '',
 				areaId: '',
@@ -110,7 +111,8 @@ export default defineComponent({
 				{
 					title: 'ID',
 					dataIndex: 'id',
-					key: 'Id'
+					key: 'Id',
+					sorter: true
 				},
 				{
 					title: i18n('default.5'),
@@ -188,6 +190,18 @@ export default defineComponent({
 			pageChange: () => {
 				data.search();
 			},
+			handleChange:(pag: any, filters: any, sorter: any) =>{
+				const {field,order} = sorter;
+				if(field === 'id'){
+					if(order === 'ascend') data.infoVO.sort = 1
+					if(order === 'descend') data.infoVO.sort = 2
+				}
+				if(field === 'agentName'){
+					if(order === 'ascend') data.infoVO.sort = 3
+					if(order === 'descend') data.infoVO.sort = 4
+				}
+				data.search();
+			},
 			handleCreate: () => {
 				ROUTER.push({
 					path: 'EditorShop'
@@ -220,7 +234,8 @@ export default defineComponent({
 					{
 						title: i18n('default.26'),
 						dataIndex: 'agentName',
-						key: 'Agent'
+						key: 'Agent',
+						sorter: true
 					}
 				)
 			}

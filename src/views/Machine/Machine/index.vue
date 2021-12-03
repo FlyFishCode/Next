@@ -85,7 +85,7 @@
 		<!-- <a-col :span="1">
 			<a-button type="primary" size="small" @click="handleSetting">{{ $t('default.27') }}</a-button>
 		</a-col> -->
-		<a-table bordered :row-selection="rowSelection" :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
+		<a-table bordered :row-selection="rowSelection" @change="handleChange" :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
 			<template #label="{ record }">
 				<a-button v-if="record.name" type="link" @click="handleMachineClick(record.id)">{{ record.name }}</a-button>
 			</template>
@@ -133,6 +133,7 @@ export default defineComponent({
 			infoVO: {
 				id: '',
 				name: '',
+				sort:1,
 				serial: '',
 				shopName: '',
 				type: '',
@@ -148,12 +149,14 @@ export default defineComponent({
 				{
 					title: 'ID',
 					dataIndex: 'id',
-					key: 'Id'
+					key: 'Id',
+					sorter: true
 				},
 				{
 					title: i18n('default.13'),
-					key: 'Label',
-					slots: { customRender: 'label' }
+					dataIndex: 'name',
+					slots: { customRender: 'label' },
+					sorter: true
 				},
 				{
 					title: i18n('default.17'),
@@ -169,7 +172,8 @@ export default defineComponent({
 				{
 					title: i18n('default.21'),
 					dataIndex: 'serial',
-					key: 'Serial'
+					key: 'Serial',
+					sorter: true
 				},
 				{
 					title: i18n('default.84'),
@@ -179,7 +183,8 @@ export default defineComponent({
 				{
 					title: i18n('default.89'),
 					dataIndex: 'lastOnlineTime',
-					key: 'Last Online'
+					key: 'Last Online',
+					sorter: true
 				}
 			],
 			tableList: [],
@@ -254,6 +259,26 @@ export default defineComponent({
 				ROUTER.push({
 					path: 'MachineGameOptions'
 				});
+			},
+			handleChange:(pag: any, filters: any, sorter: any) =>{
+				const {field,order} = sorter;
+				if(field === 'id'){
+					if(order === 'ascend') data.infoVO.sort = 1
+					if(order === 'descend') data.infoVO.sort = 2
+				}
+				if(field === 'name'){
+					if(order === 'ascend') data.infoVO.sort = 3
+					if(order === 'descend') data.infoVO.sort = 4
+				}
+				if(field === 'serial'){
+					if(order === 'ascend') data.infoVO.sort = 5
+					if(order === 'descend') data.infoVO.sort = 6
+				}
+				if(field === 'lastOnlineTime'){
+					if(order === 'ascend') data.infoVO.sort = 7
+					if(order === 'descend') data.infoVO.sort = 8
+				}
+				data.search();
 			},
 			pageChange: (index: number) => {
 				data.infoVO.pageIndex = index;
