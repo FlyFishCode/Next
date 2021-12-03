@@ -126,6 +126,12 @@ video {
 	text-align: center;
 	background: yellow;
 }
+
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    appearance: none;
+    margin: 0;
+  }
 @media screen and (max-width: 1000px) {
 	.ant-table-thead > tr > th, .ant-table-tbody > tr > td{
 		padding: 0 !important;

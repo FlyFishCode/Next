@@ -51,7 +51,7 @@ const routes = [
 				name: 'EditorMachine',
 				component: () => import(/* webpackChunkName: "EditorMachine" */ '../views/Bulletin/Advert/Machine/MachineEditor.vue'),
 				meta: [
-					{ label: 'default.1', path: 'Advert' },
+					{ label: 'default.11', path: 'Advert' },
 					{ label: 'default.111', path: 'EditorMachine' }
 				]
 			},

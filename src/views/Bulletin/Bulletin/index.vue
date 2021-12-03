@@ -7,7 +7,7 @@
 				{{ 'ID' }}
 			</a-col>
 			<a-col :span="4">
-				<a-input v-model:value="infoVO.id" allow-clear/>
+				<a-input v-model:value="infoVO.id" type='number' allow-clear/>
 			</a-col>
 			<a-col :span="2" class="labelText">
 				{{ 'Title' }}

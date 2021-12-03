@@ -7,7 +7,7 @@
 					{{ 'ID' }}
 				</a-col>
 				<a-col :span="4">
-					<a-input v-model:value="infoVO.id" allowClear />
+					<a-input v-model:value="infoVO.id" type='number' allowClear />
 				</a-col>
 				<a-col :span="2" class="labelText">
 					{{ $t('default.161') }}
@@ -25,7 +25,7 @@
 					<a-date-picker v-model:value="infoVO.maxBindTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ $t('default.154') }}
+					{{ $t('default.147') + 'ID' }}
 				</a-col>
 				<a-col :span="4">
 					<a-select
@@ -234,7 +234,7 @@ export default defineComponent({
 					slots: { customRender: 'card' }
 				},
 				{
-					title: i18n('default.154'),
+					title: i18n('default.147') + 'ID',
 					slots: { customRender: 'nickname' }
 				},
 				{

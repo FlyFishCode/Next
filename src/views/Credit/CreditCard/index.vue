@@ -6,16 +6,16 @@
 				{{ 'ID' }}
 			</a-col>
 			<a-col :span="4">
-				<a-input v-model:value="infoVO.id" allow-clear/>
+				<a-input v-model:value="infoVO.id"  type='number' allow-clear/>
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Card No' }}
+				{{ $t('default.161') }}
 			</a-col>
 			<a-col :span="4">
-				<a-input v-model:value="infoVO.cardNo" allow-clear/>
+				<a-input v-model:value="infoVO.cardNo" type='number' allow-clear/>
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Member' }}
+				{{ $t('default.147') + 'ID' }}
 			</a-col>
 			<a-col :span="4">
 				<a-select class="selectBox" show-search v-model:value="infoVO.memberId" :default-active-first-option="false" :show-arrow="false" :filter-option="false" :not-found-content="null" allowClear @search="memberSearch">
@@ -25,7 +25,7 @@
 				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Status' }}
+				{{ $t('default.139') }}
 			</a-col>
 			<a-col :span="4">
 				<a-select class="selectBox" v-model:value="infoVO.status" allow-clear>
@@ -36,7 +36,7 @@
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
-				{{ 'All Points' }}
+				{{ $t('default.272') }}
 			</a-col>
 			<a-col :span="2">
 				<a-input v-model:value="infoVO.minAllPoints" allow-clear/>
@@ -45,7 +45,7 @@
 				<a-input v-model:value="infoVO.maxAllPoints" allow-clear/>
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Points' }}
+				{{ $t('default.35') }}
 			</a-col>
 			<a-col :span="2">
 				<a-input v-model:value="infoVO.minPoints" allow-clear/>
@@ -54,7 +54,7 @@
 				<a-input v-model:value="infoVO.maxPoints" allow-clear/>
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ 'Type' }}
+				{{ $t('default.149') }}
 			</a-col>
 			<a-col :span="4">
 				<a-select class="selectBox" v-model:value="infoVO.type" allow-clear>
@@ -93,7 +93,7 @@ import { defineComponent, onMounted, reactive, toRefs } from 'vue';
 import { GameUserListHttp, CreditListHttp, CreditDeleteHttp  } from '@/api/api';
 import labelTitle from '@/components/labelTitle.vue';
 import { useRouter } from 'vue-router';
-import { handleSelectEvent } from '@/components/common/tools';
+import { i18n, handleSelectEvent } from '@/components/common/tools';
 import { message } from 'ant-design-vue';
 import DeleteDialog from '@/components/common/DeleteDialog.vue';
 export default defineComponent({
@@ -131,27 +131,27 @@ export default defineComponent({
 					key: 'Id'
 				},
 				{
-					title: 'Card No',
+					title: i18n('default.161'),
 					slots: { customRender: 'cardNo' }
 				},
 				{
-					title: 'Member',
+					title: i18n('default.147') + 'ID',
 					dataIndex: 'memberName',
 				},
 				{
-					title: 'All Points',
+					title: i18n('default.272'),
 					dataIndex: 'allPoints',
 				},
 				{
-					title: 'Points',
+					title: i18n('default.35'),
 					dataIndex: 'points',
 				},
 				{
-					title: 'Status',
+					title: i18n('default.139'),
 					slots: { customRender: 'status' }
 				},
 				{
-					title: 'Type',
+					title: i18n('default.149'),
 					slots: { customRender: 'type' }
 				}
 			],

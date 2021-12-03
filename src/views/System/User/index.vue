@@ -4,7 +4,7 @@
 		<div class="searchBox">
 			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
-					{{ $t('default.148') }}
+					{{ $t('default.147') + 'ID' }}
 				</a-col>
 				<a-col :span="4">
 					<a-input v-model:value="infoVO.username" allowClear />
@@ -19,7 +19,7 @@
 					{{ $t('default.90') }}
 				</a-col>
 				<a-col :span="4">
-					<a-input v-model:value="infoVO.mobile" allowClear />
+					<a-input v-model:value="infoVO.mobile" type='number' allowClear />
 				</a-col>
 				<a-col :span="2" class="labelText">
 					{{ $t('default.105') }}
@@ -245,12 +245,10 @@ export default defineComponent({
 		const data = reactive({
 			visible: false,
 			deleteVisible: false,
-			isDisabled: true,
 			ResetPasswordDialog: false,
 			typeDisabled: false,
 			superDisabled: false,
 			id: 0,
-			resetPassword: '',
 			resetUserId: 0,
 			resetDialogObj: {
 				password: '',
@@ -328,7 +326,7 @@ export default defineComponent({
 					sorter: true
 				},
 				{
-					title: i18n('default.148'),
+					title: i18n('default.147') + 'ID',
 					slots: { customRender: 'username' }
 				},
 				{
