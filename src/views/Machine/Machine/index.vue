@@ -104,7 +104,7 @@
 		</a-table>
 	</a-row>
 	<div class="paginationStyle">
-		<a-pagination show-quick-jumper v-model:current="currentPage" :total="totalSize" @change="pageChange" />
+		<a-pagination show-quick-jumper v-model:current="currentPage" :total="totalSize" :show-total="(total) => `${$t('default.126')} ${total}`" @change="pageChange" />
 	</div>
 	<DeleteDialog :visible="visible" @afterClose="afterClose" @handleOk="handleDeleteOk" />
 </template>

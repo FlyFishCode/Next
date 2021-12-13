@@ -193,7 +193,7 @@
 			<a-col :span="3" class="labelText">
 				{{ $t('default.256') }}
 			</a-col>
-			<a-col :span="9">
+			<a-col :span="4">
 				<div class="clearfix">
 					<a-upload
 						:customRequest='handlePlayerImgRequest'
@@ -208,6 +208,7 @@
 					</a-upload>
 				</div>
 			</a-col>
+			<a-col :span="5">{{ `${$t('default.273')}: 220*180` }}</a-col>
 			<a-col v-if="RoleType === 1" :span="3" class="labelText">
 				{{ $t('default.26') }}
 			</a-col>

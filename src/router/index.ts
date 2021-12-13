@@ -247,13 +247,13 @@ const routes = [
 				path: '/Country',
 				name: 'Country',
 				component: () => import(/* webpackChunkName: "Country" */ '../views/Country/Country/index.vue'),
-				meta: [{ label: 'default.23', path: 'Country' }]
+				meta: [{ label: 'default.262', path: 'Country' }]
 			},
 			{
 				path: '/Area',
 				name: 'Area',
 				component: () => import(/* webpackChunkName: "Area" */ '../views/Country/Area/index.vue'),
-				meta: [{ label: 'default.23', path: 'Area' }]
+				meta: [{ label: 'default.263', path: 'Area' }]
 			},
 			{
 				path: '/News',

@@ -66,7 +66,7 @@
         <a-col :span="2" class="labelText">
           {{ $t('default.216') }}
         </a-col>
-        <a-col :span="22" class="searchButton">
+        <a-col :span="13" class="searchButton">
 					<div class="clearfix">
 						<a-upload
 							:customRequest='handlePlayerImgRequest'
@@ -84,6 +84,7 @@
 						</a-modal>
 					</div>
 				</a-col>
+				<a-col :span="5">{{ `${$t('default.273')}: 480*480` }}</a-col>
       </a-row>
     </div>
     <div class="contentBox">
@@ -189,7 +190,7 @@
         <a-col :span="2" class="labelText">
           {{ $t('default.220') }}
         </a-col>
-				<a-col :span="22" class="searchButton">
+				<a-col :span="9" class="searchButton">
 					<div class="clearfix">
 						<a-upload
 							:customRequest='handleShopImgRequest'
@@ -207,6 +208,7 @@
 						</a-modal>
 					</div>
 				</a-col>
+				<a-col :span="5">{{ `${$t('default.273')}: 230*230` }}</a-col>
 			</a-row>
 		</div>
 		<!-- 广告链接的预览 -->

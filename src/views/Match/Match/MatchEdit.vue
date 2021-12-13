@@ -156,7 +156,7 @@
 					</a-modal>
 				</div>
 			</a-col>
-			<a-col>{{ `${$t('default.248')}：600px X 650px` }}</a-col>
+			<a-col>{{ `${$t('default.273')}：600px X 600px` }}</a-col>
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
@@ -181,7 +181,7 @@
 					</a-modal>
 				</div>
 			</a-col>
-			<a-col>{{ `${$t('default.248')}：200px X 200px` }}</a-col>
+			<a-col>{{ `${$t('default.273')}：200px X 200px` }}</a-col>
 		</a-row>
 		<!-- 广告链接的预览 -->
 	<showUrlDialog :visible="showUrlDialog" :src="infoVO.thumbnail" @showBoxCancel="showBoxCancel" />

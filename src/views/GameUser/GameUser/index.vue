@@ -162,7 +162,7 @@
 				<template #handle="{ record }">
 					<div class="handleBtnDiv">
 						<a-button type="primary" size="small" @click="handlePassword(record.id)">{{ $t('default.168') }}</a-button>
-						<a-button type="danger" size="small" @click="playerDelete(record.id)">{{ $t('default.10') }}</a-button>
+						<!-- <a-button type="danger" size="small" @click="playerDelete(record.id)">{{ $t('default.10') }}</a-button> -->
 					</div>
 				</template>
 			</a-table>

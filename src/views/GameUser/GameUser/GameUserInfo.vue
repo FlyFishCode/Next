@@ -154,6 +154,7 @@
 					</a-modal>
 				</div>
 			</a-col>
+			<a-col :span="5">{{ `${$t('default.273')}: 60*60` }}</a-col>
 		</a-row>
 	</div>
 </template>

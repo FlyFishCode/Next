@@ -58,7 +58,7 @@
 			<a-col :span="2" class="labelText">
 				{{ $t('default.230') }}
 			</a-col>
-			<a-col :span="4" class="searchButton">
+			<a-col :span="6" class="searchButton">
 				<div class="clearfix">
 					<a-upload
 					:customRequest='handleImgRequest'
@@ -93,10 +93,11 @@
 					</a-modal>
 				</div>
 			</a-col>
+			<a-col :span="2">{{ `${$t('default.273')}: 525*300` }}</a-col>
 			<a-col :span="2" class="labelText">
 				{{ $t('default.268') }}
 			</a-col>
-			<a-col :span="6" class="searchButton">
+			<a-col :span="4" class="searchButton">
 				<div class="clearfix">
 					<a-upload
 					:customRequest='handlePreviewImgRequest'
@@ -117,6 +118,7 @@
 					</a-modal>
 				</div>
 			</a-col>
+			<a-col :span="4">{{ `${$t('default.273')}: 525*300` }}</a-col>
 		</a-row>
 
 		<a-row>
