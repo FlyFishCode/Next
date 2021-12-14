@@ -23,7 +23,7 @@
 					<a-menu-item key="Machine">{{ $t('default.3') }}</a-menu-item>
 				</a-sub-menu>
 
-				<!-- <a-sub-menu key="3">
+				<a-sub-menu key="3">
 					<template #title>
 						<span
 							><CreditCardOutlined /><span>{{ $t('default.116') }}</span></span
@@ -32,7 +32,7 @@
 					<a-menu-item key="Settlement">{{ $t('default.117') }}</a-menu-item>
 					<a-menu-item key="SettlementInfo">{{ $t('default.116') }}</a-menu-item>
 					<a-menu-item key="RechargeRecord">{{ $t('default.143') }}</a-menu-item>
-				</a-sub-menu> -->
+				</a-sub-menu>
 
 				<a-sub-menu v-if="RoleType === 1" key="4">
 					<template #title>
