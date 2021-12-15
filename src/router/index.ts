@@ -159,10 +159,22 @@ const routes = [
 				meta: [{ label: 'default.117', path: 'Settlement' }]
 			},
 			{
-				path: '/RechargeRecord',
-				name: 'RechargeRecord',
-				component: () => import(/* webpackChunkName: "RechargeRecord" */ '../views/Settlement/RechargeRecord.vue'),
-				meta: [{ label: 'default.143', path: 'RechargeRecord' }]
+				path: '/RechargeDetails',
+				name: 'RechargeDetails',
+				component: () => import(/* webpackChunkName: "RechargeDetails" */ '../views/Settlement/RechargeDetails.vue'),
+				meta: [{ label: 'default.275', path: 'RechargeDetails' }]
+			},
+			{
+				path: '/ConsumptionDetails',
+				name: 'ConsumptionDetails',
+				component: () => import(/* webpackChunkName: "ConsumptionDetails" */ '../views/Settlement/ConsumptionDetails.vue'),
+				meta: [{ label: 'default.276', path: 'ConsumptionDetails' }]
+			},
+			{
+				path: '/Summary',
+				name: 'Summary',
+				component: () => import(/* webpackChunkName: "RechargeRecord" */ '../views/Settlement/Summary.vue'),
+				meta: [{ label: 'default.274', path: 'Summary' }]
 			},
 			// User
 			{

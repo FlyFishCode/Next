@@ -122,7 +122,7 @@ import { agentListHttp, countryListHttp, areaListHttp, shopListHttp, settlementI
 import { i18n } from '@/components/common/tools';
 import { message } from 'ant-design-vue';
 export default defineComponent({
-	name: 'SettlementPage',
+	name: 'SettlementInfo',
 	components: {
 		labelTitle
 	},
