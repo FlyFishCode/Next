@@ -49,6 +49,12 @@
 
 			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
+					{{ $t('default.21') }}
+				</a-col>
+				<a-col :span="4">
+					<a-input v-model:value="infoVO.machineSerial" allowClear />
+				</a-col>
+				<a-col :span="2" class="labelText">
 					{{ $t('default.26') }}
 				</a-col>
 				<a-col :span="4">
@@ -83,10 +89,7 @@
 			</a-row>
 		</div>
 		<a-row class="rowStyle">
-			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="shopId" class="tableStyle">
-				<template #expandedRowRender="{ record }">
-					<a-table :columns="innerColumns" :data-source="record.machineRechargeRecordList" :pagination="false" rowKey="totalNoFree"> </a-table>
-				</template>
+			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
 			</a-table>
 		</a-row>
 		<div class="paginationStyle">
@@ -98,7 +101,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { agentListHttp, countryListHttp, areaListHttp, shopListHttp, rechargeRecordHttp } from '@/api/api';
+import { agentListHttp, countryListHttp, areaListHttp, shopListHttp, RechargeListHttp } from '@/api/api';
 import { i18n } from '@/components/common/tools';
 export default defineComponent({
 	name: 'RechargeDetails',
@@ -113,6 +116,7 @@ export default defineComponent({
 				countryId: '',
 				areaId: '',
 				agentId: '',
+				machineSerial:"",
 				minRechargeTime: '',
 				maxRechargeTime: '',
 				pageIndex: 1,
@@ -127,40 +131,6 @@ export default defineComponent({
 					title: i18n('default.5'),
 					dataIndex: 'shopName'
 				},
-				{
-					title: i18n('default.123'),
-					dataIndex: 'coin'
-				},
-				{
-					title: i18n('default.124'),
-					dataIndex: 'cash'
-				},
-				{
-					title: i18n('default.137'),
-					dataIndex: 'card'
-				},
-				{
-					title: i18n('default.125'),
-					dataIndex: 'qrcode'
-				},
-				{
-					title: i18n('default.78'),
-					dataIndex: 'free'
-				},
-				{
-					title: i18n('default.144'),
-					dataIndex: 'totalWithFree'
-				},
-				{
-					title: i18n('default.145'),
-					dataIndex: 'totalNoFree'
-				},
-				{
-					title: i18n('default.133'),
-					dataIndex: 'agentName'
-				}
-			],
-			innerColumns: [
 				{
 					title: i18n('default.21'),
 					dataIndex: 'machineSerial'
@@ -190,16 +160,15 @@ export default defineComponent({
 					dataIndex: 'free'
 				},
 				{
-					title: i18n('default.144'),
-					dataIndex: 'totalWithFree'
+					title: i18n('default.277'),
+					dataIndex: 'rechargeTime'
 				},
 				{
-					title: i18n('default.145'),
-					dataIndex: 'totalNoFree'
+					title: i18n('default.133'),
+					dataIndex: 'agentName'
 				}
 			],
-			tableList: [{ shopId: 0 }],
-			innerData: [],
+			tableList: [{ id: 0 }],
 			total: 1,
 			shopList: [],
 			agentList: [],
@@ -237,7 +206,7 @@ export default defineComponent({
 				data.search();
 			},
 			search: () => {
-				rechargeRecordHttp(data.infoVO).then((res: any) => {
+				RechargeListHttp(data.infoVO).then((res: any) => {
 					if (res.data.data) {
 						data.tableList = res.data.data.list;
 						data.total = res.data.data.totalCount;

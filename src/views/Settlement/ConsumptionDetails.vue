@@ -49,6 +49,12 @@
 
 			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
+					{{ $t('default.21') }}
+				</a-col>
+				<a-col :span="4">
+					<a-input v-model:value="infoVO.machineSerial" allowClear />
+				</a-col>
+				<a-col :span="2" class="labelText">
 					{{ $t('default.26') }}
 				</a-col>
 				<a-col :span="4">
@@ -72,10 +78,10 @@
 					{{ $t('default.120') }}
 				</a-col>
 				<a-col :span="2" class="datePicker">
-					<a-date-picker v-model:value="infoVO.minRechargeTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
+					<a-date-picker v-model:value="infoVO.minConsumeTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
 				</a-col>
 				<a-col :span="2" class="datePicker">
-					<a-date-picker v-model:value="infoVO.maxRechargeTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
+					<a-date-picker v-model:value="infoVO.maxConsumeTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 				</a-col>
 				<a-col :span="2" class="labelText">
 					<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
@@ -83,9 +89,21 @@
 			</a-row>
 		</div>
 		<a-row class="rowStyle">
-			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="shopId" class="tableStyle">
-				<template #expandedRowRender="{ record }">
-					<a-table :columns="innerColumns" :data-source="record.machineRechargeRecordList" :pagination="false" rowKey="totalNoFree"> </a-table>
+			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
+				<template #consumeType="{ record }">
+					<div v-if="record.consumeType === 1">{{ $t('default.279') }}</div>
+					<div v-if="record.consumeType === 2">{{ $t('default.78') }}</div>
+					<div v-if="record.consumeType === 3">{{ $t('default.280') }}</div>
+					<div v-if="record.consumeType === 4">{{ $t('default.281') }}</div>
+				</template>
+				<template #gameType="{ record }">
+					<div v-if="record.gameType === 1">{{ $t('default.55') }}</div>
+					<div v-if="record.gameType === 2">{{ $t('default.283') }}</div>
+					<div v-if="record.gameType === 3">{{ $t('default.284') }}</div>
+					<div v-if="record.gameType === 4">{{ $t('default.285') }}</div>
+				</template>
+				<template #gameName="{ record }">
+					<div>{{ getGameName(record.gameName) }}</div>
 				</template>
 			</a-table>
 		</a-row>
@@ -98,7 +116,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { agentListHttp, countryListHttp, areaListHttp, shopListHttp, rechargeRecordHttp } from '@/api/api';
+import { agentListHttp, countryListHttp, areaListHttp, shopListHttp, ConsumptionHttp } from '@/api/api';
 import { i18n } from '@/components/common/tools';
 export default defineComponent({
 	name: 'ConsumptionDetails',
@@ -106,6 +124,51 @@ export default defineComponent({
 		labelTitle
 	},
 	setup() {
+		const getGameName = (type: any) =>{
+			let str = '';
+			switch (type) {
+				case 1:
+					str = 'default.31'
+					break;
+				case 2:
+					str = 'default.32'
+					break;
+				case 3:
+					str = 'default.33'
+					break;
+				case 4:
+					str = 'default.34'
+					break;
+				case 5:
+					str = 'default.41'
+					break;
+				case 6:
+					str = 'default.42'
+					break;
+				case 7:
+					str = 'default.44'
+					break;
+				case 8:
+					str = 'default.45'
+					break;
+				case 9:
+					str = 'default.50'
+					break;
+				case 10:
+					str = 'default.53'
+					break;
+				case 11:
+					str = 'default.52'
+					break;
+				case 12:
+					str = 'default.54'
+					break;
+				default:
+					str = 'default.51'
+					break;
+			}
+			return i18n(str);
+		}
 		const data = reactive({
 			infoVO: {
 				shopId: null,
@@ -113,8 +176,9 @@ export default defineComponent({
 				countryId: '',
 				areaId: '',
 				agentId: '',
-				minRechargeTime: '',
-				maxRechargeTime: '',
+				machineSerial:"",
+				minConsumeTime: '',
+				maxConsumeTime: '',
 				pageIndex: 1,
 				pageSize: 10
 			},
@@ -128,32 +192,28 @@ export default defineComponent({
 					dataIndex: 'shopName'
 				},
 				{
-					title: i18n('default.123'),
-					dataIndex: 'coin'
+					title: i18n('default.21'),
+					dataIndex: 'machineSerial'
 				},
 				{
-					title: i18n('default.124'),
-					dataIndex: 'cash'
+					title: i18n('default.13'),
+					dataIndex: 'machineName'
 				},
 				{
-					title: i18n('default.137'),
-					dataIndex: 'card'
+					title: i18n('default.282'),
+					slots: { customRender: 'gameType' }
 				},
 				{
-					title: i18n('default.125'),
-					dataIndex: 'qrcode'
+					title: i18n('default.286'),
+					slots: { customRender: 'gameName' }
 				},
 				{
-					title: i18n('default.78'),
-					dataIndex: 'free'
+					title: i18n('default.278'),
+					dataIndex: 'consumeTime'
 				},
 				{
-					title: i18n('default.144'),
-					dataIndex: 'totalWithFree'
-				},
-				{
-					title: i18n('default.145'),
-					dataIndex: 'totalNoFree'
+					title: i18n('default.149'),
+					slots: { customRender: 'consumeType' }
 				},
 				{
 					title: i18n('default.133'),
@@ -198,24 +258,23 @@ export default defineComponent({
 					dataIndex: 'totalNoFree'
 				}
 			],
-			tableList: [{ shopId: 0 }],
-			innerData: [],
+			tableList: [{ id: 0 }],
 			total: 1,
 			shopList: [],
 			agentList: [],
 			areaList: [],
 			countryList: [],
 			disabledStartDate: (startValue: any) => {
-				if (!startValue || !data.infoVO.maxRechargeTime) {
+				if (!startValue || !data.infoVO.maxConsumeTime) {
 					return false;
 				}
-				return startValue.valueOf() > new Date(data.infoVO.maxRechargeTime).valueOf();
+				return startValue.valueOf() > new Date(data.infoVO.maxConsumeTime).valueOf();
 			},
 			disabledEndDate: (endValue: any) => {
-				if (!endValue || !data.infoVO.minRechargeTime) {
+				if (!endValue || !data.infoVO.minConsumeTime) {
 					return false;
 				}
-				return new Date(data.infoVO.minRechargeTime).valueOf() >= endValue.valueOf();
+				return new Date(data.infoVO.minConsumeTime).valueOf() >= endValue.valueOf();
 			},
 			agentSearch: (value: any) => {
 				agentListHttp({ agentName: value.split("'").join(''), pageSize: 999 }).then((res: any) => {
@@ -237,7 +296,7 @@ export default defineComponent({
 				data.search();
 			},
 			search: () => {
-				rechargeRecordHttp(data.infoVO).then((res: any) => {
+				ConsumptionHttp(data.infoVO).then((res: any) => {
 					if (res.data.data) {
 						data.tableList = res.data.data.list;
 						data.total = res.data.data.totalCount;
@@ -265,7 +324,8 @@ export default defineComponent({
 			init();
 		});
 		return {
-			...toRefs(data)
+			...toRefs(data),
+			getGameName
 		};
 	}
 });

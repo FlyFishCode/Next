@@ -6,6 +6,14 @@ const settlementInfo = 'credit/shopsettlementlist';
 const machineSettlementList = 'credit/machinesettlementlist';
 // 机器结算
 const final = 'credit/settlement';
-// 充值记录
+// 充值汇总记录
 const rechargeRecord = 'credit/rechargerecordlist';
-export { settlementList, settlementInfo, machineSettlementList, final, rechargeRecord };
+
+// 充值明细
+const RechargeList = 'credit/rechargerecorddetails';
+// 消费明细
+const Consumption = 'credit/consumerecorddetails';
+
+
+
+export { settlementList, settlementInfo, machineSettlementList, final, rechargeRecord,RechargeList,Consumption };
