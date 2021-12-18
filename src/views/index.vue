@@ -31,9 +31,9 @@
 					</template>
 					<a-menu-item key="Settlement">{{ $t('default.117') }}</a-menu-item>
 					<!-- <a-menu-item key="SettlementInfo">{{ $t('default.116') }}</a-menu-item> -->
+					<a-menu-item key="Summary">{{ $t('default.274') }}</a-menu-item>
 					<a-menu-item key="RechargeDetails">{{ $t('default.275') }}</a-menu-item>
 					<a-menu-item key="ConsumptionDetails">{{ $t('default.276') }}</a-menu-item>
-					<a-menu-item key="Summary">{{ $t('default.274') }}</a-menu-item>
 				</a-sub-menu>
 
 				<a-sub-menu v-if="RoleType === 1" key="4">

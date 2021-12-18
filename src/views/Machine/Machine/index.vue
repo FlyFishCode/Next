@@ -9,10 +9,14 @@
 				<a-input v-model:value="infoVO.id" type='number' allow-clear />
 			</a-col>
 			<a-col :span="2" class="labelText">
-				{{ $t('default.13') }}
+				{{ $t('default.84') }}
 			</a-col>
 			<a-col :span="3">
-				<a-input v-model:value="infoVO.name" allow-clear />
+				<a-select class="selectBox" v-model:value="infoVO.placingType" allow-clear>
+					<a-select-option value="1">{{ $t('default.86') }}</a-select-option>
+					<a-select-option value="2">{{ $t('default.87') }}</a-select-option>
+					<a-select-option value="3">{{ $t('default.88') }}</a-select-option>
+				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
 				{{ $t('default.5') }}
@@ -36,20 +40,16 @@
 		</a-row>
 		<a-row class="rowStyle">
 			<a-col :span="2" class="labelText">
+				{{ $t('default.13') }}
+			</a-col>
+			<a-col :span="3">
+				<a-input v-model:value="infoVO.name" allow-clear />
+			</a-col>
+			<a-col :span="2" class="labelText">
 				{{ $t('default.21') }}
 			</a-col>
 			<a-col :span="3">
 				<a-input v-model:value="infoVO.serial" allow-clear />
-			</a-col>
-			<a-col :span="2" class="labelText">
-				{{ $t('default.84') }}
-			</a-col>
-			<a-col :span="3">
-				<a-select class="selectBox" v-model:value="infoVO.placingType" allow-clear>
-					<a-select-option value="1">{{ $t('default.86') }}</a-select-option>
-					<a-select-option value="2">{{ $t('default.87') }}</a-select-option>
-					<a-select-option value="3">{{ $t('default.88') }}</a-select-option>
-				</a-select>
 			</a-col>
 			<a-col :span="2" class="labelText">
 				{{ $t('default.89') }}
@@ -88,6 +88,9 @@
 		<a-table bordered :row-selection="rowSelection" @change="handleChange" :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
 			<template #label="{ record }">
 				<a-button v-if="record.name" type="link" @click="handleMachineClick(record.id)">{{ record.name }}</a-button>
+			</template>
+			<template #label1="{ record }">
+				<a-button v-if="record.serial" type="link" @click="handleMachineClick(record.id)">{{ record.serial }}</a-button>
 			</template>
 			<template #type="{ record }">
 				<div v-if="record.type === 'A1'">{{ 'A1' }}</div>
@@ -159,6 +162,11 @@ export default defineComponent({
 					sorter: true
 				},
 				{
+					title: i18n('default.21'),
+					slots: { customRender: 'label1' },
+					sorter: true
+				},
+				{
 					title: i18n('default.17'),
 					key: 'Shop',
 					slots: { customRender: 'shop' }
@@ -168,12 +176,6 @@ export default defineComponent({
 					dataIndex: 'type',
 					key: 'Type',
 					slots: { customRender: 'type' }
-				},
-				{
-					title: i18n('default.21'),
-					dataIndex: 'serial',
-					key: 'Serial',
-					sorter: true
 				},
 				{
 					title: i18n('default.84'),

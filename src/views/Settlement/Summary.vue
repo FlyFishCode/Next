@@ -90,7 +90,7 @@
 			</a-table>
 		</a-row>
 		<div class="paginationStyle">
-			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" @change="pageChange" />
+			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" :show-total="total => `${$t('default.126')} ${total}`" @change="pageChange" />
 		</div>
 	</div>
 </template>
@@ -143,31 +143,31 @@ export default defineComponent({
 					title: i18n('default.125'),
 					dataIndex: 'qrcode'
 				},
-				{
-					title: i18n('default.78'),
-					dataIndex: 'free'
-				},
-				{
-					title: i18n('default.144'),
-					dataIndex: 'totalWithFree'
-				},
+				// {
+				// 	title: i18n('default.78'),
+				// 	dataIndex: 'free'
+				// },
+				// {
+				// 	title: i18n('default.144'),
+				// 	dataIndex: 'totalWithFree'
+				// },
 				{
 					title: i18n('default.145'),
 					dataIndex: 'totalNoFree'
 				},
 				{
-					title: i18n('default.133'),
+					title: i18n('default.26'),
 					dataIndex: 'agentName'
 				}
 			],
 			innerColumns: [
 				{
-					title: i18n('default.21'),
-					dataIndex: 'machineSerial'
-				},
-				{
 					title: i18n('default.13'),
 					dataIndex: 'machineName'
+				},
+				{
+					title: i18n('default.21'),
+					dataIndex: 'machineSerial'
 				},
 				{
 					title: i18n('default.123'),
@@ -185,21 +185,20 @@ export default defineComponent({
 					title: i18n('default.125'),
 					dataIndex: 'qrcode'
 				},
-				{
-					title: i18n('default.78'),
-					dataIndex: 'free'
-				},
-				{
-					title: i18n('default.144'),
-					dataIndex: 'totalWithFree'
-				},
+				// {
+				// 	title: i18n('default.78'),
+				// 	dataIndex: 'free'
+				// },
+				// {
+				// 	title: i18n('default.144'),
+				// 	dataIndex: 'totalWithFree'
+				// },
 				{
 					title: i18n('default.145'),
 					dataIndex: 'totalNoFree'
 				}
 			],
 			tableList: [{ shopId: 0 }],
-			innerData: [],
 			total: 1,
 			shopList: [],
 			agentList: [],

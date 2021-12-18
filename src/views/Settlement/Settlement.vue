@@ -30,7 +30,7 @@
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ $t('default.23') }}
+					{{ $t('default.262') }}
 				</a-col>
 				<a-col :span="4">
 					<a-select v-model:value="infoVO.countryId" @change="countryChange" class="selectBox" allowClear>
@@ -38,7 +38,7 @@
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ $t('default.23') }}
+					{{ $t('default.263') }}
 				</a-col>
 				<a-col :span="4">
 					<a-select v-model:value="infoVO.areaId" class="selectBox" allowClear>
@@ -48,6 +48,18 @@
 			</a-row>
 
 			<a-row class="rowStyle">
+				<a-col :span="2" class="labelText">
+					{{ $t('default.13') }}
+				</a-col>
+				<a-col :span="4">
+					<a-input v-model:value="infoVO.machineName" allowClear />
+				</a-col>
+				<a-col :span="2" class="labelText">
+					{{ $t('default.21') }}
+				</a-col>
+				<a-col :span="4">
+					<a-input v-model:value="infoVO.machineSerial" allowClear />
+				</a-col>
 				<a-col :span="2" class="labelText">
 					{{ $t('default.26') }}
 				</a-col>
@@ -69,7 +81,7 @@
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ $t('default.120') }}
+					{{ $t('default.290') }}
 				</a-col>
 				<a-col :span="2" class="datePicker">
 					<a-date-picker v-model:value="infoVO.minRecordTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
@@ -77,16 +89,12 @@
 				<a-col :span="2" class="datePicker">
 					<a-date-picker v-model:value="infoVO.maxRecordTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 				</a-col>
-				<a-col :span="2" class="labelText">
-					{{ $t('default.122') }}
-				</a-col>
-				<a-col :span="4">
-					<a-input v-model:value="infoVO.machineSerial" allowClear />
-				</a-col>
+			</a-row>
+			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
 					{{ $t('default.139') }}
 				</a-col>
-				<a-col :span="2">
+				<a-col :span="4">
 					<a-select v-model:value="infoVO.status" class="selectBox" allowClear>
 						<a-select-option v-for="item in stateList" :key="item.id" :value="item.id">{{ item.label }}</a-select-option>
 					</a-select>
@@ -104,10 +112,16 @@
 				<template #ratio="{ record }">
 					<div>{{ `${record.shopRate}%/${record.agentRate}%` }}</div>
 				</template>
+				<template #startTime="{ record }">
+					<div>{{ record.startTime.split(' ')[0] }}</div>
+				</template>
+				<template #endTime="{ record }">
+					<div>{{ record.endTime.split(' ')[0] }}</div>
+				</template>
 			</a-table>
 		</a-row>
 		<div class="paginationStyle">
-			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" @change="pageChange" />
+			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" :show-total="total => `${$t('default.126')} ${total}`" @change="pageChange" />
 		</div>
 	</div>
 </template>
@@ -131,6 +145,7 @@ export default defineComponent({
 				countryId: '',
 				areaId: '',
 				agentId: '',
+				machineName: '',
 				machineSerial: '',
 				minRecordTime: '',
 				maxRecordTime: '',
@@ -154,12 +169,7 @@ export default defineComponent({
 					key: 'machineName'
 				},
 				{
-					title: i18n('default.120'),
-					dataIndex: 'recordTime',
-					key: 'Id'
-				},
-				{
-					title: i18n('default.122'),
+					title: i18n('default.21'),
 					dataIndex: 'machineSerial',
 					key: 'Type'
 				},
@@ -183,11 +193,11 @@ export default defineComponent({
 					dataIndex: 'qrcode',
 					key: 'Last Online'
 				},
-				{
-					title: i18n('default.78'),
-					dataIndex: 'free',
-					key: 'Locked Dates'
-				},
+				// {
+				// 	title: i18n('default.78'),
+				// 	dataIndex: 'free',
+				// 	key: 'Locked Dates'
+				// },
 				{
 					title: i18n('default.138'),
 					dataIndex: 'total',
@@ -203,11 +213,23 @@ export default defineComponent({
 					slots: { customRender: 'status' }
 				},
 				{
+					title: i18n('default.288'),
+					slots: { customRender: 'startTime' },
+				},
+				{
+					title: i18n('default.289'),
+					slots: { customRender: 'endTime' }
+				},
+				{
+					title: i18n('default.290'),
+					dataIndex: 'endTime',
+				},
+				{
 					title: i18n('default.136'),
 					slots: { customRender: 'ratio' }
 				},
 				{
-					title: i18n('default.133'),
+					title: i18n('default.26'),
 					dataIndex: 'agentName',
 					key: 'Locked Dates'
 				}

@@ -9,7 +9,8 @@ module.exports = {
                     // 如果你需要使用 scss 源文件，把文件结尾的扩展名从 `.css` 替换成 `.scss` 就可以了
                     return `element-plus/lib/theme-chalk/${name}.css`;
                 }
-            }
+            },
+            '@babel/plugin-proposal-optional-chaining'
         ]
     ]
 };

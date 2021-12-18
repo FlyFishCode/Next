@@ -49,15 +49,30 @@
 
 			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
+					{{ $t('default.13') }}
+				</a-col>
+				<a-col :span="4">
+					<a-input v-model:value="infoVO.machineName" allowClear />
+				</a-col>
+				<a-col :span="2" class="labelText">
 					{{ $t('default.21') }}
 				</a-col>
 				<a-col :span="4">
 					<a-input v-model:value="infoVO.machineSerial" allowClear />
 				</a-col>
 				<a-col :span="2" class="labelText">
+					{{ $t('default.120') }}
+				</a-col>
+				<a-col :span="2" class="datePicker">
+					<a-date-picker v-model:value="infoVO.minRechargeTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
+				</a-col>
+				<a-col :span="2" class="datePicker">
+					<a-date-picker v-model:value="infoVO.maxRechargeTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
+				</a-col>
+				<a-col :span="2" class="labelText">
 					{{ $t('default.26') }}
 				</a-col>
-				<a-col :span="4">
+				<a-col :span="3">
 					<a-select
 					class="selectBox"
 						show-search
@@ -74,26 +89,17 @@
 						</a-select-option>
 					</a-select>
 				</a-col>
-				<a-col :span="2" class="labelText">
-					{{ $t('default.120') }}
-				</a-col>
-				<a-col :span="2" class="datePicker">
-					<a-date-picker v-model:value="infoVO.minRechargeTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
-				</a-col>
-				<a-col :span="2" class="datePicker">
-					<a-date-picker v-model:value="infoVO.maxRechargeTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
-				</a-col>
-				<a-col :span="2" class="labelText">
+				<a-col :span="1" class="labelText">
 					<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
 				</a-col>
 			</a-row>
 		</div>
 		<a-row class="rowStyle">
-			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
+			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id"  class="tableStyle">
 			</a-table>
 		</a-row>
 		<div class="paginationStyle">
-			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" @change="pageChange" />
+			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" :show-total="total => `${$t('default.126')} ${total}`" @change="pageChange" />
 		</div>
 	</div>
 </template>
@@ -116,6 +122,7 @@ export default defineComponent({
 				countryId: '',
 				areaId: '',
 				agentId: '',
+				machineName:"",
 				machineSerial:"",
 				minRechargeTime: '',
 				maxRechargeTime: '',
@@ -132,12 +139,12 @@ export default defineComponent({
 					dataIndex: 'shopName'
 				},
 				{
-					title: i18n('default.21'),
-					dataIndex: 'machineSerial'
-				},
-				{
 					title: i18n('default.13'),
 					dataIndex: 'machineName'
+				},
+				{
+					title: i18n('default.21'),
+					dataIndex: 'machineSerial'
 				},
 				{
 					title: i18n('default.123'),
@@ -164,7 +171,7 @@ export default defineComponent({
 					dataIndex: 'rechargeTime'
 				},
 				{
-					title: i18n('default.133'),
+					title: i18n('default.26'),
 					dataIndex: 'agentName'
 				}
 			],

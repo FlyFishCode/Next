@@ -49,10 +49,25 @@
 
 			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
+					{{ $t('default.13') }}
+				</a-col>
+				<a-col :span="4">
+					<a-input v-model:value="infoVO.machineName" allowClear />
+				</a-col>
+				<a-col :span="2" class="labelText">
 					{{ $t('default.21') }}
 				</a-col>
 				<a-col :span="4">
 					<a-input v-model:value="infoVO.machineSerial" allowClear />
+				</a-col>
+				<a-col :span="2" class="labelText">
+					{{ $t('default.120') }}
+				</a-col>
+				<a-col :span="2" class="datePicker">
+					<a-date-picker v-model:value="infoVO.minConsumeTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
+				</a-col>
+				<a-col :span="2" class="datePicker">
+					<a-date-picker v-model:value="infoVO.maxConsumeTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 				</a-col>
 				<a-col :span="2" class="labelText">
 					{{ $t('default.26') }}
@@ -74,41 +89,54 @@
 						</a-select-option>
 					</a-select>
 				</a-col>
+			</a-row>
+
+			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
-					{{ $t('default.120') }}
+					{{ $t('default.282') }}
 				</a-col>
-				<a-col :span="2" class="datePicker">
-					<a-date-picker v-model:value="infoVO.minConsumeTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
+				<a-col :span="4">
+					<a-select v-model:value="infoVO.gameType" class="selectBox" allowClear>
+						<a-select-option v-for="item in gameTypeList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+					</a-select>
 				</a-col>
-				<a-col :span="2" class="datePicker">
-					<a-date-picker v-model:value="infoVO.maxConsumeTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
+				<a-col :span="2" class="labelText">
+					{{ $t('default.292') }}
+				</a-col>
+				<a-col :span="4">
+					<a-select v-model:value="infoVO.consumeType" class="selectBox" allowClear>
+						<a-select-option v-for="item in consumeTypeList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+					</a-select>
+				</a-col>
+				<a-col :span="2" class="labelText">
+					{{ $t('default.286') }}
+				</a-col>
+				<a-col :span="4">
+					<a-select v-model:value="infoVO.gameName" class="selectBox" allowClear>
+						<a-select-option v-for="item in gameNameList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
+					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
 					<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
 				</a-col>
 			</a-row>
+
 		</div>
 		<a-row class="rowStyle">
 			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
-				<template #consumeType="{ record }">
-					<div v-if="record.consumeType === 1">{{ $t('default.279') }}</div>
-					<div v-if="record.consumeType === 2">{{ $t('default.78') }}</div>
-					<div v-if="record.consumeType === 3">{{ $t('default.280') }}</div>
-					<div v-if="record.consumeType === 4">{{ $t('default.281') }}</div>
-				</template>
 				<template #gameType="{ record }">
-					<div v-if="record.gameType === 1">{{ $t('default.55') }}</div>
-					<div v-if="record.gameType === 2">{{ $t('default.283') }}</div>
-					<div v-if="record.gameType === 3">{{ $t('default.284') }}</div>
-					<div v-if="record.gameType === 4">{{ $t('default.285') }}</div>
+					<div>{{ gameTypeList.find(item => item.id === record.gameType)?.name }}</div>
+				</template>
+				<template #consumeType="{ record }">
+					<div>{{ consumeTypeList.find(item => item.id === record.consumeType)?.name }}</div>
 				</template>
 				<template #gameName="{ record }">
-					<div>{{ getGameName(record.gameName) }}</div>
+					<div>{{ gameNameList.find(item => item.id === record.gameName)?.name }}</div>
 				</template>
 			</a-table>
 		</a-row>
 		<div class="paginationStyle">
-			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" @change="pageChange" />
+			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" :show-total="total => `${$t('default.126')} ${total}`" @change="pageChange" />
 		</div>
 	</div>
 </template>
@@ -124,51 +152,6 @@ export default defineComponent({
 		labelTitle
 	},
 	setup() {
-		const getGameName = (type: any) =>{
-			let str = '';
-			switch (type) {
-				case 1:
-					str = 'default.31'
-					break;
-				case 2:
-					str = 'default.32'
-					break;
-				case 3:
-					str = 'default.33'
-					break;
-				case 4:
-					str = 'default.34'
-					break;
-				case 5:
-					str = 'default.41'
-					break;
-				case 6:
-					str = 'default.42'
-					break;
-				case 7:
-					str = 'default.44'
-					break;
-				case 8:
-					str = 'default.45'
-					break;
-				case 9:
-					str = 'default.50'
-					break;
-				case 10:
-					str = 'default.53'
-					break;
-				case 11:
-					str = 'default.52'
-					break;
-				case 12:
-					str = 'default.54'
-					break;
-				default:
-					str = 'default.51'
-					break;
-			}
-			return i18n(str);
-		}
 		const data = reactive({
 			infoVO: {
 				shopId: null,
@@ -176,6 +159,10 @@ export default defineComponent({
 				countryId: '',
 				areaId: '',
 				agentId: '',
+				gameType: '',
+				gameName: '',
+				consumeType: '',
+				machineName:"",
 				machineSerial:"",
 				minConsumeTime: '',
 				maxConsumeTime: '',
@@ -192,70 +179,36 @@ export default defineComponent({
 					dataIndex: 'shopName'
 				},
 				{
-					title: i18n('default.21'),
-					dataIndex: 'machineSerial'
-				},
-				{
 					title: i18n('default.13'),
 					dataIndex: 'machineName'
+				},
+				{
+					title: i18n('default.21'),
+					dataIndex: 'machineSerial'
 				},
 				{
 					title: i18n('default.282'),
 					slots: { customRender: 'gameType' }
 				},
 				{
+					title: i18n('default.292'),
+					slots: { customRender: 'consumeType' }
+				},
+				{
 					title: i18n('default.286'),
 					slots: { customRender: 'gameName' }
+				},
+				{
+					title: i18n('default.287'),
+					dataIndex: 'consumePoint'
 				},
 				{
 					title: i18n('default.278'),
 					dataIndex: 'consumeTime'
 				},
 				{
-					title: i18n('default.149'),
-					slots: { customRender: 'consumeType' }
-				},
-				{
-					title: i18n('default.133'),
+					title: i18n('default.26'),
 					dataIndex: 'agentName'
-				}
-			],
-			innerColumns: [
-				{
-					title: i18n('default.21'),
-					dataIndex: 'machineSerial'
-				},
-				{
-					title: i18n('default.13'),
-					dataIndex: 'machineName'
-				},
-				{
-					title: i18n('default.123'),
-					dataIndex: 'coin'
-				},
-				{
-					title: i18n('default.124'),
-					dataIndex: 'cash'
-				},
-				{
-					title: i18n('default.137'),
-					dataIndex: 'card'
-				},
-				{
-					title: i18n('default.125'),
-					dataIndex: 'qrcode'
-				},
-				{
-					title: i18n('default.78'),
-					dataIndex: 'free'
-				},
-				{
-					title: i18n('default.144'),
-					dataIndex: 'totalWithFree'
-				},
-				{
-					title: i18n('default.145'),
-					dataIndex: 'totalNoFree'
 				}
 			],
 			tableList: [{ id: 0 }],
@@ -264,6 +217,35 @@ export default defineComponent({
 			agentList: [],
 			areaList: [],
 			countryList: [],
+			gameTypeList:[
+				{ id: 1, name: i18n('default.55') },
+				{ id: 2, name: i18n('default.283') },
+				{ id: 3, name: i18n('default.284') },
+				{ id: 4, name: i18n('default.285') },
+				{ id: 5, name: i18n('default.291') }
+			],
+			gameNameList:[
+				{ id: 1, name: i18n('default.31') },
+				{ id: 2, name: i18n('default.32') },
+				{ id: 3, name: i18n('default.33') },
+				{ id: 4, name: i18n('default.34') },
+				{ id: 5, name: i18n('default.41') },
+				{ id: 6, name: i18n('default.42') },
+				{ id: 7, name: i18n('default.44') },
+				{ id: 8, name: i18n('default.45') },
+				{ id: 9, name: i18n('default.50') },
+				{ id: 21, name: i18n('default.53') },
+				{ id: 20, name: i18n('default.52') },
+				{ id: 22, name: i18n('default.54') },
+				{ id: 35, name: i18n('default.51') },
+			],
+			consumeTypeList:[
+				{ id: 1, name: i18n('default.279') },
+				{ id: 2, name: i18n('default.78') },
+				{ id: 3, name: i18n('default.280') },
+				{ id: 4, name: i18n('default.281') },
+				{ id: 5, name: i18n('default.188') }
+			],
 			disabledStartDate: (startValue: any) => {
 				if (!startValue || !data.infoVO.maxConsumeTime) {
 					return false;
@@ -324,8 +306,7 @@ export default defineComponent({
 			init();
 		});
 		return {
-			...toRefs(data),
-			getGameName
+			...toRefs(data)
 		};
 	}
 });

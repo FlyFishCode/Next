@@ -83,7 +83,7 @@
 			</a-table>
 		</a-row>
 		<div class="paginationStyle">
-			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" @change="pageChange" />
+			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total"  @change="pageChange" />
 		</div>
 	</div>
 	<a-modal v-model:visible="visible" width="70%" :title="$t('default.118')" :footer="null" centered>
