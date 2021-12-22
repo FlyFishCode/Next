@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<labelTitle :value="$t('default.276')" />
+		<labelTitle :value="$t('default.293')" />
 		<div class="searchBox">
 			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
@@ -120,18 +120,11 @@
 					<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
 				</a-col>
 			</a-row>
-
 		</div>
 		<a-row class="rowStyle">
-			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
-				<template #gameType="{ record }">
-					<div>{{ gameTypeList.find(item => item.id === record.gameType)?.name }}</div>
-				</template>
-				<template #consumeType="{ record }">
-					<div>{{ consumeTypeList.find(item => item.id === record.consumeType)?.name }}</div>
-				</template>
-				<template #gameName="{ record }">
-					<div>{{ gameNameList.find(item => item.id === record.gameName)?.name }}</div>
+			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="shopId" class="tableStyle">
+				<template #expandedRowRender="{ record }">
+					<a-table :columns="innerColumns" :data-source="record.machineConsumeRecordList" :pagination="false" rowKey="machineId"> </a-table>
 				</template>
 			</a-table>
 		</a-row>
@@ -144,10 +137,11 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { agentListHttp, countryListHttp, areaListHttp, shopListHttp, ConsumptionHttp } from '@/api/api';
+import { agentListHttp, countryListHttp, areaListHttp, shopListHttp, ConsumptionSummaryListHttp } from '@/api/api';
 import { i18n } from '@/components/common/tools';
+
 export default defineComponent({
-	name: 'ConsumptionDetails',
+	name: 'ConsumptionSummary',
 	components: {
 		labelTitle
 	},
@@ -162,8 +156,8 @@ export default defineComponent({
 				gameType: '',
 				gameName: '',
 				consumeType: '',
-				machineName:"",
-				machineSerial:"",
+				machineName: '',
+				machineSerial: '',
 				minConsumeTime: '',
 				maxConsumeTime: '',
 				pageIndex: 1,
@@ -179,6 +173,24 @@ export default defineComponent({
 					dataIndex: 'shopName'
 				},
 				{
+					title: i18n('default.78'),
+					dataIndex: 'totalNoFree'
+				},
+				{
+					title: i18n('default.294'),
+					dataIndex: 'freePoint'
+				},
+				{
+					title: i18n('default.145'),
+					dataIndex: 'totalWithFree'
+				},
+				{
+					title: i18n('default.26'),
+					dataIndex: 'agentName'
+				}
+			],
+			innerColumns: [
+				{
 					title: i18n('default.13'),
 					dataIndex: 'machineName'
 				},
@@ -187,36 +199,18 @@ export default defineComponent({
 					dataIndex: 'machineSerial'
 				},
 				{
-					title: i18n('default.282'),
-					slots: { customRender: 'gameType' }
+					title: i18n('default.78'),
+					dataIndex: 'totalNoFree'
 				},
 				{
-					title: i18n('default.292'),
-					slots: { customRender: 'consumeType' }
+					title: i18n('default.294'),
+					dataIndex: 'freePoint'
 				},
 				{
-					title: i18n('default.286'),
-					slots: { customRender: 'gameName' }
+					title: i18n('default.145'),
+					dataIndex: 'totalWithFree'
 				},
-				{
-					title: i18n('default.287'),
-					dataIndex: 'consumePoint'
-				},
-				{
-					title: i18n('default.278'),
-					dataIndex: 'consumeTime'
-				},
-				{
-					title: i18n('default.26'),
-					dataIndex: 'agentName'
-				}
 			],
-			tableList: [{ id: 0 }],
-			total: 1,
-			shopList: [],
-			agentList: [],
-			areaList: [],
-			countryList: [],
 			gameTypeList:[
 				{ id: 1, name: i18n('default.55') },
 				{ id: 2, name: i18n('default.283') },
@@ -245,6 +239,12 @@ export default defineComponent({
 				{ id: 3, name: i18n('default.280') },
 				{ id: 4, name: i18n('default.281') }
 			],
+			tableList: [{ shopId: 0 }],
+			total: 1,
+			shopList: [],
+			agentList: [],
+			areaList: [],
+			countryList: [],
 			disabledStartDate: (startValue: any) => {
 				if (!startValue || !data.infoVO.maxConsumeTime) {
 					return false;
@@ -277,9 +277,20 @@ export default defineComponent({
 				data.search();
 			},
 			search: () => {
-				ConsumptionHttp(data.infoVO).then((res: any) => {
+				ConsumptionSummaryListHttp(data.infoVO).then((res: any) => {
 					if (res.data.data) {
-						data.tableList = res.data.data.list;
+						data.tableList = res.data.data.list.map((i: any) => {
+							return {
+								...i,
+								machineConsumeRecordList : i.machineConsumeRecordList.map((j: any) =>{
+									return {
+										...j,
+										freePoint:j.totalWithFree - j.totalNoFree
+									}
+								}),
+								freePoint:i.totalWithFree - i.totalNoFree
+							}
+						});
 						data.total = res.data.data.totalCount;
 					}
 				});

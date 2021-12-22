@@ -46,7 +46,6 @@
 					</a-select>
 				</a-col>
 			</a-row>
-
 			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
 					{{ $t('default.26') }}
@@ -83,6 +82,11 @@
 			</a-row>
 		</div>
 		<a-row class="rowStyle">
+			<a-col :span="1">
+				<a-button type="danger" size="small" @click="download">{{ $t('default.178') }}</a-button>
+			</a-col>
+		</a-row>
+		<a-row class="rowStyle">
 			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="shopId" class="tableStyle">
 				<template #expandedRowRender="{ record }">
 					<a-table :columns="innerColumns" :data-source="record.machineRechargeRecordList" :pagination="false" rowKey="totalNoFree"> </a-table>
@@ -98,8 +102,9 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { agentListHttp, countryListHttp, areaListHttp, shopListHttp, rechargeRecordHttp } from '@/api/api';
+import { agentListHttp, countryListHttp, areaListHttp, shopListHttp, rechargeRecordHttp, RechargeDownloadHttp } from '@/api/api';
 import { i18n } from '@/components/common/tools';
+import { message } from 'ant-design-vue';
 export default defineComponent({
 	name: 'Summary',
 	components: {
@@ -143,14 +148,6 @@ export default defineComponent({
 					title: i18n('default.125'),
 					dataIndex: 'qrcode'
 				},
-				// {
-				// 	title: i18n('default.78'),
-				// 	dataIndex: 'free'
-				// },
-				// {
-				// 	title: i18n('default.144'),
-				// 	dataIndex: 'totalWithFree'
-				// },
 				{
 					title: i18n('default.145'),
 					dataIndex: 'totalNoFree'
@@ -185,14 +182,6 @@ export default defineComponent({
 					title: i18n('default.125'),
 					dataIndex: 'qrcode'
 				},
-				// {
-				// 	title: i18n('default.78'),
-				// 	dataIndex: 'free'
-				// },
-				// {
-				// 	title: i18n('default.144'),
-				// 	dataIndex: 'totalWithFree'
-				// },
 				{
 					title: i18n('default.145'),
 					dataIndex: 'totalNoFree'
@@ -240,6 +229,21 @@ export default defineComponent({
 					if (res.data.data) {
 						data.tableList = res.data.data.list;
 						data.total = res.data.data.totalCount;
+					}
+				});
+			},
+			download: () => {
+				RechargeDownloadHttp(data.infoVO).then((res: any) => {
+					if (res.data) {
+						const url = window.URL.createObjectURL(res.data);
+						const a = document.createElement('a');
+						document.body.appendChild(a);
+						a.href = url;
+						a.download = res.headers['content-disposition'].split("''")[1];
+						a.click();
+						window.URL.revokeObjectURL(url);
+					} else {
+						message.error(res.data);
 					}
 				});
 			}

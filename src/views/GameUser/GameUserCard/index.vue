@@ -424,7 +424,7 @@ export default defineComponent({
 						const a = document.createElement('a');
 						document.body.appendChild(a);
 						a.href = url;
-						a.download = res.headers['content-disposition'].split(' ')[1];
+						a.download = res.headers['content-disposition'].split("''")[1];
 						a.click();
 						window.URL.revokeObjectURL(url);
 					} else {

@@ -42,7 +42,7 @@ import {
 import { agentList } from '@/api/Agent/index';
 
 // Settlement
-import { settlementList, settlementInfo, machineSettlementList, final, rechargeRecord,RechargeList, Consumption} from '@/api/Settlement/index';
+import { settlementList, settlementInfo, machineSettlementList, final, rechargeRecord,RechargeList, Consumption, ConsumptionSummaryList, RechargeDownload } from '@/api/Settlement/index';
 
 // System
 import {
@@ -319,6 +319,14 @@ const RechargeListHttp = (data: any) =>{
 // 消费明细列表
 const ConsumptionHttp = (data: any) =>{
 	return Axios.post(Consumption, data);
+}
+// 消费汇总列表
+const ConsumptionSummaryListHttp = (data: any) =>{
+	return Axios.post(ConsumptionSummaryList, data);
+}
+// 消费导出
+const RechargeDownloadHttp = (data: any) =>{
+	return Axios.post(RechargeDownload, data);
 }
 
 
@@ -660,6 +668,7 @@ export {
 	rechargeRecordHttp,
 	RechargeListHttp,
 	ConsumptionHttp,
+	ConsumptionSummaryListHttp,
 	systemUserListHttp,
 	addUserHttp,
 	searchUserHttp,
@@ -676,6 +685,7 @@ export {
 	UserInfoHttp,
 	UserCardDeleteHttp,
 	UserCardDownloadHttp,
+	RechargeDownloadHttp,
 	CountryListHttp,
 	CountryCreateHttp,
 	CountryUpdateHttp,

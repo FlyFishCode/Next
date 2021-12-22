@@ -13,7 +13,11 @@ const rechargeRecord = 'credit/rechargerecordlist';
 const RechargeList = 'credit/rechargerecorddetails';
 // 消费明细
 const Consumption = 'credit/consumerecorddetails';
+// 消费汇总
+const ConsumptionSummaryList = 'credit/consumerecordlist';
+// 充值汇总导出
+const RechargeDownload = 'credit/exportrechargerecordlist';
 
 
 
-export { settlementList, settlementInfo, machineSettlementList, final, rechargeRecord,RechargeList,Consumption };
+export { settlementList, settlementInfo, machineSettlementList, final, rechargeRecord,RechargeList,Consumption,ConsumptionSummaryList, RechargeDownload };
