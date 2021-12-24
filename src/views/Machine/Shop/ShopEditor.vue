@@ -446,6 +446,10 @@ export default defineComponent({
 					title: i18n('default.84'),
 					dataIndex: 'Placing Type',
 					slots: { customRender: 'PlacingType' }
+				},
+				{
+					title: 'lifeTime',
+					dataIndex: 'lifeTime',
 				}
 				// {
 				// 	title: i18n('default.29'),

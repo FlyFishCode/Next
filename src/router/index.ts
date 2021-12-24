@@ -182,6 +182,12 @@ const routes = [
 				component: () => import(/* webpackChunkName: "ConsumptionSummary" */ '../views/Settlement/ConsumptionSummary.vue'),
 				meta: [{ label: 'default.293', path: 'ConsumptionSummary' }]
 			},
+			{
+				path: '/Consumption',
+				name: 'Consumption',
+				component: () => import(/* webpackChunkName: "Consumption" */ '../views/Settlement/Consumption.vue'),
+				meta: [{ label: 'default.295', path: 'Consumption' }]
+			},
 			// User
 			{
 				path: '/User',

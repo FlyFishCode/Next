@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<labelTitle :value="$t('default.293')" />
+		<labelTitle :value="$t('default.295')" />
 		<div class="searchBox">
 			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
@@ -93,55 +93,37 @@
 
 			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
-					{{ $t('default.282') }}
-				</a-col>
-				<a-col :span="4">
-					<a-select v-model:value="infoVO.gameType" class="selectBox" allowClear>
-						<a-select-option v-for="item in gameTypeList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
-					</a-select>
-				</a-col>
-				<a-col :span="2" class="labelText">
-					{{ $t('default.292') }}
-				</a-col>
-				<a-col :span="4">
-					<a-select v-model:value="infoVO.consumeType" class="selectBox" allowClear>
-						<a-select-option v-for="item in consumeTypeList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
-					</a-select>
-				</a-col>
-				<a-col :span="2" class="labelText">
-					{{ $t('default.286') }}
-				</a-col>
-				<a-col :span="4">
-					<a-select v-model:value="infoVO.gameName" class="selectBox" allowClear>
-						<a-select-option v-for="item in gameNameList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
-					</a-select>
-				</a-col>
-				<a-col :span="2" class="labelText">
 					<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
 				</a-col>
 			</a-row>
+
 		</div>
 		<a-row class="rowStyle">
-			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="shopId" class="tableStyle">
-				<template #expandedRowRender="{ record }">
-					<a-table :columns="innerColumns" :data-source="record.machineConsumeRecordList" :pagination="false" rowKey="machineId"> </a-table>
+			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
+				<template #gameType="{ record }">
+					<div>{{ gameTypeList.find(item => item.id === record.game)?.name }}</div>
+				</template>
+				<template #consumeType="{ record }">
+					<div>{{ consumeTypeList.find(item => item.id === record.consumeType)?.name }}</div>
+				</template>
+				<template #gameName="{ record }">
+					<div>{{ gameNameList.find(item => item.id === record.game)?.name }}</div>
 				</template>
 			</a-table>
 		</a-row>
-		<div class="paginationStyle">
+		<!-- <div class="paginationStyle">
 			<a-pagination show-quick-jumper v-model:current="infoVO.pageIndex" :total="total" :show-total="total => `${$t('default.126')} ${total}`" @change="pageChange" />
-		</div>
+		</div> -->
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { agentListHttp, countryListHttp, areaListHttp, shopListHttp, ConsumptionSummaryListHttp } from '@/api/api';
+import { agentListHttp, countryListHttp, areaListHttp, shopListHttp, ConsumptionListHttp } from '@/api/api';
 import { i18n } from '@/components/common/tools';
-
 export default defineComponent({
-	name: 'ConsumptionSummary',
+	name: 'ConsumptionDetails',
 	components: {
 		labelTitle
 	},
@@ -156,61 +138,71 @@ export default defineComponent({
 				gameType: '',
 				gameName: '',
 				consumeType: '',
-				machineName: '',
-				machineSerial: '',
+				machineName:"",
+				machineSerial:"",
 				minConsumeTime: '',
 				maxConsumeTime: '',
-				pageIndex: 1,
-				pageSize: 10
+				// pageIndex: 1,
+				// pageSize: 10
 			},
 			columns: [
+        // {
+				// 	title: i18n('default.121'),
+				// 	dataIndex: 'gameName'
+				// },
+				// {
+				// 	title: i18n('default.5'),
+				// 	dataIndex: 'shopName'
+				// },
+				// {
+				// 	title: i18n('default.13'),
+				// 	dataIndex: 'machineName'
+				// },
+				// {
+				// 	title: i18n('default.21'),
+				// 	dataIndex: 'machineSerial'
+				// },
+        // {
+				// 	title: i18n('default.286'),
+				// 	dataIndex: 'gameName'
+				// },
 				{
-					title: i18n('default.121'),
-					dataIndex: 'shopId'
-				},
-				{
-					title: i18n('default.5'),
-					dataIndex: 'shopName'
-				},
-				{
-					title: i18n('default.78'),
-					dataIndex: 'freePoint'
-				},
-				{
-					title: i18n('default.294'),
-					dataIndex: 'totalNoFree'
-				},
-				{
-					title: i18n('default.145'),
-					dataIndex: 'totalWithFree'
-				},
-				{
-					title: i18n('default.26'),
-					dataIndex: 'agentName'
-				}
-			],
-			innerColumns: [
-				{
-					title: i18n('default.13'),
-					dataIndex: 'machineName'
-				},
-				{
-					title: i18n('default.21'),
-					dataIndex: 'machineSerial'
-				},
-				{
-					title: i18n('default.78'),
-					dataIndex: 'freePoint'
+					title: i18n('default.286'),
+					slots: { customRender: 'gameName' }
 				},
 				{
 					title: i18n('default.294'),
-					dataIndex: 'totalNoFree'
+          dataIndex: 'payment'
+					// slots: { customRender: 'consumeType' }
 				},
 				{
-					title: i18n('default.145'),
-					dataIndex: 'totalWithFree'
+					title: i18n('default.78'),
+          dataIndex: 'free'
+					// slots: { customRender: 'gameType' }
 				},
+        {
+					title: i18n('default.296'),
+					dataIndex: 'count'
+				},
+				{
+					title: i18n('default.287'),
+					dataIndex: 'total'
+				},
+				// {
+				// 	title: i18n('default.278'),
+				// 	dataIndex: 'consumeTime'
+				// },
+				// {
+				// 	title: i18n('default.26'),
+				// 	dataIndex: 'agentName'
+				// }
 			],
+			tableList: [{ id: 0 }],
+			total: 1,
+			shopList: [],
+			agentList: [],
+			areaList: [],
+			countryList: [],
 			gameTypeList:[
 				{ id: 1, name: i18n('default.55') },
 				{ id: 2, name: i18n('default.283') },
@@ -239,12 +231,6 @@ export default defineComponent({
 				{ id: 3, name: i18n('default.280') },
 				{ id: 4, name: i18n('default.281') }
 			],
-			tableList: [{ shopId: 0 }],
-			total: 1,
-			shopList: [],
-			agentList: [],
-			areaList: [],
-			countryList: [],
 			disabledStartDate: (startValue: any) => {
 				if (!startValue || !data.infoVO.maxConsumeTime) {
 					return false;
@@ -272,26 +258,14 @@ export default defineComponent({
 				// eslint-disable-next-line @typescript-eslint/no-use-before-define
 				getAreaList();
 			},
-			pageChange: (index: number) => {
-				data.infoVO.pageIndex = index;
-				data.search();
-			},
+			// pageChange: (index: number) => {
+			// 	data.infoVO.pageIndex = index;
+			// 	data.search();
+			// },
 			search: () => {
-				ConsumptionSummaryListHttp(data.infoVO).then((res: any) => {
+				ConsumptionListHttp(data.infoVO).then((res: any) => {
 					if (res.data.data) {
-						data.tableList = res.data.data.list.map((i: any) => {
-							return {
-								...i,
-								machineConsumeRecordList : i.machineConsumeRecordList.map((j: any) =>{
-									return {
-										...j,
-										freePoint:j.totalWithFree - j.totalNoFree
-									}
-								}),
-								freePoint:i.totalWithFree - i.totalNoFree
-							}
-						});
-						data.total = res.data.data.totalCount;
+						data.tableList = res.data.data;
 					}
 				});
 			}

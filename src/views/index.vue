@@ -35,6 +35,7 @@
 					<a-menu-item key="ConsumptionSummary">{{ $t('default.293') }}</a-menu-item>
 					<a-menu-item key="RechargeDetails">{{ $t('default.275') }}</a-menu-item>
 					<a-menu-item key="ConsumptionDetails">{{ $t('default.276') }}</a-menu-item>
+					<a-menu-item key="Consumption">{{ $t('default.295') }}</a-menu-item>
 				</a-sub-menu>
 
 				<a-sub-menu v-if="RoleType === 1" key="4">

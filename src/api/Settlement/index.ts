@@ -17,7 +17,9 @@ const Consumption = 'credit/consumerecorddetails';
 const ConsumptionSummaryList = 'credit/consumerecordlist';
 // 充值汇总导出
 const RechargeDownload = 'credit/exportrechargerecordlist';
+// 消费情况
+const ConsumptionList = 'credit/consumptionbygames';
 
 
 
-export { settlementList, settlementInfo, machineSettlementList, final, rechargeRecord,RechargeList,Consumption,ConsumptionSummaryList, RechargeDownload };
+export { settlementList, settlementInfo, machineSettlementList, final, rechargeRecord,RechargeList,Consumption,ConsumptionSummaryList, RechargeDownload, ConsumptionList };
