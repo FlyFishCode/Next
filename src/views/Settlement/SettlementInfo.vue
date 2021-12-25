@@ -30,7 +30,7 @@
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ $t('default.23') }}
+					{{ $t('default.262') }}
 				</a-col>
 				<a-col :span="4">
 					<a-select v-model:value="infoVO.countryId" @change="countryChange" class="selectBox" allowClear>
@@ -38,7 +38,7 @@
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
-					{{ $t('default.23') }}
+					{{ $t('default.263') }}
 				</a-col>
 				<a-col :span="4">
 					<a-select v-model:value="infoVO.areaId" class="selectBox" allowClear>

@@ -91,5 +91,15 @@ const getRoleType = () =>{
 	const RoleType: any = Number(sessionStorage.getItem('NextUserType'));
 	return RoleType;
 }
+// 添加代理商列
+const handleAddColumns = (list: Array<any>) =>{
+	list.push(
+		{
+			title: i18n('default.26'),
+			dataIndex: 'agentName',
+			key: 'agentName'
+		}
+	)
+}
 
-export { handleSelectEvent, deepClone, initDataToNumber, initDataToBoolean, handleList, i18n, MD5, getRoleType };
+export { handleSelectEvent, deepClone, initDataToNumber, initDataToBoolean, handleList, i18n, MD5, getRoleType, handleAddColumns };

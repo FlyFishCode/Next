@@ -30,6 +30,49 @@
 					</a-select>
 				</a-col>
 				<a-col :span="2" class="labelText">
+					{{ $t('default.13') }}
+				</a-col>
+				<a-col :span="4">
+					<a-select
+						class="selectBox"
+						show-search
+						v-model:value="infoVO.machineName"
+						:default-active-first-option="false"
+						:show-arrow="false"
+						:filter-option="false"
+						:not-found-content="null"
+						allowClear
+						@search="machineSearch($event,'name')"
+					>
+						<a-select-option v-for="machine in machineList" :key="machine.name">
+							<div :title="machine.name">{{ machine.name }}</div>
+						</a-select-option>
+					</a-select>
+				</a-col>
+				<a-col :span="2" class="labelText">
+					{{ $t('default.21') }}
+				</a-col>
+				<a-col :span="4">
+					<a-select
+						class="selectBox"
+						show-search
+						v-model:value="infoVO.machineSerial"
+						:default-active-first-option="false"
+						:show-arrow="false"
+						:filter-option="false"
+						:not-found-content="null"
+						allowClear
+						@search="machineSearch($event,'serial')"
+					>
+						<a-select-option v-for="machine in machineList" :key="machine.serial">
+							<div :title="machine.serial">{{ machine.serial }}</div>
+						</a-select-option>
+					</a-select>
+				</a-col>
+			</a-row>
+
+			<a-row class="rowStyle">
+				<a-col :span="2" class="labelText">
 					{{ $t('default.262') }}
 				</a-col>
 				<a-col :span="4">
@@ -45,21 +88,6 @@
 						<a-select-option v-for="item in areaList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
 					</a-select>
 				</a-col>
-			</a-row>
-
-			<a-row class="rowStyle">
-				<a-col :span="2" class="labelText">
-					{{ $t('default.13') }}
-				</a-col>
-				<a-col :span="4">
-					<a-input v-model:value="infoVO.machineName" allowClear />
-				</a-col>
-				<a-col :span="2" class="labelText">
-					{{ $t('default.21') }}
-				</a-col>
-				<a-col :span="4">
-					<a-input v-model:value="infoVO.machineSerial" allowClear />
-				</a-col>
 				<a-col :span="2" class="labelText">
 					{{ $t('default.120') }}
 				</a-col>
@@ -69,10 +97,10 @@
 				<a-col :span="2" class="datePicker">
 					<a-date-picker v-model:value="infoVO.maxConsumeTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 				</a-col>
-				<a-col :span="2" class="labelText">
+				<a-col v-if="RoleType === 1" :span="2" class="labelText">
 					{{ $t('default.26') }}
 				</a-col>
-				<a-col :span="4">
+				<a-col v-if="RoleType === 1" :span="4">
 					<a-select
 					class="selectBox"
 						show-search
@@ -144,14 +172,15 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { agentListHttp, countryListHttp, areaListHttp, shopListHttp, ConsumptionHttp } from '@/api/api';
-import { i18n } from '@/components/common/tools';
+import { agentListHttp, countryListHttp, areaListHttp, shopListHttp, ConsumptionHttp, MachineListHttp } from '@/api/api';
+import { i18n, getRoleType, handleAddColumns } from '@/components/common/tools';
 export default defineComponent({
 	name: 'ConsumptionDetails',
 	components: {
 		labelTitle
 	},
 	setup() {
+		const RoleType: any = getRoleType();
 		const data = reactive({
 			infoVO: {
 				shopId: null,
@@ -205,15 +234,12 @@ export default defineComponent({
 				{
 					title: i18n('default.278'),
 					dataIndex: 'consumeTime'
-				},
-				{
-					title: i18n('default.26'),
-					dataIndex: 'agentName'
 				}
 			],
 			tableList: [{ id: 0 }],
 			total: 1,
 			shopList: [],
+			machineList: [],
 			agentList: [],
 			areaList: [],
 			countryList: [],
@@ -267,6 +293,20 @@ export default defineComponent({
 					data.shopList = res.data.data.list;
 				});
 			},
+			handleShopChange(shopName: any){
+				data.infoVO.machineName = '';
+				data.infoVO.machineSerial = '';
+				if(shopName){
+					MachineListHttp({ shopName: shopName.split("'").join(''), pageSize: 999 }).then((res) => {
+					data.machineList = res.data.data.list;
+				});
+				}
+			},
+			machineSearch(value: any,type: string) {
+				MachineListHttp({ [type]: value.split("'").join(''), pageSize: 999 }).then((res) => {
+					data.machineList = res.data.data.list;
+				});
+			},
 			countryChange: () => {
 				data.infoVO.areaId = '';
 				// eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -297,15 +337,18 @@ export default defineComponent({
 		};
 		const init = () => {
 			data.search();
+			data.shopSearch('');
 			data.agentSearch('');
 			getCountryList();
 			getAreaList();
 		};
 		onMounted(() => {
 			init();
+			if(RoleType === 1){handleAddColumns(data.columns)}
 		});
 		return {
-			...toRefs(data)
+			...toRefs(data),
+			RoleType
 		};
 	}
 });

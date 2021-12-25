@@ -48,9 +48,18 @@
 			</a-row>
 			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
+					{{ $t('default.120') }}
+				</a-col>
+				<a-col :span="2" class="datePicker">
+					<a-date-picker v-model:value="infoVO.minRechargeTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
+				</a-col>
+				<a-col :span="2" class="datePicker">
+					<a-date-picker v-model:value="infoVO.maxRechargeTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
+				</a-col>
+				<a-col v-if="RoleType === 1" :span="2" class="labelText">
 					{{ $t('default.26') }}
 				</a-col>
-				<a-col :span="4">
+				<a-col v-if="RoleType === 1" :span="4">
 					<a-select
 					class="selectBox"
 						show-search
@@ -66,15 +75,6 @@
 							<div :title="d.name">{{ d.name }}</div>
 						</a-select-option>
 					</a-select>
-				</a-col>
-				<a-col :span="2" class="labelText">
-					{{ $t('default.120') }}
-				</a-col>
-				<a-col :span="2" class="datePicker">
-					<a-date-picker v-model:value="infoVO.minRechargeTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
-				</a-col>
-				<a-col :span="2" class="datePicker">
-					<a-date-picker v-model:value="infoVO.maxRechargeTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 				</a-col>
 				<a-col :span="2" class="labelText">
 					<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
@@ -103,7 +103,7 @@
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
 import { agentListHttp, countryListHttp, areaListHttp, shopListHttp, rechargeRecordHttp, RechargeDownloadHttp } from '@/api/api';
-import { i18n } from '@/components/common/tools';
+import { i18n, getRoleType, handleAddColumns } from '@/components/common/tools';
 import { message } from 'ant-design-vue';
 export default defineComponent({
 	name: 'Summary',
@@ -111,6 +111,7 @@ export default defineComponent({
 		labelTitle
 	},
 	setup() {
+		const RoleType: any = getRoleType();
 		const data = reactive({
 			infoVO: {
 				shopId: null,
@@ -151,10 +152,6 @@ export default defineComponent({
 				{
 					title: i18n('default.145'),
 					dataIndex: 'totalNoFree'
-				},
-				{
-					title: i18n('default.26'),
-					dataIndex: 'agentName'
 				}
 			],
 			innerColumns: [
@@ -260,15 +257,18 @@ export default defineComponent({
 		};
 		const init = () => {
 			data.search();
+			data.shopSearch('');
 			data.agentSearch('');
 			getCountryList();
 			getAreaList();
 		};
 		onMounted(() => {
 			init();
+			if(RoleType === 1){handleAddColumns(data.columns)}
 		});
 		return {
-			...toRefs(data)
+			...toRefs(data),
+			RoleType
 		};
 	}
 });

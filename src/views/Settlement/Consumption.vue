@@ -23,12 +23,56 @@
 						:not-found-content="null"
 						allowClear
 						@search="shopSearch"
+						@change="handleShopChange"
 					>
 						<a-select-option v-for="shop in shopList" :key="shop.name">
 							<div :title="shop.name">{{ shop.name }}</div>
 						</a-select-option>
 					</a-select>
 				</a-col>
+				<a-col :span="2" class="labelText">
+					{{ $t('default.13') }}
+				</a-col>
+				<a-col :span="4">
+					<a-select
+						class="selectBox"
+						show-search
+						v-model:value="infoVO.machineName"
+						:default-active-first-option="false"
+						:show-arrow="false"
+						:filter-option="false"
+						:not-found-content="null"
+						allowClear
+						@search="machineSearch($event,'name')"
+					>
+						<a-select-option v-for="machine in machineList" :key="machine.name">
+							<div :title="machine.name">{{ machine.name }}</div>
+						</a-select-option>
+					</a-select>
+				</a-col>
+				<a-col :span="2" class="labelText">
+					{{ $t('default.21') }}
+				</a-col>
+				<a-col :span="4">
+					<a-select
+						class="selectBox"
+						show-search
+						v-model:value="infoVO.machineSerial"
+						:default-active-first-option="false"
+						:show-arrow="false"
+						:filter-option="false"
+						:not-found-content="null"
+						allowClear
+						@search="machineSearch($event,'serial')"
+					>
+						<a-select-option v-for="machine in machineList" :key="machine.serial">
+							<div :title="machine.serial">{{ machine.serial }}</div>
+						</a-select-option>
+					</a-select>
+				</a-col>
+			</a-row>
+
+			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
 					{{ $t('default.262') }}
 				</a-col>
@@ -45,21 +89,6 @@
 						<a-select-option v-for="item in areaList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
 					</a-select>
 				</a-col>
-			</a-row>
-
-			<a-row class="rowStyle">
-				<a-col :span="2" class="labelText">
-					{{ $t('default.13') }}
-				</a-col>
-				<a-col :span="4">
-					<a-input v-model:value="infoVO.machineName" allowClear />
-				</a-col>
-				<a-col :span="2" class="labelText">
-					{{ $t('default.21') }}
-				</a-col>
-				<a-col :span="4">
-					<a-input v-model:value="infoVO.machineSerial" allowClear />
-				</a-col>
 				<a-col :span="2" class="labelText">
 					{{ $t('default.120') }}
 				</a-col>
@@ -69,10 +98,10 @@
 				<a-col :span="2" class="datePicker">
 					<a-date-picker v-model:value="infoVO.maxConsumeTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 				</a-col>
-				<a-col :span="2" class="labelText">
+				<a-col v-if="RoleType === 1" :span="2" class="labelText">
 					{{ $t('default.26') }}
 				</a-col>
-				<a-col :span="4">
+				<a-col v-if="RoleType === 1" :span="3">
 					<a-select
 					class="selectBox"
 						show-search
@@ -89,17 +118,14 @@
 						</a-select-option>
 					</a-select>
 				</a-col>
-			</a-row>
-
-			<a-row class="rowStyle">
-				<a-col :span="2" class="labelText">
+				<a-col :span="1" class="labelText">
 					<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
 				</a-col>
 			</a-row>
 
 		</div>
 		<a-row class="rowStyle">
-			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="id" class="tableStyle">
+			<a-table bordered :columns="columns" :data-source="tableList" :pagination="false" rowKey="game" class="tableStyle">
 				<template #gameType="{ record }">
 					<div>{{ gameTypeList.find(item => item.id === record.game)?.name }}</div>
 				</template>
@@ -120,14 +146,15 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { agentListHttp, countryListHttp, areaListHttp, shopListHttp, ConsumptionListHttp } from '@/api/api';
-import { i18n } from '@/components/common/tools';
+import { agentListHttp, countryListHttp, areaListHttp, shopListHttp, ConsumptionListHttp, MachineListHttp } from '@/api/api';
+import { i18n, getRoleType } from '@/components/common/tools';
 export default defineComponent({
-	name: 'ConsumptionDetails',
+	name: 'Consumption',
 	components: {
 		labelTitle
 	},
 	setup() {
+		const RoleType: any = getRoleType();
 		const data = reactive({
 			infoVO: {
 				shopId: null,
@@ -142,30 +169,8 @@ export default defineComponent({
 				machineSerial:"",
 				minConsumeTime: '',
 				maxConsumeTime: '',
-				// pageIndex: 1,
-				// pageSize: 10
 			},
 			columns: [
-        // {
-				// 	title: i18n('default.121'),
-				// 	dataIndex: 'gameName'
-				// },
-				// {
-				// 	title: i18n('default.5'),
-				// 	dataIndex: 'shopName'
-				// },
-				// {
-				// 	title: i18n('default.13'),
-				// 	dataIndex: 'machineName'
-				// },
-				// {
-				// 	title: i18n('default.21'),
-				// 	dataIndex: 'machineSerial'
-				// },
-        // {
-				// 	title: i18n('default.286'),
-				// 	dataIndex: 'gameName'
-				// },
 				{
 					title: i18n('default.286'),
 					slots: { customRender: 'gameName' }
@@ -187,19 +192,25 @@ export default defineComponent({
 				{
 					title: i18n('default.287'),
 					dataIndex: 'total'
-				},
-				// {
-				// 	title: i18n('default.278'),
-				// 	dataIndex: 'consumeTime'
-				// },
-				// {
-				// 	title: i18n('default.26'),
-				// 	dataIndex: 'agentName'
-				// }
+				}
 			],
-			tableList: [{ id: 0 }],
-			total: 1,
+			tableList: [
+				{ free: 0,game: 1,total: 0,count: 0,payment: 0 },
+				{ free: 0,game: 2,total: 0,count: 0,payment: 0 },
+				{ free: 0,game: 3,total: 0,count: 0,payment: 0 },
+				{ free: 0,game: 4,total: 0,count: 0,payment: 0 },
+				{ free: 0,game: 5,total: 0,count: 0,payment: 0 },
+				{ free: 0,game: 6,total: 0,count: 0,payment: 0 },
+				{ free: 0,game: 7,total: 0,count: 0,payment: 0 },
+				{ free: 0,game: 8,total: 0,count: 0,payment: 0 },
+				{ free: 0,game: 9,total: 0,count: 0,payment: 0 },
+				{ free: 0,game: 20,total: 0,count: 0,payment: 0 },
+				{ free: 0,game: 21,total: 0,count: 0,payment: 0 },
+				{ free: 0,game: 22,total: 0,count: 0,payment: 0 },
+				{ free: 0,game: 35,total: 0,count: 0,payment: 0 },
+			],
 			shopList: [],
+			machineList: [],
 			agentList: [],
 			areaList: [],
 			countryList: [],
@@ -253,6 +264,20 @@ export default defineComponent({
 					data.shopList = res.data.data.list;
 				});
 			},
+			handleShopChange(shopName: any){
+				data.infoVO.machineName = '';
+				data.infoVO.machineSerial = '';
+				if(shopName){
+					MachineListHttp({ shopName: shopName.split("'").join(''), pageSize: 999 }).then((res) => {
+					data.machineList = res.data.data.list;
+				});
+				}
+			},
+			machineSearch(value: any,type: string) {
+				MachineListHttp({ [type]: value.split("'").join(''), pageSize: 999 }).then((res) => {
+					data.machineList = res.data.data.list;
+				});
+			},
 			countryChange: () => {
 				data.infoVO.areaId = '';
 				// eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -264,8 +289,31 @@ export default defineComponent({
 			// },
 			search: () => {
 				ConsumptionListHttp(data.infoVO).then((res: any) => {
-					if (res.data.data) {
-						data.tableList = res.data.data;
+					if (res.data.data.length) {
+						data.tableList = data.tableList.map((i: any) =>{
+							const obj = res.data.data.find((item: any) => item.game === i.game)
+							if(obj){
+								return Object.assign(i,obj);
+							}else{
+								return i;
+							}
+						})
+					}else{
+						data.tableList = [
+							{ free: 0,game: 1,total: 0,count: 0,payment: 0 },
+							{ free: 0,game: 2,total: 0,count: 0,payment: 0 },
+							{ free: 0,game: 3,total: 0,count: 0,payment: 0 },
+							{ free: 0,game: 4,total: 0,count: 0,payment: 0 },
+							{ free: 0,game: 5,total: 0,count: 0,payment: 0 },
+							{ free: 0,game: 6,total: 0,count: 0,payment: 0 },
+							{ free: 0,game: 7,total: 0,count: 0,payment: 0 },
+							{ free: 0,game: 8,total: 0,count: 0,payment: 0 },
+							{ free: 0,game: 9,total: 0,count: 0,payment: 0 },
+							{ free: 0,game: 20,total: 0,count: 0,payment: 0 },
+							{ free: 0,game: 21,total: 0,count: 0,payment: 0 },
+							{ free: 0,game: 22,total: 0,count: 0,payment: 0 },
+							{ free: 0,game: 35,total: 0,count: 0,payment: 0 }
+						]
 					}
 				});
 			}
@@ -282,6 +330,7 @@ export default defineComponent({
 		};
 		const init = () => {
 			data.search();
+      data.shopSearch('');
 			data.agentSearch('');
 			getCountryList();
 			getAreaList();
@@ -290,7 +339,8 @@ export default defineComponent({
 			init();
 		});
 		return {
-			...toRefs(data)
+			...toRefs(data),
+			RoleType
 		};
 	}
 });

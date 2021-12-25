@@ -3,12 +3,12 @@
 		<labelTitle :value="$t('default.117')" />
 		<div class="searchBox">
 			<a-row class="rowStyle">
-				<a-col :span="2" class="labelText">
+				<!-- <a-col :span="2" class="labelText">
 					{{ $t('default.121') }}
 				</a-col>
 				<a-col :span="4">
 					<a-input v-model:value="infoVO.shopId" allowClear />
-				</a-col>
+				</a-col> -->
 				<a-col :span="2" class="labelText">
 					{{ $t('default.5') }}
 				</a-col>
@@ -23,12 +23,64 @@
 						:not-found-content="null"
 						allowClear
 						@search="shopSearch"
+						@change="handleShopChange"
 					>
 						<a-select-option v-for="shop in shopList" :key="shop.name">
 							<div :title="shop.name">{{ shop.name }}</div>
 						</a-select-option>
 					</a-select>
 				</a-col>
+				<a-col :span="2" class="labelText">
+					{{ $t('default.13') }}
+				</a-col>
+				<a-col :span="4">
+					<a-select
+						class="selectBox"
+						show-search
+						v-model:value="infoVO.machineName"
+						:default-active-first-option="false"
+						:show-arrow="false"
+						:filter-option="false"
+						:not-found-content="null"
+						allowClear
+						@search="machineSearch($event,'name')"
+					>
+						<a-select-option v-for="machine in machineList" :key="machine.name">
+							<div :title="machine.name">{{ machine.name }}</div>
+						</a-select-option>
+					</a-select>
+				</a-col>
+				<a-col :span="2" class="labelText">
+					{{ $t('default.21') }}
+				</a-col>
+				<a-col :span="4">
+					<a-select
+						class="selectBox"
+						show-search
+						v-model:value="infoVO.machineSerial"
+						:default-active-first-option="false"
+						:show-arrow="false"
+						:filter-option="false"
+						:not-found-content="null"
+						allowClear
+						@search="machineSearch($event,'serial')"
+					>
+						<a-select-option v-for="machine in machineList" :key="machine.serial">
+							<div :title="machine.serial">{{ machine.serial }}</div>
+						</a-select-option>
+					</a-select>
+				</a-col>
+				<a-col :span="2" class="labelText">
+					{{ $t('default.139') }}
+				</a-col>
+				<a-col :span="4">
+					<a-select v-model:value="infoVO.status" class="selectBox" allowClear>
+						<a-select-option v-for="item in stateList" :key="item.id" :value="item.id">{{ item.label }}</a-select-option>
+					</a-select>
+				</a-col>
+			</a-row>
+
+			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
 					{{ $t('default.262') }}
 				</a-col>
@@ -45,25 +97,19 @@
 						<a-select-option v-for="item in areaList" :key="item.id" :value="item.id">{{ item.name }}</a-select-option>
 					</a-select>
 				</a-col>
-			</a-row>
-
-			<a-row class="rowStyle">
 				<a-col :span="2" class="labelText">
-					{{ $t('default.13') }}
+					{{ $t('default.290') }}
 				</a-col>
-				<a-col :span="4">
-					<a-input v-model:value="infoVO.machineName" allowClear />
+				<a-col :span="2" class="datePicker">
+					<a-date-picker v-model:value="infoVO.minRecordTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
 				</a-col>
-				<a-col :span="2" class="labelText">
-					{{ $t('default.21') }}
+				<a-col :span="2" class="datePicker">
+					<a-date-picker v-model:value="infoVO.maxRecordTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
 				</a-col>
-				<a-col :span="4">
-					<a-input v-model:value="infoVO.machineSerial" allowClear />
-				</a-col>
-				<a-col :span="2" class="labelText">
+				<a-col v-if="RoleType === 1" :span="2" class="labelText">
 					{{ $t('default.26') }}
 				</a-col>
-				<a-col :span="4">
+				<a-col v-if="RoleType === 1" :span="3">
 					<a-select
 					class="selectBox"
 						show-search
@@ -80,26 +126,7 @@
 						</a-select-option>
 					</a-select>
 				</a-col>
-				<a-col :span="2" class="labelText">
-					{{ $t('default.290') }}
-				</a-col>
-				<a-col :span="2" class="datePicker">
-					<a-date-picker v-model:value="infoVO.minRecordTime" :disabled-date="disabledStartDate" valueFormat="yyyy-MM-DD 00:00:00" allow-clear />
-				</a-col>
-				<a-col :span="2" class="datePicker">
-					<a-date-picker v-model:value="infoVO.maxRecordTime" :disabled-date="disabledEndDate" valueFormat="yyyy-MM-DD 23:59:59" allow-clear />
-				</a-col>
-			</a-row>
-			<a-row class="rowStyle">
-				<a-col :span="2" class="labelText">
-					{{ $t('default.139') }}
-				</a-col>
-				<a-col :span="4">
-					<a-select v-model:value="infoVO.status" class="selectBox" allowClear>
-						<a-select-option v-for="item in stateList" :key="item.id" :value="item.id">{{ item.label }}</a-select-option>
-					</a-select>
-				</a-col>
-				<a-col :span="2" class="labelText">
+				<a-col :span="1" class="labelText">
 					<a-button type="primary" size="small" @click="search">{{ $t('default.8') }}</a-button>
 				</a-col>
 			</a-row>
@@ -129,14 +156,15 @@
 <script lang="ts">
 import { defineComponent, onMounted, reactive, toRefs } from 'vue';
 import labelTitle from '@/components/labelTitle.vue';
-import { agentListHttp, countryListHttp, areaListHttp, shopListHttp, settlementListHttp } from '@/api/api';
-import { i18n } from '@/components/common/tools';
+import { agentListHttp, countryListHttp, areaListHttp, shopListHttp, settlementListHttp, MachineListHttp } from '@/api/api';
+import { i18n, getRoleType, handleAddColumns } from '@/components/common/tools';
 export default defineComponent({
 	name: 'Settlement',
 	components: {
 		labelTitle
 	},
 	setup() {
+		const RoleType: any = getRoleType();
 		const data = reactive({
 			infoVO: {
 				shopId: null,
@@ -153,11 +181,6 @@ export default defineComponent({
 				pageSize: 10
 			},
 			columns: [
-				{
-					title: i18n('default.121'),
-					dataIndex: 'shopId',
-					key: 'Shop'
-				},
 				{
 					title: i18n('default.5'),
 					dataIndex: 'shopName',
@@ -227,15 +250,11 @@ export default defineComponent({
 				{
 					title: i18n('default.136'),
 					slots: { customRender: 'ratio' }
-				},
-				{
-					title: i18n('default.26'),
-					dataIndex: 'agentName',
-					key: 'Locked Dates'
 				}
 			],
 			total: 1,
 			shopList: [],
+			machineList: [],
 			agentList: [],
 			areaList: [],
 			countryList: [],
@@ -264,6 +283,20 @@ export default defineComponent({
 			shopSearch(value: any) {
 				shopListHttp({ name: value.split("'").join(''), pageSize: 999 }).then((res) => {
 					data.shopList = res.data.data.list;
+				});
+			},
+			handleShopChange(shopName: any){
+				data.infoVO.machineName = '';
+				data.infoVO.machineSerial = '';
+				if(shopName){
+					MachineListHttp({ shopName: shopName.split("'").join(''), pageSize: 999 }).then((res) => {
+					data.machineList = res.data.data.list;
+				});
+				}
+			},
+			machineSearch(value: any,type: string) {
+				MachineListHttp({ [type]: value.split("'").join(''), pageSize: 999 }).then((res) => {
+					data.machineList = res.data.data.list;
 				});
 			},
 			countryChange: () => {
@@ -296,15 +329,18 @@ export default defineComponent({
 		};
 		const init = () => {
 			data.search();
+			data.shopSearch('');
 			data.agentSearch('');
 			getCountryList();
 			getAreaList();
 		};
 		onMounted(() => {
 			init();
+			if(RoleType === 1){handleAddColumns(data.columns)}
 		});
 		return {
-			...toRefs(data)
+			...toRefs(data),
+			RoleType
 		};
 	}
 });
